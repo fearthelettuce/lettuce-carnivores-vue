@@ -23,8 +23,9 @@
                             <div class="logo">Fear the Lettuce</div>
                         </router-link>
                     </div>
+                    <MainNavbar />
                 </div>
-                <MainNavbar />
+                
                 <button 
                     type="button"
                     class="btn btn-secondary">
