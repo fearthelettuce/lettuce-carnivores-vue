@@ -1,7 +1,8 @@
 <template>
-    <p>This will be the care guide</p>
+    <GuideList />
 </template>
 
 <script setup lang="ts">
 
+import GuideList from '@/components/modules/care/GuideList.vue';
 </script>

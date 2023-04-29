@@ -1,0 +1,190 @@
+<template>
+
+    
+        <h1>
+            Carnivorous Plant Cultivation Guides
+        </h1>
+        <ul>
+            <li><a href='#NepenthesGuide'>Nepenthes</a>
+                <ul>
+                    <li>Beginner Guide</li>
+                    <li>Basic Care</li>
+                    <li>Highland Care</li>
+                    <li>Intermediate Care</li>
+                    <li>Lowland Care</li>
+                </ul>
+            </li>
+            <li><a href='#HeliamphoraGuide'>Heliamphora </a> </li>
+            <li><a href='#CephalotusGuide'>Cephalotus</a>
+                <ul>
+                    <li>Beginner Guide</li>
+                </ul>
+            </li>
+            <li><a href='#HighlandGrowChamber'>Highland Grow Chamber</a>
+            </li>
+
+        </ul>
+
+        <a name='NepenthesGuide'>
+            <h2>
+                Nepenthes Beginner Guide
+            </h2>
+        </a>
+        <p>
+            This is the basic care guide for nepenthes. Please be aware that this is general advice and some species can
+            have very specific requirements. You should do some research to
+            learn about the typical conditions of a species native habitat. <br>Hybrids can make this more difficult since
+            some hybrids do not occur in nature. As a general rule of thumb,
+            hybrids are generally easier to grow than species due to 'Hybrid Vigor'. You should research the natual
+            conditions for both parents and then start by trying to emulate conditions
+            somewhere in between.
+        </p>
+
+        <h3>
+            Water
+        </h3>
+
+        <p> Nepenthes, like most carnivorous plants, need water with low Total Discolved Solids (TDS). Depending on where
+            you live, your tap water may be ok, however most people
+            will need to use a different source. THe most common sources are:
+        <ul>
+            <li>Rain water</li>
+            <li>Distilled or Reverse Osmosis water, typically sold in grocery stores in gallon jugs</li>
+            <li>Tap water that has been filtered thorugh a Reverse Osmosis fitler</li>
+
+        </ul>
+        As far as actually watering your plants, you should keep them moist but not soggy. While many people are successful
+        with the 'tray method', I recommend top watering regularly and
+        leting the the water drain away. See my <a href='#'>Highland Grow Chamber Guide</a> for more information on how I do
+        this. My plants have a layer of live sphagnum moss on the top
+        of the media and this serves as a great indicator of when to water. You will notice that the moss turns light green
+        to white as it dries out (think about a wet rag vs dry rag).
+        Since it's on top, this is the first thing that dries out and serves as sign that you need to water.
+        <br>
+        <h4>Watering Tools</h4>
+        <p>To start off, get a cheap spray bottle that has never been used for chemicals before. For many years I have tried
+            to chase down a good quality spray bottle that doesn't annoy me
+            every time I use it and unfortunately, I haven't found one that I would recommend, I just use a random one I
+            picked up at Home Depot. (and I'm too cheap to look into higher quality
+            ones.) Once it gets too annoying to use the spray bottle, you should look into pump sprayers. These are commonly
+            used to spray chemicals and can make watering much less of a chore.
+            I used to use a plastic sprayer that I picked up for around $25 on Amazon, however the plastic evenually failed.
+            After that, I decided to buy a pump sprayer that would last forever
+            so I picked up a $90 made out of metal. That thing is a beast, however it is definitely overkill, and I do
+            regret that purchase. <br>
+            My current setup uses a Mist King sprayer. It wasn't cheap, but compared to the $90 sprayer, it wasn't that much
+            more and has completely automated my watering and humidy. I know
+            it's a lot but please don't make the same mistakes I did.
+        </p>
+        </p>
+
+        <h3>
+            Humidity
+        </h3>
+        <p>
+            Some nepenthes can adapt to normal room level humidity, however in my experience, all nepenthes do better with
+            supplemental humidity.
+        </p>
+        <h3>
+            Lighting
+        </h3>
+        <p>Light requirements vary by species and as such, you should research the natual conditions of yours species.
+            , however I have found that </p>
+        <h3>
+            Media (soil)
+        </h3>
+        <h3>
+            Temperature
+        </h3>
+
+        <h3>
+            Commonly asked questions
+        </h3>
+        <h4>Do Nepenthes need to eat?</h4>
+        <p>Short answser - not really. Nepenthes definitely can live without actually eating insects, however they do need
+            nutrients, the same as every living thing. There is no need to actively feed them but you certainly can. As an
+            alternative, you may choose to fertilize them (see the next section.) </p>
+        <h5>What should I feed them.</h5>
+        <p>Repeat after me (and write this down!) DO NOT FEED CARNIVOROUS PLANTS MEAT. Meat will rot. Carnivorous plants
+            have evolved to eat insects (with a few very specific exceptions - such as N. lowii). Basically any insect will
+            do that fits in the pitcher. You don't want large portions of the insect to hang out of the pitcher so make sure
+            that you cut it up or choose an insect that will fit without hanging out. Personally, if I happen to see a bug
+            in the house (the Bug-A-Salt gun is perfect for killing pesky flies), I'll smash it and then throw it in a
+            pitcher. I don't actively purchase insects to feed since I primarily use fertilizer. However, I do think that
+            using the same fertilizer month after month has the risk of missing certain micronutrients so I do think that
+            supplementing with insects could be a good way to make up for this that the plants would normally get with a
+            varied diet in the wild. Note that I have zero evidence for this, it just a theory I have.</p>
+        <h3>
+            Fertilizer
+        </h3>
+        <p>Please use caution with fertilizer, you can kill your plant. That said, if used responsibly, fertilizer has given
+            me amazing results in the health of my plants and in the growth rate. I use two fertilizers: Maxsea and
+            Osmocote. Maxsea is used at half strength which is 1/4 tsp per gallon, around 300-400 PPM. I usually make a 1/4
+            gallon so I use 1/16 tsp each month. For Osmocote, I typically put one pellet in each pitcher once a month. Os
+        </p>
+        <p>I sell small packets in the store (note that I'm doing this as a service, not to make money. The size of the
+            fertilizer packages compared to the usage amount is insanely disproportionate. Since I already bought the huge
+            container, I'm happy to share to make it more cost effective for you.) </p>
+
+        <h3>
+            Useful products
+        </h3>
+        <ul>
+            <li>TDS Meter to measure PPM of water and fertilizer</li>
+            <li>Mist king</li>
+            <li>Reverse Osmosis Filter</li>
+            <li>Tweezers and micro scissors</li>
+            <li>Small pruning shears</li>
+            <li>Plant labels and waterproof marker</li>
+            <li><a href='https://www.homedepot.com/p/Veranda-1-2-in-x-24-in-x-4-ft-White-Reversible-PVC-Trim-Sheet-H120XWS17/312995290?MERCH=REC-_-pipsem-_-205309788-_-312995290-_-N&'
+                    target='blank'>PVC
+                    Sheet</a></li>
+        </ul>
+        <a name='HeliamphoraGuide'></a>
+        <h2>
+            Heliamphora Beginner Guide
+        </h2>
+        <img
+            src="https://lh3.googleusercontent.com/kD_jExJ6OqyynYfV6kasFRdcDy5CcUk71hwhYXP05JlM-nr53DFUtOYRpQcxaQ3qCepu4P7G8yt_CfsAfVQChtVXD34rqAWQaX-_8KUHAf_vqR7jmYiknIBScPRu5ul04EnG9jxRtE0=w2400">
+
+
+        <a name='CephalotusGuide'></a>
+        <h2>
+            Cephalotus Beginner Guide
+        </h2>
+
+        <h3>Lighting</h3>
+        <p>I grow mine under LED grow lights, specifically HLG 65 V2 4000K and Florawave P80
+            You sent</p>
+
+        <h3>Watering</h3>
+        <p>Always use rainwater or reverse osmosis water.
+            I have done a mixture of top watering and tray watering. I think both work fine, the key is not too much
+            water. Regardless of which method you use, the tray should mostly dry out between waterings, these are not bog
+            plants.</p>
+
+        <h3>Humidity</h3>
+        <p>I haven't found Cephs to be particularly picky about humidity. I grow mine in my basement freely open to the room
+            air.</p>
+        <h3>Media</h3>
+        <p>I use a mixture of peat, sand and pumice. You can also use perlite, however I don't like how it tends to float to
+            the top of the media - pumice stays in place.
+            I usually add a top layer of lava rock, sand, or slate chips primarily for aesthetics, although lava rock and
+            slate prevent algae and moss from growing.</p>
+        <h3>Fertilizer</h3>
+        <p>When grown indoors, my cephs don't usually catch anything. I fertilize open pitchers every 3-6 weeks with either
+            Maxsea, Osmocote pellets, or Nutricote pellets.</p>
+
+        <a name='HighlandGrowChamber'>Highland Grow Chamber</a>
+        <h3>Overview</h3>
+        <p>This is a grow chamber that I built on some shelves made out of 2x4s and plywood. <a
+                href='https://ana-white.com/woodworking-projects/best-diy-garage-shelves-attached-walls'> Here is a
+                link</a> to a tutorial on building the shelves, however there's nothing special about these particular
+            shelves. Tt's just a great simple way of building shelves. The size of the shelves (2' x 4') is a great size
+            for a grow chamber and it may be more difficult to find certain parts (like the platform the plants sit on)
+            if you choose a different dimension.
+
+        </p>
+
+
+</template>
