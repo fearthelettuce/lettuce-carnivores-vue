@@ -1,15 +1,38 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '@/views/HomeView.vue'
+import ProductsView from '@/views/ProductsView.vue'
+import BlogView from '@/views/BlogView.vue'
+import CareGuideView from '@/views/CareGuideView.vue'
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
+const routeData = [
     {
-      path: '/',
+      path: "/",
       name: 'home',
-      component: HomeView
+      label: 'Home',
+      component: HomeView,
+    },
+    {
+      path: "/products",
+      name: 'products',
+      label: 'Products',
+      component: ProductsView
+    },
+    {
+      path: "/blog",
+      name: 'blog',
+      label: 'Blog',
+      component: BlogView
+    },
+    {
+      path: "/care",
+      name: 'care',
+      label: 'Care Guide',
+      component: CareGuideView
     }
-  ]
-})
+]
 
-export default router
+export const navData = routeData.map(({ component, ...rest }) => rest)
+export const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: routeData,
+})

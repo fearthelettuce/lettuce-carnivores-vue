@@ -28,7 +28,8 @@
                 
                 <button 
                     type="button"
-                    class="btn btn-secondary">
+                    class="btn btn-secondary"
+                    @click="underConstruction()">
                     Login
                 </button>
             </nav>

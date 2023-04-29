@@ -1,9 +1,10 @@
-<script setup lang="ts">
-import HelloWorld from '@/components/HelloWorld.vue';
-</script>
-
 <template>
   <main>
-    <HelloWorld />
+    <p>This will be the home</p>
   </main>
 </template>
+
+<script setup lang="ts">
+</script>
+
+

@@ -5,6 +5,5 @@
     "composite": true,
     "lib": [],
     "types": ["node", "jsdom"],
-    "noUnusedLocals": false,
   }
 }

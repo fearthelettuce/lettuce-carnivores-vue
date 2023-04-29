@@ -1,6 +1,6 @@
 <template>
     <ul class="navbar-nav flex-row flex-wrap me-auto mb-2 mb-lg-0">
-        <li class="nav-item" v-for="item of navItems">
+        <li class="nav-item" v-for="item of navData">
             <router-link
                 :to="item.path"
                 class="nav-link text-light"
@@ -12,23 +12,7 @@
 
 <script setup lang="ts">
 
-const navItems = [
-    {
-        path: "/",
-        name: 'home',
-        label: 'Home',
-    },
-    {
-        path: "/blog",
-        name: 'blog',
-        label: 'Blog',
-    },
-    {
-        path: "/care",
-        name: 'care',
-        label: 'Care Guide',
-    }
-]
+import {navData} from '@/router/index'
 
 </script>
 

@@ -5,6 +5,7 @@
     "composite": true,
     "types": ["node"],
     "module": "nodenext",
-    "noUnusedLocals": false,
+    "baseUrl": ".",
+    "ignoreDeprecations": "5.0",
   }
 }

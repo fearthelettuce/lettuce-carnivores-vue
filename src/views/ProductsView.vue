@@ -1,7 +1,7 @@
 <template>
-
+<ProductsList />
 </template>
 
 <script setup lang="ts">
-import ProductList from '@/components/modules/products/ProductList.vue';
+import ProductsList from '@/components/modules/products/components/ProductsList.vue'
 </script>

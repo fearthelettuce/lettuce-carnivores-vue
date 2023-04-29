@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1001,
+    "name": "Nepenthes (ventricosa x sibuyanensis) x flava",
+    "price": 50,
+    "genus": "Nepenthes",
+    "propagationType": "Stem Cutting",
+    "source": "Unknown",
+    "isForSale": true,
+    "quantity": 1
+  },
+  {
+    "id": 1002,
+    "name": "Nepenthes undulatifolia x hamata",
+    "price": 100,
+    "genus": "Nepenthes",
+    "propagationType": "Basal",
+    "source": "Unknown",
+    "isForSale": true,
+    "quantity": 1
+  },
+  {
+    "id": 1003,
+    "name": "Nepenthes jamban",
+    "price": 75,
+    "genus": "Nepenthes",
+    "propagationType": "Stem Cutting",
+    "source": "Unknown",
+    "isForSale": true,
+    "quantity": 1
+  },
+  {
+    "id": 1004,
+    "name": "Nepenthes (ventricosa x sibyanensis) × (talangensis × aristolochioides)",
+    "price": 18,
+    "genus": "Nepenthes",
+    "propagationType": "Stem Cutting",
+    "source": "Unknown",
+    "isForSale": true,
+    "quantity": 1
+  },
+  {
+    "id": 1005,
+    "name": "Heliamphora exappendiculata (Apc.) - Ewok",
+    "price": 100,
+    "genus": "Heliamphora",
+    "propagationType": "Division",
+    "source": "Wistuba",
+    "isForSale": true,
+    "quantity": 1
+  },
+  {
+    "id": 1006,
+    "name": "Heliamphora minor",
+    "price": 50,
+    "genus": "Heliamphora",
+    "propagationType": "Division",
+    "source": "Wistuba",
+    "isForSale": true,
+    "quantity": 1
+  }
+]
