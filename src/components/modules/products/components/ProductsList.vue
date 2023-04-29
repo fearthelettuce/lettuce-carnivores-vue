@@ -3,7 +3,7 @@
 
     <div class="row">
         <div 
-            v-for="product of products"
+            v-for="product of productStore.$state.productList"
             :key="product.id"
             class="col"
             >
@@ -15,16 +15,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import ProductCard from './ProductCard.vue'
-import type { Plant } from '../types/plants'
-import { getSearchResults } from '@/apis/dataServices'
+import { useProductStore } from '../stores/product'
 
-const products = ref([])
+const productStore = useProductStore()
+
 onMounted(() => {
-    const searchResults = getSearchResults()
-    for (let result of searchResults) {
-        products.value.push(result)
-    }
+    productStore.fetchSearchResults()
 })
 </script>
