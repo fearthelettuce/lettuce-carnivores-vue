@@ -1,48 +1,21 @@
 <template>
-    <div class="container">
-        <section class="text-section">
+    <div class="guide-card">
+        <section class="text-section" :class="altStyle ? 'alt-style' : ''">
             <header class="article-header">
                 <h2>{{ careData.label }} Care</h2>
             </header>
             <section class="care-guide">
-                <div class="text-item">
-                    <div class="icon-with-label"><img src="@/assets/icons/globe-icon.svg" alt="globe icon"
-                            class="icon globe-icon" title="Locale"><span class="icon-label">Locale</span></div>
+                <div 
+                    v-for="item in careItems"
+                    :key="item.label"
+                    class="text-item" 
+                    :class="altStyle ? 'justify-content-between' : ''"
+                >
+                    <div class="icon-with-label" :class="altStyle ? 'alt-style' : ''"><img :src="getIconUrl(item.iconUrl)" :alt="item.iconAltText"
+                            class="icon" :class="item.class" :title="item.label"><span class="icon-label">{{ item.label }}</span></div>
                     <p>
-                        {{ careData.locale }}
+                        {{ item.textContent }}
                     </p>
-                </div>
-                <div class="text-item">
-                    <div class="icon-with-label"><img src="@/assets/icons/water-icon.svg" alt="water icon"
-                            class="icon water-icon" title="Water"><span class="icon-label">Watering</span></div>
-                    <p>{{ careData.water }}</p>
-                </div>
-
-                <div class="text-item">
-                    <div class="icon-with-label"><img src="@/assets/icons/humidity-icon.svg" alt="humidity icon"
-                            class="icon humidity-icon" title="Humidity"><span class="icon-label">Humidity</span></div>
-                    <p>
-                        {{ careData.humidity }}
-                    </p>
-                </div>
-                <div class="text-item">
-                    <div class="icon-with-label"><img src="@/assets/icons/sun-icon.svg" alt="lighting icon" class="icon"
-                            title="Lighting"><span class="icon-label">Light</span></div>
-                    <p>
-                        {{ careData.light }}
-                    </p>
-                </div>
-                <div class="text-item">
-                    <div class="icon-with-label"><img src="@/assets/icons/media-icon.svg" alt="potting media icon"
-                            class="icon media-icon" title="Media"><span class="icon-label">Media</span></div>
-                    <p>
-                        {{ careData.media }}
-                    </p>
-                </div>
-                <div class="text-item">
-                    <div class="icon-with-label"><img src="@/assets/icons/temperature-icon.svg" alt="temperature icon"
-                            class="icon temperature-icon" title="Temperature"><span class="icon-label">Temp</span></div>
-                    <p>{{ careData.temperature }}</p>
                 </div>
             </section>
         </section>
@@ -52,7 +25,62 @@
     </div>
 </template>
 <script setup lang="ts">
-const props = defineProps(['careData'])
+const props = defineProps(['careData', 'altStyle'])
+function getIconUrl(iconFileName) {
+    return new URL(`../../../assets/icons/${iconFileName}`, import.meta.url)
+}
+const careItems = [
+    {
+        label: 'Locale',
+        iconUrl: 'globe-icon.svg',
+        iconAltText: 'globe icon',
+        textContent: props.careData.locale,
+        class: 'globe-icon',
+    },
+    {
+        label: 'Water',
+        iconUrl: 'water-icon.svg',
+        iconAltText: 'water icon',
+        textContent: props.careData.water,
+        class: 'water-icon',
+    },
+    {
+        label: 'Humidity',
+        iconUrl: 'humidity-icon.svg',
+        iconAltText: 'humidity icon',
+        textContent: props.careData.humidity,
+        class: 'humidity-icon',
+    },
+    {
+        label: 'Light',
+        iconUrl: 'sun-icon.svg',
+        iconAltText: 'light icon',
+        textContent: props.careData.light,
+        class: 'light-icon',
+    },
+    {
+        label: 'Media',
+        iconUrl: 'media-icon.svg',
+        iconAltText: 'media icon',
+        textContent: props.careData. media,
+        class: 'media-icon',
+    },
+    {
+        label: 'Temp',
+        iconUrl: 'temperature-icon.svg',
+        iconAltText: 'temperature icon',
+        textContent: props.careData.temperature,
+        class: 'temperature-icon',
+    },
+    {
+        label: 'Food',
+        iconUrl: 'insect-icon.svg',
+        iconAltText: 'insect icon',
+        textContent: props.careData.fertilization,
+        class: 'fertilization-icon',
+    }
+]
+
 </script>
 
 <style scoped>
@@ -66,16 +94,20 @@ ul {
     margin: .25em .37em;
 }
 
-.container {
+.guide-card {
     display: flex;
     flex-direction: row;
-    background-color: rgb(54, 54, 54);
-    margin: 2em 0;
+    flex-wrap: nowrap;
+    background-color: rgb(54,54,54);
     border-radius: 1em;
     overflow: hidden;
     padding: 0;
-    flex-wrap: wrap;
     justify-content: space-around;
+    margin: 2em 0;
+}
+
+.alt-style {
+    order: 2;
 }
 
 .article-header {
@@ -89,8 +121,8 @@ ul {
 }
 
 .icon {
-    width: 5em;
-    height: 5em;
+    width: 7em;
+    height: 7em;
     display: inline-flex;
     align-self: center;
     margin: 0;
@@ -112,7 +144,7 @@ ul {
 }
 
 .icon-label {
-    font-size: .5em;
+    font-size: 1em;
     justify-content: center;
     padding: 0;
     margin-bottom: .1em;
@@ -123,7 +155,7 @@ ul {
 .text-item {
     flex-direction: row;
     display: flex;
-    margin: .37em 0;
+    margin: .7em 0;
 }
 
 .content-section {
@@ -138,7 +170,7 @@ ul {
 }
 
 .image-section img {
-    max-width: 32em;
+    width: 35em;
     flex: 1;
     padding: 0;
     object-fit: cover;
@@ -150,7 +182,7 @@ ul {
     flex-direction: column;
     padding: .63em .63em;
     flex: 3;
-    flex-basis: 65em;
+    flex-basis: 105em;
     line-height: 1.4;
 }
 
@@ -211,7 +243,7 @@ ul {
     }
 
     .icon {
-        width: 2.5em;
-        height: 2.5em;
+        width: 3em;
+        height: 3em;
     }
 }</style>

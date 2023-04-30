@@ -37,6 +37,7 @@ const careData = {
                 water: "I never let my nepenthes sit in water.  I keep them moist and let the water drain off.",
                 temperature: "Nepenthes generally fall into three categories: Highland: these plants live at high elevations and require temperature drops of 10-20°F at night. Intermediate: plants that live between the highland and lowland areas and can adapt to a wide range of conditions. Lowland: these plants live at low elevations in hot, humid conditions and may require heating above normal room temps.",
                 media: "Most nepenthes do well in a loose draining mix of long-fibered sphagnum moss and perlite. I also use coco husk chips, although it's important to find a brand that has low salt content.",
+                fertilization: "I usually fertilize every 3-6 weeks, alternating between Osmocote (one pellet per pitcher, in about half the open pitchers) and Maxsea (200-300ppm solution, fill most pitchers and spray a bit on the leaves).  I'll also drop random bugs I have found in pitchers.",
                 referencePhotoFilename: 'Nepenthes.jpg',
                 referencePhotoPath: 'https://stl-lc101-sept-22.github.io/js-assignment-4-html-me-something-fearthelettuce/photos/IMG_20210828_144445.jpg',
 
@@ -49,6 +50,7 @@ const careData = {
                 temperature: "I grow most of my Heliamphora at mostly intermediate conditions, avoiding temperatures above 79°F. Some more advanced species do require cooler temperatures.",
                 media: "I used the same mix as nepenthes, a loose draining mix of long-fibered sphagnum moss and perlite. I also use coco husk chips, although it's important to find a brand that has low salt content.",
                 light: "Heliamphora will take as much light as you can give them. When given enough light, most species will have beautify red coloration.",
+                fertilization: "I usually fertilize every 3-6 weeks, alternating between Osmocote (one pellet per pitcher, in about half the open pitchers) and Maxsea (200-300ppm solution, fill most pitchers and spray a bit on the leaves).  I'll also drop random bugs I have found in pitchers.",
                 referencePhotoFilename: 'Heliamphora.jpg',
                 referencePhotoPath: 'https://stl-lc101-sept-22.github.io/js-assignment-4-html-me-something-fearthelettuce/photos/Heliamphora.jpg',
             },
@@ -60,6 +62,7 @@ const careData = {
                 temperature: "Cephalotus grow well at a wide range of temperatures. They can tolerate heat into the 90s and can handle temperatures into the 40s.",
                 media: "I use a mixture of peat, sand and pumice. I like to add a top layer of lava rock or slate to prevent moss and algae.",
                 light: "Cephalotus appreciate high light levels and develop beautiful coloration when given these conditions.",
+                fertilization: "I usually fertilize every 3-6 weeks, alternating between Osmocote (one pellet per pitcher, in about half the open pitchers) and Maxsea (200-300ppm solution, fill most pitchers and spray a bit on the leaves).  I'll also drop random bugs I have found in pitchers.",
                 referencePhotoFilename: 'Cephalotus.jpg',
                 referencePhotoPath: 'https://stl-lc101-sept-22.github.io/js-assignment-4-html-me-something-fearthelettuce/photos/Ceph.jpg',
             },

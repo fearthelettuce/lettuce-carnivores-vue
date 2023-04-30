@@ -1,7 +1,11 @@
 <template>
     <div class="guide-container">
-        <GuideCard v-for="(value, index) in careInfo.genus" :key="value.genus" :care-data="value"
-            :card-style="index % 2 === 0 ? 'container' : 'container-alt'" />
+        <GuideCard 
+            v-for="(value, name, index) in careInfo.genus"
+            :key="name" 
+            :care-data="value"
+            :alt-style="index % 2 !== 0 ? true : false" 
+            />
     </div>
 </template>
 <script setup lang="ts">
@@ -13,7 +17,7 @@ const careInfo = careData.guideData
 
 <style scoped>
 .guide-container {
-    max-width: 70em;
+    max-width: 120em;
     margin: auto;
 }
 
