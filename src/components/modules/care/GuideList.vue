@@ -1,6 +1,6 @@
 <template>
     <div class="guide-container">
-        <GuideCard v-for="(value, name, index) in careInfo.genus" :key="name" :care-data="value"
+        <GuideCard v-for="(value, index) in careInfo.genus" :key="value.genus" :care-data="value"
             :card-style="index % 2 === 0 ? 'container' : 'container-alt'" />
     </div>
 </template>

@@ -6,41 +6,41 @@
             </header>
             <section class="care-guide">
                 <div class="text-item">
-                    <div class="icon-with-label"><img src="../../assets/icons/globe-icon.svg" alt="globe icon"
+                    <div class="icon-with-label"><img src="@/assets/icons/globe-icon.svg" alt="globe icon"
                             class="icon globe-icon" title="Locale"><span class="icon-label">Locale</span></div>
                     <p>
                         {{ careData.locale }}
                     </p>
                 </div>
                 <div class="text-item">
-                    <div class="icon-with-label"><img src="../../assets/icons/water-icon.svg" alt="water icon"
+                    <div class="icon-with-label"><img src="@/assets/icons/water-icon.svg" alt="water icon"
                             class="icon water-icon" title="Water"><span class="icon-label">Watering</span></div>
                     <p>{{ careData.water }}</p>
                 </div>
 
                 <div class="text-item">
-                    <div class="icon-with-label"><img src="../../assets/icons/humidity-icon.svg" alt="humidity icon"
+                    <div class="icon-with-label"><img src="@/assets/icons/humidity-icon.svg" alt="humidity icon"
                             class="icon humidity-icon" title="Humidity"><span class="icon-label">Humidity</span></div>
                     <p>
                         {{ careData.humidity }}
                     </p>
                 </div>
                 <div class="text-item">
-                    <div class="icon-with-label"><img src="../../assets/icons/sun-icon.svg" alt="lighting icon" class="icon"
+                    <div class="icon-with-label"><img src="@/assets/icons/sun-icon.svg" alt="lighting icon" class="icon"
                             title="Lighting"><span class="icon-label">Light</span></div>
                     <p>
                         {{ careData.light }}
                     </p>
                 </div>
                 <div class="text-item">
-                    <div class="icon-with-label"><img src="../../assets/icons/media-icon.svg" alt="potting media icon"
+                    <div class="icon-with-label"><img src="@/assets/icons/media-icon.svg" alt="potting media icon"
                             class="icon media-icon" title="Media"><span class="icon-label">Media</span></div>
                     <p>
                         {{ careData.media }}
                     </p>
                 </div>
                 <div class="text-item">
-                    <div class="icon-with-label"><img src="../../assets/icons/temperature-icon.svg" alt="temperature icon"
+                    <div class="icon-with-label"><img src="@/assets/icons/temperature-icon.svg" alt="temperature icon"
                             class="icon temperature-icon" title="Temperature"><span class="icon-label">Temp</span></div>
                     <p>{{ careData.temperature }}</p>
                 </div>
@@ -101,7 +101,7 @@ ul {
 }
 
 .humidity-icon {
-    filter: invert(76%) sepia(36%) saturate(4111%) hue-rotate(149deg) brightness(102%) contrast(92%);
+    filter: invert(81%) sepia(12%) saturate(1026%) hue-rotate(167deg) brightness(600%) contrast(98%);
 }
 
 .icon-with-label {
