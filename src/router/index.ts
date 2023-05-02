@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import ProductsView from '@/views/ProductsView.vue'
+import ProductAdminView from '@/components/modules/products/components/ProductAdmin.vue'
 import BlogView from '@/views/BlogView.vue'
 import CareGuideView from '@/views/CareGuideView.vue'
 
@@ -16,6 +17,12 @@ const routeData = [
       name: 'products',
       label: 'Products',
       component: ProductsView
+    },
+    {
+      path: "/productadmin",
+      name: 'productAdmin',
+      label: 'Product Admin',
+      component: ProductAdminView
     },
     {
       path: "/blog",

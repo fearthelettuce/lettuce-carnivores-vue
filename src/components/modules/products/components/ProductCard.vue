@@ -3,10 +3,10 @@
         <img :src="product.cardImage">
         <div class="card-title">
             <div>
-                <h2>{{ product.name }}</h2>
+                <h2 class="text-primary">{{ product.name }}</h2>
             </div>
             <div>
-                <h2>{{ product.price }}</h2>
+                <h2 class="text-primary">{{ product.price }}</h2>
             </div>
         </div>
         <div class="card-footer">

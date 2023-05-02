@@ -27,7 +27,7 @@
 <script setup lang="ts">
 const props = defineProps(['careData', 'altStyle'])
 function getIconUrl(iconFileName) {
-    return new URL(`../../../assets/icons/${iconFileName}`, import.meta.url)
+    return new URL(`../../../assets/icons/${iconFileName}`, import.meta.url).toString()
 }
 const careItems = [
     {
@@ -144,7 +144,7 @@ ul {
 }
 
 .icon-label {
-    font-size: 1em;
+    font-size: .75em;
     justify-content: center;
     padding: 0;
     margin-bottom: .1em;

@@ -1,24 +1,26 @@
-import type { Url } from "url"
-
 type Product = {
     id: number,
     name: string,
     price: number,
     isForSale: boolean,
     quantity: number,
-    images?: ProductImages
+    isDiscountable?: boolean,
+    referenceImages?: ProductImages,
+    actualImages?: ProductImages,
 }
 
 type ProductImages = {
     cardImageUrl?: string,
     primaryProductImageUrl?: string,
     additionalProductImageUrls?: [string],
-    referenceImageUrl?: string,
+    referenceImageUrls?: [string],
 }
 
 type NepenthesImages  = {
-    upperPitcherImageUrl: string,
-    lowerPitcherImageUrl: string,
+    upperPitcherImageUrl?: string,
+    lowerPitcherImageUrl?: string,
 } & ProductImages
 
-export type {Product, ProductImages, NepenthesImages}
+export type { Product, ProductImages, NepenthesImages }
+1
+

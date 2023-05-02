@@ -12,7 +12,8 @@
   ],
   "compilerOptions": {
     "resolveJsonModule": true,
-    "moduleResolution": "node",
+    "module": "es2022",
+    "moduleResolution": "nodenext",
     "esModuleInterop": true,
     "ignoreDeprecations": "5.0",
     "baseUrl": "./",

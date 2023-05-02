@@ -1,6 +1,5 @@
 [
   {
-    "id": 1001,
     "name": "Nepenthes (ventricosa x sibuyanensis) x flava",
     "price": 55,
     "genus": "Nepenthes",
@@ -10,27 +9,27 @@
     "quantity": 1
   },
   {
-    "id": 1002,
     "name": "Nepenthes undulatifolia x hamata",
     "price": 100,
     "genus": "Nepenthes",
-    "propagationType": "Basal",
+    "propagationType": "Basal Division",
     "source": "Unknown",
     "isForSale": true,
     "quantity": 1
   },
   {
-    "id": 1003,
     "name": "Nepenthes jamban",
     "price": 75,
     "genus": "Nepenthes",
     "propagationType": "Stem Cutting",
     "source": "Unknown",
     "isForSale": true,
-    "quantity": 1
+    "quantity": 1,
+     "images": [
+
+     ]
   },
   {
-    "id": 1004,
     "name": "Nepenthes (ventricosa x sibyanensis) × (talangensis × aristolochioides)",
     "price": 18,
     "genus": "Nepenthes",
@@ -40,7 +39,6 @@
     "quantity": 1
   },
   {
-    "id": 1005,
     "name": "Heliamphora exappendiculata (Apc.) - Ewok",
     "price": 100,
     "genus": "Heliamphora",
@@ -50,7 +48,6 @@
     "quantity": 1
   },
   {
-    "id": 1006,
     "name": "Heliamphora minor",
     "price": 50,
     "genus": "Heliamphora",
@@ -58,5 +55,24 @@
     "source": "Wistuba",
     "isForSale": true,
     "quantity": 1
+  },
+  {
+  "name": "Nepenthes maxima x [(stenophylla x lowii) x (Rokko x veitchii)]",
+  "price": 145,
+  "genus": "Nepenthes",
+  "propagationType": "Stem Cutting",
+  "source": "Florae",
+  "isForSale": true,
+  "quantity": 1
+  },
+  {
+  "name": "Nepenthes (talangensis x mirabilis var. globosa)",
+  "clone": "BE-3973",
+  "price": 25,
+  "genus": "Nepenthes",
+  "propagationType": "Basal Division",
+  "source": "Borneo Exotics",
+  "isForSale": true,
+  "quantity": 1
   }
 ]

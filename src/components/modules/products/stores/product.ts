@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
-import { getSearchResults } from '@/apis/dataServices'
+import { saveItem, findAll, findByProperty, deleteItem } from '@/apis/dataServices'
 import type { Plant } from '../types/plants'
+import mockPlantData from '@/apis/mockPlantData.json' //TODO: Remove when done testing
 
 export const useProductStore = defineStore('product', {
     state: () => {
@@ -19,10 +20,36 @@ export const useProductStore = defineStore('product', {
         }
     },
     actions: {
-        fetchSearchResults() {
+        async fetchSearchResults() {
             this.isLoading = true
-            this.productList = getSearchResults()
+            this.productList = await findAll('products') as Array<Plant>
+            this.setupMockData() //TODO: Remove when done testing
+            await saveItem('products', {
+                "id": 1009,
+                "name": "Heliamphora exappendiculata (Apc.) - Ewok",
+                "price": 190,
+                "genus": "Heliamphora",
+                "propagationType": "Division",
+                "source": "Wistuba",
+                "isForSale": true,
+                "quantity": 1
+            }).then((data)=>{console.log(data)})
             this.isLoading = false
+            console.log(await this.findProduct('genus','asdfNepenthes'))
+        },
+
+        async setupMockData() { //TODO: Remove when done testing
+            if (this.productList && this.productList.length === 0) {
+                for (let item of mockPlantData) {
+                    await saveItem('products',item)
+                }
+            }
+        },
+        async findProduct(property:any, value:any) {
+            return await findByProperty('products',property,value)
+        },
+        async deleteById(id: number) {
+            await deleteItem('products',id)
         }
     }
 })

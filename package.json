@@ -19,6 +19,8 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "bootstrap": "^5.2.3",
+    "firebase": "^9.21.0",
+    "firebase-admin": "^11.7.0",
     "pinia": "^2.0.32",
     "sass": "^1.62.1",
     "vue": "^3.2.47",
