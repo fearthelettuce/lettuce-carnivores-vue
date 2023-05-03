@@ -17,6 +17,8 @@
 </template>
 
 <script setup lang="ts">
+
+//TODO look at cards for inspiration on this website: https://jamesbigleyranches.com/
 // const props = defineProps([{
 //     product: {
 //         type: product,
@@ -26,6 +28,8 @@
 //         type: function,
 //     }
 // }'product', {}'primaryAction'])
+
+
 
 const props = defineProps(['product','cardAction'])
 </script>

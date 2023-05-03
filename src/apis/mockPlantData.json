@@ -3,7 +3,7 @@
     "name": "Nepenthes (ventricosa x sibuyanensis) x flava",
     "price": 55,
     "genus": "Nepenthes",
-    "propagationType": "Stem Cutting",
+    "propagationMethod": "Stem Cutting",
     "source": "Unknown",
     "isForSale": true,
     "quantity": 1
@@ -12,7 +12,7 @@
     "name": "Nepenthes undulatifolia x hamata",
     "price": 100,
     "genus": "Nepenthes",
-    "propagationType": "Basal Division",
+    "propagationMethod": "Basal Division",
     "source": "Unknown",
     "isForSale": true,
     "quantity": 1
@@ -21,7 +21,7 @@
     "name": "Nepenthes jamban",
     "price": 75,
     "genus": "Nepenthes",
-    "propagationType": "Stem Cutting",
+    "propagationMethod": "Stem Cutting",
     "source": "Unknown",
     "isForSale": true,
     "quantity": 1,
@@ -33,7 +33,7 @@
     "name": "Nepenthes (ventricosa x sibyanensis) × (talangensis × aristolochioides)",
     "price": 18,
     "genus": "Nepenthes",
-    "propagationType": "Stem Cutting",
+    "propagationMethod": "Stem Cutting",
     "source": "Unknown",
     "isForSale": true,
     "quantity": 1
@@ -42,7 +42,7 @@
     "name": "Heliamphora exappendiculata (Apc.) - Ewok",
     "price": 100,
     "genus": "Heliamphora",
-    "propagationType": "Division",
+    "propagationMethod": "Division",
     "source": "Wistuba",
     "isForSale": true,
     "quantity": 1
@@ -51,7 +51,7 @@
     "name": "Heliamphora minor",
     "price": 50,
     "genus": "Heliamphora",
-    "propagationType": "Division",
+    "propagationMethod": "Division",
     "source": "Wistuba",
     "isForSale": true,
     "quantity": 1
@@ -60,7 +60,7 @@
   "name": "Nepenthes maxima x [(stenophylla x lowii) x (Rokko x veitchii)]",
   "price": 145,
   "genus": "Nepenthes",
-  "propagationType": "Stem Cutting",
+  "propagationMethod": "Stem Cutting",
   "source": "Florae",
   "isForSale": true,
   "quantity": 1
@@ -70,7 +70,7 @@
   "clone": "BE-3973",
   "price": 25,
   "genus": "Nepenthes",
-  "propagationType": "Basal Division",
+  "propagationMethod": "Basal Division",
   "source": "Borneo Exotics",
   "isForSale": true,
   "quantity": 1

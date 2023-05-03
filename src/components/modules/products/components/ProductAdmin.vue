@@ -18,7 +18,12 @@
     <div class="row g-3 align-items-center">
         <div class="col-2 mb-3">
             <label for="genus" class="form-label">Genus</label>
-            <input name="genus" class="form-control" type="text"  v-model="formData.genus">
+            <select name="genus" class="form-select" aria-label="Select Genus"  v-model="formData.genus">
+                <option selected placeholder="Select Genus"></option>
+                <option v-for="genus of productStore.genusList" :value="genus">{{ genus }}</option>
+            </select>
+
+            
         </div>
         <div class="col-5 mb-3">
             <label for="name" class="form-label">Name</label>
@@ -43,36 +48,83 @@
                 <label for="quantity" class="form-label">Available Quantity</label>
                 <input name="quantity" class="form-control" type="number" v-model.number="formData.quantity">
             </div>
-        <div class="col-auto mb-3 align-items-center d-flex flex-row">
-            <div class="me-2">
-                <input name="forSale" class="form-check-input" type="checkbox" v-model="formData.isForSale">
-            </div>
-            <div class="">
+        <div class="col-auto mb-3 align-items-center form-check form-switch">
                 <label for="forSale" class="form-check-label">Available for Sale</label>
-            </div>
+                <input name="forSale" class="form-check-input" type="checkbox" v-model="formData.isForSale">
         </div>
         
     </div>
-    <button type="button" class="btn btn-secondary">Reset Form</button>
-    <button type="button" class="btn btn-primary">Save</button>
+    <div class="row justify-content-around d-flex flex-row mt-4">
+        <button type="button" class="col-auto btn btn-danger mx-4" @click="showModal" >Delete Product</button>
+        <button type="button" class="col-auto btn btn-secondary mx-4" @click="resetForm">Reset Form</button>
+        <button type="button" class="col-1 btn btn-primary mx-4" @click="saveProduct">Save</button>
+    </div>
+    
 </form>
+<!-- <template v-slot="modalAction">
+    <button type="button" class="btn" :class="actionButtonClass" @click="clickAction">{{ actionButtonLabel }}</button>
+</template> -->
+    <BaseModal 
+        ref="confirmDeleteModal"
+        id="confirmDeleteModal"
+
+    >
+    <template #title>Are you sure?</template>
+    <template #body><p>poop</p></template>
+    <template #modalAction>
+        <button 
+        type="button" 
+        class="btn btn-danger" 
+        @click="deleteProduct"
+        >
+        Delete
+        </button>
+    </template>
+    </BaseModal>
+            <!-- ref="confirmDeleteModalRef"
+        modalId="confirmDeleteModal"
+        modalTitle="Are you sure?"
+        modalText="Are you sure you want to delete this product?"
+        actionButtonLabel="Delete"
+        actionButtonClass="btn-danger"
+        @submitAction="deleteProduct" -->
+
+    <!-- <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            Are you sure you want to delete? <br>
+            {{ formData.id }} {{ formData.name }}
+          </div>
+          <div class="modal-footer border-0">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger" @click="deleteProduct">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div> -->
 
 </template>
 
 <script setup lang="ts">
 //TODO further research FormKit library
-import {ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
+import { Modal } from 'bootstrap'
 import { useProductStore } from '../stores/product'
 import { Product } from '@/components/modules/products/types/product'
 
 const enteredProductId = ref(null)
-// const genus = ref('')
-// const productName = ref('')
-// const propagationMethod = ref('')
-// const source = ref('')
-// const price = ref(0)
-// const isForSale = ref(true)
-// const quantity = ref(1)
+
+    // genusList: ['Nepenthes', 'Heliamphora', 'Cephalotus'],
+    // propagationMethodList: ['Stem Cutting', 'Basal Division', 'Division', 'Seed', 'Tissue Culture', 'Other', 'Unknown'],
+    // sourceList: ['Borneo Exotics', 'Exotica Plants', 'Wistuba', 'eBay/Facebook', 'Other', 'Unknown'],
+    // growingConditionsList: ['Highland', 'Intermediate'],
+    // experienceLevelList: ['Beginner', 'Intermediate', 'Expert'],
+    // classificationList: ['Species', 'Hybrid', 'Registered Cultivar', 'Unregistered Cultivar'],
 
 const formData = reactive({
     id: null,
@@ -81,10 +133,27 @@ const formData = reactive({
     propagationMethod: null,
     source: null,
     price: null,
-    isForSale: null,
+    isForSale: true,
     quantity: null,
 })
 
+const state = reactive({
+    confirmDeleteModal: null,
+})
+
+onMounted(() => {
+    state.confirmDeleteModal = new Modal('#confirmDeleteModal', {})
+
+
+})
+
+function showModal() {
+    state.confirmDeleteModal.show()
+}
+
+function hideModal() {
+    state.confirmDeleteModal.hide()
+}
 const productStore = useProductStore()
 
 function getProductDetails() {
@@ -102,11 +171,29 @@ function getProductDetails() {
             }
         })
     }
-    
 }
 
-function addProduct() {
+function saveProduct() {
 
 
+}
+
+function resetForm() {
+    enteredProductId.value = null
+    for (let key in formData) {
+        formData[key] = null
+    }
+} 
+
+function confirmDelete() {
+
+    state.confirmDeleteModal.showModal()
+
+}
+function deleteProduct() {
+
+    if (enteredProductId) {
+        productStore.deleteById(enteredProductId)
+    }
 }
 </script>

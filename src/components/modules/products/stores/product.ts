@@ -9,6 +9,12 @@ export const useProductStore = defineStore('product', {
             productList: undefined as Array<Plant> | undefined,
             searchFilters: undefined,
             isLoading: false,
+            genusList: ['Nepenthes', 'Heliamphora', 'Cephalotus'],
+            propagationMethodList: ['Stem Cutting', 'Basal Division', 'Division', 'Seed', 'Tissue Culture', 'Other', 'Unknown'],
+            sourceList: ['Borneo Exotics', 'Exotica Plants', 'Wistuba', 'eBay/Facebook', 'Other', 'Unknown'],
+            growingConditionsList: ['Highland', 'Intermediate'],
+            experienceLevelList: ['Beginner', 'Intermediate', 'Expert'],
+            classificationList: ['Species', 'Hybrid', 'Registered Cultivar', 'Unregistered Cultivar'],
         }
     },
     getters: {
