@@ -1,20 +1,22 @@
 <template>
-    <div class="container">
-        <div class="row my-4 g-3 align-items-center">
-            <div class="col-auto">
-                <label for="productId" class="form-label">Product ID:</label>
-            </div>
-            <div class="col-auto">
-                <input type="text" name="productId" class="form-control" v-model.number="enteredProductId">
-            </div>
-            <div class="d-flex col-2 align-items-center">
-                <button type="button" class="btn btn-primary" @click="getProductDetails">Get Product Details</button>
+    <form @submit.prevent="getProductDetails">
+        <div class="container">
+            <div class="row my-4 g-3 align-items-center">
+                <div class="col-auto">
+                    <label for="productId" class="form-label" @keyup.enter="getProductDetails">Product ID:</label>
+                </div>
+                <div class="col-auto">
+                    <input type="text" name="productId" class="form-control" v-model.number="enteredProductId">
+                </div>
+                <div class="d-flex col-2 align-items-center">
+                    <button type="button" class="btn btn-primary" @click="getProductDetails">Get Product Details</button>
+                </div>
             </div>
         </div>
-    </div>
+    </form>
 
 
-<form class="container">
+<form class="container" @submit.prevent>
     <div class="row g-3 align-items-center">
         <div class="col-2 mb-3">
             <label for="genus" class="form-label">Genus</label>
@@ -58,36 +60,36 @@
         <button type="button" class="col-auto btn btn-danger mx-4" @click="confirmDelete" >Delete Product</button>
         <button type="button" class="col-auto btn btn-secondary mx-4" @click="resetForm">Reset Form</button>
         <button type="button" class="col-1 btn btn-primary mx-4" @click="saveProduct">Save</button>
+        <button type="button" class="col-1 btn btn-primary mx-4" @click="showToastMessage(`Product ${enteredProductId} successfully deleted.`)">Test Toast</button>
     </div>
-    
 </form>
 
-    <BaseModal 
-        ref="confirmDeleteModal"
-        id="confirmDeleteModal"
-    >
-        <template #title>Are you sure?</template>
-        <template #body>
-            <div>Are you sure you want to delete this product?<br><br>ID:{{ formData.id }} - {{ formData.name }}</div>
-        </template>
-        <template #modalAction>
-            <button 
-            type="button" 
-            class="btn btn-danger"
-            @click="deleteProduct"
-            >
-            Delete
-            </button>
-        </template>
-    </BaseModal>
+<BaseModal 
+    ref="confirmDeleteModal"
+    id="confirmDeleteModal"
+>
+    <template #title>Are you sure?</template>
+    <template #body>
+        <div>Are you sure you want to delete this product?<br><br>ID:{{ formData.id }} - {{ formData.name }}</div>
+    </template>
+    <template #modalAction>
+        <button 
+        type="button" 
+        class="btn btn-danger"
+        @click="deleteProduct"
+        >
+        Delete
+        </button>
+    </template>
+</BaseModal>
 
-    <BaseToast
-        ref="successMessageToast"
-        id="successMessageToast"
-        type="success"
-    >
-        <template #toastBody></template>
-    </BaseToast>
+<div class="toast-container position-absolute p-5 top-0 end-0"><BaseToast
+    ref="successMessageToast"
+    id="successMessageToast"
+    type="success"
+>
+    <template #toastBody>{{ state.successMessage }}</template>
+</BaseToast></div>
 
 </template>
 
@@ -137,12 +139,17 @@ function getProductDetails() {
     if (enteredProductId) {
         productStore.findProduct('id', enteredProductId.value).then((res) => {
             if (res) {
-                productDetails = res[0]
-                if (productDetails) {
-                    for (let key in formData) {
-                        formData[key] = productDetails[key]
+                if (res.length === 0) {
+                    alert('Unable to find product with that ID')
+                } else {
+                    productDetails = res[0]
+                    if (productDetails) {
+                        for (let key in formData) {
+                            formData[key] = productDetails[key]
+                        }
                     }
                 }
+                
             }
         })
     }
