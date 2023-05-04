@@ -60,7 +60,6 @@
         <button type="button" class="col-auto btn btn-danger mx-4" @click="confirmDelete" >Delete Product</button>
         <button type="button" class="col-auto btn btn-secondary mx-4" @click="resetForm">Reset Form</button>
         <button type="button" class="col-1 btn btn-primary mx-4" @click="saveProduct">Save</button>
-        <button type="button" class="col-1 btn btn-primary mx-4" @click="showToastMessage(`Product ${enteredProductId} successfully deleted.`)">Test Toast</button>
     </div>
 </form>
 
@@ -155,10 +154,7 @@ function getProductDetails() {
     }
 }
 
-function saveProduct() {
 
-
-}
 
 function resetForm() {
     enteredProductId.value = null
@@ -167,6 +163,24 @@ function resetForm() {
     }
 } 
 
+function saveProduct() {
+    if (!validateProduct()) {
+        alert("Failed validation, bro")
+    } else {
+        productStore.saveProduct(formData).then((res) => {
+            console.log(res)
+            
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+}
+
+function validateProduct() {
+    //TODO: Implement this
+    return true
+}
 function confirmDelete() {
     state.confirmDeleteModal.show()
 

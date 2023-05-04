@@ -51,9 +51,21 @@ export const useProductStore = defineStore('product', {
                 }
             }
         },
+
         async findProduct(property:any, value:any) {
             return await findByProperty('products',property,value)
         },
+
+        async saveProduct(product: Plant) {
+            await saveItem('products', product).then((res) => {
+                console.log(res)
+                return {success: true}
+            }).catch((err) => {
+                console.log(err)
+                return {success: false, error: true, errorDetails: err, errorMessage: 'Unable to save'}
+            })
+        },
+
         async deleteById(id: number) {
             await deleteItem('products', id).then((res) => {
                 return {deleted: true, response: res}

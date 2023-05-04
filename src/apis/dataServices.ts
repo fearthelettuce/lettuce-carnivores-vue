@@ -28,29 +28,64 @@ async function getNextSequentialId(collectionName: string, idFieldName: string) 
     return nextSequentialId
 }
 
-export async function saveItem(collectionName: string, obj: object) {
+export async function saveItem(collectionName: string, obj: any) {
     let objId
-    if (Object.hasOwnProperty('id')) {
+    if (obj !== null && typeof obj === 'object' && obj.hasOwnProperty('id')) {
         objId = obj['id']
     }
-    if (!objId) {
-        let nextId: number = await getNextSequentialId(collectionName, 'plantId')
-        Object.assign(obj, { id: nextId })
-        await addDoc(collection(db, collectionName), obj)
-            .then((docRef) => { return docRef.id })
-            .catch((error) => {
-                console.log(error)
-                return
+    if (objId === null) {
+        console.log(obj)
+        // let nextId: number = await getNextSequentialId(collectionName, 'plantId')
+        await getNextSequentialId(collectionName, 'plantId')
+            .then(res => {obj.id = res})
+            .then((res) => {
+                setDoc(doc(db, collectionName, obj.id), obj)
+            }).then((res) => {
+                console.log(res)
+                return res
             })
+        // console.log(obj.id)
+        // await setDoc(doc(db, collectionName, obj.id), obj).then(res => {
+        //     console.log(res)
+        //     return res
+        // })
+        // addDoc(collection(db, collectionName), obj).then(res => {
+        //     console.log(res)
+        //     return res
+        // })
+        // if (nextId && nextId > 0) {
+        //     obj.id = nextId
+        // } else {
+        //     //TODO handle error
+        // }
+        // await console.log(objId)
+
+        // let saveDocResponse = await addDoc(collection(db, collectionName), obj)
+        // console.log('response from firebase:')
+        // console.log(saveDocResponse)
+        // if (saveDocResponse) {
+        //     return {success: true, plant: obj}
+        // } else {
+        //     //TODO handle error
+        //     console.log(saveDocResponse)
+        //     console.log(obj)
+        //     return {error: true, message: 'Unable to save'}
+        // }
+        
     } else {
+        console.log(obj)
         let docUid: UUID
         let docRef: DocumentReference | undefined
         await findDocById(collectionName, objId).then((res)=>{if(res) {docUid = res}}).catch((err) =>{console.log(err)})
         if (docRef) {
             await setDoc(doc(db,collectionName,docRef), obj)
-                .then((res) => { console.log(res) })
-                .catch((error) => {
-                    console.log(error)
+                .then((res) => {
+                    console.log(res.data)
+                    return res
+                })
+                .catch((err) => {
+                    console.log(err)
+                    return err
                 })
         }
 
@@ -107,4 +142,5 @@ export async function saveItem(collectionName: string, obj: object) {
             console.log(error)
             return
         }
-    }
+}
+    
