@@ -55,7 +55,11 @@ export const useProductStore = defineStore('product', {
             return await findByProperty('products',property,value)
         },
         async deleteById(id: number) {
-            await deleteItem('products',id)
+            await deleteItem('products', id).then((res) => {
+                return {deleted: true, response: res}
+            }).catch((err) => {
+                return { error: true, response: err }
+            })
         }
     }
 })

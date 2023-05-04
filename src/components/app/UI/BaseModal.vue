@@ -7,22 +7,23 @@
     :aria-labelledby="props.modalId +'Label'"
     aria-hidden="true"
 >
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header border-0">
                 <h5 class="modal-title" :id="props.modalId +'Label'"><slot name="title"></slot></h5>
                 <button 
                 type="button" 
                 class="btn-close" 
-                aria-label="Close" 
-                @click="closeModal"></button>
+                aria-label="Close"
+                data-bs-dismiss="modal"
+                ></button>
                 <slot name="close-action"></slot>
             </div>
             <div class="modal-body text-center">
                 <slot name="body"></slot>
             </div>
             <div class="modal-footer border-0">
-                <button type="button" class="btn btn-secondary">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <slot v-if="this.$slots.modalAction" name="modalAction"></slot>
 
             </div>
@@ -34,16 +35,10 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted} from 'vue'
 
 const props = defineProps({
     modalId: String,
-    actionButtonColor: String
 })
-
-function closeModal() {
-    this.hide()
-}
 
 </script>
 

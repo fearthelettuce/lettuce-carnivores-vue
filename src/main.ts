@@ -10,7 +10,8 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import 'bootstrap'
 
-import BaseModal from './components/app/UI/BaseModal.vue';
+import BaseModal from '@/components/app/UI/BaseModal.vue'
+import BaseToast from '@/components/app/UI/BaseToast.vue'
 
 library.add(fas);
 library.add(far);

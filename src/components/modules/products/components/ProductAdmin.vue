@@ -55,68 +55,54 @@
         
     </div>
     <div class="row justify-content-around d-flex flex-row mt-4">
-        <button type="button" class="col-auto btn btn-danger mx-4" @click="showModal" >Delete Product</button>
+        <button type="button" class="col-auto btn btn-danger mx-4" @click="confirmDelete" >Delete Product</button>
         <button type="button" class="col-auto btn btn-secondary mx-4" @click="resetForm">Reset Form</button>
         <button type="button" class="col-1 btn btn-primary mx-4" @click="saveProduct">Save</button>
     </div>
     
 </form>
-<!-- <template v-slot="modalAction">
-    <button type="button" class="btn" :class="actionButtonClass" @click="clickAction">{{ actionButtonLabel }}</button>
-</template> -->
+
     <BaseModal 
         ref="confirmDeleteModal"
         id="confirmDeleteModal"
-
     >
-    <template #title>Are you sure?</template>
-    <template #body><p>poop</p></template>
-    <template #modalAction>
-        <button 
-        type="button" 
-        class="btn btn-danger" 
-        @click="deleteProduct"
-        >
-        Delete
-        </button>
-    </template>
+        <template #title>Are you sure?</template>
+        <template #body>
+            <div>Are you sure you want to delete this product?<br><br>ID:{{ formData.id }} - {{ formData.name }}</div>
+        </template>
+        <template #modalAction>
+            <button 
+            type="button" 
+            class="btn btn-danger"
+            @click="deleteProduct"
+            >
+            Delete
+            </button>
+        </template>
     </BaseModal>
-            <!-- ref="confirmDeleteModalRef"
-        modalId="confirmDeleteModal"
-        modalTitle="Are you sure?"
-        modalText="Are you sure you want to delete this product?"
-        actionButtonLabel="Delete"
-        actionButtonClass="btn-danger"
-        @submitAction="deleteProduct" -->
 
-    <!-- <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header border-0">
-            <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body text-center">
-            Are you sure you want to delete? <br>
-            {{ formData.id }} {{ formData.name }}
-          </div>
-          <div class="modal-footer border-0">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-danger" @click="deleteProduct">Delete</button>
-          </div>
-        </div>
-      </div>
-    </div> -->
+    <BaseToast
+        ref="successMessageToast"
+        id="successMessageToast"
+        type="success"
+    >
+        <template #toastBody></template>
+    </BaseToast>
 
 </template>
 
 <script setup lang="ts">
 //TODO further research FormKit library
 import { ref, reactive, onMounted } from 'vue'
-import { Modal } from 'bootstrap'
+import { Modal, Toast } from 'bootstrap'
 import { useProductStore } from '../stores/product'
 import { Product } from '@/components/modules/products/types/product'
 
+const state = reactive({
+    confirmDeleteModal: null,
+    successMessageToast: null,
+    successMessage: null,
+})
 const enteredProductId = ref(null)
 
     // genusList: ['Nepenthes', 'Heliamphora', 'Cephalotus'],
@@ -137,23 +123,13 @@ const formData = reactive({
     quantity: null,
 })
 
-const state = reactive({
-    confirmDeleteModal: null,
-})
+
 
 onMounted(() => {
     state.confirmDeleteModal = new Modal('#confirmDeleteModal', {})
-
-
+    state.successMessageToast = new Toast('#successMessageToast')
 })
 
-function showModal() {
-    state.confirmDeleteModal.show()
-}
-
-function hideModal() {
-    state.confirmDeleteModal.hide()
-}
 const productStore = useProductStore()
 
 function getProductDetails() {
@@ -162,7 +138,6 @@ function getProductDetails() {
         productStore.findProduct('id', enteredProductId.value).then((res) => {
             if (res) {
                 productDetails = res[0]
-                console.log(res)
                 if (productDetails) {
                     for (let key in formData) {
                         formData[key] = productDetails[key]
@@ -186,14 +161,28 @@ function resetForm() {
 } 
 
 function confirmDelete() {
-
-    state.confirmDeleteModal.showModal()
+    state.confirmDeleteModal.show()
 
 }
 function deleteProduct() {
-
     if (enteredProductId) {
-        productStore.deleteById(enteredProductId)
+
+        productStore.deleteById(enteredProductId.value).then((res) => {
+            console.log(res)
+            state.confirmDeleteModal.hide()
+            showToastMessage(`Product ${enteredProductId.value} successfully deleted.`)
+            resetForm()
+        }).catch((err) => {
+            console.log(err)
+            alert('Unable to delete')
+        })
+
+
     }
+}
+
+function showToastMessage(message) {
+    state.successMessage = message
+    state.successMessageToast.show()
 }
 </script>

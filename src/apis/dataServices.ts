@@ -14,13 +14,13 @@ export function parseJSON(jsonData: JSON) {
     return results
 }
 
-async function getNextSequentialId(collectionName: string) {
+async function getNextSequentialId(collectionName: string, idFieldName: string) {
     const startingValue = 1000
     let docs: Array<unknown> | undefined = []
     docs = await findAll(collectionName)
     let nextSequentialId: number = 0
     if (docs) {
-        nextSequentialId = docs.reduce((acc: Number, doc: any) => acc = acc > doc.id ? acc : doc.id, startingValue).valueOf()
+        nextSequentialId = docs.reduce((acc: Number, doc: any) => acc = acc > doc[idFieldName] ? acc : doc[idFieldName], startingValue).valueOf()
         nextSequentialId ++ 
     } else {
         return startingValue + 1
@@ -34,7 +34,7 @@ export async function saveItem(collectionName: string, obj: object) {
         objId = obj['id']
     }
     if (!objId) {
-        let nextId: number = await getNextSequentialId(collectionName)
+        let nextId: number = await getNextSequentialId(collectionName, 'plantId')
         Object.assign(obj, { id: nextId })
         await addDoc(collection(db, collectionName), obj)
             .then((docRef) => { return docRef.id })
@@ -65,10 +65,11 @@ export async function saveItem(collectionName: string, obj: object) {
             console.log(error)
         }
         if (docRef) {
-            await deleteDoc(doc(db, collectionName, docRef.id))
+            await deleteDoc(doc(db, collectionName, docRef.id)).then((res) => { return res }).catch((err) => {
+                return {error: true, message: 'Unable to delete', errorDetails: err}
+            })
         } else {
-            console.log(`Did not find document for id ${id}`)
-            return
+            return {error: true, message: `Did not find document for id ${id}`}
         }
     }
 

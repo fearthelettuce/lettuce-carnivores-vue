@@ -17,8 +17,9 @@ const careInfo = careData.guideData
 
 <style scoped>
 .guide-container {
-    max-width: 120em;
+    max-width: 107em;
     margin: auto;
+    color: rgb(244, 191, 46);
 }
 
 nav ul {
