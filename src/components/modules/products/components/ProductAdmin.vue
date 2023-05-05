@@ -168,6 +168,13 @@ function saveProduct() {
         alert("Failed validation, bro")
     } else {
         productStore.saveProduct(formData).then((res) => {
+            if (res.success) {
+                showToastMessage('Saved')
+                resetForm()
+            } else {
+                alert('There was an error saving')
+                console.log(res)
+            }
             console.log(res)
             
         }).catch((err) => {

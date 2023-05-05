@@ -17,11 +17,28 @@ export function parseJSON(jsonData: JSON) {
 async function getNextSequentialId(collectionName: string, idFieldName: string) {
     const startingValue = 1000
     let docs: Array<unknown> | undefined = []
-    docs = await findAll(collectionName)
-    let nextSequentialId: number = 0
+    try {
+        docs = await findAll(collectionName)
+    } catch (err) {
+        console.log(err)
+    }
+    let nextSequentialId: any
     if (docs) {
-        nextSequentialId = docs.reduce((acc: Number, doc: any) => acc = acc > doc[idFieldName] ? acc : doc[idFieldName], startingValue).valueOf()
-        nextSequentialId ++ 
+        // nextSequentialId = docs.reduce((acc: Number, doc: any) => {
+        //     acc[0] = (acc[0] === undefined || doc < acc[0]) ? doc : acc[0]
+        //     acc[1] = (acc[1] === undefined || doc > acc[1]) ? doc : acc[1]
+        //     return acc
+        // }, [])
+
+        // nextSequentialId = docs.reduce((acc:any, val:any) => {
+        // acc[0] = ( acc[0] === undefined || val[idFieldName] < acc[0] ) ? val[idFieldName] : acc[0]
+        // acc[1] = ( acc[1] === undefined || val[idFieldName] > acc[1] ) ? val[idFieldName] : acc[1]
+        // return acc[1].valueOf();
+        // }, []);
+        console.log(docs)
+        nextSequentialId = await docs.reduce((acc: Number, doc: any) => acc = acc > doc[idFieldName] ? acc : doc[idFieldName], startingValue).valueOf()
+
+        nextSequentialId++ 
     } else {
         return startingValue + 1
     }
@@ -34,16 +51,32 @@ export async function saveItem(collectionName: string, obj: any) {
         objId = obj['id']
     }
     if (objId === null) {
+        let nextId: number = await getNextSequentialId(collectionName, 'id')
+        obj.id = nextId
         console.log(obj)
-        // let nextId: number = await getNextSequentialId(collectionName, 'plantId')
-        await getNextSequentialId(collectionName, 'plantId')
-            .then(res => {obj.id = res})
-            .then((res) => {
-                setDoc(doc(db, collectionName, obj.id), obj)
-            }).then((res) => {
-                console.log(res)
-                return res
-            })
+        //const res = await setDoc(doc(db, collectionName, obj.id), obj)
+        try {
+            const res = await setDoc(doc(db, 'products', nextId.toString()), {
+                ...obj }
+            )
+                return { success: true, }
+        } catch (err) {
+            console.log(err)
+        }
+        
+        //     .then(res => {
+        //         console.log(res)
+        //         obj.id = res
+                
+        //         setDoc(docRef, obj).then((res) => {
+        //             console.log(res)
+        //             return res
+        //         })
+        //     }).then((res) => {
+        //         console.log(res)
+        //         return res
+        //     })
+        // console.log('poop')
         // console.log(obj.id)
         // await setDoc(doc(db, collectionName, obj.id), obj).then(res => {
         //     console.log(res)

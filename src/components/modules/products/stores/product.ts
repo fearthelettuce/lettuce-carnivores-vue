@@ -57,13 +57,14 @@ export const useProductStore = defineStore('product', {
         },
 
         async saveProduct(product: Plant) {
-            await saveItem('products', product).then((res) => {
+            try {
+                const res = await saveItem('products', product)
                 console.log(res)
                 return {success: true}
-            }).catch((err) => {
+            } catch (err) {
                 console.log(err)
                 return {success: false, error: true, errorDetails: err, errorMessage: 'Unable to save'}
-            })
+            }
         },
 
         async deleteById(id: number) {
