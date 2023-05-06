@@ -9,21 +9,7 @@
                         <option v-for="product of products" :value="product.id" >{{ product.name }} ({{ product.id }})</option>
                     </select>
                 </div>
-                <!-- <div>
-                    <button type="button" class="btn btn-primary" @click="getProductDetails">Get Product Details</button>
-                </div> -->
-                
-
-                <!-- <div class="col-auto">
-                    <label for="productId" class="form-label" @keyup.enter="getProductDetails">Product ID:</label>
-                </div>
-                <div class="col-auto">
-                    <input type="text" name="productId" class="form-control" v-model.number="enteredProductId">
-                </div> 
-                <div class="d-flex col-2 align-items-center">
-                    <button type="button" class="btn btn-primary" @click="getProductDetails">Get Product Details</button>
-                </div> -->
-
+                <button type="button" class="btn btn-primary"  @click="filterByNepenthes">Show Nepenthes</button>
             </div>
         </div>
     </form>
@@ -232,6 +218,11 @@ function showToastMessage(message) {
     state.successMessage = message
     state.successMessageToast.show()
 }
+
+function filterByNepenthes() {
+    productStore.findProduct('genus', 'Nepenthes')
+}
+
 </script>
 
 //TODO: Make product select dropdown display by genus

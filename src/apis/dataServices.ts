@@ -1,6 +1,5 @@
-import { collection, doc, getDoc, getDocs, addDoc, query, where, deleteDoc, DocumentReference, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, where, deleteDoc, setDoc } from 'firebase/firestore';
 import { db } from '@/apis/firebase'
-import type { UUID } from 'crypto';
 
 export function parseJSON(jsonData: JSON) {
     let results
@@ -40,16 +39,14 @@ export async function saveItem(collectionName: string, obj: any) {
     if (objId === null) {
         let nextId: number = await getNextSequentialId(collectionName, 'id')
         obj.id = nextId
-        console.log(obj)
     }
 
-
     try {
-        const res = await setDoc(doc(db, 'products', obj.id.toString()), { ...obj })
-        return { success: true, error: false, message: null, errorDetails: null, documentDetails: obj}
+        await setDoc(doc(db, collectionName, obj.id.toString()), { ...obj })
+        return { success: true, error: false, message: 'Saved successfully', errorDetails: null, documentDetails: obj}
     } catch (err) {
         console.log(err)
-        return {success: false, error: true, message: 'An error occurred when trying to save', errorDetails: err, documentDetails: obj}
+        throw new Error('An error occurred when trying to save')
     }
 }
 
@@ -58,7 +55,7 @@ export async function saveItem(collectionName: string, obj: any) {
             await deleteDoc(doc(db, collectionName, id.toString()))
             return {success: true, error: false, message: null, errorDetails: null}
         } catch (err) {
-            return {success: false, error: true, message: 'Unable to delete', errorDetails: err}
+            throw new Error('An error occurred when trying to delete')
         }
         
     }
@@ -66,7 +63,6 @@ export async function saveItem(collectionName: string, obj: any) {
     export async function findDocById(collectionName: string, id: number | string) {
         const docRef = doc(db, collectionName, id.toString())
         const docSnap = await getDoc(docRef)
-
         if (docSnap.exists()) {
             return docSnap.data()
         } else {
@@ -75,10 +71,11 @@ export async function saveItem(collectionName: string, obj: any) {
     }
 
     export async function findByProperty(collectionName: string, property: string, value: any) {
-        let returnArr: Array<any> = []
-        const collectionRef = collection(db, collectionName)
-        const q = query(collectionRef, where(property, "==", value.toString()))
+        console.log(collectionName)
+        const returnArr: Array<any> = []
+        const q = query(collection(db, collectionName), where(property, "==", value))
         const querySnapshot = await getDocs(q)
+        console.log(querySnapshot)
         querySnapshot.forEach((doc) => {
             console.log(doc.data())
             returnArr.push(doc.data())
