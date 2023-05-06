@@ -1,15 +1,21 @@
 import { defineStore } from 'pinia'
+import {toRaw} from 'vue'
 import { saveItem, findAll, findByProperty, deleteItem, findDocById } from '@/apis/dataServices'
 import type { Plant } from '../types/plants'
+import type { ProductFilters } from '../types/product'
 const collectionName = 'products'
 export const useProductStore = defineStore('product', {
     state: () => {
         return {
             productList: undefined as Array<Plant> | undefined,
             filteredProductList: undefined as Array<Plant> | undefined,
-            searchFilters: undefined,
+            searchFilters: {} as ProductFilters,
             isLoading: false,
-            genusList: ['Nepenthes', 'Heliamphora', 'Cephalotus'],
+            genusList: [ 
+                { id: 1, label: 'Nepenthes' }, 
+                { id: 2, label: 'Heliamphora' }, 
+                { id:3, label: 'Cephalotus' }
+            ],
             propagationMethodList: ['Stem Cutting', 'Basal Division', 'Division', 'Seed', 'Tissue Culture', 'Other', 'Unknown'],
             sourceList: ['Borneo Exotics', 'Exotica Plants', 'Wistuba', 'eBay/Facebook', 'Other', 'Unknown'],
             growingConditionsList: ['Highland', 'Intermediate'],
@@ -26,18 +32,47 @@ export const useProductStore = defineStore('product', {
         },
         getSearchFilters(state) {
             return this.searchFilters
+        },
+        getGenusList(state) {
+            return this.genusList
         }
     },
     actions: {
         async fetchSearchResults() {
             this.isLoading = true
-            this.findAllProducts()
+            await this.findAllProducts()
+            await this.filterProducts()
             this.isLoading = false
         },
-
+        setFilterCriteria(key: string, value: any) {
+            console.log(key)
+            console.log(value)
+            if (this.searchFilters.hasOwnProperty(key)) {
+               (this.searchFilters as any)[key] = [value] 
+            } else {
+                this.searchFilters[key] = value
+            }
+            this.filterProducts()
+            console.log(this.filteredProductList)
+        },
+        filterProducts() {
+            
+            let filteredProductsArr = this.productList
+            //let filteredProductsArr = toRaw(this.productList)
+            console.log(filteredProductsArr)
+            if (this.searchFilters && Object.keys(this.searchFilters).length > 0) {
+                for (const [key, value] of Object.entries(this.searchFilters)) {
+                    filteredProductsArr = filteredProductsArr?.filter((item: any) => { return item[key] === value })
+                }
+            } else {
+                console.log('hi')
+                filteredProductsArr = this.productList
+            }
+            this.filteredProductList = filteredProductsArr
+            
+        },
         async findProduct(property: any, value: any) {
             const products = await findByProperty(collectionName, property, value)
-            console.log(products)
             return products
         },
 
@@ -53,12 +88,16 @@ export const useProductStore = defineStore('product', {
         async saveProduct(product: Plant) {
             try {
                 const res = await saveItem(collectionName, product)
+                //TODO convert to toRaw
                 const productDetails =JSON.parse(JSON.stringify( res.documentDetails))
                 const productIndex = this.productList?.findIndex(item => item.id === productDetails.id)
                 if (this.productList && productIndex && productIndex > -1) {
                     this.productList[productIndex] = productDetails
                 } else {
                     this.productList?.push(productDetails)
+                }
+                if (this.searchFilters) {
+                    this.filterProducts()
                 }
                 return { success: true, message: res.message }
             } catch (err) {

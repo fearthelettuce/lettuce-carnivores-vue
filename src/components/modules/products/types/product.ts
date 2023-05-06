@@ -21,6 +21,7 @@ type NepenthesImages  = {
     lowerPitcherImageUrl?: string,
 } & ProductImages
 
-export type { Product, ProductImages, NepenthesImages }
-1
-
+type ProductFilters = {
+    [key: string] : any
+}
+export type { Product, ProductImages, NepenthesImages, ProductFilters}

@@ -9,7 +9,12 @@
                         <option v-for="product of products" :value="product.id" >{{ product.name }} ({{ product.id }})</option>
                     </select>
                 </div>
-                <button type="button" class="btn btn-primary"  @click="filterByNepenthes">Show Nepenthes</button>
+                <div class="btn-group" role="group" aria-label="Select genus filter">
+                    <label v-for="genus of productStore.getGenusList" :key="genus.id" class="btn btn-outline-primary" for="genus" @click="filterByGenus(genus.label)">
+                    <input type="radio" class="btn-check" :name="genus.label" :id="genus.id" autocomplete="off" checked >
+                        {{genus.label}}</label>
+                </div>
+
             </div>
         </div>
     </form>
@@ -104,7 +109,7 @@ import { Product } from '@/components/modules/products/types/product'
 import { storeToRefs } from 'pinia'
 
 const productStore = useProductStore()
-const { getProductList: products} = storeToRefs(productStore)
+const { getFilteredProducts: products} = storeToRefs(productStore)
 const state = reactive({
     confirmDeleteModal: null,
     successMessageToast: null,
@@ -135,7 +140,7 @@ onMounted(() => {
     state.confirmDeleteModal = new Modal('#confirmDeleteModal', {})
     state.successMessageToast = new Toast('#successMessageToast')
     if (!productStore.productList || productStore.productList.length === 0) {
-        productStore.findAllProducts()
+        productStore.fetchSearchResults()
     }
 })
 
@@ -219,11 +224,14 @@ function showToastMessage(message) {
     state.successMessageToast.show()
 }
 
-function filterByNepenthes() {
-    productStore.findProduct('genus', 'Nepenthes')
+function filterByGenus(genus: string) {
+    productStore.setFilterCriteria('genus', genus)
 }
 
 </script>
 
 //TODO: Make product select dropdown display by genus
 //TODO: Add product filters
+//TODO: Add Bootstrap Floating labels... bc they are cool
+//TODO: implement button groups for various data
+//TODO: fix product filters with button groups - they are additive but need to let me pick a diff option
