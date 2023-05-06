@@ -24,20 +24,7 @@ async function getNextSequentialId(collectionName: string, idFieldName: string) 
     }
     let nextSequentialId: any
     if (docs) {
-        // nextSequentialId = docs.reduce((acc: Number, doc: any) => {
-        //     acc[0] = (acc[0] === undefined || doc < acc[0]) ? doc : acc[0]
-        //     acc[1] = (acc[1] === undefined || doc > acc[1]) ? doc : acc[1]
-        //     return acc
-        // }, [])
-
-        // nextSequentialId = docs.reduce((acc:any, val:any) => {
-        // acc[0] = ( acc[0] === undefined || val[idFieldName] < acc[0] ) ? val[idFieldName] : acc[0]
-        // acc[1] = ( acc[1] === undefined || val[idFieldName] > acc[1] ) ? val[idFieldName] : acc[1]
-        // return acc[1].valueOf();
-        // }, []);
-        console.log(docs)
         nextSequentialId = await docs.reduce((acc: Number, doc: any) => acc = acc > doc[idFieldName] ? acc : doc[idFieldName], startingValue).valueOf()
-
         nextSequentialId++ 
     } else {
         return startingValue + 1
@@ -54,110 +41,46 @@ export async function saveItem(collectionName: string, obj: any) {
         let nextId: number = await getNextSequentialId(collectionName, 'id')
         obj.id = nextId
         console.log(obj)
-        //const res = await setDoc(doc(db, collectionName, obj.id), obj)
-        try {
-            const res = await setDoc(doc(db, 'products', nextId.toString()), {
-                ...obj }
-            )
-                return { success: true, }
-        } catch (err) {
-            console.log(err)
-        }
-        
-        //     .then(res => {
-        //         console.log(res)
-        //         obj.id = res
-                
-        //         setDoc(docRef, obj).then((res) => {
-        //             console.log(res)
-        //             return res
-        //         })
-        //     }).then((res) => {
-        //         console.log(res)
-        //         return res
-        //     })
-        // console.log('poop')
-        // console.log(obj.id)
-        // await setDoc(doc(db, collectionName, obj.id), obj).then(res => {
-        //     console.log(res)
-        //     return res
-        // })
-        // addDoc(collection(db, collectionName), obj).then(res => {
-        //     console.log(res)
-        //     return res
-        // })
-        // if (nextId && nextId > 0) {
-        //     obj.id = nextId
-        // } else {
-        //     //TODO handle error
-        // }
-        // await console.log(objId)
+    }
 
-        // let saveDocResponse = await addDoc(collection(db, collectionName), obj)
-        // console.log('response from firebase:')
-        // console.log(saveDocResponse)
-        // if (saveDocResponse) {
-        //     return {success: true, plant: obj}
-        // } else {
-        //     //TODO handle error
-        //     console.log(saveDocResponse)
-        //     console.log(obj)
-        //     return {error: true, message: 'Unable to save'}
-        // }
-        
-    } else {
-        console.log(obj)
-        let docUid: UUID
-        let docRef: DocumentReference | undefined
-        await findDocById(collectionName, objId).then((res)=>{if(res) {docUid = res}}).catch((err) =>{console.log(err)})
-        if (docRef) {
-            await setDoc(doc(db,collectionName,docRef), obj)
-                .then((res) => {
-                    console.log(res.data)
-                    return res
-                })
-                .catch((err) => {
-                    console.log(err)
-                    return err
-                })
-        }
 
+    try {
+        const res = await setDoc(doc(db, 'products', obj.id.toString()), { ...obj })
+        return { success: true, error: false, message: null, errorDetails: null, documentDetails: obj}
+    } catch (err) {
+        console.log(err)
+        return {success: false, error: true, message: 'An error occurred when trying to save', errorDetails: err, documentDetails: obj}
     }
 }
 
-    export async function deleteItem(collectionName: string, id: number) {
-        let docRef: DocumentReference | undefined
+    export async function deleteItem(collectionName: string, id: number | string) {
         try {
-            docRef = await findDocById(collectionName, id)
-        } catch (error) {
-            console.log(error)
+            await deleteDoc(doc(db, collectionName, id.toString()))
+            return {success: true, error: false, message: null, errorDetails: null}
+        } catch (err) {
+            return {success: false, error: true, message: 'Unable to delete', errorDetails: err}
         }
-        if (docRef) {
-            await deleteDoc(doc(db, collectionName, docRef.id)).then((res) => { return res }).catch((err) => {
-                return {error: true, message: 'Unable to delete', errorDetails: err}
-            })
-        } else {
-            return {error: true, message: `Did not find document for id ${id}`}
-        }
+        
     }
 
-    async function findDocById(collectionName: string, id: any) {
-        const collectionRef = collection(db, collectionName)
-        const q = query(collectionRef, where('id', "==", id))
-        const querySnapshot = await getDocs(q);
-        let returnDoc
-        querySnapshot.forEach((doc) => {
-            returnDoc = doc
-        })
-        return returnDoc
+    export async function findDocById(collectionName: string, id: number | string) {
+        const docRef = doc(db, collectionName, id.toString())
+        const docSnap = await getDoc(docRef)
+
+        if (docSnap.exists()) {
+            return docSnap.data()
+        } else {
+            return []
+        }
     }
 
     export async function findByProperty(collectionName: string, property: string, value: any) {
         let returnArr: Array<any> = []
         const collectionRef = collection(db, collectionName)
-        const q = query(collectionRef, where(property, "==", value))
+        const q = query(collectionRef, where(property, "==", value.toString()))
         const querySnapshot = await getDocs(q)
         querySnapshot.forEach((doc) => {
+            console.log(doc.data())
             returnArr.push(doc.data())
         })
         return returnArr

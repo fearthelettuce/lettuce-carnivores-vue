@@ -1,27 +1,44 @@
 <template>
-    <form @submit.prevent="getProductDetails">
+    <form>
         <div class="container">
-            <div class="row my-4 g-3 align-items-center">
+            <div class="row my-4 g-3 align-items-center ">
                 <div class="col-auto">
+                    <!-- <label for="productId" class="form-label" @keyup.enter="getProductDetails">Select a product to edit:</label> -->
+                    <select name="editProduct" class="form-select" aria-label="Select a product to edit" @change="getProductDetails" v-model="productToEdit">
+                        <option id="placeholder" selected disabled value="">Select a product to edit</option>
+                        <option v-for="product of products" :value="product.id" >{{ product.name }} ({{ product.id }})</option>
+                    </select>
+                </div>
+                <!-- <div>
+                    <button type="button" class="btn btn-primary" @click="getProductDetails">Get Product Details</button>
+                </div> -->
+                
+
+                <!-- <div class="col-auto">
                     <label for="productId" class="form-label" @keyup.enter="getProductDetails">Product ID:</label>
                 </div>
                 <div class="col-auto">
                     <input type="text" name="productId" class="form-control" v-model.number="enteredProductId">
-                </div>
+                </div> 
                 <div class="d-flex col-2 align-items-center">
                     <button type="button" class="btn btn-primary" @click="getProductDetails">Get Product Details</button>
-                </div>
+                </div> -->
+
             </div>
         </div>
     </form>
 
 
 <form class="container" @submit.prevent>
+    <div class="align-items-center">
+        <h3 v-if="formData.id">Edit Existing Product</h3>
+        <h3 v-else>Creating a New Product</h3>
+    </div>
     <div class="row g-3 align-items-center">
         <div class="col-2 mb-3">
             <label for="genus" class="form-label">Genus</label>
-            <select name="genus" class="form-select" aria-label="Select Genus"  v-model="formData.genus">
-                <option selected placeholder="Select Genus"></option>
+            <select name="genus" class="form-select" aria-label="Select Genus" v-model="formData.genus">
+                <option id="placeholder" selected disabled value="">Select Genus</option>
                 <option v-for="genus of productStore.genusList" :value="genus">{{ genus }}</option>
             </select>
 
@@ -94,17 +111,21 @@
 
 <script setup lang="ts">
 //TODO further research FormKit library
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { Modal, Toast } from 'bootstrap'
 import { useProductStore } from '../stores/product'
 import { Product } from '@/components/modules/products/types/product'
+import { storeToRefs } from 'pinia'
 
+const productStore = useProductStore()
+const { getProductList: products} = storeToRefs(productStore)
 const state = reactive({
     confirmDeleteModal: null,
     successMessageToast: null,
     successMessage: null,
+    isEditMode: false,
 })
-const enteredProductId = ref(null)
+const productToEdit = ref("")
 
     // genusList: ['Nepenthes', 'Heliamphora', 'Cephalotus'],
     // propagationMethodList: ['Stem Cutting', 'Basal Division', 'Division', 'Seed', 'Tissue Culture', 'Other', 'Unknown'],
@@ -115,7 +136,7 @@ const enteredProductId = ref(null)
 
 const formData = reactive({
     id: null,
-    genus: null,
+    genus: "",
     name: null,
     propagationMethod: null,
     source: null,
@@ -124,43 +145,42 @@ const formData = reactive({
     quantity: null,
 })
 
-
-
 onMounted(() => {
     state.confirmDeleteModal = new Modal('#confirmDeleteModal', {})
     state.successMessageToast = new Toast('#successMessageToast')
+    if (!productStore.productList || productStore.productList.length === 0) {
+        productStore.findAllProducts()
+    }
 })
 
-const productStore = useProductStore()
 
-function getProductDetails() {
-    let productDetails: Product
-    if (enteredProductId) {
-        productStore.findProduct('id', enteredProductId.value).then((res) => {
+function getProductDetails(event) {
+    const productId = event.target.value
+    if (productId) {
+        productStore.findProductById(productId).then((res) => {
             if (res) {
                 if (res.length === 0) {
+                    console.log(res)
                     alert('Unable to find product with that ID')
                 } else {
-                    productDetails = res[0]
-                    if (productDetails) {
+                    if (res) {
                         for (let key in formData) {
-                            formData[key] = productDetails[key]
+                            formData[key] = res[key]
                         }
                     }
-                }
-                
+                } 
             }
         })
     }
 }
 
 
-
 function resetForm() {
-    enteredProductId.value = null
     for (let key in formData) {
         formData[key] = null
     }
+    formData.genus = ""
+    productToEdit.value = ""
 } 
 
 function saveProduct() {
@@ -169,10 +189,10 @@ function saveProduct() {
     } else {
         productStore.saveProduct(formData).then((res) => {
             if (res.success) {
-                showToastMessage('Saved')
+                showToastMessage(res.message)
                 resetForm()
             } else {
-                alert('There was an error saving')
+                alert(res.message)
                 console.log(res)
             }
             console.log(res)
@@ -185,27 +205,26 @@ function saveProduct() {
 }
 
 function validateProduct() {
-    //TODO: Implement this
+    //TODO: Need to add validation
     return true
 }
+
 function confirmDelete() {
     state.confirmDeleteModal.show()
 
 }
-function deleteProduct() {
-    if (enteredProductId) {
 
-        productStore.deleteById(enteredProductId.value).then((res) => {
+function deleteProduct() {
+    if (productToEdit) {
+        productStore.deleteById(productToEdit.value).then((res) => {
             console.log(res)
             state.confirmDeleteModal.hide()
-            showToastMessage(`Product ${enteredProductId.value} successfully deleted.`)
+            showToastMessage(`Product ${productToEdit.value} successfully deleted.`)
             resetForm()
         }).catch((err) => {
             console.log(err)
             alert('Unable to delete')
         })
-
-
     }
 }
 
@@ -214,3 +233,6 @@ function showToastMessage(message) {
     state.successMessageToast.show()
 }
 </script>
+
+//TODO: Make product select dropdown display by genus
+//TODO: Add product filters
