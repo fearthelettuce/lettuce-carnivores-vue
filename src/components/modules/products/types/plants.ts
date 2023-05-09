@@ -2,6 +2,7 @@ import type {Product, ProductImages} from './product'
 
 type Plant = {
     genus: string,
+    specimenNumber?: number,
     clone?: string | undefined,
     propagationMethod?: string,
     source?: string,
@@ -9,8 +10,8 @@ type Plant = {
 } & Product
 
 type NepenthesImages  = {
-    upperPitcherImageUrl: string,
-    lowerPitcherImageUrl: string,
+    upperPitcherImageUrl?: string,
+    lowerPitcherImageUrl?: string,
 } & ProductImages
 
 export type {Plant, NepenthesImages}

@@ -10,6 +10,7 @@ type Product = {
 }
 
 type ProductImages = {
+    name: string,
     cardImageUrl?: string,
     primaryProductImageUrl?: string,
     additionalProductImageUrls?: [string],

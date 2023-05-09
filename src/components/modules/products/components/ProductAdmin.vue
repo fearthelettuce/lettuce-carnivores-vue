@@ -3,22 +3,27 @@
         <div class="container">
             <div class="row my-4 g-3 align-items-center ">
                 <div class="col-auto">
-                    <!-- <label for="productId" class="form-label" @keyup.enter="getProductDetails">Select a product to edit:</label> -->
                     <select name="editProduct" class="form-select" aria-label="Select a product to edit" @change="getProductDetails" v-model="productToEdit">
                         <option id="placeholder" selected disabled value="">Select a product to edit</option>
                         <option v-for="product of products" :value="product.id" >{{ product.name }} ({{ product.id }})</option>
                     </select>
                 </div>
-                <div class="btn-group" role="group" aria-label="Select genus filter">
-                    <label v-for="genus of productStore.getGenusList" :key="genus.id" class="btn btn-outline-primary" for="genus" @click="filterByGenus(genus.label)">
-                    <input type="radio" class="btn-check" :name="genus.label" :id="genus.id" autocomplete="off" checked >
+                <!-- <div class="btn-group" role="group" aria-label="Genus filters">
+                    <div v-for="genus of productStore.getGenusList" :key="genus.id">
+                        <input type="checkbox" class="btn-check" :id="genus.label" autocomplete="off">
+                        <label class="btn btn-outline-primary" :for="genus.label" @click="filterByGenus(genus.label)">{{ genus.label }}</label>
+                    </div>
+                </div> -->
+                <div class="btn-group" role="group" aria-label="Select genus filters">
+                    <label v-for="genus of productStore.getGenusList" :key="genus.id" class="btn btn-outline-primary" :for="genus.label"  @click="filterByGenus()">
+                    <input type="checkbox" class="btn-check" :name="genus.label" :id="genus.id" autocomplete="off" v-model="filters.genus">
                         {{genus.label}}</label>
                 </div>
 
             </div>
         </div>
     </form>
-
+    
 
 <form class="container" @submit.prevent>
     <div class="align-items-center">
@@ -38,6 +43,10 @@
         <div class="col-5 mb-3">
             <label for="name" class="form-label">Name</label>
             <input name="name" class="form-control" type="text" v-model="formData.name">
+        </div>
+        <div class="col-1 mb-3">
+            <label for="specimenNumber" class="form-label">Specimen #</label>
+            <input name="specimenNumber" class="form-control" type="number" v-model="formData.specimenNumber">
         </div>
         <div class="col mb-3">
             <label for="propagationType" class="form-label">Propagation Method</label>
@@ -62,7 +71,9 @@
                 <label for="forSale" class="form-check-label">Available for Sale</label>
                 <input name="forSale" class="form-check-input" type="checkbox" v-model="formData.isForSale">
         </div>
-        
+    </div>
+    <div class="row">
+        <PhotoUpload :plantId="formData.id" :plantName="formData.name" />
     </div>
     <div class="row justify-content-around d-flex flex-row mt-4">
         <button type="button" class="col-auto btn btn-danger mx-4" @click="confirmDelete" >Delete Product</button>
@@ -105,7 +116,7 @@
 import { ref, reactive, onMounted, computed } from 'vue'
 import { Modal, Toast } from 'bootstrap'
 import { useProductStore } from '../stores/product'
-import { Product } from '@/components/modules/products/types/product'
+import PhotoUpload from '@/components/app/UI/PhotoUpload.vue'
 import { storeToRefs } from 'pinia'
 
 const productStore = useProductStore()
@@ -127,7 +138,8 @@ const productToEdit = ref("")
 
 const formData = reactive({
     id: null,
-    genus: "",
+    genus: null,
+    specimenNumber: null,
     name: null,
     propagationMethod: null,
     source: null,
@@ -136,6 +148,9 @@ const formData = reactive({
     quantity: null,
 })
 
+const filters = reactive({
+    genus: []
+})
 onMounted(() => {
     state.confirmDeleteModal = new Modal('#confirmDeleteModal', {})
     state.successMessageToast = new Toast('#successMessageToast')
@@ -224,11 +239,18 @@ function showToastMessage(message) {
     state.successMessageToast.show()
 }
 
-function filterByGenus(genus: string) {
-    productStore.setFilterCriteria('genus', genus)
+function filterByGenus() {
+    console.log(this.filters.genus)
+    //productStore.setFilterCriteria('genus', genus)
 }
 
 </script>
+
+<style>
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none
+}
+</style>
 
 //TODO: Make product select dropdown display by genus
 //TODO: Add product filters
