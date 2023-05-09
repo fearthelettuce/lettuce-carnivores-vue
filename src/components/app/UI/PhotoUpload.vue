@@ -19,6 +19,7 @@
 import { ref, reactive } from 'vue';
 import { ProductImages } from '@/components/modules/products/types/product';
 import { NepenthesImages } from '@/components/modules/products/types/plants';
+import { uploadFile } from '@/apis/fileServices';
 
 const files = ref<FileList | null>();
 const form = ref<HTMLFormElement>();
@@ -48,10 +49,12 @@ function onFileChanged($event: Event) {
     }
 
     console.log(photoData[0].file)
+    
 }
 
 function uploadImages() {
     console.log(photoData)
+    uploadFile(photoData[0].name,'plantPhotos',photoData[0].file)
 }
 </script>
 
