@@ -1,14 +1,14 @@
 import { getStorage, ref, uploadBytes } from 'firebase/storage' 
 import { storage } from '@/apis/firebase'
 
-const storageRef = ref(storage)
 
-export async function uploadFile(fileName: string, child: string, file: File) {
-    const storageRef = ref(storage, child)
-    uploadBytes(storageRef, file).then((snapshot) => {
-        console.log('Uploaded a blob!!!')
-        console.log(snapshot)
-    })
+export async function uploadFile(fileName: string, subfolder: string, file: File) {
 
+    const filePath = `/${subfolder}/${fileName}`
+    const storageRef = ref(storage,filePath)
+
+    const snapshot = await uploadBytes(storageRef, file).catch(err => console.error(err))
+    if (snapshot) {
+        return snapshot.metadata.fullPath
+    }
 }
-

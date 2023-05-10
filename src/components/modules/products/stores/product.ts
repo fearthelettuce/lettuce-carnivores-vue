@@ -16,6 +16,13 @@ export const useProductStore = defineStore('product', {
                 { id: 2, label: 'Heliamphora' }, 
                 { id:3, label: 'Cephalotus' }
             ],
+            photoTypes: [
+                { id: 1, label: 'Primary' },
+                { id: 2, label: 'Card' },
+                { id: 3, label: 'Additional'},
+                { id: 4, label: 'Upper' },
+                { id: 5, label: 'Lower' }
+            ],
             propagationMethodList: ['Stem Cutting', 'Basal Division', 'Division', 'Seed', 'Tissue Culture', 'Other', 'Unknown'],
             sourceList: ['Borneo Exotics', 'Exotica Plants', 'Wistuba', 'eBay/Facebook', 'Other', 'Unknown'],
             growingConditionsList: ['Highland', 'Intermediate'],

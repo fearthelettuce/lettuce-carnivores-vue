@@ -2,24 +2,17 @@
     <form>
         <div class="container">
             <div class="row my-4 g-3 align-items-center ">
+                <div class="btn-group col-6" role="group" aria-label="Select genus filters">
+                    <label v-for="genus of productStore.getGenusList" :key="genus.id" class="btn btn-outline-primary" :for="genus.label"  @click="filterByGenus()">
+                    <input type="checkbox" class="btn-check" :name="genus.label" :id="genus.id" autocomplete="off" v-model="filters.genus">
+                        {{ genus.label }}</label>
+                </div>
                 <div class="col-auto">
                     <select name="editProduct" class="form-select" aria-label="Select a product to edit" @change="getProductDetails" v-model="productToEdit">
                         <option id="placeholder" selected disabled value="">Select a product to edit</option>
                         <option v-for="product of products" :value="product.id" >{{ product.name }} ({{ product.id }})</option>
                     </select>
                 </div>
-                <!-- <div class="btn-group" role="group" aria-label="Genus filters">
-                    <div v-for="genus of productStore.getGenusList" :key="genus.id">
-                        <input type="checkbox" class="btn-check" :id="genus.label" autocomplete="off">
-                        <label class="btn btn-outline-primary" :for="genus.label" @click="filterByGenus(genus.label)">{{ genus.label }}</label>
-                    </div>
-                </div> -->
-                <div class="btn-group" role="group" aria-label="Select genus filters">
-                    <label v-for="genus of productStore.getGenusList" :key="genus.id" class="btn btn-outline-primary" :for="genus.label"  @click="filterByGenus()">
-                    <input type="checkbox" class="btn-check" :name="genus.label" :id="genus.id" autocomplete="off" v-model="filters.genus">
-                        {{genus.label}}</label>
-                </div>
-
             </div>
         </div>
     </form>
@@ -35,10 +28,8 @@
             <label for="genus" class="form-label">Genus</label>
             <select name="genus" class="form-select" aria-label="Select Genus" v-model="formData.genus">
                 <option id="placeholder" selected disabled value="">Select Genus</option>
-                <option v-for="genus of productStore.genusList" :value="genus">{{ genus }}</option>
+                <option v-for="genus of productStore.genusList" :value="genus">{{ genus.label }}</option>
             </select>
-
-            
         </div>
         <div class="col-5 mb-3">
             <label for="name" class="form-label">Name</label>
@@ -72,13 +63,14 @@
                 <input name="forSale" class="form-check-input" type="checkbox" v-model="formData.isForSale">
         </div>
     </div>
-    <div class="row">
-        <PhotoUpload :plantId="formData.id" :plantName="formData.name" />
-    </div>
     <div class="row justify-content-around d-flex flex-row mt-4">
         <button type="button" class="col-auto btn btn-danger mx-4" @click="confirmDelete" >Delete Product</button>
         <button type="button" class="col-auto btn btn-secondary mx-4" @click="resetForm">Reset Form</button>
         <button type="button" class="col-1 btn btn-primary mx-4" @click="saveProduct">Save</button>
+    </div>
+    <hr class="mt-5"/>
+    <div class="row">
+        <PhotoUpload :plantId="formData.id" :plantName="formData.name" />
     </div>
 </form>
 
