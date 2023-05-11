@@ -51,6 +51,7 @@ export const useProductStore = defineStore('product', {
             await this.filterProducts()
             this.isLoading = false
         },
+
         setFilterCriteria(key: string, value: any) {
             console.log(key)
             console.log(value)
@@ -62,8 +63,8 @@ export const useProductStore = defineStore('product', {
             this.filterProducts()
             console.log(this.filteredProductList)
         },
+
         filterProducts() {
-            
             let filteredProductsArr = this.productList
             //let filteredProductsArr = toRaw(this.productList)
             console.log(filteredProductsArr)
@@ -76,8 +77,8 @@ export const useProductStore = defineStore('product', {
                 filteredProductsArr = this.productList
             }
             this.filteredProductList = filteredProductsArr
-            
         },
+
         async findProduct(property: any, value: any) {
             const products = await findByProperty(collectionName, property, value)
             return products
@@ -123,6 +124,17 @@ export const useProductStore = defineStore('product', {
             }).catch((err) => {
                 return { error: true, response: err }
             })
+        },
+
+        async updatePhotoData(productId: number, photoData: object) {
+            if (productId && photoData) {
+                const product = await this.findProductById(productId)
+                if (product) {
+                    product.photoData = photoData
+                    console.log(product)
+                    this.saveProduct(product)
+                }
+            }
         }
     }
 })

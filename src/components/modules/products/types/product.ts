@@ -5,10 +5,21 @@ type Product = {
     isForSale: boolean,
     quantity: number,
     isDiscountable?: boolean,
-    referenceImages?: ProductImages,
-    actualImages?: ProductImages,
+    photoData: ProductPhotos
 }
 
+type ProductPhotos = {
+    primary: ProductPhotoItem,
+    card: ProductPhotoItem,
+    additional: Array<ProductPhotoItem>,
+    upper: ProductPhotoItem,
+    lower: ProductPhotoItem,
+}
+
+type ProductPhotoItem = {
+    name: string,
+    fullPath: string
+}
 type ProductImages = {
     name: string,
     cardImageUrl?: string,
@@ -25,4 +36,4 @@ type NepenthesImages  = {
 type ProductFilters = {
     [key: string] : any
 }
-export type { Product, ProductImages, NepenthesImages, ProductFilters}
+export type { Product, ProductImages, NepenthesImages, ProductFilters, ProductPhotos}

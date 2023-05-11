@@ -93,13 +93,15 @@
     </template>
 </BaseModal>
 
-<div class="toast-container position-absolute p-5 top-0 end-0"><BaseToast
-    ref="successMessageToast"
-    id="successMessageToast"
-    type="success"
->
-    <template #toastBody>{{ state.successMessage }}</template>
-</BaseToast></div>
+<div class="toast-container position-absolute p-5 top-0 end-0">
+        <BaseToast
+        ref="successMessageToast"
+        id="successMessageToast"
+        type="success"
+        >
+            <template #toastBody>{{ state.successMessage }}</template>
+        </BaseToast>
+</div>
 
 </template>
 
