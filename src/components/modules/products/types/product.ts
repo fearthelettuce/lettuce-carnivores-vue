@@ -5,7 +5,7 @@ type Product = {
     isForSale: boolean,
     quantity: number,
     isDiscountable?: boolean,
-    photoData: ProductPhotos
+    photoData?: ProductPhotos
 }
 
 type ProductPhotos = {

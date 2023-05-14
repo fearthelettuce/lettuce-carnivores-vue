@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-        <img :src="product.cardImage">
+       <div> <img :src="cardImageUrl" /></div>
         <div class="card-title">
             <div>
                 <h3 class="text-primary">{{ product.name }}</h3>
@@ -30,8 +30,7 @@
 // }'product', {}'primaryAction'])
 
 
-
-const props = defineProps(['product','cardAction'])
+const props = defineProps(['product','cardAction', 'cardImageUrl'])
 </script>
 
 <style scoped>

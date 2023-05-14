@@ -67,13 +67,11 @@ export const useProductStore = defineStore('product', {
         filterProducts() {
             let filteredProductsArr = this.productList
             //let filteredProductsArr = toRaw(this.productList)
-            console.log(filteredProductsArr)
             if (this.searchFilters && Object.keys(this.searchFilters).length > 0) {
                 for (const [key, value] of Object.entries(this.searchFilters)) {
                     filteredProductsArr = filteredProductsArr?.filter((item: any) => { return item[key] === value })
                 }
             } else {
-                console.log('hi')
                 filteredProductsArr = this.productList
             }
             this.filteredProductList = filteredProductsArr
@@ -128,13 +126,22 @@ export const useProductStore = defineStore('product', {
 
         async updatePhotoData(productId: number, photoData: object) {
             if (productId && photoData) {
-                const product = await this.findProductById(productId)
+                const product = await this.findProductById(productId).catch((err) => { console.log(err) })
                 if (product) {
                     product.photoData = photoData
                     console.log(product)
                     this.saveProduct(product)
                 }
             }
+        },
+
+        getPhotoUrl(fileName: string) {
+            const urlRoot = 'https://firebasestorage.googleapis.com/v0/b/lettuce-carnivores.appspot.com/o/'
+            const encodedFileName = encodeURIComponent(fileName)
+            const urlSuffix = '?alt=media'
+            return `${urlRoot}${encodedFileName}${urlSuffix}`
         }
     }
+
+    
 })

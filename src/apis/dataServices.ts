@@ -50,50 +50,50 @@ export async function saveItem(collectionName: string, obj: any) {
     }
 }
 
-    export async function deleteItem(collectionName: string, id: number | string) {
-        try {
-            await deleteDoc(doc(db, collectionName, id.toString()))
-            return {success: true, error: false, message: null, errorDetails: null}
-        } catch (err) {
-            throw new Error('An error occurred when trying to delete')
-        }
-        
+export async function deleteItem(collectionName: string, id: number | string) {0
+    try {
+        await deleteDoc(doc(db, collectionName, id.toString()))
+        return {success: true, error: false, message: null, errorDetails: null}
+    } catch (err) {
+        throw new Error('An error occurred when trying to delete')
     }
+    
+}
 
-    export async function findDocById(collectionName: string, id: number | string) {
-        const docRef = doc(db, collectionName, id.toString())
-        const docSnap = await getDoc(docRef)
-        if (docSnap.exists()) {
-            return docSnap.data()
-        } else {
-            return []
-        }
+export async function findDocById(collectionName: string, id: number | string) {
+    const docRef = doc(db, collectionName, id.toString())
+    const docSnap = await getDoc(docRef)
+    if (docSnap.exists()) {
+        return docSnap.data()
+    } else {
+        return []
     }
+}
 
-    export async function findByProperty(collectionName: string, property: string, value: any) {
-        console.log(collectionName)
-        const returnArr: Array<any> = []
-        const q = query(collection(db, collectionName), where(property, "==", value))
-        const querySnapshot = await getDocs(q)
-        console.log(querySnapshot)
+export async function findByProperty(collectionName: string, property: string, value: any) {
+    console.log(collectionName)
+    const returnArr: Array<any> = []
+    const q = query(collection(db, collectionName), where(property, "==", value))
+    const querySnapshot = await getDocs(q)
+    console.log(querySnapshot)
+    querySnapshot.forEach((doc) => {
+        console.log(doc.data())
+        returnArr.push(doc.data())
+    })
+    return returnArr
+}
+
+export async function findAll(collectionName: string) {
+    let returnArr: Array<unknown> = []
+    try {
+        const querySnapshot = await getDocs(collection(db, collectionName))
         querySnapshot.forEach((doc) => {
-            console.log(doc.data())
-            returnArr.push(doc.data())
+            returnArr.push({ ...doc.data() })
         })
         return returnArr
+    } catch (error) {
+        console.log(error)
+        return
     }
-
-    export async function findAll(collectionName: string) {
-        let returnArr: Array<unknown> = []
-        try {
-            const querySnapshot = await getDocs(collection(db, collectionName))
-            querySnapshot.forEach((doc) => {
-                returnArr.push({ ...doc.data() })
-            })
-            return returnArr
-        } catch (error) {
-            console.log(error)
-            return
-        }
 }
     

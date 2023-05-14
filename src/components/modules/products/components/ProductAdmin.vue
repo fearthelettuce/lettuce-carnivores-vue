@@ -66,11 +66,15 @@
     <div class="row justify-content-around d-flex flex-row mt-4">
         <button type="button" class="col-auto btn btn-danger mx-4" @click="confirmDelete" >Delete Product</button>
         <button type="button" class="col-auto btn btn-secondary mx-4" @click="resetForm">Reset Form</button>
-        <button type="button" class="col-1 btn btn-primary mx-4" @click="saveProduct">Save</button>
+        <button type="button" class="col-auto px-4 btn btn-primary mx-4" @click="saveProduct">Save</button>
+        <button type="button" class="col-auto btn btn-primary mx-4" @click="saveAndNew">Save & New</button>
+    </div>
+    <div>
+        <img v-if="state.plant?.photoData?.primary?.fullPath" :src="productStore.getPhotoUrl(state.plant.photoData.primary.fullPath)" class="img-thumbnail" />
     </div>
     <hr class="mt-5"/>
     <div class="row">
-        <PhotoUpload :plantId="formData.id" :plantName="formData.name" />
+        <PhotoUpload v-if="state.isSaved" :selectedPlant="state.plant" :plantId="formData.id" :plantName="formData.name" />
     </div>
 </form>
 
@@ -116,6 +120,8 @@ import { storeToRefs } from 'pinia'
 const productStore = useProductStore()
 const { getFilteredProducts: products} = storeToRefs(productStore)
 const state = reactive({
+    isSaved: false,
+    plant: null,
     confirmDeleteModal: null,
     successMessageToast: null,
     successMessage: null,
@@ -167,6 +173,8 @@ function getProductDetails(event) {
                         for (let key in formData) {
                             formData[key] = res[key]
                         }
+                        state.isSaved = true
+                        state.plant = res
                     }
                 } 
             }
@@ -181,6 +189,8 @@ function resetForm() {
     }
     formData.genus = ""
     productToEdit.value = ""
+    state.isSaved = false
+    state.plant = null
 } 
 
 function saveProduct() {
@@ -190,7 +200,8 @@ function saveProduct() {
         productStore.saveProduct(formData).then((res) => {
             if (res.success) {
                 showToastMessage(res.message)
-                resetForm()
+                state.isSaved = true
+                //TODO build this: state.plant =  ??
             } else {
                 alert(res.message)
                 console.log(res)
@@ -202,6 +213,11 @@ function saveProduct() {
         })
     }
 
+}
+
+function saveAndNew() {
+    this.saveProduct()
+    this.resetForm()
 }
 
 function validateProduct() {
