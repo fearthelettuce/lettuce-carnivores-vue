@@ -92,6 +92,7 @@ export const useProductStore = defineStore('product', {
         },
 
         async saveProduct(product: Plant) {
+            console.log(product)
             try {
                 const res = await saveItem(collectionName, product)
                 //TODO convert to toRaw
@@ -134,6 +135,9 @@ export const useProductStore = defineStore('product', {
                 }
             }
         },
+
+        //TODO: Firebase extension storage -resize images
+        
 
         getPhotoUrl(fileName: string) {
             const urlRoot = 'https://firebasestorage.googleapis.com/v0/b/lettuce-carnivores.appspot.com/o/'

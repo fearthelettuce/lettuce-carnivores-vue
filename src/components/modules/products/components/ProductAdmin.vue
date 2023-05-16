@@ -35,10 +35,6 @@
             <label for="name" class="form-label">Name</label>
             <input name="name" class="form-control" type="text" v-model="formData.name">
         </div>
-        <div class="col-1 mb-3">
-            <label for="specimenNumber" class="form-label">Specimen #</label>
-            <input name="specimenNumber" class="form-control" type="number" v-model="formData.specimenNumber">
-        </div>
         <div class="col mb-3">
             <label for="propagationType" class="form-label">Propagation Method</label>
             <input name="propagationType" class="form-control" type="text" v-model="formData.propagationMethod">
@@ -139,7 +135,6 @@ const productToEdit = ref("")
 const formData = reactive({
     id: null,
     genus: null,
-    specimenNumber: null,
     name: null,
     propagationMethod: null,
     source: null,
@@ -197,7 +192,11 @@ function saveProduct() {
     if (!validateProduct()) {
         alert("Failed validation, bro")
     } else {
-        productStore.saveProduct(formData).then((res) => {
+        let plantDetails = { ...formData, photoData: null }
+        if (state.plant && state.plant.photoData) {
+            plantDetails.photoData = { ...state.plant.photoData }
+        }
+        productStore.saveProduct(plantDetails).then((res) => {
             if (res.success) {
                 showToastMessage(res.message)
                 state.isSaved = true

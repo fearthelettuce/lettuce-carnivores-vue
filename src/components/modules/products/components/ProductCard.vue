@@ -1,12 +1,12 @@
 <template>
     <div class="card">
        <div> <img :src="cardImageUrl" /></div>
-        <div class="card-title">
+        <div class="card-title my-0">
             <div>
-                <h3 class="text-primary">{{ product.name }}</h3>
+                <h5 class="text-primary card-name m-0">{{ product.name }}</h5>
             </div>
             <div>
-                <h3 class="text-primary">{{ product.price }}</h3>
+                <p class="text-primary">{{ product.price }}</p>
             </div>
         </div>
         <div class="card-footer">
@@ -42,17 +42,22 @@ img {
 }
 
 .card {
-    padding: 10px;
     display: flex;
     flex-direction: column;
     width: 100%;
-    flex-basis: 24%
+    background-color: rgb(65, 65, 65);
+    border-radius: 2em;
+    overflow:hidden;
 }
 
 .card-title {
     display: flex;
     flex-direction: row;
     justify-content: space-between
+}
+
+.card-name {
+    min-height: 3em;
 }
 
 .card-footer {
