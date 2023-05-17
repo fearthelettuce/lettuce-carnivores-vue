@@ -19,18 +19,9 @@
 <script setup lang="ts">
 
 //TODO look at cards for inspiration on this website: https://jamesbigleyranches.com/
-// const props = defineProps([{
-//     product: {
-//         type: product,
-//         required: true
-//     },
-//     buttonAction: {
-//         type: function,
-//     }
-// }'product', {}'primaryAction'])
 
+const props = defineProps(['product', 'cardAction', 'cardImageUrl'])
 
-const props = defineProps(['product','cardAction', 'cardImageUrl'])
 </script>
 
 <style scoped>

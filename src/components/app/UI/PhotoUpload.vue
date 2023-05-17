@@ -20,17 +20,17 @@
 
         <div v-if="photoData.length > 0" v-for="(photo, index) of photoData" class="row my-3">
             <div class="col-3 imagePreviewContainer">
-                <img :src="photo.tempUrl" class="imagePreview"/>
+                <img :src="photo.tempUrl ? photo.tempUrl : photo.fullPath ? productStore.getPhotoUrl(photo.fullPath) : ''" class="imagePreview"/>
             </div>
             <div class="col-3 d-flex justify-content-center align-items-center">
-                <label for="imageType">{{photo.file.name}}</label>
+                <label for="imageType">{{photo?.file ? photo.file.name : photo[Object.keys(photo)[0]] ? photo[Object.keys(photo)[0]].name : ''}}</label>
             </div>
             <div class="col-1 form-check form-switch d-flex justify-content-center align-items-center">
                 <input id="isReferencePhoto" type="checkbox" class="form-check-input text-primary " v-model="photo.isReferencePhoto" />
             </div>
             <div class="col-2 mx-2 d-flex justify-content-center align-items-center">
                 <select name="genus" class="form-select" aria-label="Select Genus" v-model="photo.photoType">
-                    <option id="placeholder" selected disabled value="">Select Photo Type</option>
+                    <option id="placeholder" disabled value="">Select Photo Type</option>
                     <option v-for="item of photoTypes" :value="item.id">{{ item.label }}</option>
                 </select>
             </div>
@@ -40,7 +40,7 @@
         </div>
         <div>
             <div class="row justify-content-around d-flex flex-row mt-4">
-                <button type="button" class="col-2 btn btn-primary mx-4" :disabled="photoData.length === 0 ? true : false" @click="savePhotoData">Upload Images</button>
+                <button type="button" class="col-2 btn btn-primary mx-4" :disabled="photoData?.length === 0 ? true : false" @click="savePhotoData">Upload Images</button>
             </div>
         </div>
     </div>
@@ -65,7 +65,7 @@ import { uploadFile } from '@/apis/fileServices';
 const productStore = useProductStore()
 const files = ref<FileList | null>();
 const form = ref<HTMLFormElement>();
-let photoData = reactive([])
+const photoData = reactive([])
 const props = defineProps(['selectedPlant','plantId', 'plantName'])
 const state = reactive({
     // selectedPlant: {},
@@ -75,6 +75,12 @@ const state = reactive({
 
 onMounted(async () => {
     state.fileUploadToast = new Toast('#fileUploadToast')
+    console.log(props.selectedPlant.photoData)
+    if (props.selectedPlant.photoData) {
+        const propPhotos = toRaw(props.selectedPlant.photoData)
+        Object.entries(propPhotos).map((entry) => photoData.push({ [entry[0]]: entry[1] }))
+    }
+    console.log(photoData)
     // if (props.plantId) {
     //     let somePlant = await productStore.findProductById(props.plantId).catch((err) => {
     //         console.log(err)
@@ -86,29 +92,29 @@ onMounted(async () => {
     //     console.log(state.selectedPlant.photoData)
     // }
     //Get product by ID
-    console.log('onMounted log')
-    console.log(props.selectedPlant.name)
-    console.log(props.selectedPlant.photoData)
+    // console.log('onMounted log')
+    // console.log(props.selectedPlant.name)
+    // console.log(props.selectedPlant.photoData)
 })
 
-watch(() => props.selectedPlant, (newVal) => {
-    console.log('prop changed')
-    console.log(props.selectedPlant.name)
-    console.log(props.selectedPlant.photoData)
-})
+// watch(() => props.selectedPlant, (newVal) => {
+//     console.log('prop changed')
+//     console.log(props.selectedPlant.name)
+//     console.log(props.selectedPlant.photoData)
+// })
 
-const imageData = reactive({
-    isReference: false,
-    imageData: {
-        name: null,
-        cardImageUrl: null,
-        primaryProductImageUrl: null,
-        additionalProductImageUrls: [],
-        upperPitcherImageUrl: null,
-        lowerPitcherImageUrl: null
-    }
+// const imageData = reactive({
+//     isReference: false,
+//     imageData: {
+//         name: null,
+//         cardImageUrl: null,
+//         primaryProductImageUrl: null,
+//         additionalProductImageUrls: [],
+//         upperPitcherImageUrl: null,
+//         lowerPitcherImageUrl: null
+//     }
 
-})
+// })
 
 const photoTypes = [
         { id: 'primary', label: 'Primary' },
@@ -136,8 +142,6 @@ async function savePhotoData() {
         return
     }
     const photosUploaded = await uploadPhotos().catch(err => console.log(err))
-    console.log('photo upload log:')
-    console.log(photosUploaded)
     if (photosUploaded) {
         productStore.updatePhotoData(props.plantId, photosUploaded)
     }
@@ -157,49 +161,36 @@ async function uploadPhotos() {
         if (props.plantName && photoData[i].photoType) {
             const photoName = getPhotoName(photoData[i], i)
             const res = await uploadFile(photoName, photoData[i].isReferencePhoto ? 'referencePhotos' : 'plantPhotos', photoData[i].file)
-            console.log(res)
             if (res) {
-                console.log(productPhotoData[photoData[i].photoType])
-                if (photoData[i].photoType === 'additional') {
+                //if (photoData[i].photoType === 'additional') {
+                if (Array.isArray(productPhotoData[photoData[i].photoType])) {
                     productPhotoData[photoData[i].photoType].push(
                         {
                             fullPath: res,
-                            name: photoName
+                            name: photoName,
+                            originalFileName: photoData[i].file.name,
                         }
                     )
                 } else {
-                    console.log(photoData[i].photoType)
                     let keyName = photoData[i].photoType
                     productPhotoData[keyName] = {
                         fullPath: res,
                         name: photoName,
+                        originalFileName: photoData[i].file.name,
                         order: i
                     }
-                    
-                    // Object.assign(productPhotoData, {[keyName]: {
-                    //         fullPath: res,
-                    //         name: photoName
-                    //     }
-                    // })
-                    // productPhotoData[photoData[i].type] = {
-                    //     fullPath: res,
-                    //     name: photoName
-                    // }
                 }
-                //photoData[i].filePath = res
-                fileUploadCounter++
-                if (i+1 == photoData.length) {
+
+                fileUploadCounter++                
+                if (i + 1 == photoData.length) {
+                    showToastMessage(`${fileUploadCounter} of ${photoData.length} files uploaded`)
                     if (fileUploadCounter > 0) {
                         return productPhotoData
                     }
-                    showToastMessage(`${fileUploadCounter} of ${photoData.length} files uploaded`)
-
                 }
             }
-            //TODO: emit filePath change to ProductAdmin and save that to the firebase db
         } else {
-            console.log(photoData[i], i)
-            alert('Unable to upload due to missing info on photo ' + (i + 1))
+            alert(`Unable to upload due to missing info on photo ${i + 1} - ${photoData[i].file.name} `)
         }
     }
 }
@@ -251,6 +242,7 @@ function getPhotoName(photo, index) {
 }
 
 function showToastMessage(message) {
+    console.log('PhotoUpload.vue showToastMessage:' + message)
     state.fileUploadMessage = message
     state.fileUploadToast.show()
 }
