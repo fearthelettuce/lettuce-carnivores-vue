@@ -2,49 +2,77 @@ import { defineStore } from 'pinia'
 import {toRaw} from 'vue'
 import { saveItem, findAll, findByProperty, deleteItem, findDocById } from '@/apis/dataServices'
 import type { Plant } from '../types/plants'
-import type { ProductFilters } from '../types/product'
+import type { Product, ProductFilters } from '../types/product'
 const collectionName = 'products'
+
+const newProduct = {
+    name: '',
+    price: 0,
+    isForSale: true,
+    quantity: 1,
+    isDiscountable: true,
+    photos: [],
+    genus: null,
+    clone: '',
+    propagationMethod: '',
+    source: '',
+}
+
 export const useProductStore = defineStore('product', {
-    state: () => {
-        return {
-            productList: undefined as Array<Plant> | undefined,
-            filteredProductList: undefined as Array<Plant> | undefined,
-            searchFilters: {} as ProductFilters,
-            isLoading: false,
-            genusList: [ 
-                { id: 1, label: 'Nepenthes' }, 
-                { id: 2, label: 'Heliamphora' }, 
-                { id:3, label: 'Cephalotus' }
-            ],
-            photoTypes: [
-                { id: 1, label: 'Primary' },
-                { id: 2, label: 'Card' },
-                { id: 3, label: 'Additional'},
-                { id: 4, label: 'Upper' },
-                { id: 5, label: 'Lower' }
-            ],
-            propagationMethodList: ['Stem Cutting', 'Basal Division', 'Division', 'Seed', 'Tissue Culture', 'Other', 'Unknown'],
-            sourceList: ['Borneo Exotics', 'Exotica Plants', 'Wistuba', 'eBay/Facebook', 'Other', 'Unknown'],
-            growingConditionsList: ['Highland', 'Intermediate'],
-            experienceLevelList: ['Beginner', 'Intermediate', 'Expert'],
-            classificationList: ['Species', 'Hybrid', 'Registered Cultivar', 'Unregistered Cultivar'],
-        }
-    },
+    state: () => ({
+        productList: undefined as Array<Plant> | undefined,
+        filteredProductList: undefined as Array<Plant> | undefined,
+        searchFilters: {} as ProductFilters,
+        isLoading: false,
+        productToEdit: newProduct as Product | typeof newProduct ,
+        genusList: [ 
+            { id: 1, label: 'Nepenthes' }, 
+            { id: 2, label: 'Heliamphora' }, 
+            { id: 3, label: 'Cephalotus' }
+        ],
+        photoTypes: [
+            { id: 1, label: 'Primary' },
+            { id: 2, label: 'Card' },
+            { id: 3, label: 'Additional'},
+            { id: 4, label: 'Upper' },
+            { id: 5, label: 'Lower' }
+        ],
+        propagationMethodList: ['Stem Cutting', 'Basal Division', 'Division', 'Seed', 'Tissue Culture', 'Other', 'Unknown'],
+        sourceList: ['Borneo Exotics', 'Exotica Plants', 'Wistuba', 'eBay/Facebook', 'Other', 'Unknown'],
+        growingConditionsList: ['Highland', 'Intermediate'],
+        experienceLevelList: ['Beginner', 'Intermediate', 'Expert'],
+        classificationList: ['Species', 'Hybrid', 'Registered Cultivar', 'Unregistered Cultivar'],
+    }),
     getters: {
-        getProductList(state) {
-            return this.productList
+        getProductById: (state) => {
+            if (state.productList) {
+                return (id) => state.productList.find(product => product.id == id)
+            }
         },
-        getFilteredProducts(state) {
-            return this.filteredProductList
+        getProductList(state): Array<Plant> | undefined {
+            return state.productList
         },
-        getSearchFilters(state) {
-            return this.searchFilters
+        getFilteredProducts(state): Array<Plant> | undefined {
+            return state.filteredProductList
         },
-        getGenusList(state) {
-            return this.genusList
-        }
+        getSearchFilters(state): ProductFilters {
+            return state.searchFilters
+        },
+        getGenusList(state): Array<Object>{
+            return state.genusList
+        },
+        getProductToEdit(state): Product | typeof newProduct {
+            return state.productToEdit
+        },
     },
+
     actions: {
+        setProductToEdit(product: Product | null) {
+            if(product) {
+                this.productToEdit = product
+            }
+            else { this.productToEdit = newProduct }
+        },
         async fetchSearchResults() {
             this.isLoading = true
             await this.findAllProducts()

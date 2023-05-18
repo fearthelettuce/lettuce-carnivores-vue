@@ -17,8 +17,8 @@
                 <h5>Delete</h5>
             </div>
         </div>
-
-        <div v-if="photoData.length > 0" v-for="(photo, index) of photoData" class="row my-3">
+        <PhotoUploadItem v-if="photoData.length" v-for="(photo, index) of photoData" :key="index" :photo="photo" @removePhoto="removePhoto(index)"/>
+        <!-- <div v-if="photoData.length > 0" v-for="(photo, index) of photoData" class="row my-3">
             <div class="col-3 imagePreviewContainer">
                 <img :src="photo.tempUrl ? photo.tempUrl : photo.fullPath ? productStore.getPhotoUrl(photo.fullPath) : ''" class="imagePreview"/>
             </div>
@@ -37,7 +37,7 @@
             <div class="col-2 d-flex justify-content-center align-items-center">
                 <div class="btn" @click="removePhoto(index)"><fa icon="dumpster-fire" size="lg" style="color: #f29c07;" /></div>
             </div>
-        </div>
+        </div> -->
         <div>
             <div class="row justify-content-around d-flex flex-row mt-4">
                 <button type="button" class="col-2 btn btn-primary mx-4" :disabled="photoData?.length === 0 ? true : false" @click="savePhotoData">Upload Images</button>
@@ -60,6 +60,7 @@ import { ref, reactive, onMounted, toRaw, watch } from 'vue';
 import { Toast } from 'bootstrap'
 import { useProductStore } from '@/components/modules/products/stores/product';
 import { ProductPhotos } from '@/components/modules/products/types/product';
+import PhotoUploadItem from './PhotoUploadItem.vue';
 import { uploadFile } from '@/apis/fileServices';
 
 const productStore = useProductStore()

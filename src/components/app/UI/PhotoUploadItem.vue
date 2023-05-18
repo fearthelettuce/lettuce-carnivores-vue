@@ -1,19 +1,19 @@
 <template>
-    <div class="row my-3">
+    <div v-if="props.photo.file || props.photo[Object.keys(photo)[0]]?.fullPath" class="row my-3">
         <div class="col-3 imagePreviewContainer">
-            <img :src="photo.tempUrl ? photo.tempUrl : photo.fullPath ? productStore.getPhotoUrl(photo.fullPath) : ''"
+            <img :src="props.photo.tempUrl ? props.photo.tempUrl : props.photo[Object.keys(photo)[0]]?.fullPath ? props.photo[Object.keys(photo)[0]].fullPath : ''"
                 class="imagePreview" />
         </div>
         <div class="col-3 d-flex justify-content-center align-items-center">
             <label
-                for="imageType">{{ photo?.file ? photo.file.name : photo[Object.keys(photo)[0]] ? photo[Object.keys(photo)[0]].name : '' }}</label>
+                for="imageType">{{ props.photo?.file ? props.photo.file.name : props.photo[Object.keys(photo)[0]] ? props.photo[Object.keys(photo)[0]].name : '' }}</label>
         </div>
         <div class="col-1 form-check form-switch d-flex justify-content-center align-items-center">
             <input id="isReferencePhoto" type="checkbox" class="form-check-input text-primary "
-                v-model="photo.isReferencePhoto" />
+                v-model="props.photo.isReferencePhoto" />
         </div>
         <div class="col-2 mx-2 d-flex justify-content-center align-items-center">
-            <select name="genus" class="form-select" aria-label="Select Genus" v-model="photo.photoType">
+            <select name="genus" class="form-select" aria-label="Select Genus" v-model="props.photo.photoType">
                 <option id="placeholder" disabled value="">Select Photo Type</option>
                 <option v-for="item of photoTypes" :value="item.id">{{ item.label }}</option>
             </select>
@@ -27,16 +27,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, toRaw, watch } from 'vue';
-import { Toast } from 'bootstrap'
+import { ref, reactive, onMounted, computed, watch } from 'vue';
 import { useProductStore } from '@/components/modules/products/stores/product';
 import { ProductPhotos } from '@/components/modules/products/types/product';
-import { uploadFile } from '@/apis/fileServices';
+import { emit } from 'process';
 
 const productStore = useProductStore()
 const photoData = reactive([])
 const props = defineProps(['photo'])
 
+onMounted(() => {
+    console.log(props.photo)
+    console.log(props.photo.file)
+})
+
+const photo = computed(() => {
+    
+})
 const photoTypes = [
     { id: 'primary', label: 'Primary' },
     { id: 'card', label: 'Card' },

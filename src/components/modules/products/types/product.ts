@@ -5,7 +5,8 @@ type Product = {
     isForSale: boolean,
     quantity: number,
     isDiscountable?: boolean,
-    photoData?: ProductPhotos
+    photoData?: ProductPhotos,
+    photos: Array<PhotoItem>,
 }
 
 type ProductPhotos = {
@@ -14,6 +15,22 @@ type ProductPhotos = {
     additional: Array<ProductPhotoItem>,
     upper: ProductPhotoItem,
     lower: ProductPhotoItem,
+}
+
+type PhotoItem = {
+    name: string,
+    type: PhotoTypes,
+    path: string | URL,
+    isUploaded: boolean,
+    originalFilename: string,
+}
+
+enum PhotoTypes {
+    Primary = 'primary',
+    Card = 'card',
+    Additional = 'additional',
+    Upper = 'upper',
+    Lower = 'lower',
 }
 
 type ProductPhotoItem = {
@@ -36,4 +53,4 @@ type NepenthesImages  = {
 type ProductFilters = {
     [key: string] : any
 }
-export type { Product, ProductImages, NepenthesImages, ProductFilters, ProductPhotos}
+export type { Product, ProductImages, NepenthesImages, ProductFilters, ProductPhotos, PhotoTypes}

@@ -11,6 +11,7 @@ type Plant = {
 type NepenthesImages  = {
     upperPitcherImageUrl?: string,
     lowerPitcherImageUrl?: string,
+    tempUrl: URL,
 } & ProductImages
 
 export type {Plant, NepenthesImages}
