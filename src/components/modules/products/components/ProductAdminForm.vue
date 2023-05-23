@@ -16,25 +16,30 @@
                 <label for="name" class="form-label">Name</label>
                 <input name="name" class="form-control" type="text" v-model="product.name">
             </div>
-            <div class="col mb-3">
+
+            <div class="col-3 mb-3">
                 <label for="propagationType" class="form-label">Propagation Method</label>
                 <input name="propagationType" class="form-control" type="text" v-model="product.propagationMethod">
             </div>
-            <div class="col mb-3">
-                <label for="source" class="form-label">Source</label>
-                <input name="source" class="form-control" type="text" v-model="product.source">
-            </div>
+
         
         </div>
         <div class="row">
-            <div class="col-auto mb-3">
+            <div class="col-3 mb-3">
+                <label for="source" class="form-label">Source</label>
+                <input name="source" class="form-control" type="text" v-model="product.source">
+            </div>
+            <div class="col-2 mb-3">
                 <label for="price" class="form-label">Price</label>
                 <input name="price" class="form-control" type="number" v-model.number="product.price">
             </div>
-            <div class="col-auto mb-3">
+            <div class="col-3 mb-3">
                     <label for="quantity" class="form-label">Available Quantity</label>
                     <input name="quantity" class="form-control" type="number" v-model.number="product.quantity">
                 </div>
+            
+        </div>
+        <div class="row">
             <div class="col-auto mb-3 align-items-center form-check form-switch">
                     <label for="forSale" class="form-check-label">Available for Sale</label>
                     <input name="forSale" class="form-check-input" type="checkbox" v-model="product.isForSale">

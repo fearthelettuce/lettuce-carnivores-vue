@@ -1,25 +1,27 @@
 <template>
-    <form>
-        <div class="container">
-            <div class="row my-4 g-3 align-items-center ">
-                <div class="col-auto">
-                    <select name="editProduct" class="form-select" aria-label="Select a product to edit" @change="setSelectedProduct">
-                        <option id="placeholder" selected disabled value="">Select a product to edit</option>
-                        <option v-for="product of products" :value="product.id" >{{ product.name }} ({{ product.id }})</option>
-                    </select>
+    <div class="container">
+        <div class="row">
+            <div class="col-auto">
+                <div class="row my-4 g-3 align-items-center">
+                    <div class="col-auto">
+                        <select name="editProduct" class="form-select" aria-label="Select a product to edit" @change="setSelectedProduct">
+                            <option id="placeholder" selected disabled value="">Select a product to edit</option>
+                            <option v-for="product of products" :value="product.id" >{{ product.name }} ({{ product.id }})</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-auto">
+                        <ProductAdminForm />
+                    </div>
                 </div>
             </div>
+            <div class="col-3">
+                <ProductCard :product="productStore.getProductToEdit"/>
+            </div>
         </div>
-    </form>
-
-    <div class="container">
-        <div class="row"><div class="col-8">
-            <ProductAdminForm />
-        </div>
-        <div class="col-3">
-            <ProductCard :product="productStore.getProductToEdit"/>
-        </div> </div>
-    </div>   
+    </div>
+  
 
     <hr class="mt-5"/>
     <ProductPhotoList />
