@@ -33,7 +33,7 @@ async function getNextSequentialId(collectionName: string, idFieldName: string) 
 
 export async function saveItem(collectionName: string, obj: any) {
     let objId
-    if (obj !== null && typeof obj === 'object' && obj.hasOwnProperty('id')) {
+    if (obj !== null && typeof obj === 'object' && obj.hasOwnProperty('id') && obj.id) {
         objId = obj['id']
     }
     if (objId === null) {
@@ -66,7 +66,7 @@ export async function findDocById(collectionName: string, id: number | string) {
     if (docSnap.exists()) {
         return docSnap.data()
     } else {
-        return []
+        return null
     }
 }
 

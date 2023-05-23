@@ -6,6 +6,7 @@ import type { Product, ProductFilters } from '../types/product'
 const collectionName = 'products'
 
 const newProduct = {
+    id: undefined,
     name: '',
     price: 0,
     isForSale: true,
@@ -24,7 +25,7 @@ export const useProductStore = defineStore('product', {
         filteredProductList: undefined as Array<Plant> | undefined,
         searchFilters: {} as ProductFilters,
         isLoading: false,
-        productToEdit: newProduct as Product | typeof newProduct ,
+        productToEdit: newProduct as Plant | typeof newProduct ,
         genusList: [ 
             { id: 1, label: 'Nepenthes' }, 
             { id: 2, label: 'Heliamphora' }, 
@@ -46,7 +47,7 @@ export const useProductStore = defineStore('product', {
     getters: {
         getProductById: (state) => {
             if (state.productList) {
-                return (id) => state.productList.find(product => product.id == id)
+                return (id: number) => state.productList?.find(product => product.id == id)
             }
         },
         getProductList(state): Array<Plant> | undefined {
@@ -61,13 +62,13 @@ export const useProductStore = defineStore('product', {
         getGenusList(state): Array<Object>{
             return state.genusList
         },
-        getProductToEdit(state): Product | typeof newProduct {
+        getProductToEdit(state): Plant | typeof newProduct {
             return state.productToEdit
         },
     },
 
     actions: {
-        setProductToEdit(product: Product | null) {
+        setProductToEdit(product: Plant | null) {
             if(product) {
                 this.productToEdit = product
             }
@@ -111,7 +112,8 @@ export const useProductStore = defineStore('product', {
         },
 
         async findProductById(id: number) {
-            const res = await findDocById(collectionName, id)
+            const res = await findDocById(collectionName, id).catch(err => console.log(err))
+            console.log(res)
             return res
         },
 
@@ -155,8 +157,8 @@ export const useProductStore = defineStore('product', {
 
         async updatePhotoData(productId: number, photoData: object) {
             if (productId && photoData) {
-                const product = await this.findProductById(productId).catch((err) => { console.log(err) })
-                if (product) {
+                const product = await this.findProductById(productId).catch((err) => { console.log(err)}) as Plant
+                if (product && photoData) {
                     product.photoData = photoData
                     console.log(product)
                     this.saveProduct(product)

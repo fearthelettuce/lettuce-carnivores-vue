@@ -10,11 +10,11 @@ type Product = {
 }
 
 type ProductPhotos = {
-    primary: ProductPhotoItem,
-    card: ProductPhotoItem,
-    additional: Array<ProductPhotoItem>,
-    upper: ProductPhotoItem,
-    lower: ProductPhotoItem,
+    primary?: ProductPhotoItem,
+    card?: ProductPhotoItem,
+    additional?: Array<ProductPhotoItem>,
+    upper?: ProductPhotoItem,
+    lower?: ProductPhotoItem,
 }
 
 type PhotoItem = {

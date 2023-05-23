@@ -64,6 +64,7 @@ onMounted(() => {
 function setSelectedProduct(event) {
     const product = productStore.getProductById(event.target.value)
     productStore.setProductToEdit(product)
+    productStore.findProductById(1001)
 }
 
 // function getProductDetails(event) {

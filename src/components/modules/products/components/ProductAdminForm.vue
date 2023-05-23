@@ -73,7 +73,7 @@
 
 <script setup lang="ts">
 
-import { reactive, computed, defineEmits } from 'vue';
+import { reactive, computed } from 'vue';
 import { storeToRefs } from 'pinia'
 import { useProductStore } from '../stores/product'
 
