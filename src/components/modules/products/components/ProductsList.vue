@@ -9,9 +9,6 @@
             >
             <ProductCard 
             :product="product"
-            :cardImageUrl="
-                product?.photoData?.card?.fullPath ? productStore.getPhotoUrl(product.photoData.card.fullPath) : 
-                product?.photoData?.primary?.fullPath ? productStore.getPhotoUrl(product.photoData.primary.fullPath) : ''"
             :cardAction="null"
             />
         </div>

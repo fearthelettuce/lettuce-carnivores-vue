@@ -12,10 +12,15 @@
         </div>
     </form>
 
-    <ProductAdminForm />
-    <div>
-        <img v-if="state.plant?.photoData?.primary?.fullPath" :src="productStore.getPhotoUrl(state.plant.photoData.primary.fullPath)" class="img-thumbnail" />
-    </div>
+    <div class="container">
+        <div class="row"><div class="col-8">
+            <ProductAdminForm />
+        </div>
+        <div class="col-3">
+            <ProductCard :product="productStore.getProductToEdit"/>
+        </div> </div>
+    </div>   
+
     <hr class="mt-5"/>
     <ProductPhotoList />
 
@@ -39,6 +44,7 @@ import { Modal, Toast } from 'bootstrap'
 import { useProductStore } from '../stores/product'
 import ProductAdminForm from './ProductAdminForm.vue'
 import ProductPhotoList from './ProductPhotoList.vue'
+import ProductCard from './ProductCard.vue'
 import PhotoUpload from '@/components/app/UI/PhotoUpload.vue'
 import { storeToRefs } from 'pinia'
 

@@ -13,6 +13,12 @@ export async function uploadFile(fileName: string, subfolder: string, file: File
     }
 }
 
+export function getPhotoUrl(fileName: string) {
+    const urlRoot = 'https://firebasestorage.googleapis.com/v0/b/lettuce-carnivores.appspot.com/o/'
+    const encodedFileName = encodeURIComponent(fileName)
+    const urlSuffix = '?alt=media'
+    return `${urlRoot}${encodedFileName}${urlSuffix}`
+}
 // export async function getUrl(fileName: string, subfolder: string) {
 //     const filePath = `/${subfolder}/${fileName}`
 //     const storageRef = ref(storage, filePath)

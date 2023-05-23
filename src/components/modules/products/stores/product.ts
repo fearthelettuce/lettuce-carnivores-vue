@@ -59,7 +59,7 @@ export const useProductStore = defineStore('product', {
         getSearchFilters(state): ProductFilters {
             return state.searchFilters
         },
-        getGenusList(state): Array<Object>{
+        getGenusList(state): Array<object>{
             return state.genusList
         },
         getProductToEdit(state): Plant | typeof newProduct {
