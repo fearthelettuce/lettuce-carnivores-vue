@@ -5,7 +5,7 @@
             <h3 v-else>Creating a New Product</h3>
         </div>
         <div class="row g-3 align-items-center">
-            <div class="col-2 mb-3">
+            <div class="col-3 mb-3">
                 <label for="genus" class="form-label">Genus</label>
                 <select name="genus" class="form-select" aria-label="Select Genus" v-model="product.genus">
                     <option id="placeholder" selected disabled value="">Select Genus</option>
@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="row justify-content-around d-flex flex-row mt-4">
-            <button type="button" class="col-auto btn btn-danger mx-4" @click="confirmDelete" >Delete Product</button>
+            <button type="button" class="col-auto btn btn-danger mx-4" :class="!product.id ? 'disabled' : ''" @click="confirmDelete" >Delete Product</button>
             <button type="button" class="col-auto btn btn-secondary mx-4" @click="resetForm">Reset Form</button>
             <button type="button" class="col-auto px-4 btn btn-primary mx-4" @click="saveProduct">Save</button>
             <button type="button" class="col-auto btn btn-primary mx-4" @click="saveAndNew">Save & New</button>
@@ -58,11 +58,11 @@
     <BaseModal 
         ref="confirmDeleteModal"
         id="confirmDeleteModal"
+        @closeModal="state.confirmDeleteModal.hide()"
     >
         <template #title>Are you sure?</template>
         <template #body>
-            <!-- <div>Are you sure you want to delete this product?<br><br>ID:{{ .id }} - {{ formData.name }}</div> -->
-            <div>Are you sure you want to delete this product?<br><br>ID: Name:</div>
+            <div>Are you sure you want to delete this product?<br><br> {{ product.name }}({{ product.id }})</div>
         </template>
         <template #modalAction>
             <button 
@@ -77,13 +77,16 @@
 </template>
 
 <script setup lang="ts">
-
-import { reactive, computed } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { storeToRefs } from 'pinia'
+import { Modal } from 'bootstrap'
+import { useToast } from 'vue-toastification' 
 import { useProductStore } from '../stores/product'
 
 
 const productStore = useProductStore()
+const toast = useToast()
+
 const { getProductToEdit: product } = storeToRefs(productStore)
 
 const state = reactive({
@@ -94,13 +97,37 @@ const state = reactive({
     isEditMode: false,
 })
 
+onMounted(() => {
+    state.confirmDeleteModal = new Modal('#confirmDeleteModal', {})
+    if (!productStore.productList || productStore.productList.length === 0) {
+        productStore.fetchSearchResults()
+    }
+})
+
 
 function resetForm() {
     productStore.setProductToEdit(null)
     state.isSaved = false
 }
 
-function saveProduct() {
+async function saveProduct() {
+    if (!validateProduct()) {
+        alert("Failed validation, bro")
+        return
+    }
+
+    const res = await productStore.saveProduct(product.value).catch(err => console.error(err))
+
+    if (res && res.success) {
+        toast.success(res.message)
+        state.isSaved = true
+    } else {
+        if (res) {
+            alert(res?.message)
+            console.log(res)
+        }
+    }
+}
     // if (!validateProduct()) {
     //     alert("Failed validation, bro")
     // } else {
@@ -123,22 +150,22 @@ function saveProduct() {
     //         console.log(err)
     //     })
     // }
-}
+
 
 function confirmDelete() {
     state.confirmDeleteModal.show()
 
 }
-function deleteProduct() {
-        productStore.deleteById(this.product.id).then((res) => {
-            console.log(res)
+async function deleteProduct() {
+    if (product.value.id) {
+        const res = await productStore.deleteById(product.value.id).catch(err => console.error(err))
+
+        if (res && res.deleted) {
+            toast.success(`Product ${product.value.id} deleted`)
             state.confirmDeleteModal.hide()
-            //showToastMessage(`Product ${productToEdit.value} successfully deleted.`)
             resetForm()
-        }).catch((err) => {
-            console.log(err)
-            alert('Unable to delete')
-        })
+        }
+    }
 }
 
 function saveAndNew() {
@@ -151,8 +178,8 @@ function validateProduct() {
     return true
 }
 
-
 </script>
+
 
 <style scoped>
 

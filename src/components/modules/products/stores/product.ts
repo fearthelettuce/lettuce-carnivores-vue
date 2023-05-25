@@ -144,15 +144,23 @@ export const useProductStore = defineStore('product', {
         },
 
         async deleteById(id: number | string) {
-            await deleteItem(collectionName, id).then((res) => {
-                const productIndex = this.productList?.findIndex(item => item.id === id)
-                if (this.productList && productIndex && productIndex > -1) {
-                    this.productList?.splice(productIndex, 1)
-                }
-                return {deleted: true, response: res}
-            }).catch((err) => {
-                return { error: true, response: err }
+            const res = deleteItem(collectionName, id).catch(err => {
+                console.error(err)
+                return { deleted: false, error: true, response: err }
             })
+            return { deleted: true, error: false, response: res }
+            // await deleteItem(collectionName, id).then((res) => {
+            //     const productIndex = this.productList?.findIndex(item => item.id === id)
+            //     if (this.productList && productIndex && productIndex > -1) {
+            //         this.productList?.splice(productIndex, 1)
+            //     }
+            //     if (this.productToEdit.id === id) {
+            //         this.setProductToEdit(null)
+            //     }
+            //     return {deleted: true, response: res}
+            // }).catch((err) => {
+            //     return { error: true, response: err }
+            // })
         },
 
         async updatePhotoData(productId: number, photoData: object) {

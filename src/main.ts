@@ -10,8 +10,11 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import 'bootstrap'
 
+import Toast from 'vue-toastification'
+import 'vue-toastification/dist/index.css'
+
+
 import BaseModal from '@/components/app/UI/BaseModal.vue'
-import BaseToast from '@/components/app/UI/BaseToast.vue'
 
 library.add(fas);
 library.add(far);
@@ -20,8 +23,8 @@ const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
+app.use(Toast, { showCloseButtonOnHover: true,})
 app.component('fa', FontAwesomeIcon)
 app.component('far', FontAwesomeIcon)
 app.component('BaseModal', BaseModal)
-app.component('BaseToast',BaseToast)
 app.mount('#app')

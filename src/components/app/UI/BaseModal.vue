@@ -15,6 +15,7 @@
                 class="btn-close" 
                 aria-label="Close"
                 data-bs-dismiss="modal"
+                @click="$emit('closeModal')"
                 ></button>
                 <slot name="close-action"></slot>
             </div>
@@ -22,7 +23,7 @@
                 <slot name="body"></slot>
             </div>
             <div class="modal-footer border-0">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="$emit('closeModal')">Close</button>
                 <slot v-if="this.$slots.modalAction" name="modalAction"></slot>
 
             </div>
