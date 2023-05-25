@@ -25,7 +25,7 @@ export const useProductStore = defineStore('product', {
         filteredProductList: undefined as Array<Plant> | undefined,
         searchFilters: {} as ProductFilters,
         isLoading: false,
-        productToEdit: newProduct as Plant | typeof newProduct ,
+        productToEdit: { ...newProduct } as Plant | typeof newProduct ,
         genusList: [ 
             { id: 1, label: 'Nepenthes' }, 
             { id: 2, label: 'Heliamphora' }, 
@@ -69,11 +69,15 @@ export const useProductStore = defineStore('product', {
 
     actions: {
         setProductToEdit(product: Plant | null) {
+            console.log('hi from setProductToEdit in store')
+            console.log(this.getProductToEdit)
             if(product) {
                 this.productToEdit = product
             }
             else { this.productToEdit = newProduct }
+            console.log(this.getProductToEdit)
         },
+
         async fetchSearchResults() {
             this.isLoading = true
             await this.findAllProducts()
@@ -126,12 +130,17 @@ export const useProductStore = defineStore('product', {
             try {
                 const res = await saveItem(collectionName, product)
                 //TODO convert to toRaw
-                const productDetails =JSON.parse(JSON.stringify( res.documentDetails))
+                const productDetails = JSON.parse(JSON.stringify( res.documentDetails))
                 const productIndex = this.productList?.findIndex(item => item.id === productDetails.id)
                 if (this.productList && productIndex && productIndex > -1) {
-                    this.productList[productIndex] = productDetails
+                    //this.productList[productIndex] = productDetails
+                    this.productList.splice(productIndex, 1, productDetails)
                 } else {
+                    console.log(this.productList)
+                    console.log(this.productToEdit)
                     this.productList?.push(productDetails)
+                    console.log(this.productList)
+                     console.log(this.productToEdit)
                 }
                 if (this.searchFilters) {
                     this.filterProducts()
@@ -148,6 +157,13 @@ export const useProductStore = defineStore('product', {
                 console.error(err)
                 return { deleted: false, error: true, response: err }
             })
+            const productIndex = this.productList?.findIndex(item => item.id === id)
+            if (this.productList && productIndex && productIndex > -1) {
+                this.productList?.splice(productIndex, 1)
+            }
+            if (this.productToEdit.id === id) {
+                this.setProductToEdit(null)
+            }
             return { deleted: true, error: false, response: res }
             // await deleteItem(collectionName, id).then((res) => {
             //     const productIndex = this.productList?.findIndex(item => item.id === id)

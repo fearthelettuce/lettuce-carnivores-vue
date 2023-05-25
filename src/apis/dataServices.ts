@@ -32,21 +32,21 @@ async function getNextSequentialId(collectionName: string, idFieldName: string) 
 }
 
 export async function saveItem(collectionName: string, obj: any) {
-    let objId
-    if (obj !== null && typeof obj === 'object' && obj.hasOwnProperty('id') && obj.id) {
-        objId = obj['id']
-    }
-    if (objId === null) {
-        let nextId: number = await getNextSequentialId(collectionName, 'id')
-        obj.id = nextId
+    if (obj == null || typeof obj !== 'object') {
+        return {success: false, error:true, errorMessage: `Invalid object ${obj.toString()}`}
     }
 
+    if (!obj.hasOwnProperty('id') || !obj.id) {
+        let nextId: number = await getNextSequentialId(collectionName, 'id')
+        obj.id = nextId
+    } 
+    console.log(obj)
     try {
         await setDoc(doc(db, collectionName, obj.id.toString()), { ...obj })
         return { success: true, error: false, message: 'Saved successfully', errorDetails: null, documentDetails: obj}
     } catch (err) {
         console.log(err)
-        throw new Error('An error occurred when trying to save')
+        return { success: false, error: true, message: 'Unable to save', errorDetails: err, documentDetails: obj}
     }
 }
 

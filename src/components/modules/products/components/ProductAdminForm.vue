@@ -104,7 +104,6 @@ onMounted(() => {
     }
 })
 
-
 function resetForm() {
     productStore.setProductToEdit(null)
     state.isSaved = false
@@ -128,28 +127,6 @@ async function saveProduct() {
         }
     }
 }
-    // if (!validateProduct()) {
-    //     alert("Failed validation, bro")
-    // } else {
-    //     let plantDetails = { ...formData, photoData: null }
-    //     if (state.plant && state.plant.photoData) {
-    //         plantDetails.photoData = { ...state.plant.photoData }
-    //     }
-    //     productStore.saveProduct(plantDetails).then((res) => {
-    //         if (res.success) {
-    //             showToastMessage(res.message)
-    //             state.isSaved = true
-    //             //TODO build this: state.plant =  ??
-    //         } else {
-    //             alert(res.message)
-    //             console.log(res)
-    //         }
-    //         console.log(res)
-
-    //     }).catch((err) => {
-    //         console.log(err)
-    //     })
-    // }
 
 
 function confirmDelete() {
@@ -168,9 +145,9 @@ async function deleteProduct() {
     }
 }
 
-function saveAndNew() {
-    this.saveProduct()
-    this.resetForm()
+async function saveAndNew() {
+    await saveProduct()
+    resetForm()
 }
 
 function validateProduct() {
@@ -182,5 +159,7 @@ function validateProduct() {
 
 
 <style scoped>
-
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none
+}
 </style>
