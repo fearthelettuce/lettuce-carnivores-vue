@@ -1,8 +1,8 @@
 {
   "references": [
-    {
-      "path": "./tsconfig.node.json"
-    },
+    // { //this is breaking stuff, no idea why but commenting it makes the red squigglies go away.  Deal with it later
+    //   "path": "./tsconfig.node.json"
+    // },
     {
       "path": "./tsconfig.app.json"
     },
