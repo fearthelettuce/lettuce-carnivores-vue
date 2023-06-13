@@ -29,8 +29,16 @@
                 <button 
                     type="button"
                     class="btn btn-secondary"
-                    @click="underConstruction()">
+                    @click="router.push('/account')"
+                    v-if="userStore.getIsLoggedIn">
                     Login
+                </button>
+                <button 
+                    type="button"
+                    class="btn btn-secondary"
+                    @click="userStore.logout"
+                    v-else>
+                    Logout
                 </button>
             </nav>
             
@@ -41,10 +49,15 @@
 <script setup lang="ts">
 
 import MainNavbar from './MainNavbar.vue';
+import { useUserStore } from '@/components/modules/auth/stores/users'
+import { router } from '@/router/index'
+const userStore = useUserStore()
 
 function underConstruction() {
     alert('This feature has not been fully implemented yet!')
 }
+
+//TODO: Login/Logout button labels not working.  I give up
 
 </script>
 

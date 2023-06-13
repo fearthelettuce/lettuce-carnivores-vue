@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
-import { createUser, loginWithEmail, loginWithGoogle, logout } from '@/apis/authServices'
+import { createUser, loginWithEmail, loginWithGoogle, logoutUser } from '@/apis/authServices'
+ 
 
 export const useUserStore = defineStore('user', {
     state: () => ({
@@ -13,12 +14,26 @@ export const useUserStore = defineStore('user', {
         }
     },
     actions: {
-        register(email: string, password: string) {
-            createUser(email, password)
+        async register(email: string, password: string) {
+            const res = await createUser(email, password)
+            if (res && res.success) {
+                this.isLoggedIn = true
+                return {res}
+            }
         },
-        login(email: string, password: string) {
-            loginWithEmail(email, password)
-            this.isLoggedIn = true
+        async login(email: string, password: string) {
+            const res = await loginWithEmail(email, password)
+            if(res && res.success) {
+                this.isLoggedIn = true
+                return {res}
+            }
+            
+        },
+        async logout(){
+            const res = await logoutUser()
+            if(res.success) {
+                this.isLoggedIn = false
+            }
         }
     }
 })

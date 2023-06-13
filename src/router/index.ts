@@ -37,8 +37,8 @@ const routeData = [
       component: CareGuideView
     },
     {
-      path: "/profile",
-      name: 'profile',
+      path: "/account",
+      name: 'account',
       label: 'Account',
       component: LoginView
     }

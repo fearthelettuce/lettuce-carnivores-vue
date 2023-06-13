@@ -92,7 +92,7 @@ const { getProductToEdit: product } = storeToRefs(productStore)
 const state = reactive({
     isSaved: false,
     confirmDeleteModal: null,
-    successMessageToast: null,
+
     successMessage: null,
     isEditMode: false,
 })
@@ -117,7 +117,7 @@ async function saveProduct() {
 
     const res = await productStore.saveProduct(product.value).catch(err => console.error(err))
 
-    if (res && res.success) {
+    if (res && res.success && res.message) {
         toast.success(res.message)
         state.isSaved = true
     } else {

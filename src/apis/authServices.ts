@@ -3,38 +3,40 @@ import { auth } from '@/apis/firebase'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut  } from "firebase/auth";
 
 export async function createUser(email: string, password: string) {
-    createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-        return userCredential.user;
-    })
-    .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        return {error: true, message: errorMessage}
-    });
+  try {
+    const res = await createUserWithEmailAndPassword(auth, email, password)
+    if (res) {
+      return {success: true, user: res.user, error: false, message: 'Welcome!'};
+    }
+  } catch (err) {
+    console.error(err)
+    throw new Error ('Unable to register')
+  }
 }
 
 export async function loginWithEmail(email: string, password: string){
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        return userCredential.user;
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
+  try {
+    const res = await signInWithEmailAndPassword(auth, email, password)
+    if(res) {
+      return {success: true, user: res.user, error: false, message: 'Welcome!'};
+    }
+  } catch (err) {
+    console.error(err)
+    throw new Error ('Unable to log in')
+  }
 }
 
 export async function loginWithGoogle() {
-
+  return {success: false, user: undefined, error: true, errorDetails: 'This feature is not yet implemented', message: 'Sorry, unable to sign in.  Please try a different sign in method'}
 }
 
-export async function logout() {
-    signOut(auth).then(() => {
-        // Sign-out successful.
-        return {success: true, message: "Succesfully logged out"}
-      }).catch((error) => {
-        console.log(error)
-        return {error: true, message: error.toString()}
-      });
+export async function logoutUser() {
+  try {
+    const res = await signOut(auth)
+    console.log(res)
+    return {success: true, user: undefined, error: false, message: 'You have successfully signed out'};
+  } catch (err) {
+    console.error(err)
+    throw new Error ('Unable to logout')
+  }
 }

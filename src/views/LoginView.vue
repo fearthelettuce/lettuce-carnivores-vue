@@ -1,9 +1,9 @@
 <template>
-    <div class="container">
+    <div class="container mt-4">
         <div class="row">
 
-            <SignIn class="col-3"/>
-            <Register class="col-3"/>
+            <SignIn class="col-4"/>
+            <Register class="col-4"/>
         </div>
         
     </div>
