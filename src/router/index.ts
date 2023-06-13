@@ -4,7 +4,7 @@ import ProductsView from '@/views/ProductsView.vue'
 import ProductAdminView from '@/components/modules/products/components/ProductAdmin.vue'
 import BlogView from '@/views/BlogView.vue'
 import CareGuideView from '@/views/CareGuideView.vue'
-import AccountView from '@/views/AccountView.vue'
+import LoginView from '@/views/LoginView.vue'
 const routeData = [
     {
       path: "/",
@@ -40,7 +40,7 @@ const routeData = [
       path: "/profile",
       name: 'profile',
       label: 'Account',
-      component: AccountView
+      component: LoginView
     }
 ]
 

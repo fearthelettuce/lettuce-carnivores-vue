@@ -1,9 +1,20 @@
 <template>
-    <h1>Create an Account</h1>
-    <input type="text" placeholder="email" v-model="email" />
-    <input type="password" placeholder="password" v-model="password" />
-    <button @click="register">Submit</button>
-    <button @click="signInWithGoogle">Sign in with Google</button>
+    <div class="container border">
+        <h1>Create Account</h1>
+        <form>
+            <div class="form-group">
+                <label for="registerEmail">Email</label>
+                <input type="email" class="form-control" placeholder="email" id="registerEmail" v-model="registerEmail" />
+            </div>
+            <div class="form-group">
+                <label for="registerPassword">Password</label>
+                <input type="password" class="form-control" placeholder="password" id="registerPassword" v-model="registerPassword" />
+            </div>
+            <div class="mt-2">
+                <button class="btn btn-primary" @click="register">Register</button>
+            </div>
+        </form>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -13,12 +24,12 @@ import { router } from '@/router/index'
 
 const authStore = useUserStore()
 
-const email = ref("")
-const password = ref("")
+const registerEmail = ref("")
+const registerPassword = ref("")
 
 const register = async () => {
     try {
-        const response = await authStore.register(email.value, password.value)
+        const response = await authStore.register(registerEmail.value, registerPassword.value)
         console.log(response)
     } catch(error) {
         console.log(error)
@@ -28,7 +39,4 @@ const register = async () => {
     
 }
 
-const signInWithGoogle = () => {
-
-}
 </script>
