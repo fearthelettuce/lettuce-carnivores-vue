@@ -114,33 +114,37 @@ async function saveProduct() {
         alert("Failed validation, bro")
         return
     }
-
     const res = await productStore.saveProduct(product.value as Plant).catch(err => console.error(err))
-
     if (res && res.success && res.message) {
         toast.success(res.message)
         state.isSaved = true
     } else {
-        if (res) {
-            alert(res?.message)
+        console.log(res)
+        if (res && res.message) {
             console.log(res)
+            toast.error(res.message)
+            state.isSaved = false
         }
     }
 }
 
-
 function confirmDelete() {
     state.confirmDeleteModal.show()
-
 }
+
 async function deleteProduct() {
     if (product.value.id) {
+        const productId = product.value.id
         const res = await productStore.deleteById(product.value.id).catch(err => console.error(err))
-
-        if (res && res.deleted) {
-            toast.success(`Product ${product.value.id} deleted`)
+        if (res && res.success) {
+            console.log('banana')
+            toast.success(`Product ${productId} deleted`)
             state.confirmDeleteModal.hide()
             resetForm()
+        } else {
+            if(res && res.message) {
+                toast.error(res.message)
+            }
         }
     }
 }

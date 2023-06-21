@@ -40,7 +40,6 @@ export async function saveItem(collectionName: string, obj: any) {
         let nextId: number = await getNextSequentialId(collectionName, 'id')
         obj.id = nextId
     } 
-    console.log(obj)
     try {
         await setDoc(doc(db, collectionName, obj.id.toString()), { ...obj })
         return { success: true, error: false, message: 'Saved successfully', errorDetails: null, documentDetails: obj}

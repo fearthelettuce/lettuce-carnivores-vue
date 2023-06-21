@@ -69,13 +69,10 @@ export const useProductStore = defineStore('product', {
 
     actions: {
         setProductToEdit(product: Plant | null) {
-            console.log('hi from setProductToEdit in store')
-            console.log(this.getProductToEdit)
             if(product) {
                 this.productToEdit = product
             }
             else { this.productToEdit = newProduct }
-            console.log(this.getProductToEdit)
         },
 
         async fetchSearchResults() {
@@ -128,33 +125,42 @@ export const useProductStore = defineStore('product', {
             console.log(product)
             try {
                 const res = await saveItem(collectionName, product)
+                console.log(res)
                 //TODO convert to toRaw
-                const productDetails = JSON.parse(JSON.stringify( res.documentDetails))
-                const productIndex = this.productList?.findIndex(item => item.id === productDetails.id)
-                if (this.productList && productIndex && productIndex > -1) {
-                    this.productList.splice(productIndex, 1, productDetails)
+                if(res.success) {
+                    const productDetails = JSON.parse(JSON.stringify( res.documentDetails))
+                    const productIndex = this.productList?.findIndex(item => item.id === productDetails.id)
+                    if (this.productList && productIndex && productIndex > -1) {
+                        this.productList.splice(productIndex, 1, productDetails)
+                    } else {
+                        console.log(this.productList)
+                        console.log(this.productToEdit)
+                        this.productList?.push(productDetails)
+                        console.log(this.productList)
+                         console.log(this.productToEdit)
+                    }
+                    if (this.searchFilters) {
+                        this.filterProducts()
+                    }
+                    return { success: true, message: res.message }
                 } else {
-                    console.log(this.productList)
-                    console.log(this.productToEdit)
-                    this.productList?.push(productDetails)
-                    console.log(this.productList)
-                     console.log(this.productToEdit)
+                    console.log(res)
+                    return {success: false, error: true, errorDetails: res.error, message: 'There was an error saving'}
                 }
-                if (this.searchFilters) {
-                    this.filterProducts()
-                }
-                return { success: true, message: res.message }
             } catch (err) {
                 console.log(err)
-                return {success: false, error: true, errorDetails: err, errorMessage: 'There was an error saving'}
+                return {success: false, error: true, errorDetails: err, message: 'There was an error saving'}
             }
         },
 
         async deleteById(id: number | string) {
-            const res = deleteItem(collectionName, id).catch(err => {
-                console.error(err)
-                return { deleted: false, error: true, response: err }
+            const res = await deleteItem(collectionName, id).catch(err => {
+                console.log(err)
+                return { success: false, error: true, response: err, message: 'Unable to delete' }
             })
+            if(res.error) {
+                return { success: false, error: true, response: res.error, message: 'Unable to delete' }
+            }
             const productIndex = this.productList?.findIndex(item => item.id === id)
             if (this.productList && productIndex && productIndex > -1) {
                 this.productList?.splice(productIndex, 1)
@@ -162,7 +168,7 @@ export const useProductStore = defineStore('product', {
             if (this.productToEdit.id === id) {
                 this.setProductToEdit(null)
             }
-            return { deleted: true, error: false, response: res }
+            return { success: true, error: false, response: res, message: '' }
         },
 
         async updatePhotoData(productId: number, photoData: object) {
