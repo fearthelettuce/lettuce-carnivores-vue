@@ -11,36 +11,48 @@ const routeData = [
       name: 'home',
       label: 'Home',
       component: HomeView,
+      requiresLogin: false,
+      requiresAdmin: false,
     },
     {
       path: "/products",
       name: 'products',
       label: 'Products',
-      component: ProductsView
+      component: ProductsView,
+      requiresLogin: false,
+      requiresAdmin: false,
     },
     {
       path: "/productadmin",
       name: 'productAdmin',
       label: 'Product Admin',
-      component: ProductAdminView
+      component: ProductAdminView,
+      requiresLogin: true,
+      requiresAdmin: true,
     },
     {
       path: "/blog",
       name: 'blog',
       label: 'Blog',
-      component: BlogView
+      component: BlogView,
+      requiresLogin: false,
+      requiresAdmin: false,
     },
     {
       path: "/care",
       name: 'care',
-      label: 'Care Guide',
-      component: CareGuideView
+      label: 'Care',
+      component: CareGuideView,
+      requiresLogin: false,
+      requiresAdmin: false,
     },
     {
       path: "/account",
       name: 'account',
       label: 'Account',
-      component: LoginView
+      component: LoginView,
+      requiresLogin: true,
+      requiresAdmin: false,
     }
 ]
 

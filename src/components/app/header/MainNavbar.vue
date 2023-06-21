@@ -1,6 +1,6 @@
 <template>
     <ul class="navbar-nav flex-row flex-wrap me-auto mb-2 mb-lg-0">
-        <li class="nav-item" v-for="item of navData">
+        <li class="nav-item" v-for="item of allowedNavLinks">
             <router-link
                 :to="item.path"
                 class="nav-link text-light"
@@ -11,9 +11,22 @@
 </template>
 
 <script setup lang="ts">
-
+import { computed } from 'vue';
 import {navData} from '@/router/index'
+import { useUserStore } from '@/components/modules/auth/stores/users';
 
+const userStore = useUserStore()
+const allowedNavLinks = computed(() => {
+    let allowedNavData = navData
+    if(!userStore.getIsAdmin) {
+        allowedNavData = allowedNavData.filter((ele) => {console.log(ele.requiresAdmin); return !ele.requiresAdmin})
+    }
+    if(!userStore.getIsLoggedIn) {
+        allowedNavData = allowedNavData.filter((ele) => {return !ele.requiresLogin})
+    }
+    console.log(allowedNavData)
+    return allowedNavData
+})
 </script>
 
 <style scoped>

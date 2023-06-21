@@ -25,12 +25,12 @@
                     </div>
                     <MainNavbar />
                 </div>
-                
                 <button 
+                    v-if="!userStore.getIsLoggedIn"
                     type="button"
                     class="btn btn-secondary"
                     @click="router.push('/account')"
-                    v-if="userStore.getIsLoggedIn">
+                    >
                     Login
                 </button>
                 <button 
@@ -56,8 +56,6 @@ const userStore = useUserStore()
 function underConstruction() {
     alert('This feature has not been fully implemented yet!')
 }
-
-//TODO: Login/Logout button labels not working.  I give up
 
 </script>
 
