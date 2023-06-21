@@ -83,7 +83,7 @@ router.beforeEach((to, from) => {
     return userStore.getIsAdmin
   }
 
-  if(to.meta.requiresLogin && !userStore.getIsLoggedIn && to.name !=='home') {
+  if(to.meta.requiresLogin && !userStore.getIsLoggedIn && to.name !== 'home' && to.name !== 'account') {
     return {name: 'home'}
   }
 })

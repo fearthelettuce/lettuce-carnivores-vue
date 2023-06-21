@@ -1,7 +1,7 @@
 import type {Product, ProductImages} from './product'
 
 type Plant = {
-    genus: string,
+    genus?: string,
     clone?: string | undefined,
     propagationMethod?: string,
     source?: string,

@@ -82,6 +82,7 @@ import { storeToRefs } from 'pinia'
 import { Modal } from 'bootstrap'
 import { useToast } from 'vue-toastification' 
 import { useProductStore } from '../stores/product'
+import type { Plant } from '../types/plants'
 
 
 const productStore = useProductStore()
@@ -91,8 +92,7 @@ const { getProductToEdit: product } = storeToRefs(productStore)
 
 const state = reactive({
     isSaved: false,
-    confirmDeleteModal: null,
-
+    confirmDeleteModal: Modal || null,
     successMessage: null,
     isEditMode: false,
 })
@@ -115,7 +115,7 @@ async function saveProduct() {
         return
     }
 
-    const res = await productStore.saveProduct(product.value).catch(err => console.error(err))
+    const res = await productStore.saveProduct(product.value as Plant).catch(err => console.error(err))
 
     if (res && res.success && res.message) {
         toast.success(res.message)

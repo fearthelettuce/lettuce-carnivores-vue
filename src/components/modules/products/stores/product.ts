@@ -99,7 +99,6 @@ export const useProductStore = defineStore('product', {
 
         filterProducts() {
             let filteredProductsArr = this.productList
-            //let filteredProductsArr = toRaw(this.productList)
             if (this.searchFilters && Object.keys(this.searchFilters).length > 0) {
                 for (const [key, value] of Object.entries(this.searchFilters)) {
                     filteredProductsArr = filteredProductsArr?.filter((item: any) => { return item[key] === value })
@@ -125,7 +124,7 @@ export const useProductStore = defineStore('product', {
             this.productList = await findAll(collectionName) as Array<Plant>
         },
 
-        async saveProduct(product: Plant) {
+        async saveProduct(product: Product | Plant) {
             console.log(product)
             try {
                 const res = await saveItem(collectionName, product)
@@ -133,7 +132,6 @@ export const useProductStore = defineStore('product', {
                 const productDetails = JSON.parse(JSON.stringify( res.documentDetails))
                 const productIndex = this.productList?.findIndex(item => item.id === productDetails.id)
                 if (this.productList && productIndex && productIndex > -1) {
-                    //this.productList[productIndex] = productDetails
                     this.productList.splice(productIndex, 1, productDetails)
                 } else {
                     console.log(this.productList)
@@ -165,18 +163,6 @@ export const useProductStore = defineStore('product', {
                 this.setProductToEdit(null)
             }
             return { deleted: true, error: false, response: res }
-            // await deleteItem(collectionName, id).then((res) => {
-            //     const productIndex = this.productList?.findIndex(item => item.id === id)
-            //     if (this.productList && productIndex && productIndex > -1) {
-            //         this.productList?.splice(productIndex, 1)
-            //     }
-            //     if (this.productToEdit.id === id) {
-            //         this.setProductToEdit(null)
-            //     }
-            //     return {deleted: true, response: res}
-            // }).catch((err) => {
-            //     return { error: true, response: err }
-            // })
         },
 
         async updatePhotoData(productId: number, photoData: object) {
@@ -191,7 +177,6 @@ export const useProductStore = defineStore('product', {
         },
 
         //TODO: Firebase extension storage -resize images
-        
 
         getPhotoUrl(fileName: string) {
             const urlRoot = 'https://firebasestorage.googleapis.com/v0/b/lettuce-carnivores.appspot.com/o/'

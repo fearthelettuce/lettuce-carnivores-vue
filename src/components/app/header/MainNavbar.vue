@@ -18,12 +18,12 @@ import { useUserStore } from '@/components/modules/auth/stores/users';
 const userStore = useUserStore()
 const allowedNavLinks = computed(() => {
     let allowedNavData = navData
-    // if(!userStore.getIsAdmin) {
-    //     allowedNavData = allowedNavData.filter((ele) => {return !ele.meta.requiresAdmin})
-    // }
-    // if(!userStore.getIsLoggedIn) {
-    //     allowedNavData = allowedNavData.filter((ele) => {return !ele.meta.requiresLogin})
-    // }
+    if(!userStore.getIsAdmin) {
+        allowedNavData = allowedNavData.filter((ele) => {return !ele.meta.requiresAdmin})
+    }
+    if(!userStore.getIsLoggedIn) {
+        allowedNavData = allowedNavData.filter((ele) => {return !ele.meta.requiresLogin})
+    }
     return allowedNavData
 })
 </script>

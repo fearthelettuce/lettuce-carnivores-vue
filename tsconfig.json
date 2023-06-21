@@ -18,7 +18,8 @@
     "ignoreDeprecations": "5.0",
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "bootstrap/dist/js/bootstrap" : ["./node_modules/types/bootstrap"]
     },
   },
   

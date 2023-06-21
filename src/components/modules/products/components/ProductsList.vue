@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed } from 'vue'
+import { onMounted } from 'vue'
 import ProductCard from './ProductCard.vue'
 import { useProductStore } from '../stores/product'
 
@@ -26,8 +26,6 @@ const productStore = useProductStore()
 
 onMounted(() => {
     productStore.fetchSearchResults()
-
 })
-
 
 </script>

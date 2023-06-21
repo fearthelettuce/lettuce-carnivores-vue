@@ -63,9 +63,15 @@ onMounted(() => {
     }
 })
 
-function setSelectedProduct(event) {
-    const product = productStore.getProductById(event.target.value)
-    productStore.setProductToEdit(product)
+function setSelectedProduct(event: Event) {
+    let product
+    let productId = (event.target as HTMLInputElement).value
+    if(event && event.target && productId && productStore.getProductById) {
+        product = productStore.getProductById(Number(productId))
+    }
+    if(product) {
+        productStore.setProductToEdit(product)
+    }
 }
 
 </script>
