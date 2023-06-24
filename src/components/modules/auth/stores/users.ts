@@ -29,7 +29,6 @@ export const useUserStore = defineStore('user', {
             const res = await loginWithEmail(email, password)
             if(res && res.success) {
                 this.isLoggedIn = true
-                console.log(res)
                 if(res.user.uid) {
                     this.getUserInformation(res.user.uid)
                 }
@@ -53,3 +52,7 @@ export const useUserStore = defineStore('user', {
         }
     }
 })
+
+//TODO: Retrieve login from local storage
+// https://stackoverflow.com/questions/44571030/firebase-vue-vuex-keeping-the-user-logged-in
+// https://stackoverflow.com/questions/75299578/vuejs-firebase-check-if-a-user-is-logged-in-after-page-refresh

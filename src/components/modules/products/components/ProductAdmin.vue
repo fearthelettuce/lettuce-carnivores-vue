@@ -29,7 +29,7 @@
 
     <hr class="mt-5"/>
 
-    <ProductPhotoList />
+    <ProductPhotoList :product="productStore.getProductToEdit"/>
 
     
 
@@ -40,7 +40,7 @@ import { reactive, onMounted} from 'vue'
 import { Modal } from 'bootstrap'
 import { useProductStore } from '../stores/product'
 import ProductAdminForm from './ProductAdminForm.vue'
-import ProductPhotoList from './ProductPhotoList.vue'
+import ProductPhotoList from './photos/ProductPhotoList.vue'
 import ProductCard from './ProductCard.vue'
 import PhotoUpload from '@/components/app/UI/PhotoUpload.vue'
 import { storeToRefs } from 'pinia'
@@ -48,8 +48,8 @@ import { storeToRefs } from 'pinia'
 const productStore = useProductStore()
 const { getFilteredProducts: products } = storeToRefs(productStore)
 const state = reactive({
-    isSaved: false,
-    plant: null,
+    // isSaved: false,
+    // plant: null,
     confirmDeleteModal: null,
     successMessageToast: null,
     successMessage: null,

@@ -10,13 +10,16 @@ type Product = {
 }
 
 type ProductPhotos = {
-    primary?: ProductPhotoItem,
-    card?: ProductPhotoItem,
-    additional?: Array<ProductPhotoItem>,
-    upper?: ProductPhotoItem,
-    lower?: ProductPhotoItem,
+    primary?: ProductDetailItem,
+    card?: ProductDetailItem,
+    upper?: ProductDetailItem,
+    lower?: ProductDetailItem,
 }
 
+type ProductDetailItem = {
+    name: string,
+    fullPath: string
+}
 type PhotoItem = {
     name: string,
     type: PhotoTypes,
@@ -33,24 +36,8 @@ enum PhotoTypes {
     Lower = 'lower',
 }
 
-type ProductPhotoItem = {
-    name: string,
-    fullPath: string
-}
-type ProductImages = {
-    name: string,
-    cardImageUrl?: string,
-    primaryProductImageUrl?: string,
-    additionalProductImageUrls?: [string],
-    referenceImageUrls?: [string],
-}
-
-type NepenthesImages  = {
-    upperPitcherImageUrl?: string,
-    lowerPitcherImageUrl?: string,
-} & ProductImages
 
 type ProductFilters = {
     [key: string] : any
 }
-export type { Product, ProductImages, NepenthesImages, ProductFilters, ProductPhotos, PhotoTypes}
+export type { Product, ProductFilters, ProductPhotos, PhotoTypes}
