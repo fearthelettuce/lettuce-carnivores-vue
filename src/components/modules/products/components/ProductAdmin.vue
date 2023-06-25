@@ -42,7 +42,6 @@ import { useProductStore } from '../stores/product'
 import ProductAdminForm from './ProductAdminForm.vue'
 import ProductPhotoList from './photos/ProductPhotoList.vue'
 import ProductCard from './ProductCard.vue'
-import PhotoUpload from '@/components/app/UI/PhotoUpload.vue'
 import { storeToRefs } from 'pinia'
 
 const productStore = useProductStore()
