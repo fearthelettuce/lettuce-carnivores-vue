@@ -3,6 +3,7 @@ import {toRaw} from 'vue'
 import { saveItem, findAll, findByProperty, deleteItem, findDocById } from '@/apis/dataServices'
 import type { Plant } from '../types/plants'
 import type { Product, ProductFilters } from '../types/product'
+import type {PhotoItem} from '@/components/modules/products/types//product'
 const collectionName = 'products'
 
 const newProduct = {
@@ -12,7 +13,7 @@ const newProduct = {
     isForSale: true,
     quantity: 1,
     isDiscountable: true,
-    photos: [],
+    photos: [] as Array<PhotoItem>,
     genus: null,
     clone: '',
     propagationMethod: '',
@@ -30,13 +31,6 @@ export const useProductStore = defineStore('product', {
             { id: 1, label: 'Nepenthes' }, 
             { id: 2, label: 'Heliamphora' }, 
             { id: 3, label: 'Cephalotus' }
-        ],
-        photoTypes: [
-            { id: 1, label: 'Primary' },
-            { id: 2, label: 'Card' },
-            { id: 3, label: 'Additional'},
-            { id: 4, label: 'Upper' },
-            { id: 5, label: 'Lower' }
         ],
         propagationMethodList: ['Stem Cutting', 'Basal Division', 'Division', 'Seed', 'Tissue Culture', 'Other', 'Unknown'],
         sourceList: ['Borneo Exotics', 'Exotica Plants', 'Wistuba', 'eBay/Facebook', 'Other', 'Unknown'],

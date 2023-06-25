@@ -22,13 +22,12 @@ type ProductDetailItem = {
 }
 type PhotoItem = {
     name: string,
-    type: PhotoTypes,
+    type: PhotoTypes | undefined,
     path: string | URL,
-    isUploaded: boolean,
     originalFilename: string,
 }
 
-enum PhotoTypes {
+export enum PhotoTypes {
     Primary = 'primary',
     Card = 'card',
     Additional = 'additional',
@@ -40,4 +39,4 @@ enum PhotoTypes {
 type ProductFilters = {
     [key: string] : any
 }
-export type { Product, ProductFilters, ProductPhotos, PhotoTypes}
+export type { Product, ProductFilters, ProductPhotos, PhotoItem}

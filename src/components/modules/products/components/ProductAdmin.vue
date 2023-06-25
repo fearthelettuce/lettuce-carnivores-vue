@@ -4,15 +4,18 @@
             <div class="col-auto">
                 <div class="row my-4 g-3 align-items-center">
                     <div class="col-auto">
-                        <select 
-                            name="editProduct" 
-                            class="form-select" 
-                            aria-label="Select a product to edit" 
-                            @change="setSelectedProduct" 
-                            :value="productStore.getProductToEdit.id">
-                            <option id="placeholder" selected disabled value="">Select a product to edit</option>
-                            <option v-for="product of products" :value="product.id" >{{ product.name }} ({{ product.id }})</option>
-                        </select>
+                        <div class="form-floating">
+                            <select 
+                                name="editProduct" 
+                                it="editProduct"
+                                class="form-select" 
+                                aria-label="Select a product to edit" 
+                                @change="setSelectedProduct" 
+                                :value="productStore.getProductToEdit.id">
+                                <option v-for="product of products" :value="product.id" >{{ product.name }} ({{ product.id }})</option>
+                            </select>
+                            <label for="editProduct">Select a product to edit</label>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -22,16 +25,14 @@
                 </div>
             </div>
             <div class="col-3">
-                <ProductCard :product="productStore.getProductToEdit"/>
+                <ProductCard 
+                :product="productStore.getProductToEdit"
+                />
             </div>
         </div>
     </div>
-
     <hr class="mt-5"/>
-
-    <ProductPhotoList :product="productStore.getProductToEdit"/>
-
-    
+    <ProductPhotoList />
 
 </template>
 
@@ -42,17 +43,14 @@ import { useProductStore } from '../stores/product'
 import ProductAdminForm from './ProductAdminForm.vue'
 import ProductPhotoList from './photos/ProductPhotoList.vue'
 import ProductCard from './ProductCard.vue'
+import type {PhotoItem} from '@/components/modules/products/types//product'
 import { storeToRefs } from 'pinia'
 
 const productStore = useProductStore()
+
 const { getFilteredProducts: products } = storeToRefs(productStore)
 const state = reactive({
-    // isSaved: false,
-    // plant: null,
     confirmDeleteModal: null,
-    successMessageToast: null,
-    successMessage: null,
-    isEditMode: false,
 })
 
 onMounted(() => {
@@ -72,6 +70,7 @@ function setSelectedProduct(event: Event) {
         productStore.setProductToEdit(product)
     }
 }
+
 
 </script>
 

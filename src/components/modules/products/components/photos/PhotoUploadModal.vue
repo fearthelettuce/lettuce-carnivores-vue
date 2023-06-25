@@ -57,7 +57,16 @@
                                     </button>
 
                                 </div>
-                                <div class="col-3 d-flex align-items-center justify-content-center">{{ photo.name }}</div>
+                                <div class="col-3 d-flex flex-column align-items-center justify-content-center">
+                                    <div>{{ photo.name }}</div>
+                                    <div class="form-floating w-100">
+                                        <select name="photoTypeSelect py-0" id="photoTypeSelect" class="form-select" v-model="photo.type">
+                                            <option v-for="item of PhotoTypes" :value="item">{{ item }}</option>
+                                        </select>
+                                        <label for="photoTypeSelect">Select Photo Type</label>
+                                    </div>
+                                    
+                                </div>
                                 
                                 <div class="col-7 d-flex  align-items-center justify-content-center">
                                     <img class="imagePreview" :src="photo.tempUrl"/>
@@ -74,7 +83,7 @@
                 </div>
                 <div class="modal-footer modal-footer--sticky border-0">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="$emit('closeModal')">Cancel</button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="$emit('closeModal')">Upload</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="uploadFiles">Upload</button>
                 </div>
             </div>
         </div>
@@ -83,11 +92,20 @@
     </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { reactive } from 'vue';
 import { uploadFile } from '@/apis/fileServices';
+import type {PhotoItem} from '@/components/modules/products/types//product'
+import { PhotoTypes } from '@/components/modules/products/types//product'
 
-const fileSelectElement = ref('fileSelectElement')
-const selectedFiles: Array<{file?: File, tempUrl: string, name: string, order: number}> = reactive([])
+const emit = defineEmits(['closeModal','showToast', 'updatePhotoData'])
+const selectedFiles: Array<{
+    file: File, 
+    tempUrl: string, 
+    name: string,
+    type?: PhotoTypes | undefined
+}> = reactive([])
+
+const photoDetails: Array<PhotoItem> = reactive([])
 
 function onFileChanged($event: Event) {
     const target = $event.target as HTMLInputElement
@@ -97,7 +115,6 @@ function onFileChanged($event: Event) {
                 file: target.files[i],
                 tempUrl: URL.createObjectURL(target.files[i]),
                 name: target.files[i].name,
-                order: i
             })
         }
     }    
@@ -112,6 +129,37 @@ function arrayMove(arr: Array<any>, fromIndex: number, toIndex: number) {
     const ele = arr[fromIndex]
     arr.splice(fromIndex,1)
     arr.splice(toIndex, 0, ele)
+}
+
+async function uploadFiles() {
+    let fileUploadCounter = 0
+    if(selectedFiles.length === 0) {
+        alert('No files selected')
+        return
+    }
+
+    for (let i = 0; i < selectedFiles.length; i++) {
+        const res = await uploadFile(selectedFiles[i].name, 'plantPhotos', selectedFiles[i].file)
+        if (res) {
+            //if (photoData[i].photoType === 'additional') {
+            photoDetails.push({
+                name: selectedFiles[i].name,
+                type: selectedFiles[i].type ? selectedFiles[i].type : PhotoTypes.Additional,
+                path: res,
+                originalFilename: selectedFiles[i].name,
+                
+            })
+
+            fileUploadCounter++
+            if (i + 1 == selectedFiles.length) {
+                emit('closeModal')
+                emit('showToast',{message: `${fileUploadCounter} of ${selectedFiles.length} files uploaded`, type: 'success'})
+                emit('updatePhotoData',photoDetails)
+            }
+        } else {
+            alert('Something went wrong')
+        }
+    }
 }
 
 </script>
