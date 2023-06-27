@@ -37,7 +37,11 @@ const loginEmail = ref("")
 const loginPassword = ref("")
 const rememberMeCheckbox = ref(true)
 
-const login = async () => {
+async function login () {
+    if(!areInputsValid()) {
+        toast.error('Unable to login, please check username/password')
+        return
+    }
     try {
         const res = await userStore.login(loginEmail.value, loginPassword.value)
         console.log(res)
@@ -50,4 +54,10 @@ const login = async () => {
     router.push('/')
 }
 
+function areInputsValid() {
+    if(!loginEmail.value || loginEmail.value.length < 8 || !loginPassword.value || loginPassword.value.length < 8 ) {
+        return false
+    }
+    return true
+}
 </script>

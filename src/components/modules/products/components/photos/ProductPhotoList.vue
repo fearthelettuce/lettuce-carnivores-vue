@@ -11,6 +11,7 @@
 
     <PhotoUploadModal
         ref="photoUploadModal"
+        storageFolder="plantPhotos"
         @closeModal="state.photoUploadModal.hide()"
         @updatePhotoData="appendPhotos"
         @showToast="showToast"
@@ -18,6 +19,7 @@
 </template>
 
 <script setup lang="ts">
+//TODO: add way to upload reference photos using props, different methods.  
 import { onMounted, reactive } from 'vue';
 import { useProductStore } from '../../stores/product';
 import { storeToRefs } from 'pinia'
