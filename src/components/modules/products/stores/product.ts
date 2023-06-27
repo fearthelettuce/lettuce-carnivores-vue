@@ -3,7 +3,7 @@ import {toRaw} from 'vue'
 import { saveItem, findAll, findByProperty, deleteItem, findDocById } from '@/apis/dataServices'
 import type { Plant } from '../types/plants'
 import type { Product, ProductFilters } from '../types/product'
-import type {PhotoItem} from '@/components/modules/products/types//product'
+import type {PhotoItem, PhotoDetails} from '@/components/modules/products/types//product'
 const collectionName = 'products'
 
 const newProduct = {
@@ -14,6 +14,7 @@ const newProduct = {
     quantity: 1,
     isDiscountable: true,
     photos: [] as Array<PhotoItem>,
+    photoData: {} as PhotoDetails,
     genus: null,
     clone: '',
     propagationMethod: '',
@@ -107,7 +108,6 @@ export const useProductStore = defineStore('product', {
 
         async findProductById(id: number) {
             const res = await findDocById(collectionName, id).catch(err => console.log(err))
-            console.log(res)
             return res
         },
 
@@ -119,7 +119,6 @@ export const useProductStore = defineStore('product', {
             console.log(product)
             try {
                 const res = await saveItem(collectionName, product)
-                console.log(res)
                 //TODO convert to toRaw
                 if(res.success) {
                     const productDetails = JSON.parse(JSON.stringify( res.documentDetails))
@@ -165,14 +164,34 @@ export const useProductStore = defineStore('product', {
             return { success: true, error: false, response: res, message: '' }
         },
 
-        async updatePhotoData(productId: number, photoData: object) {
-            if (productId && photoData) {
-                const product = await this.findProductById(productId).catch((err) => { console.log(err)}) as Plant
-                if (product && photoData) {
-                    product.photoData = photoData
-                    console.log(product)
-                    this.saveProduct(product)
+        async updatePhotoData(product: Product | typeof newProduct, photoArr: Array<PhotoItem>) {
+            if(!product || !photoArr) {
+                return 
+            }
+            if(product.photos) {
+                product.photos = product.photos.concat(photoArr)
+            } else {
+                product.photos = photoArr
+            }
+            if(!('photoData' in product)) {
+                product['photoData'] = {} as PhotoDetails
+            }
+            console.log('banana')
+            for(let photo of product.photos) {
+                console.log(photo.type)
+                if(photo.type && photo.type !== 'additional' && product.photoData) {
+                    product.photoData[photo.type] = {name: photo.name, fullPath:photo.path}
                 }
+                console.log(product.photoData)
+            }
+
+            if (product.id) {
+                this.saveProduct(product)
+                this.setProductToEdit(product)
+                // const someProduct = await this.findProductById(product.id).catch((err) => { console.log(err)}) as Product
+                // if (someProduct) {
+                //     this.saveProduct(someProduct)
+                // }
             }
         },
 
@@ -183,7 +202,7 @@ export const useProductStore = defineStore('product', {
             const encodedFileName = encodeURIComponent(fileName)
             const urlSuffix = '?alt=media'
             return `${urlRoot}${encodedFileName}${urlSuffix}`
-        }
+        },
     }
 
     

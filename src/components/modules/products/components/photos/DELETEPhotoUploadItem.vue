@@ -27,9 +27,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, computed, watch } from 'vue';
+import { reactive, onMounted, computed } from 'vue';
 import { useProductStore } from '@/components/modules/products/stores/product';
-import { ProductPhotos } from '@/components/modules/products/types/product';
 import { emit } from 'process';
 
 const productStore = useProductStore()

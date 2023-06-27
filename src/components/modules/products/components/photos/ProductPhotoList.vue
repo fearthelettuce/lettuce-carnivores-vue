@@ -1,12 +1,11 @@
 <template>
     <div class="container">
+        <button class="btn btn-primary" @click="state.photoUploadModal.show()">Add Photo</button>
         <ProductPhotoItem
         v-if="product.photos && product.photos.length > 0"
         v-for="photo of product.photos"
         :photo="photo"
         />
-        <button class="btn btn-primary" @click="state.photoUploadModal.show()">Add Photo</button>
-
     </div>
 
     <PhotoUploadModal
@@ -50,15 +49,11 @@ function showToast(obj: any) {
 }
 
 function appendPhotos(arr:Array<PhotoItem>) {
-    console.log(arr)
-    if(product.value.photos) {
-        product.value.photos = product.value.photos.concat(arr)
-    } else {
-        product.value.photos = arr
-    }
-    if(product.value.id) {
-        productStore.saveProduct(product.value)
-    } 
+    productStore.updatePhotoData(product.value, arr)
 }
 
 </script>
+
+<style scoped>
+
+</style>

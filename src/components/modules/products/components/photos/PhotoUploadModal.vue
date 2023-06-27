@@ -98,6 +98,7 @@ import type {PhotoItem} from '@/components/modules/products/types//product'
 import { PhotoTypes } from '@/components/modules/products/types//product'
 
 const emit = defineEmits(['closeModal','showToast', 'updatePhotoData'])
+const props = defineProps(['storageFolder'])
 const selectedFiles: Array<{
     file: File, 
     tempUrl: string, 
@@ -139,7 +140,7 @@ async function uploadFiles() {
     }
 
     for (let i = 0; i < selectedFiles.length; i++) {
-        const res = await uploadFile(selectedFiles[i].name, 'plantPhotos', selectedFiles[i].file)
+        const res = await uploadFile(selectedFiles[i].name, props.storageFolder, selectedFiles[i].file)
         if (res) {
             //if (photoData[i].photoType === 'additional') {
             photoDetails.push({

@@ -5,11 +5,11 @@ type Product = {
     isForSale: boolean,
     quantity: number,
     isDiscountable?: boolean,
-    photoData?: ProductPhotos,
+    photoData?: PhotoDetails,
     photos: Array<PhotoItem>,
 }
 
-type ProductPhotos = {
+type PhotoDetails = {
     primary?: ProductDetailItem,
     card?: ProductDetailItem,
     upper?: ProductDetailItem,
@@ -18,7 +18,7 @@ type ProductPhotos = {
 
 type ProductDetailItem = {
     name: string,
-    fullPath: string
+    fullPath: string | URL
 }
 type PhotoItem = {
     name: string,
@@ -39,4 +39,4 @@ export enum PhotoTypes {
 type ProductFilters = {
     [key: string] : any
 }
-export type { Product, ProductFilters, ProductPhotos, PhotoItem}
+export type { Product, ProductFilters, PhotoDetails, PhotoItem}

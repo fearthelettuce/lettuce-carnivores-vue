@@ -31,8 +31,11 @@
             </div>
         </div>
     </div>
-    <hr class="mt-5"/>
-    <ProductPhotoList />
+    <div>
+        <hr class="mt-5"/>
+        <ProductPhotoList />
+    </div>
+    
 
 </template>
 
