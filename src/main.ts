@@ -15,6 +15,7 @@ import 'vue-toastification/dist/index.css'
 
 
 import BaseModal from '@/components/app/UI/BaseModal.vue'
+import Spinner from '@/components/app/UI/Spinner.vue'
 
 library.add(fas);
 library.add(far);
@@ -27,4 +28,5 @@ app.use(Toast, { showCloseButtonOnHover: true,})
 app.component('fa', FontAwesomeIcon)
 app.component('far', FontAwesomeIcon)
 app.component('BaseModal', BaseModal)
+app.component('Spinner',Spinner)
 app.mount('#app')

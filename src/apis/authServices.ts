@@ -1,6 +1,6 @@
 import { auth } from '@/apis/firebase'
 
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut  } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged  } from "firebase/auth";
 
 export async function createUser(email: string, password: string) {
   try {
@@ -40,3 +40,14 @@ export async function logoutUser() {
     throw new Error ('Unable to logout')
   }
 }
+
+// export async function authStateListener() {
+//   const res = await onAuthStateChanged(auth)
+//   , (user) => {
+//     if(user) {
+//       return true
+//     } else {
+//       return false
+//     }
+//   })
+// }
