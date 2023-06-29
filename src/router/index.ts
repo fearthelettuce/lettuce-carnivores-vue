@@ -3,7 +3,7 @@ import { useUserStore } from '@/components/modules/auth/stores/users'
 import HomeView from '@/views/HomeView.vue'
 import ProductsView from '@/views/ProductsView.vue'
 import ProductAdminView from '@/components/modules/products/components/ProductAdmin.vue'
-import BlogView from '@/views/BlogView.vue'
+import TheAbout from '@/views/AboutView.vue'
 import CareGuideView from '@/views/CareGuideView.vue'
 import LoginView from '@/views/LoginView.vue'
 
@@ -40,10 +40,10 @@ const routeData = [
       }
     },
     {
-      path: "/blog",
-      name: 'blog',
-      label: 'Blog',
-      component: BlogView,
+      path: "/about",
+      name: 'about',
+      label: 'about',
+      component: AboutView,
       meta: {
         requiresLogin: false,
         requiresAdmin: false,
