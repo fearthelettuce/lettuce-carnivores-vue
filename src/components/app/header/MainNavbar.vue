@@ -1,9 +1,8 @@
 <template>
     <ul class="navbar-nav flex-row flex-wrap me-auto mb-2 mb-lg-0">
-        <li class="nav-item" v-for="item of allowedNavLinks">
+        <li class="nav-item" v-for="item of allowedNavLinks" :key="item.name">
             <router-link
                 :to="item.path"
-                :key="item.name"
                 class="nav-link text-light"
             >{{ item.label }}</router-link>
         </li>

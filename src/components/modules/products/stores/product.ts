@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import {toRaw} from 'vue'
+// import {toRaw} from 'vue'
 import { saveItem, findAll, findByProperty, deleteItem, findDocById } from '@/apis/dataServices'
 import type { Plant } from '../types/plants'
 import type { Product, ProductFilters } from '../types/product'
@@ -80,7 +80,7 @@ export const useProductStore = defineStore('product', {
         setFilterCriteria(key: string, value: any) {
             console.log(key)
             console.log(value)
-            if (this.searchFilters.hasOwnProperty(key)) {
+            if (Object.prototype.hasOwnProperty.call(this.searchFilters, key)) {
                (this.searchFilters as any)[key] = [value] 
             } else {
                 this.searchFilters[key] = value

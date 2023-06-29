@@ -10,7 +10,7 @@
                 <div class="col-auto">
                     <select name="editProduct" class="form-select" aria-label="Select a product to edit" @change="getProductDetails" v-model="productToEdit">
                         <option id="placeholder" selected disabled value="">Select a product to edit</option>
-                        <option v-for="product of products" :value="product.id" >{{ product.name }} ({{ product.id }})</option>
+                        <option v-for="product of products" :value="product.id" :key="product.id" >{{ product.name }} ({{ product.id }})</option>
                     </select>
                 </div>
             </div>

@@ -61,7 +61,7 @@
                                     <div>{{ photo.name }}</div>
                                     <div class="form-floating w-100">
                                         <select name="photoTypeSelect py-0" id="photoTypeSelect" class="form-select" v-model="photo.type">
-                                            <option v-for="item of PhotoTypes" :value="item">{{ item }}</option>
+                                            <option v-for="item of PhotoTypes" :value="item" :key="item">{{ item }}</option>
                                         </select>
                                         <label for="photoTypeSelect">Select Photo Type</label>
                                     </div>

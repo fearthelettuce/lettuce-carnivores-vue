@@ -36,7 +36,7 @@ export async function saveItem(collectionName: string, obj: any) {
         return {success: false, error:true, errorMessage: `Invalid object ${obj.toString()}`}
     }
 
-    if (!obj.hasOwnProperty('id') || !obj.id) {
+    if (!Object.prototype.hasOwnProperty.call(obj, 'id') || !obj.id) {
         const nextId: number = await getNextSequentialId(collectionName, 'id')
         obj.id = nextId
     } 

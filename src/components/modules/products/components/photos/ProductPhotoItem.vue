@@ -1,11 +1,10 @@
 <template>
-    <div class="row">
-        <div class="col-2">{{ props.photo.name ? props.photo.name : '' }}</div>
-        <div class="col-2">{{ props.photo.type ? props.photo.type : '' }}</div>
-        <img :src="photoUrl" />
-        <div class="col-2">{{ props.photo.path ? props.photo.path : '' }}</div>
-        <div class="col-2">{{ props.photo.originalFilename ? props.photo.originalFilename : '' }}</div>
-        <div class="col-1 d-flex align-items-center justify-content-center">
+    <div class="row my-4">
+        <div class="col-4 centered"><img class="" :src="photoUrl" /></div>
+        <div class="col-2 centered">{{ props.photo.name ? props.photo.name : '' }}</div>
+        <div class="col-1 centered">{{ props.photo.type ? props.photo.type : '' }}</div>
+        <div class="col-4 centered">{{ props.photo.path ? props.photo.path : '' }}</div>
+        <div class="col-1 centered">
             <div class="btn " @click="deletePhoto(props.photo.path)">
                 <FontAwesome icon="dumpster-fire" size="lg" style="color: #f29c07;" />
             </div>
@@ -34,4 +33,11 @@ function deletePhoto(path: string | URL) {
 img{
     width: 20em;
 }
+
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 </style>
