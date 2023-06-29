@@ -1,10 +1,9 @@
 <template>
-  <main>
-    <p>This will be the home</p>
-  </main>
+  <TheHome />
 </template>
 
 <script setup lang="ts">
+import TheHome from '@/components/modules/home/TheHome.vue';
 </script>
 
 
