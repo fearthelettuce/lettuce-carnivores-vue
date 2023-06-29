@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { createUser, loginWithEmail, loginWithGoogle, logoutUser, authStateListener } from '@/apis/authServices'
+import { createUser, loginWithEmail, logoutUser, authStateListener } from '@/apis/authServices'
 import {findDocById} from '@/apis/dataServices'
 
 export const useUserStore = defineStore('user', {
@@ -18,11 +18,16 @@ export const useUserStore = defineStore('user', {
     },
 
     actions: {
-        // async initalizeAuthListener() {
-        //     const res = await authStateListener(user: any)
-        //     this.user === res.user ? res.user : null
-
-        // },
+        async initalizeAuthListener() {
+            const res = await authStateListener((user: any) => {
+                this.user = user ? user : null
+                
+            })
+            if(res.user) {
+                const profile = (await getUserProfile()) as any;
+                this.profile = profile
+            }
+        },
         async register(email: string, password: string) {
             const res = await createUser(email, password)
             if (res && res.success) {

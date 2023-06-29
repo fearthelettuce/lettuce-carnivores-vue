@@ -1,4 +1,4 @@
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage' 
+import { ref, uploadBytes } from 'firebase/storage' 
 import { storage } from '@/apis/firebase'
 
 

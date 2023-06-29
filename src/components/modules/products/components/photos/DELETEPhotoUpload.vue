@@ -128,7 +128,7 @@ const photoTypes = [
 function onFileChanged($event: Event) {
     const target = $event.target as HTMLInputElement
     if (target && target.files) {
-        for (let i: number = 0; i < target.files.length; i++) {
+        for (let i = 0; i < target.files.length; i++) {
             photoData.push({
                 file: target.files[i],
                 tempUrl: URL.createObjectURL(target.files[i])

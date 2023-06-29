@@ -41,13 +41,12 @@ export async function logoutUser() {
   }
 }
 
-// export async function authStateListener() {
-//   const res = await onAuthStateChanged(auth)
-//   , (user) => {
-//     if(user) {
-//       return true
-//     } else {
-//       return false
-//     }
-//   })
-// }
+export async function authStateListener(callback: any) {
+  onAuthStateChanged(auth, (user) => {
+    if(user) {
+      callback(user)
+    } else {
+      callback(null)
+    }
+  })
+}

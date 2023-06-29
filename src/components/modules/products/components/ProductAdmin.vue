@@ -12,7 +12,7 @@
                                 aria-label="Select a product to edit" 
                                 @change="setSelectedProduct" 
                                 :value="productStore.getProductToEdit.id">
-                                <option v-for="product of products" :value="product.id" >{{ product.name }} ({{ product.id }})</option>
+                                <option v-for="product of products" :value="product.id" :key="product.id" >{{ product.name }} ({{ product.id }})</option>
                             </select>
                             <label for="editProduct">Select a product to edit</label>
                         </div>
@@ -47,7 +47,6 @@ import { useProductStore } from '../stores/product'
 import ProductAdminForm from './ProductAdminForm.vue'
 import ProductPhotoList from './photos/ProductPhotoList.vue'
 import ProductCard from './ProductCard.vue'
-import type {PhotoItem} from '@/components/modules/products/types//product'
 import { storeToRefs } from 'pinia'
 
 const productStore = useProductStore()

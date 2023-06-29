@@ -3,6 +3,7 @@
         <li class="nav-item" v-for="item of allowedNavLinks">
             <router-link
                 :to="item.path"
+                :key="item.name"
                 class="nav-link text-light"
             >{{ item.label }}</router-link>
         </li>

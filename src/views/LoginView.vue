@@ -3,7 +3,7 @@
         <div class="row">
 
             <SignIn class="col-4"/>
-            <Register class="col-4"/>
+            <TheRegistration class="col-4"/>
         </div>
         
     </div>
@@ -11,5 +11,5 @@
 
 <script setup lang="ts">
 import SignIn from '@/components/modules/auth/components/SignIn.vue'
-import Register from '@/components/modules/auth/components/Register.vue';
+import TheRegistration from '@/components/modules/auth/components/TheRegistration.vue';
 </script>

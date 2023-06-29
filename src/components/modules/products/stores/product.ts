@@ -177,7 +177,7 @@ export const useProductStore = defineStore('product', {
                 product['photoData'] = {} as PhotoDetails
             }
             console.log('banana')
-            for(let photo of product.photos) {
+            for(const photo of product.photos) {
                 console.log(photo.type)
                 if(photo.type && photo.type !== 'additional' && product.photoData) {
                     product.photoData[photo.type] = {name: photo.name, fullPath:photo.path}

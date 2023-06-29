@@ -43,7 +43,7 @@
                                     class="btn px-1 py-0"
                                     v-if="index !== 0"
                                     @click="arrayMove(selectedFiles,index,index-1)">
-                                        <fa 
+                                        <FontAwesome 
                                         class="move-arrow" 
                                         icon="caret-up" />
                                     </button>
@@ -51,7 +51,7 @@
                                     v-if="index !== selectedFiles.length -1"
                                     class="btn px-1 py-0"
                                     @click="arrayMove(selectedFiles,index,index+1)" >
-                                        <fa  
+                                        <FontAwesome  
                                         class="move-arrow" 
                                         icon="caret-down" />
                                     </button>
@@ -73,7 +73,7 @@
                                 </div>
                                 <div class="col-1 d-flex align-items-center justify-content-center">
                                     <div class="btn " @click="removePhoto(index)">
-                                    <fa icon="dumpster-fire" size="lg" style="color: #f29c07;" />
+                                    <FontAwesome icon="dumpster-fire" size="lg" style="color: #f29c07;" />
                                 </div>
                                 </div>
                                 
@@ -111,7 +111,7 @@ const photoDetails: Array<PhotoItem> = reactive([])
 function onFileChanged($event: Event) {
     const target = $event.target as HTMLInputElement
     if (target && target.files) {
-        for (let i: number = 0; i < target.files.length; i++) {
+        for (let i = 0; i < target.files.length; i++) {
             selectedFiles.push({
                 file: target.files[i],
                 tempUrl: URL.createObjectURL(target.files[i]),

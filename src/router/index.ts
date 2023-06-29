@@ -77,7 +77,7 @@ export const router = createRouter({
   routes: routeData,
 })
 
-router.beforeEach((to, from) => {
+router.beforeEach((to) => {
   const userStore = useUserStore()
   if(to.meta.requiresAdmin) {
     return userStore.getIsAdmin

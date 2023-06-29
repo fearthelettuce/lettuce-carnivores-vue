@@ -7,7 +7,7 @@
         <div class="col-2">{{ props.photo.originalFilename ? props.photo.originalFilename : '' }}</div>
         <div class="col-1 d-flex align-items-center justify-content-center">
             <div class="btn " @click="deletePhoto(props.photo.path)">
-                <fa icon="dumpster-fire" size="lg" style="color: #f29c07;" />
+                <FontAwesome icon="dumpster-fire" size="lg" style="color: #f29c07;" />
             </div>
         </div>
     </div>

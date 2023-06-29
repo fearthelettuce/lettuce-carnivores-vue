@@ -21,9 +21,9 @@ async function getNextSequentialId(collectionName: string, idFieldName: string) 
     } catch (err) {
         console.log(err)
     }
-    let nextSequentialId: any
+    let nextSequentialId: number
     if (docs) {
-        nextSequentialId = await docs.reduce((acc: Number, doc: any) => acc = acc > doc[idFieldName] ? acc : doc[idFieldName], startingValue).valueOf()
+        nextSequentialId = await docs.reduce((acc: number, doc: any) => acc = acc > doc[idFieldName] ? acc : doc[idFieldName], startingValue).valueOf()
         nextSequentialId++ 
     } else {
         return startingValue + 1
@@ -37,7 +37,7 @@ export async function saveItem(collectionName: string, obj: any) {
     }
 
     if (!obj.hasOwnProperty('id') || !obj.id) {
-        let nextId: number = await getNextSequentialId(collectionName, 'id')
+        const nextId: number = await getNextSequentialId(collectionName, 'id')
         obj.id = nextId
     } 
     try {
@@ -83,7 +83,7 @@ export async function findByProperty(collectionName: string, property: string, v
 }
 
 export async function findAll(collectionName: string) {
-    let returnArr: Array<unknown> = []
+    const returnArr: Array<unknown> = []
     try {
         const querySnapshot = await getDocs(collection(db, collectionName))
         querySnapshot.forEach((doc) => {

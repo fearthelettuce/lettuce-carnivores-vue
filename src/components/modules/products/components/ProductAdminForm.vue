@@ -9,7 +9,7 @@
                 <label for="genus" class="form-label">Genus</label>
                 <select name="genus" class="form-select" aria-label="Select Genus" v-model="product.genus">
                     <option id="placeholder" selected disabled value="">Select Genus</option>
-                    <option v-for="genus of productStore.genusList" :value="genus">{{ genus.label }}</option>
+                    <option v-for="genus of productStore.genusList" :value="genus" :key="genus.id">{{ genus.label }}</option>
                 </select>
             </div>
             <div class="col-5 mb-3">
@@ -77,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue';
+import { reactive, onMounted } from 'vue';
 import { storeToRefs } from 'pinia'
 import { Modal } from 'bootstrap'
 import { useToast } from 'vue-toastification' 
