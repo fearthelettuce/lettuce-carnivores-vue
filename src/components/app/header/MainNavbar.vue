@@ -4,6 +4,7 @@
             <router-link
                 :to="item.path"
                 class="nav-link text-light"
+                :class="item.path === '/' ? 'no-background' : ''"
             >{{ item.label }}</router-link>
         </li>
 
@@ -35,6 +36,9 @@ const allowedNavLinks = computed(() => {
         background-color: #515151;
     }
     
+    .no-background {
+        background-color: transparent !important;
+    }
     a {
         margin: 0 0.25rem;
     }

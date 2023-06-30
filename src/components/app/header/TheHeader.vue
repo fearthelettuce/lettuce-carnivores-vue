@@ -1,5 +1,5 @@
 <template>
-    <header class="navbar navbar-expand-xl bg-dark sticky-top">
+    <header class="navbar navbar-expand-xl sticky-top">
             <nav class="container" aria-label="Main navigation">
                 <button
                     class="navbar-toggler border-0"
@@ -20,7 +20,7 @@
                                 alt="Site logo"
                                 src="@/assets/images/brand-logo.png"
                             > -->
-                            <div class="logo">Fear the Lettuce</div>
+                            <div class="logo">Lettuce Carnivorus Plants</div>
                         </router-link>
                     </div>
                     <MainNavbar />
@@ -64,7 +64,7 @@ function underConstruction() {
     .logo{
         font-weight: bold;
         font-size: 2rem;
-        color: rgb(103, 202, 37);
+        font-family: 'Carter One', cursive;
     }
 
     .logo-link {

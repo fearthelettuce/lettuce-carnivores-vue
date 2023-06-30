@@ -1,12 +1,14 @@
 <template>
     
-    <div class="hero-image" :style="{ backgroundImage: 'url(' + backgroundImage + ')' }">
-        <div class="container">
-            <div class="hero-text">
-                <h1>Welcome to Lettuce Carnivorus Plants</h1>
-                <nav>
-                    <button class="btn btn-outline-primary">View Inventory</button>
-                    <button class="btn btn-outline-primary">Recommend Plants for Me</button>
+    <div class="hero-image" :style="{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(${ backgroundImage})`}">
+        <div class="hero-content">
+            <div class="hero-text d-flex flex-column">
+                <h1 class="hero-name">Lettuce Carnivorus Plants</h1>
+                <nav class="d-flex flex-row">
+                    <div><router-link
+                        to="products" class="hero-link">View Inventory</router-link>
+                    </div>
+                    <div><router-link to="recommendations" class="hero-link">What can I grow?</router-link></div>
                 </nav>
             </div>
         </div>
@@ -24,9 +26,40 @@ const backgroundImage = computed(() => {
 </script>
 //TODO: https://www.w3schools.com/howto/howto_css_hero_image.asp
 <style scoped>
-.hero-image{
+.hero-image {
+    object-fit: contain;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     height: 100dvh;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
+
+.hero-text {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-name{
+    font-family: 'Carter One', cursive;
+    font-size: 8em;
+}
+
+.hero-link {
+    font-family: 'Carter One', cursive;
+    text-decoration: none;
+    margin: 0 2em;
+    font-size: 2.5em;
+}
+
 </style>
 
