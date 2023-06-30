@@ -5,6 +5,7 @@ import ProductsView from '@/views/ProductsView.vue'
 import ProductAdminView from '@/components/modules/products/components/ProductAdmin.vue'
 import AboutView from '@/views/AboutView.vue'
 import CareGuideView from '@/views/CareGuideView.vue'
+import RecommendationView from '@/views/RecommendationView.vue'
 import LoginView from '@/views/LoginView.vue'
 
 
@@ -54,6 +55,16 @@ const routeData = [
       name: 'care',
       label: 'Care',
       component: CareGuideView,
+      meta: {
+        requiresLogin: false,
+        requiresAdmin: false,
+      }
+    },
+    {
+      path: "/recommendations",
+      name: 'recommendations',
+      label: 'Recommendations',
+      component: RecommendationView,
       meta: {
         requiresLogin: false,
         requiresAdmin: false,
