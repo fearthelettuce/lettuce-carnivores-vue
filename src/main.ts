@@ -9,11 +9,8 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import 'bootstrap'
-
 import Toast from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
-
-
 import BaseModal from '@/components/app/UI/BaseModal.vue'
 import BaseSpinner from '@/components/app/UI/BaseSpinner.vue'
 
@@ -23,9 +20,14 @@ library.add(far);
 const app = createApp(App)
 
 app.use(createPinia())
-app.use(router)
 app.use(Toast, { showCloseButtonOnHover: true,})
 app.component('FontAwesome', FontAwesomeIcon)
 app.component('BaseModal', BaseModal)
 app.component('BaseSpinner',BaseSpinner)
-app.mount('#app')
+
+import { useUserStore } from './components/modules/auth/stores/users';
+const userStore = useUserStore()
+
+userStore.initializeAuthListener().then(() => {
+    app.use(router).mount('#app')
+})

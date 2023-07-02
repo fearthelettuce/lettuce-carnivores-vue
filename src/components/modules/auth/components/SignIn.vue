@@ -43,7 +43,7 @@ async function login () {
         return
     }
     try {
-        await userStore.login(loginEmail.value, loginPassword.value)
+        await userStore.logInUser(loginEmail.value, loginPassword.value)
         toast.success('Welcome!', {timeout: 1500})
     } catch(error) {
         console.log(error)

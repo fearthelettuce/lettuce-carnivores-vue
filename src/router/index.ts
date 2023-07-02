@@ -66,7 +66,7 @@ const routeData = [
       label: 'Recommendations',
       component: RecommendationView,
       meta: {
-        requiresLogin: false,
+        requiresLogin: true,
         requiresAdmin: false,
       }
     },
@@ -91,10 +91,10 @@ export const router = createRouter({
 router.beforeEach((to) => {
   const userStore = useUserStore()
   if(to.meta.requiresAdmin) {
-    return userStore.getIsAdmin
+    return userStore.isAdmin
   }
 
-  if(to.meta.requiresLogin && !userStore.getIsLoggedIn && to.name !== 'home' && to.name !== 'account') {
+  if(to.meta.requiresLogin && !userStore.isLoggedIn && to.name !== 'home' && to.name !== 'account') {
     return {name: 'home'}
   }
 })

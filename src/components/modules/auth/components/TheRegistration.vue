@@ -4,11 +4,19 @@
         <form>
             <div class="form-group">
                 <label for="registerEmail">Email</label>
-                <input type="email" class="form-control" placeholder="email" id="registerEmail" v-model="registerEmail" />
+                <input type="email" class="form-control" id="registerEmail" v-model="registrationForm.email" required/>
             </div>
             <div class="form-group mt-3">
                 <label for="registerPassword">Password</label>
-                <input type="password" class="form-control" placeholder="password" id="registerPassword" v-model="registerPassword" />
+                <input type="password" class="form-control" id="registerPassword" v-model="registrationForm.password" required/>
+            </div>
+            <div class="form-group mt-3">
+                <label for="registerFirstName">First Name</label>
+                <input type="text" class="form-control" id="registerFirstName" v-model="registrationForm.firstName" required/>
+            </div>
+            <div class="form-group mt-3">
+                <label for="registerLastName">Last Name</label>
+                <input type="text" class="form-control" id="registerLastName" v-model="registrationForm.lastName" required/>
             </div>
             <div class="mt-4">
                 <button class="btn btn-primary px-3" @click.prevent="register">Register</button>
@@ -18,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { reactive } from 'vue';
 import { useUserStore } from '@/components/modules/auth/stores/users'
 import { router } from '@/router/index'
 import { useToast } from 'vue-toastification'
@@ -26,19 +34,26 @@ import { useToast } from 'vue-toastification'
 const userStore = useUserStore()
 const toast = useToast()
 
-const registerEmail = ref("")
-const registerPassword = ref("")
+const registrationForm = reactive({
+    email: null,
+    password: null,
+    firstName: null,
+    lastName: null,
+})
 
 const register = async () => {
+    if(!registrationForm.email || !registrationForm.password ||  !registrationForm.firstName || !registrationForm.lastName) {
+        toast.error('Please check your inputs!', {timeout: 1500})
+        return
+    }
     try {
-        const response = await userStore.register(registerEmail.value, registerPassword.value)
+        const response = await userStore.createAccount(registrationForm.email, registrationForm.password, registrationForm.firstName, registrationForm.lastName)
         console.log(response)
         toast.success('Welcome!', {timeout: 1500})
     } catch(error) {
         console.log(error)
     }
     router.push('/')
-    
 }
 
 </script>

@@ -26,7 +26,7 @@
                     <MainNavbar />
                 </div>
                 <button 
-                    v-if="!userStore.getIsLoggedIn"
+                    v-if="!userStore.isLoggedIn"
                     type="button"
                     class="btn btn-secondary"
                     @click="router.push('/account')"
@@ -36,7 +36,7 @@
                 <button 
                     type="button"
                     class="btn btn-secondary"
-                    @click="userStore.logout"
+                    @click="userStore.logoutUser"
                     v-else>
                     Logout
                 </button>
@@ -51,7 +51,6 @@
 import MainNavbar from './MainNavbar.vue';
 import { useUserStore } from '@/components/modules/auth/stores/users'
 import { router } from '@/router/index'
-import type { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 const userStore = useUserStore()
 
 function underConstruction() {
