@@ -11,13 +11,11 @@
                 <label for="loginPassword">Password</label>
                 <input type="password" class="form-control" placeholder="password" id="loginPassword" v-model="loginPassword" />             
             </div>
-            <div class="mt-4">
-                <button class="btn btn-primary px-4" @click.prevent="login">Login</button>
-                <div class="form-check d-inline-block ms-4">
-                    <input class="form-check-input" type="checkbox" id="rememberMeCheckbox" v-model="rememberMeCheckbox">
-                    <label class="form-check-label" for="rememberMeCheckbox">
-                        Remember me
-                    </label>
+            <div class="d-flex justify-content-around mt-4">
+                <div><button class="btn btn-primary px-4" @click.prevent="login">Login</button></div>
+                
+                <div class="">
+                    <button class="btn btn-outline-link" @click.prevent="resetPassword">Trouble signing in?</button>
                 </div>
             </div>
         </form>
@@ -50,7 +48,11 @@ async function login () {
         toast.error('Sorry, something went wrong')
     }
     
-    router.push('/')
+    router.push('/products')
+}
+
+function resetPassword(){
+    router.push('resetpassword')
 }
 
 function areInputsValid() {

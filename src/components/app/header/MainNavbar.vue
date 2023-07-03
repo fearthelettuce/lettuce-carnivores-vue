@@ -19,6 +19,7 @@ import { useUserStore } from '@/components/modules/auth/stores/users';
 const userStore = useUserStore()
 const allowedNavLinks = computed(() => {
     let allowedNavData = navData
+    allowedNavData = allowedNavData.filter((ele) => {return ele.meta.showInNav})
     if(!userStore.isAdmin) {
         allowedNavData = allowedNavData.filter((ele) => {return !ele.meta.requiresAdmin})
     }

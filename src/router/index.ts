@@ -7,6 +7,7 @@ import AboutView from '@/views/AboutView.vue'
 import CareGuideView from '@/views/CareGuideView.vue'
 import RecommendationView from '@/views/RecommendationView.vue'
 import LoginView from '@/views/LoginView.vue'
+import ResetPasswordView from '@/views/ResetPasswordView.vue'
 
 
 const routeData = [
@@ -16,6 +17,7 @@ const routeData = [
       label: 'Home',
       component: HomeView,
       meta: {
+        showInNav: true,
         requiresLogin: false,
         requiresAdmin: false,
       }
@@ -26,6 +28,7 @@ const routeData = [
       label: 'Products',
       component: ProductsView,
       meta: {
+        showInNav: true,
         requiresLogin: false,
         requiresAdmin: false,
       }
@@ -36,6 +39,7 @@ const routeData = [
       label: 'Product Admin',
       component: ProductAdminView,
       meta: {
+        showInNav: true,
         requiresLogin: true,
         requiresAdmin: true,
       }
@@ -46,6 +50,7 @@ const routeData = [
       label: 'About',
       component: AboutView,
       meta: {
+        showInNav: true,
         requiresLogin: false,
         requiresAdmin: false,
       }
@@ -56,6 +61,7 @@ const routeData = [
       label: 'Care',
       component: CareGuideView,
       meta: {
+        showInNav: true,
         requiresLogin: false,
         requiresAdmin: false,
       }
@@ -66,7 +72,8 @@ const routeData = [
       label: 'Recommendations',
       component: RecommendationView,
       meta: {
-        requiresLogin: true,
+        showInNav: true,
+        requiresLogin: false,
         requiresAdmin: false,
       }
     },
@@ -74,9 +81,32 @@ const routeData = [
       path: "/account",
       name: 'account',
       label: 'Account',
+      component: '',
+      meta: {
+        showInNav: true,
+        requiresLogin: true,
+        requiresAdmin: false,
+      }
+    },
+    {
+      path: "/login",
+      name: 'login',
+      label: 'Login',
       component: LoginView,
       meta: {
+        showInNav: false,
         requiresLogin: true,
+        requiresAdmin: false,
+      }
+    },
+    {
+      path: "/resetpassword",
+      name: 'resetPassowrd',
+      label: 'Reset Password',
+      component: ResetPasswordView,
+      meta: {
+        showInNav: false,
+        requiresLogin: false,
         requiresAdmin: false,
       }
     }
@@ -94,7 +124,7 @@ router.beforeEach((to) => {
     return userStore.isAdmin
   }
 
-  if(to.meta.requiresLogin && !userStore.isLoggedIn && to.name !== 'home' && to.name !== 'account') {
+  if(to.meta.requiresLogin && !userStore.isLoggedIn && to.name !== 'home' && to.name !== 'login') {
     return {name: 'home'}
   }
 })

@@ -99,6 +99,7 @@ import {
 //   fbGetUserProfile,
   fbSignIn,
   fbSignOut,
+  requestPasswordResetEmail,
 } from "@/apis/firebaseAuth";
 import {findDocById} from '@/apis/dataServices'
 export interface User {
@@ -162,6 +163,13 @@ export const useUserStore = defineStore('user', {
         this.userRoles = null;
         this.error = e;
         return false;
+      }
+    },
+
+    async requestPasswordReset(email: string) {
+      const res = await requestPasswordResetEmail(email)
+      if(res) {
+        return res
       }
     },
 

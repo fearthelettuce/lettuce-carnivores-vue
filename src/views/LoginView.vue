@@ -1,7 +1,6 @@
 <template>
     <div class="container mt-4">
         <div class="row">
-
             <SignIn class="col-4"/>
             <TheRegistration class="col-4"/>
         </div>

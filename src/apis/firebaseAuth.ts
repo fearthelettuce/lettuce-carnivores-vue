@@ -13,6 +13,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 
 export const fbCreateAccount = async (
@@ -98,6 +99,16 @@ export const fbGetUserProfile = async () => {
     return null;
   }
 };
+
+export async function requestPasswordResetEmail(email: string) {
+  try {
+    const res = await sendPasswordResetEmail(auth, email)
+    return {success: true, error: false, message: 'Password reset email sent!'}
+  } catch (e) {
+    console.log(e)
+    return {error: true, success: false, message: String(e)} 
+  }
+}
 
 export const queryObjectCollection = async ({
   collectionName,

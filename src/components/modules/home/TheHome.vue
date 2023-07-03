@@ -6,7 +6,7 @@
                 <h1 class="hero-name">Lettuce Carnivorus Plants</h1>
                 <nav class="d-flex flex-row">
                     <div><router-link
-                        to="products" class="hero-link">View Inventory</router-link>
+                        to="products" class="hero-link">Shop</router-link>
                     </div>
                     <div><router-link to="recommendations" class="hero-link">What can I grow?</router-link></div>
                 </nav>
@@ -36,11 +36,9 @@ const highResBackgroundImage = computed(() => {
     position: absolute;
     top: 0;
     left: 0;
-    display: flex;
-    flex-direction: column;
     width: 100%;
     height: 100dvh;
-    background-position: center;
+    background-position: 50% 60%;
     background-repeat: no-repeat;
     background-size: cover;
 }

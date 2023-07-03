@@ -29,7 +29,7 @@
                     v-if="!userStore.isLoggedIn"
                     type="button"
                     class="btn btn-secondary"
-                    @click="router.push('/account')"
+                    @click.prevent="router.push('/login')"
                     >
                     Login
                 </button>
