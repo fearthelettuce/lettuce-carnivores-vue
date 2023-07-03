@@ -1,6 +1,6 @@
 <template>
     
-    <div class="hero-image" :style="{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(${ backgroundImage})`}">
+    <div class="hero-image" :style="{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(${ highResBackgroundImage}), url(${lowResBackgroundImage})`}">
         <div class="hero-content">
             <div class="hero-text d-flex flex-column">
                 <h1 class="hero-name">Lettuce Carnivorus Plants</h1>
@@ -19,9 +19,14 @@
 import {computed} from 'vue'
 import {getPhotoUrl} from '@/apis/fileServices'
 
-const backgroundImage = computed(() => {
-    return getPhotoUrl('referencePhotos/Heliamphora-minor-top-view.jpg')
+const lowResBackgroundImage = computed(() => {
+    return getPhotoUrl('referencePhotos/Heliamphora-minor-top-view-low-res.webp')
 })
+const highResBackgroundImage = computed(() => {
+    return getPhotoUrl('referencePhotos/Heliamphora-minor-top-view.webp')
+})
+
+
 
 </script>
 //TODO: https://www.w3schools.com/howto/howto_css_hero_image.asp

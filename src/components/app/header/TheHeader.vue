@@ -1,5 +1,5 @@
 <template>
-    <header class="navbar navbar-expand-xl sticky-top">
+    <header class="navbar navbar-expand-xl">
             <nav class="container" aria-label="Main navigation">
                 <button
                     class="navbar-toggler border-0"
