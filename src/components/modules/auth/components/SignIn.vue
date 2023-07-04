@@ -33,7 +33,6 @@ const toast = useToast()
 
 const loginEmail = ref("")
 const loginPassword = ref("")
-const rememberMeCheckbox = ref(true)
 
 async function login () {
     if(!areInputsValid()) {
