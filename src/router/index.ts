@@ -112,9 +112,7 @@ const routeData = [
     }
 ]
 
-const removeKey = (k: string, { [k]:_, ...o }) => o
-//export const navData = routeData.map(({ component, ...rest }) => rest)
-export const navData = removeKey('component',routeData)
+export const navData = routeData.map(({ component, ...rest }) => rest)
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: routeData,
