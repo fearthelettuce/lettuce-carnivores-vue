@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '@/components/modules/auth/stores/users'
 import HomeView from '@/views/HomeView.vue'
 import ProductsView from '@/views/ProductsView.vue'
+import ProductDetailView from '@/views/ProductDetailView.vue'
 import ProductAdminView from '@/components/modules/products/components/ProductAdmin.vue'
 import AboutView from '@/views/AboutView.vue'
 import CareGuideView from '@/views/CareGuideView.vue'
@@ -17,9 +18,10 @@ const routeData = [
       label: 'Home',
       component: HomeView,
       meta: {
-        showInNav: true,
+        showInNav: false,
         requiresLogin: false,
         requiresAdmin: false,
+        hideHeader: true,
       }
     },
     {
@@ -34,6 +36,17 @@ const routeData = [
       }
     },
     {
+      path: "/products/:id",
+      name: 'productDetails',
+      label: 'Products Details',
+      component: ProductDetailView,
+      meta: {
+        showInNav: false,
+        requiresLogin: false,
+        requiresAdmin: false,
+      }
+    },
+    {
       path: "/productadmin",
       name: 'productAdmin',
       label: 'Product Admin',
@@ -42,17 +55,6 @@ const routeData = [
         showInNav: true,
         requiresLogin: true,
         requiresAdmin: true,
-      }
-    },
-    {
-      path: "/about",
-      name: 'about',
-      label: 'About',
-      component: AboutView,
-      meta: {
-        showInNav: true,
-        requiresLogin: false,
-        requiresAdmin: false,
       }
     },
     {
@@ -71,6 +73,17 @@ const routeData = [
       name: 'recommendations',
       label: 'Recommendations',
       component: RecommendationView,
+      meta: {
+        showInNav: true,
+        requiresLogin: false,
+        requiresAdmin: false,
+      }
+    },
+    {
+      path: "/about",
+      name: 'about',
+      label: 'About',
+      component: AboutView,
       meta: {
         showInNav: true,
         requiresLogin: false,

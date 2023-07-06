@@ -10,7 +10,10 @@
             </div>
         </div>
         <div class="card-footer">
-            <button class="btn btn-primary">View</button>
+            <router-link 
+            class="btn btn-primary"
+            :to="`/products/${product.id}`">View
+            </router-link>
         </div>
         
     </div>
