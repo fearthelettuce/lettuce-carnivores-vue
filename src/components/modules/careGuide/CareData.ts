@@ -39,7 +39,7 @@ const careData = {
                 media: "Most nepenthes do well in a loose draining mix of long-fibered sphagnum moss and perlite. I also use coco husk chips, although it's important to find a brand that has low salt content.",
                 fertilization: "I usually fertilize every 3-6 weeks, alternating between Osmocote (one pellet per pitcher, in about half the open pitchers) and Maxsea (200-300ppm solution, fill most pitchers and spray a bit on the leaves).  I'll also drop random bugs I have found in pitchers.",
                 referencePhotoFilename: 'Nepenthes.jpg',
-                referencePhotoPath: 'https://stl-lc101-sept-22.github.io/js-assignment-4-html-me-something-fearthelettuce/photos/IMG_20210828_144445.jpg',
+                referencePhotoPath: 'referencePhotos/nep-maxima-stenop-lowii-rokko-veitch-upper-2.jpg',
 
             },
             heliamphora: {
@@ -52,7 +52,7 @@ const careData = {
                 light: "Heliamphora will take as much light as you can give them. When given enough light, most species will have beautify red coloration.",
                 fertilization: "I usually fertilize every 3-6 weeks, alternating between Osmocote (one pellet per pitcher, in about half the open pitchers) and Maxsea (200-300ppm solution, fill most pitchers and spray a bit on the leaves).  I'll also drop random bugs I have found in pitchers.",
                 referencePhotoFilename: 'Heliamphora.jpg',
-                referencePhotoPath: 'https://stl-lc101-sept-22.github.io/js-assignment-4-html-me-something-fearthelettuce/photos/Heliamphora.jpg',
+                referencePhotoPath: 'referencePhotos/Heliamphora-minor-side-view.jpg',
             },
             cephalotus: {
                 label: "Cephalotus",
@@ -63,8 +63,8 @@ const careData = {
                 media: "I use a mixture of peat, sand and pumice. I like to add a top layer of lava rock or slate to prevent moss and algae.",
                 light: "Cephalotus appreciate high light levels and develop beautiful coloration when given these conditions.",
                 fertilization: "I usually fertilize every 3-6 weeks, alternating between Osmocote (one pellet per pitcher, in about half the open pitchers) and Maxsea (200-300ppm solution, fill most pitchers and spray a bit on the leaves).  I'll also drop random bugs I have found in pitchers.",
-                referencePhotoFilename: 'Cephalotus.jpg',
-                referencePhotoPath: 'https://stl-lc101-sept-22.github.io/js-assignment-4-html-me-something-fearthelettuce/photos/Ceph.jpg',
+                referencePhotoFilename: 'Cephalotus H. Giant.jpg',
+                referencePhotoPath: 'referencePhotos/Cephalotus H. Giant.jpg',
             },
         },
     }

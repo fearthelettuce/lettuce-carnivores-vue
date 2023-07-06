@@ -20,15 +20,20 @@
             </section>
         </section>
         <section class="image-section">
-            <img :src="careData.referencePhotoPath" :alt="'an image of ' + careData.label" />
+            <img :src="sectionImageUrl" :alt="'an image of ' + careData.label" />
         </section>
     </div>
 </template>
 <script setup lang="ts">
+import { computed } from 'vue'
+import {getPhotoUrl} from '@/apis/fileServices'
 const props = defineProps(['careData', 'altStyle'])
-function getIconUrl(iconFileName) {
+function getIconUrl(iconFileName : string) {
     return new URL(`../../../assets/icons/${iconFileName}`, import.meta.url).toString()
 }
+const sectionImageUrl = computed(() => {
+    return getPhotoUrl(props.careData.referencePhotoPath)
+})
 const careItems = [
     {
         label: 'Locale',

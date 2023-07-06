@@ -19,7 +19,6 @@ const careInfo = careData.guideData
 .guide-container {
     max-width: 107em;
     margin: auto;
-    color: rgb(244, 191, 46);
 }
 
 nav ul {
