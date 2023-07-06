@@ -94,7 +94,7 @@ const routeData = [
       path: "/account",
       name: 'account',
       label: 'Account',
-      component: '',
+      component: LoginView,
       meta: {
         showInNav: true,
         requiresLogin: true,

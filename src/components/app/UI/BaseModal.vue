@@ -24,7 +24,7 @@
             </div>
             <div class="modal-footer border-0">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="$emit('closeModal')">Close</button>
-                <slot v-if="this.$slots.modalAction" name="modalAction"></slot>
+                <slot name="modalAction"></slot>
 
             </div>
         </div>
