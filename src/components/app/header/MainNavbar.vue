@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import {navData} from '@/router/index'
+import { navData } from '@/router/index'
 import { useUserStore } from '@/components/modules/auth/stores/users';
 
 const userStore = useUserStore()

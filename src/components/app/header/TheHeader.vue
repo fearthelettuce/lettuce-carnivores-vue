@@ -1,5 +1,5 @@
 <template>
-    <header class="navbar navbar-expand-xl">
+    <header v-if="!route.meta.hideHeader" class="navbar navbar-expand-xl">
             <nav class="container" aria-label="Main navigation">
                 <button
                     class="navbar-toggler border-0"
@@ -50,9 +50,10 @@
 
 import MainNavbar from './MainNavbar.vue';
 import { useUserStore } from '@/components/modules/auth/stores/users'
-import { router } from '@/router/index'
+import { router } from '@/router/index' 
+import { useRoute } from 'vue-router';
 const userStore = useUserStore()
-
+const route = useRoute()
 function underConstruction() {
     alert('This feature has not been fully implemented yet!')
 }

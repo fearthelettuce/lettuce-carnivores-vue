@@ -8,7 +8,12 @@
                     <div><router-link
                         to="products" class="hero-link">Shop</router-link>
                     </div>
-                    <div><router-link to="recommendations" class="hero-link">What can I grow?</router-link></div>
+                    <div><router-link 
+                        to="care" class="hero-link">Learn</router-link>
+                    </div>
+                    <div><router-link 
+                        to="recommendations" class="hero-link">Recommend</router-link>
+                    </div>
                 </nav>
             </div>
         </div>
