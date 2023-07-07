@@ -14,6 +14,7 @@
             v-for="photo of product.photos"
             :photo="photo"
             :key="photo.path.toString"
+            @deletePhoto="deletePhoto(photo)"
             />
         </div>
         
@@ -59,8 +60,13 @@ function showToast(obj: any) {
     }
 }
 
-function appendPhotos(arr:Array<PhotoItem>) {
-    productStore.updatePhotoData(product.value, arr)
+function appendPhotos(selectedPhotosArr:Array<PhotoItem>) {
+    productStore.appendPhotoData(product.value, selectedPhotosArr)
+}
+
+function deletePhoto(photoToRemove: PhotoItem) {
+    console.log(photoToRemove)
+    productStore.removePhoto(product.value, photoToRemove)
 }
 
 </script>

@@ -108,7 +108,7 @@ export const useProductStore = defineStore('product', {
 
         async findProductById(id: number) {
             const res = await findDocById(collectionName, id).catch(err => console.log(err))
-            return res
+            return res as Product
         },
 
         async findAllProducts() {
@@ -116,21 +116,16 @@ export const useProductStore = defineStore('product', {
         },
 
         async saveProduct(product: Product | Plant) {
-            console.log(product)
             try {
                 const res = await saveItem(collectionName, product)
                 //TODO convert to toRaw
                 if(res.success) {
                     const productDetails = JSON.parse(JSON.stringify( res.documentDetails))
                     const productIndex = this.productList?.findIndex(item => item.id === productDetails.id)
-                    if (this.productList && productIndex && productIndex > -1) {
+                    if (this.productList && productIndex !== null && productIndex !== undefined && productIndex > -1) {
                         this.productList.splice(productIndex, 1, productDetails)
                     } else {
-                        console.log(this.productList)
-                        console.log(this.productToEdit)
                         this.productList?.push(productDetails)
-                        console.log(this.productList)
-                         console.log(this.productToEdit)
                     }
                     if (this.searchFilters) {
                         this.filterProducts()
@@ -164,10 +159,8 @@ export const useProductStore = defineStore('product', {
             return { success: true, error: false, response: res, message: '' }
         },
 
-        async updatePhotoData(product: Product | typeof newProduct, photoArr: Array<PhotoItem>) {
-            if(!product || !photoArr) {
-                return 
-            }
+        async appendPhotoData(product: Product | typeof newProduct, photoArr: Array<PhotoItem>) {
+            if(!product || !photoArr) return
             if(product.photos) {
                 product.photos = product.photos.concat(photoArr)
             } else {
@@ -176,9 +169,7 @@ export const useProductStore = defineStore('product', {
             if(!('photoData' in product)) {
                 product['photoData'] = {} as PhotoDetails
             }
-            console.log('banana')
             for(const photo of product.photos) {
-                console.log(photo.type)
                 if(photo.type && photo.type !== 'additional' && product.photoData) {
                     product.photoData[photo.type] = {name: photo.name, fullPath:photo.path}
                 }
@@ -193,6 +184,25 @@ export const useProductStore = defineStore('product', {
                 //     this.saveProduct(someProduct)
                 // }
             }
+        },
+        async removePhoto(product: Product | typeof newProduct, photoToRemove: PhotoItem) {
+            if(!product || !photoToRemove || !product.photos) return
+            const photoIndex = product.photos.findIndex((ele) => ele.path === photoToRemove.path)
+            product.photos.splice(photoIndex,1)
+            //look through product.photoData to see if photoData.fullPath === photoToRemove.path and delete that item from photoData
+            if(product.photoData) {
+                for(const [key, value] of Object.entries(product.photoData)) {
+                    if(value.fullPath === photoToRemove.path) {
+                        product.photoData[key as keyof PhotoDetails] = undefined
+                    }
+                }
+            }
+            if (product.id) {
+                this.saveProduct(product)
+                this.setProductToEdit(product)
+            }
+            return
+            //TODO: delete photo from firestore
         },
 
         //TODO: Firebase extension storage -resize images
