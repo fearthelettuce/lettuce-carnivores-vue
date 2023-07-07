@@ -21,7 +21,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useUserStore } from '@/components/modules/auth/stores/users'
-import { router } from '@/router/index'
 import { useToast } from 'vue-toastification'
 
 const userStore = useUserStore()

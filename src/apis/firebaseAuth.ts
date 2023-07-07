@@ -102,8 +102,8 @@ export const fbGetUserProfile = async () => {
 
 export async function requestPasswordResetEmail(email: string) {
   try {
-    const res = await sendPasswordResetEmail(auth, email)
-    return {success: true, error: false, message: 'Password reset email sent!'}
+    await sendPasswordResetEmail(auth, email)
+      return {success: true, error: false, message: 'Password reset email sent!'}
   } catch (e) {
     console.log(e)
     return {error: true, success: false, message: String(e)} 
