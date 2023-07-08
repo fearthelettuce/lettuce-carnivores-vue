@@ -63,7 +63,7 @@ const routeData = [
       label: 'Recommendations',
       component: RecommendationView,
       meta: {
-        showInNav: true,
+        showInNav: false,
         requiresLogin: false,
         requiresAdmin: false,
       }

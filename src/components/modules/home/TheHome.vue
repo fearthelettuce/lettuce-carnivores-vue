@@ -7,7 +7,7 @@
                     <nav class="">
                         <router-link to="products" class="hero-link">Shop</router-link>
                         <router-link to="care" class="hero-link">Learn</router-link>
-                        <router-link to="recommendations" class="hero-link">Recommend</router-link>
+                        <!-- <router-link to="recommendations" class="hero-link">Recommend</router-link> -->
                     </nav>
                 </section>
             </main>

@@ -8,7 +8,7 @@
     <h4>My Plants</h4>
     <p>My primary interest in with highland Nepenthes, Heliamphora and Cephalotus. My grow space is limited, so my inventory won't be the same as the larger sellers.  However, I primarily sell rooted divisions/cuttings.  Unlike many other sellers, that import tissue culture plants, the plants you will buy from me are established, actively growing, and </p>   
     <h4>Contact</h4>
-    <p>If you are actively looking to hire me as a Software Engineer, I'm sure you know how to find me!  If not, please shoot me an email at: fearthelettuce@gmail.com</p>
+    <p>For questions, plesae contact me at fearthelettuce@gmail.com</p>
 </div>
 
 </template>
