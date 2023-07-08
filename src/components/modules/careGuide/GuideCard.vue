@@ -1,11 +1,11 @@
 <template>
-    <div class="guide-card">
+    <article class="guide-card">
         <section class="text-section" :class="altStyle ? 'alt-style' : ''">
-            <header class="article-header">
-                <h2>{{ careData.label }} Care</h2>
+            <header class="article-header p- d-flex justify-content-center">
+                <h2 class="m-0">{{ careData.label }} Care</h2>
             </header>
-            <section class="care-guide">
-                <div 
+            <ul class="care-guide">
+                <li 
                     v-for="item in careItems"
                     :key="item.label"
                     class="text-item" 
@@ -16,13 +16,13 @@
                     <p>
                         {{ item.textContent }}
                     </p>
-                </div>
-            </section>
+                </li>
+            </ul>
         </section>
         <section class="image-section">
             <img :src="sectionImageUrl" :alt="'an image of ' + careData.label" />
         </section>
-    </div>
+    </article>
 </template>
 <script setup lang="ts">
 import { computed } from 'vue'
@@ -89,22 +89,19 @@ const careItems = [
 </script>
 
 <style scoped>
-h1,
-h2 {
-    margin: 0;
-}
 
 p,
 ul {
     margin: .25em .37em;
+    padding: 0;
 }
 
 .guide-card {
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
-    background-color: rgb(54,54,54);
-    border-radius: 1em;
+    /* flex-wrap: nowrap; */
+    background-color: rgb(46, 46, 46);
+    border-radius: 1.5rem;
     overflow: hidden;
     padding: 0;
     justify-content: space-around;
@@ -115,19 +112,9 @@ ul {
     order: 2;
 }
 
-.article-header {
-    padding: .7em;
-    justify-content: center;
-    display: flex
-}
-
-.article-header a {
-    color: rgb(147, 218, 25);
-}
-
 .icon {
-    width: 7em;
-    height: 7em;
+    width: 3rem;
+    height: 3rem;
     display: inline-flex;
     align-self: center;
     margin: 0;
@@ -161,22 +148,18 @@ ul {
     flex-direction: row;
     display: flex;
     margin: .7em 0;
+    list-style-type: none;
 }
 
-.content-section {
-    flex-direction: row;
-    flex-wrap: wrap;
-}
 
 .image-section {
-    display: flex;
-    flex-basis: 500px;
+    display: none;
+    flex-shrink: 2;
     justify-content: center;
 }
 
 .image-section img {
     width: 35em;
-    flex: 1;
     padding: 0;
     object-fit: cover;
     justify-content: flex-end;
@@ -185,18 +168,13 @@ ul {
 .text-section {
     display: flex;
     flex-direction: column;
-    padding: .63em .63em;
-    flex: 3;
-    flex-basis: 105em;
+    padding: .5em .5em;
     line-height: 1.4;
 }
 
 .care-guide {
     display: flex;
     flex-direction: column;
-    flex: 3;
-    justify-content: space-around;
-    margin: 0 .25em 0 .5em;
 }
 
 .care-guide p {
@@ -207,7 +185,7 @@ ul {
 
 .care-guide ul {
     list-style: none;
-    padding-inline-start: 0;
+    /* padding-inline-start: 0; */
     margin: 4px 30px;
 
 }
@@ -222,11 +200,8 @@ ul {
     flex-direction: column;
 }
 
-.text-plus-list ul {
-    padding-inline-start: 1.5em;
-}
 
-@media screen and (min-width: 1150px) {
+@media (min-width: 1150px) {
     .container-alt .text-section {
         order: 2;
     }
@@ -236,6 +211,7 @@ ul {
     }
 
     .image-section {
+        display: flex;
         margin: 0;
         justify-content: flex-end;
     }
