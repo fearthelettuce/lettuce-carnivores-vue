@@ -50,6 +50,9 @@ const allowedNavLinks = computed(() => {
         border-radius: 0.4rem;
         color: rgb(159, 219, 80)!important
     }
+    li {
+        margin: 0 .25em;
+    }
 /*     
     .no-background {
         background-color: transparent !important;

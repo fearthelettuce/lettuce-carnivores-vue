@@ -43,9 +43,6 @@ const route = useRoute()
         text-decoration: none;
         cursor: pointer;
     }
-    li {
-         margin: 0 1em;
-    }
     @media (min-width: 1100px) {
         .logo{     
             font-size: 2rem;
