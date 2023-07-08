@@ -1,5 +1,5 @@
 <template>
-    <main class="container">
+    <main class="container-fluid">
 
     <div class="row">
         <div 
@@ -31,6 +31,8 @@ onMounted(() => {
 </script>
 
 <style scoped>
-    
+    main {
+        padding: 0 clamp(.1em, 6vw, 20rem)
+    }
 
 </style>

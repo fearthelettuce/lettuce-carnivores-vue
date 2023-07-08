@@ -17,6 +17,6 @@ const careInfo = careData.guideData
 
 <style scoped>
 .guide-container {
-    padding: 0 clamp(0, 10vh ,20rem)
+    padding: 0 clamp(.1em, 6vw, 20rem)
 }
 </style>

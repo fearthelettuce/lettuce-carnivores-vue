@@ -4,6 +4,7 @@
             <router-link
                 :to="item.path"
                 class="nav-link text-light"
+                @click="$emit('collapseNavbar')"
             >{{ item.label }}</router-link>
         </li>
         <li class="nav-item">
@@ -31,6 +32,7 @@ import { computed } from 'vue';
 import { navData } from '@/router/index'
 import { useUserStore } from '@/components/modules/auth/stores/users';
 
+// const emit = defineEmits(['closeNavbar'])
 const userStore = useUserStore()
 const allowedNavLinks = computed(() => {
     let allowedNavData = navData.filter((ele) => {return ele.meta.showInNav})
@@ -42,6 +44,7 @@ const allowedNavLinks = computed(() => {
     }
     return allowedNavData
 })
+
 </script>
 
 <style scoped>
