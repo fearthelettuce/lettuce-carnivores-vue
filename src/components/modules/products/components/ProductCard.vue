@@ -60,7 +60,7 @@ img {
 .card {
     display: flex;
     flex-direction: column;
-    width: 100%;
+
     background-color: rgb(65, 65, 65);
     border-radius: 2em;
     overflow:hidden;

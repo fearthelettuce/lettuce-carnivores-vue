@@ -1,5 +1,5 @@
 <template>
-    <header v-if="!route.meta.hideHeader" class="navbar navbar-expand-lg my-1">
+    <header v-if="!route.meta.hideHeader" class="navbar navbar-expand-lg my-1 sticky">
             <nav class="container-fluid">
                 <div class="navbar-brand">
                     <router-link to="/" class="logo-link">
