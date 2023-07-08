@@ -1,11 +1,27 @@
 <template>
-    <ul class="navbar-nav flex-row flex-wrap me-auto mb-2 mb-lg-0">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item" v-for="item of allowedNavLinks" :key="item.name">
             <router-link
                 :to="item.path"
                 class="nav-link text-light"
-                :class="item.path === '/' ? 'no-background' : ''"
             >{{ item.label }}</router-link>
+        </li>
+        <li class="nav-item">
+            <router-link
+                v-if="!userStore.isLoggedIn"
+                to="/login"
+                class="nav-link text-light"
+            >Login</router-link>
+            <div v-else class="nav-link text-light p-0">
+                <button
+               
+                to="/login"
+                type="button"
+                class="nav-link text-light"
+                @click="userStore.logoutUser"
+            >Logout</button>
+            </div>
+            
         </li>
     </ul>
 </template>
@@ -32,17 +48,20 @@ const allowedNavLinks = computed(() => {
 
     .router-link-exact-active {
         border-radius: 0.4rem;
-        background-color: #515151;
+        color: rgb(159, 219, 80)!important
     }
-    
+    li {
+        margin: 0 .25em;
+    }
+/*     
     .no-background {
         background-color: transparent !important;
     }
     a {
         margin: 0 0.25rem;
-    }
+    } */
 
-    a:hover {
+    .nav-link:hover {
         border-radius: 0.4rem;
         background-color: #515151;
     }
