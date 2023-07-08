@@ -1,5 +1,5 @@
 <template>
-    <header v-if="!route.meta.hideHeader" class="navbar navbar-expand-lg my-2">
+    <header v-if="!route.meta.hideHeader" class="navbar navbar-expand-lg my-1">
             <nav class="container-fluid">
                 <div class="navbar-brand">
                     <router-link to="/" class="logo-link">
@@ -33,6 +33,9 @@ const route = useRoute()
 </script>
 
 <style scoped>
+    header {
+        padding: 0 2rem;
+    }
     .logo{
         font-weight: bold;
         font-size: 1.5rem;
@@ -43,9 +46,12 @@ const route = useRoute()
         text-decoration: none;
         cursor: pointer;
     }
-    @media (min-width: 1100px) {
+    @media (min-width: 1400px) {
         .logo{     
             font-size: 2rem;
+        }
+        header {
+            padding: 0 12rem;
         }
     }
 </style>

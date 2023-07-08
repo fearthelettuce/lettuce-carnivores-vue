@@ -47,17 +47,6 @@ const routeData = [
       }
     },
     {
-      path: "/productadmin",
-      name: 'productAdmin',
-      label: 'Product Admin',
-      component: ProductAdminView,
-      meta: {
-        showInNav: true,
-        requiresLogin: true,
-        requiresAdmin: true,
-      }
-    },
-    {
       path: "/care",
       name: 'care',
       label: 'Care',
@@ -99,6 +88,17 @@ const routeData = [
         showInNav: true,
         requiresLogin: true,
         requiresAdmin: false,
+      }
+    },
+    {
+      path: "/admin",
+      name: 'Admin',
+      label: 'Admin',
+      component: ProductAdminView,
+      meta: {
+        showInNav: true,
+        requiresLogin: true,
+        requiresAdmin: true,
       }
     },
     {
