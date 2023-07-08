@@ -5,7 +5,7 @@
         <div 
             v-for="product of productStore.$state.productList"
             :key="product.id"
-            class="col-3"
+            class="col-xs-12 col-md-6 col-lg-4 col-xxl-3"
             >
             <ProductCard 
             :product="product"
