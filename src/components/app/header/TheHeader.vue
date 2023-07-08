@@ -1,5 +1,5 @@
 <template>
-    <header v-if="!route.meta.hideHeader" class="navbar navbar-expand-lg my-1 sticky">
+    <header v-if="!route.meta.hideHeader" class="navbar navbar-expand-lg my-1 sticky-top">
             <nav class="container-fluid">
                 <div class="navbar-brand">
                     <router-link to="/" class="logo-link">
@@ -34,11 +34,12 @@ const route = useRoute()
 
 <style scoped>
     header {
-        padding: 0 2rem;
+        padding: 0 1rem;
+        background: #383838
     }
     .logo{
         font-weight: bold;
-        font-size: 1.5rem;
+        font-size: 1.25rem;
         font-family: 'Carter One', cursive;
     }
 
