@@ -40,14 +40,21 @@ async function login () {
         return
     }
     try {
-        await userStore.logInUser(loginEmail.value, loginPassword.value)
-        toast.success('Welcome!', {timeout: 1500})
+        const res = await userStore.logInUser(loginEmail.value, loginPassword.value)
+        if(res) {
+            toast.success('Welcome!', {timeout: 1500})
+            router.push('/products')
+        }
+        else {
+            console.log(res)
+            toast.error('Sorry, something went wrong')
+        }
     } catch(error) {
         console.log(error)
         toast.error('Sorry, something went wrong')
     }
     
-    router.push('/products')
+    
 }
 
 function resetPassword(){

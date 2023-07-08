@@ -1,14 +1,14 @@
 <template>
     <div class="container">
-    <h2>About Me</h2>
-    <p>I am an aspiring software developer that grows and sells carnivorous plants.  This started as a hobby and quickly turned into a business.</p>
-
-    <h3>About this site</h3>
-        <p>I built this site to pracice my front-end software development skills.  I wanted to address some of the frustrations I've seen with other CP sites... showing hundreds of plants with 95% out of stock, having broken product filters, and general clunkiness.  I hope you have a great experience in using this site, and if not, I hope you let me know how I can improve it. </p>
-    <h3>My introduction to carnivorous plants</h3>
-    <p>As a child, my aunt brought me a venus flytrap back from a trip to South Carolina.  I quickly proceeded to kill it, not knowing how to care for it, nor putting in the effort to learn.  However, this VFT did not die in vain.  It sparked an itch in me that I have spent 14 years scratching.</p>
+    <h4>About Me</h4>
+    <p>When I was a kid, my aunt brought me a venus flytrap from a trip to South Carolina.  I quickly proceeded to kill it, not knowing how to care for it, nor putting in the effort to learn.  However, this VFT did not die in vain.  It sparked an itch in me that I have spent a lifetime scratching.  I have seriously been growing carnivorous plants for about 14 years.</p>
+    <p>In my day job, I work in Product Management, and I'm an aspiring software engineer.</p>
+    <h4>About this site</h4>
+        <p>I built this site to pracice my front-end software development skills.  I wanted to address some of the frustrations I've seen with other plant sites... 95% out of stock, broken product filters, clunky user interface, etc.  I hope you have a great experience in using this site. If not, I hope you let me know how I can improve it!</p>
+    <h4>My Plants</h4>
+    <p>My primary interest in with highland Nepenthes, Heliamphora and Cephalotus. My grow space is limited, so my inventory won't be the same as the larger sellers.  However, I primarily sell rooted divisions/cuttings.  Unlike many other sellers, that import tissue culture plants, the plants you will buy from me are established, actively growing, and </p>   
     <h4>Contact</h4>
-    <p></p>
+    <p>If you are actively looking to hire me as a Software Engineer, I'm sure you know how to find me!  If not, please shoot me an email at: fearthelettuce@gmail.com</p>
 </div>
 
 </template>

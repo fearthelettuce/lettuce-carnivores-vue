@@ -1,5 +1,5 @@
 <template>
-    <header v-if="!route.meta.hideHeader" class="navbar navbar-expand-xl">
+    <header v-if="!route.meta.hideHeader" class="navbar navbar-expand-xl my-2">
             <nav class="container" aria-label="Main navigation">
                 <button
                     class="navbar-toggler border-0"
