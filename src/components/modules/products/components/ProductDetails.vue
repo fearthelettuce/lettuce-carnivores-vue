@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         <div v-if="state.product">
             <h1>{{ state.product.name }}</h1>
             <p>{{ formattedPrice }}</p>

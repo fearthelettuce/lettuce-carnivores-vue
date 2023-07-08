@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <main class="container">
 
     <div class="row">
         <div 
@@ -13,7 +13,7 @@
             />
         </div>
     </div>
-    </div>
+    </main>
 
 </template>
 
@@ -29,3 +29,8 @@ onMounted(() => {
 })
 
 </script>
+
+<style scoped>
+    
+
+</style>

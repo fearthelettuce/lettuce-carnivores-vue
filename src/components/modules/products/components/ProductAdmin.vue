@@ -33,7 +33,8 @@
     </div>
     <div>
         <hr class="mt-5"/>
-        <ProductPhotoList />
+        <ProductPhotoList
+        :product="productStore.getProductToEdit" />
     </div>
     
 
