@@ -1,74 +1,54 @@
 <template>
-    <header v-if="!route.meta.hideHeader" class="navbar navbar-expand-xl my-2">
-            <nav class="container" aria-label="Main navigation">
+    <header v-if="!route.meta.hideHeader" class="navbar navbar-expand-lg my-2">
+            <nav class="container-fluid">
+                <div class="navbar-brand">
+                    <router-link to="/" class="logo-link">
+                        <div class="logo">Lettuce Carnivorus Plants</div>
+                    </router-link>
+                </div>
                 <button
                     class="navbar-toggler border-0"
                     type="button"
-                    data-toggle="collapse"
-                    data-target="navbarSupportedContent"
-                    @click="underConstruction"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapsableContent"
                 >
-                <span class="text-light">
+                    <span class="text-light">
                         <FontAwesome icon="fa-bars" />
                     </span>
                 </button>
-                <div class="collapse navbar-collapse">
-                    <div class="navbar-brand">
-                        <router-link to="/" class="logo-link">
-                            <!-- <img
-                                class="brand-logo"
-                                alt="Site logo"
-                                src="@/assets/images/brand-logo.png"
-                            > -->
-                            <div class="logo">Lettuce Carnivorus Plants</div>
-                        </router-link>
-                    </div>
+                
+                <div class="collapse navbar-collapse" id="navbarCollapsableContent">
                     <MainNavbar />
                 </div>
-                <button 
-                    v-if="!userStore.isLoggedIn"
-                    type="button"
-                    class="btn btn-secondary"
-                    @click.prevent="router.push('/login')"
-                    >
-                    Login
-                </button>
-                <button 
-                    type="button"
-                    class="btn btn-secondary"
-                    @click="userStore.logoutUser"
-                    v-else>
-                    Logout
-                </button>
             </nav>
-            
     </header>
-
 </template>
 
 <script setup lang="ts">
 
 import MainNavbar from './MainNavbar.vue';
-import { useUserStore } from '@/components/modules/auth/stores/users'
-import { router } from '@/router/index' 
 import { useRoute } from 'vue-router';
-const userStore = useUserStore()
 const route = useRoute()
-function underConstruction() {
-    alert('This feature has not been fully implemented yet!')
-}
 
 </script>
 
 <style scoped>
     .logo{
         font-weight: bold;
-        font-size: 2rem;
+        font-size: 1.5rem;
         font-family: 'Carter One', cursive;
     }
 
     .logo-link {
         text-decoration: none;
         cursor: pointer;
+    }
+    li {
+         margin: 0 1em;
+    }
+    @media (min-width: 1100px) {
+        .logo{     
+            font-size: 2rem;
+        }
     }
 </style>
