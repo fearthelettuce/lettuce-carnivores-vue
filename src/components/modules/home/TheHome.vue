@@ -1,6 +1,6 @@
 <template>
     <div class="hero-container">
-        <div class="hero-image" :style="{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(${ highResBackgroundImage}), url(${lowResBackgroundImage})`}">
+        <div class="hero-image" :style="{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(${theBackgroundImage})`}">
             <main class="hero-content">
                 <section class="hero-text">
                     <h1 class="hero-name">Lettuce Carnivorous Plants</h1>
@@ -19,10 +19,7 @@
 import {computed} from 'vue'
 import {getPhotoUrl} from '@/apis/fileServices'
 
-const lowResBackgroundImage = computed(() => {
-    return getPhotoUrl('referencePhotos/Heliamphora-minor-top-view-low-res.webp')
-})
-const highResBackgroundImage = computed(() => {
+const theBackgroundImage = computed(() => {
     return getPhotoUrl('referencePhotos/Heliamphora-minor-top-view.webp')
 })
 

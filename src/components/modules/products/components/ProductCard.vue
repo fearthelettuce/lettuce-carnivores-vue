@@ -1,22 +1,22 @@
 <template>
-    <div class="card">
-       <div> <img :src="cardImageUrl" :class="cardImageUrl == placeholderUrl ? 'placeholderImage': ''" /></div>
-        <div class="card-title my-0">
-            <div>
-                <h5 class="text-primary card-name m-0">{{ product.name }}</h5>
+    <article class="card">
+       <figure> 
+            <img :src="cardImageUrl" :class="cardImageUrl == placeholderUrl ? 'placeholderImage': ''" :alt="`An image of ${product.name}`" />
+        </figure>
+        <header class="card-title my-0">
+            <h5 class="text-primary card-name m-0">{{ product.name }}</h5>
+        </header>
+        <footer class="card-footer d-flex flex-row">
+            <div class="d-flex align-items-center text-primary">
+                {{ formattedPrice }}
             </div>
-            <div>
-                <p class="text-primary">{{ formattedPrice }}</p>
-            </div>
-        </div>
-        <div class="card-footer">
             <router-link 
-            class="btn btn-primary"
-            :to="`/products/${product.id}`">View
+                class="btn btn-primary"
+                :to="`/products/${product.id}`">View
             </router-link>
-        </div>
+        </footer>
         
-    </div>
+    </article>
 </template>
 
 <script setup lang="ts">
