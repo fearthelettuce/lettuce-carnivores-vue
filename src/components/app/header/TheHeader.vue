@@ -18,7 +18,9 @@
                 </button>
                 
                 <div class="collapse navbar-collapse" id="navbarCollapsableContent">
-                    <MainNavbar />
+                    <MainNavbar
+                    @collapseNavbar="closeNavbar"
+                    />
                 </div>
             </nav>
     </header>
@@ -28,8 +30,16 @@
 
 import MainNavbar from './MainNavbar.vue';
 import { useRoute } from 'vue-router';
+import { Collapse } from 'bootstrap';
 const route = useRoute()
 
+function closeNavbar() {
+    console.log('bananananannananan')
+    const menuToggle = document.getElementById('navbarCollapsableContent')
+    const bsCollapse = new Collapse(menuToggle)
+    bsCollapse.toggle()
+    
+}
 </script>
 
 <style scoped>
