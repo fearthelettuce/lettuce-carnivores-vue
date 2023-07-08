@@ -23,6 +23,7 @@
     <PhotoUploadModal
         ref="photoUploadModal"
         storageFolder="plantPhotos"
+        :photos="product.photos"
         @closeModal="state.photoUploadModal.hide()"
         @updatePhotoData="appendPhotos"
         @showToast="showToast"

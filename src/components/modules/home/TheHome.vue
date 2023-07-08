@@ -60,51 +60,21 @@ const highResBackgroundImage = computed(() => {
 .hero-name{
     font-family: 'Carter One', cursive;
     text-align:center;
-    font-size: 3em;
+    font-size: clamp(2.25rem, 5vw, 10rem);
 }
 
 .hero-link {
     font-family: 'Carter One', cursive;
     text-decoration: none;
     margin: 0 1em;
-    font-size: 2em;
+    font-size: clamp(1.75rem, 3vw, 5rem);
 }
 
-@media (min-width: 1000px) {
-    .hero-image {
-        background-position: center;
-    }
-    .hero-name{     
-        font-size: 4.5em;
-    }
+@media (min-width: 40rem) {
     .hero-content nav {
         flex-direction: row;
     }
-    .hero-link {
-    font-size: 3em;
-    }
 }
 
-@media (min-width: 1400px) {
-    .hero-name{     
-        font-size: 6.5em;
-    }
-    .hero-content nav {
-        flex-direction: row;
-    }
-    .hero-link {
-    font-size: 3.25em;
-    }
-}
-
-
-@media (min-width: 1920px) {
-    .hero-name{     
-        font-size: 8em;
-    }
-    .hero-link {
-    font-size: 4em;
-    }
-}
 </style>
 
