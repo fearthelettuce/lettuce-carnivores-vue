@@ -1,21 +1,16 @@
 <template>
-    
-    <div class="hero-image" :style="{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(${ highResBackgroundImage}), url(${lowResBackgroundImage})`}">
-        <div class="hero-content">
-            <div class="hero-text d-flex flex-column">
-                <h1 class="hero-name">Lettuce Carnivorus Plants</h1>
-                <nav class="d-flex flex-row">
-                    <div><router-link
-                        to="products" class="hero-link">Shop</router-link>
-                    </div>
-                    <div><router-link 
-                        to="care" class="hero-link">Learn</router-link>
-                    </div>
-                    <div><router-link 
-                        to="recommendations" class="hero-link">Recommend</router-link>
-                    </div>
-                </nav>
-            </div>
+    <div class="hero-container">
+        <div class="hero-image" :style="{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(${ highResBackgroundImage}), url(${lowResBackgroundImage})`}">
+            <main class="hero-content">
+                <section class="hero-text">
+                    <h1 class="hero-name">Lettuce Carnivorous Plants</h1>
+                    <nav class="">
+                        <router-link to="products" class="hero-link">Shop</router-link>
+                        <router-link to="care" class="hero-link">Learn</router-link>
+                        <router-link to="recommendations" class="hero-link">Recommend</router-link>
+                    </nav>
+                </section>
+            </main>
         </div>
     </div>
 </template>
@@ -36,36 +31,80 @@ const highResBackgroundImage = computed(() => {
 </script>
 //TODO: https://www.w3schools.com/howto/howto_css_hero_image.asp
 <style scoped>
-.hero-image {
-    object-fit: contain;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+.hero-container {
     height: 100dvh;
-    background-position: 50% 60%;
-    background-repeat: no-repeat;
+}
+.hero-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-position: center;
     background-size: cover;
 }
-
-.hero-text {
-
+.hero-content {
     display: flex;
     justify-content: center;
     align-items: center;
 }
+.hero-content nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 4em 0;
+}
+
 
 .hero-name{
     font-family: 'Carter One', cursive;
-    font-size: 8em;
+    text-align:center;
+    font-size: 3em;
 }
 
 .hero-link {
     font-family: 'Carter One', cursive;
     text-decoration: none;
-    margin: 0 2em;
-    font-size: 2.5em;
+    margin: 0 1em;
+    font-size: 2em;
 }
 
+@media (min-width: 1000px) {
+    .hero-image {
+        background-position: center;
+    }
+    .hero-name{     
+        font-size: 4.5em;
+    }
+    .hero-content nav {
+        flex-direction: row;
+    }
+    .hero-link {
+    font-size: 3em;
+    }
+}
+
+@media (min-width: 1400px) {
+    .hero-name{     
+        font-size: 6.5em;
+    }
+    .hero-content nav {
+        flex-direction: row;
+    }
+    .hero-link {
+    font-size: 3.25em;
+    }
+}
+
+
+@media (min-width: 1920px) {
+    .hero-name{     
+        font-size: 8em;
+    }
+    .hero-link {
+    font-size: 4em;
+    }
+}
 </style>
 
