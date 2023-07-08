@@ -92,20 +92,29 @@
     </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, watch } from 'vue';
 import { uploadFile } from '@/apis/fileServices';
 import type {PhotoItem} from '@/components/modules/products/types//product'
 import { PhotoTypes } from '@/components/modules/products/types//product'
 
 const emit = defineEmits(['closeModal','showToast', 'updatePhotoData'])
-const props = defineProps(['storageFolder'])
+const props = defineProps(['storageFolder', 'photos'])
 const selectedFiles: Array<{
-    file: File, 
+    file?: File, 
     tempUrl: string, 
     name: string,
     type?: PhotoTypes | undefined
 }> = reactive([])
 
+
+watch(props.photos, (newVal, oldVal) => {
+    console.log('banana')
+    console.log(props.photos)
+    selectedFiles.length = 0
+    for(let photo of props.photos) {
+        selectedFiles.push(photo)
+    }
+})
 const photoDetails: Array<PhotoItem> = reactive([])
 
 function onFileChanged($event: Event) {
@@ -133,32 +142,32 @@ function arrayMove(arr: Array<any>, fromIndex: number, toIndex: number) {
 }
 
 async function uploadFiles() {
-    let fileUploadCounter = 0
-    if(selectedFiles.length === 0) {
-        alert('No files selected')
+    const photosToUpload = selectedFiles.filter((photo) => photo.file)
+    if(photosToUpload.length === 0) {
+        emit('showToast',{message: `No files to upload`, type: 'error'})
         return
     }
-
-    for (let i = 0; i < selectedFiles.length; i++) {
-        const res = await uploadFile(selectedFiles[i].name, props.storageFolder, selectedFiles[i].file)
+    let fileUploadCounter = 0
+    for (let photo of photosToUpload) {
+        if(!photo.file) continue
+        const res = await uploadFile(photo.name, props.storageFolder, photo.file)
         if (res) {
-            //if (photoData[i].photoType === 'additional') {
             photoDetails.push({
-                name: selectedFiles[i].name,
-                type: selectedFiles[i].type ? selectedFiles[i].type : PhotoTypes.Additional,
+                name: photo.name,
+                type: photo.type ? photo.type : PhotoTypes.Additional,
                 path: res,
-                originalFilename: selectedFiles[i].name,
+                originalFilename: photo.name,
                 
             })
 
             fileUploadCounter++
-            if (i + 1 == selectedFiles.length) {
+            if (fileUploadCounter >= photosToUpload.length) {
                 emit('closeModal')
-                emit('showToast',{message: `${fileUploadCounter} of ${selectedFiles.length} files uploaded`, type: 'success'})
+                emit('showToast',{message: `${fileUploadCounter} of ${photosToUpload.length} files uploaded`, type: 'success'})
                 emit('updatePhotoData',photoDetails)
             }
         } else {
-            alert('Something went wrong')
+            emit('showToast',{message: `Sorry, something went wrong`, type: 'error'})
         }
     }
 }

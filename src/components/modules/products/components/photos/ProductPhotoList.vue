@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <button class="btn btn-primary" @click="state.photoUploadModal.show()">Add Photo</button>
+        <button class="btn btn-primary" @click="showModal">Add Photo</button>
         <div v-if="product.photos && product.photos.length > 0">
             <div class="row">
                 <div class="my-4"></div>
@@ -23,6 +23,7 @@
     <PhotoUploadModal
         ref="photoUploadModal"
         storageFolder="plantPhotos"
+        :photos="product.photos"
         @closeModal="state.photoUploadModal.hide()"
         @updatePhotoData="appendPhotos"
         @showToast="showToast"
@@ -51,6 +52,11 @@ const state = reactive({
 onMounted(() => {
     state.photoUploadModal = new Modal('#photoUploadModal', {})
 })
+
+function showModal() {
+    state.photoUploadModal = new Modal('#photoUploadModal', {})
+    state.photoUploadModal.show()
+}
 
 function showToast(obj: any) {
     if(obj.type === 'success'){
