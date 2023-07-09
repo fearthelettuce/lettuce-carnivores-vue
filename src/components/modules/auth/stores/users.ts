@@ -101,7 +101,7 @@ export const useUserStore = defineStore('user', {
       if(!userId) return
         const res = await findDocById('users',userId)
         if(res) {
-            if( res.roles.admin ) {
+            if( res.roles ) {
                 this.userRoles = res.roles
             }
         }
