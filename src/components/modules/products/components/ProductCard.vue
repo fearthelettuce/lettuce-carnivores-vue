@@ -1,9 +1,11 @@
 <template>
     <article class="card">
        <figure> 
+        <router-link :to="`/products/${product.id}`">
             <img :src="cardImageUrl" :class="cardImageUrl == placeholderUrl ? 'placeholderImage': ''" :alt="`An image of ${product.name}`" />
+        </router-link>
         </figure>
-        <header class="card-title my-0">
+        <header class="card-title my-0 justify-content-center align-items-center">
             <h5 class="text-primary card-name m-0">{{ product.name }}</h5>
         </header>
         <footer class="card-footer d-flex flex-row">
@@ -12,7 +14,7 @@
             </div>
             <router-link 
                 class="btn btn-primary"
-                :to="`/products/${product.id}`">View
+                :to="`/products/${product.id}`">View Details
             </router-link>
         </footer>
         
@@ -60,7 +62,6 @@ img {
 .card {
     display: flex;
     flex-direction: column;
-
     background-color: rgb(65, 65, 65);
     border-radius: 2em;
     overflow:hidden;
@@ -75,15 +76,15 @@ img {
 }
 
 .card-name {
-    min-height: 4em;
+    min-height: 2.5em;
 }
 
 .card-footer {
     padding: 18px;
     overflow: hidden;
-    border-top: 1px solid #dedede;
+    
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 </style>
