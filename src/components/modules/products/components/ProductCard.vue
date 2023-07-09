@@ -6,7 +6,7 @@
         </router-link>
         </figure>
         <header class="card-title my-0 justify-content-center align-items-center">
-            <h5 class="text-primary card-name m-0">{{ product.name }}</h5>
+            <h5 class="text-primary text-center card-name m-0">{{ product.name }}</h5>
         </header>
         <footer class="card-footer d-flex flex-row">
             <div class="d-flex align-items-center text-primary">

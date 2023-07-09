@@ -1,17 +1,17 @@
 <template>
-    <div>
-        <div>
-            <img class="image-preview" :src="displayPhoto">
+    <aside class="product-photo-container">
+        <div class="row">
+            <img class="col-12 image-preview" :src="displayPhoto">
         </div>
-        <div class="photo-list">
+        <div class="photo-list row mt-2 g-4">
             <img 
             v-for="photo of props.photos" 
             :key=photo.path.toString() 
             :src="getPhotoUrl(photo.path.toString())"
-            class="photo-list-item"
+            class="col-4 photo-list-item"
             @click="setSelectedPhoto(photo)">
         </div>
-    </div>
+    </aside>
 </template>
 
 <script setup lang="ts">
@@ -44,15 +44,42 @@ function setSelectedPhoto(photo: PhotoItem) {
     state.selectedPhoto = photo
 }
 
-
-
 </script>
 
 <style>
+.product-photo-container {
+    width: 90vw;
+}
 .image-preview {
     width: 20em;
+    height: 35em;
+    display: block;
+    object-fit: cover;
+}
+
+.placeholderImage {
+    box-sizing: border-box;
+    padding: 5em;
+    width: 25em;
+    margin: auto;
+}
+
+.photo-list {
+    
 }
 .photo-list-item {
-    width: 10em;
+    object-fit: cover;
+    height: 10em;
 }
+
+@media (min-width: 80rem) {
+    .product-photo-container {
+        width: 45vw;
+    }
+    .image-preview {
+        width: 35em;
+        height: 50em;
+    }
+}
+
 </style>

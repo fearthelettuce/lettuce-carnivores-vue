@@ -36,15 +36,11 @@
         <ProductPhotoList
         :product="productStore.getProductToEdit" />
     </div>
-    
-
 </template>
 
 <script setup lang="ts">
-import { reactive, onMounted} from 'vue'
-import { Modal } from 'bootstrap'
+import { onMounted} from 'vue'
 import { useProductStore } from '../stores/product'
-
 import ProductAdminForm from './ProductAdminForm.vue'
 import ProductPhotoList from './photos/ProductPhotoList.vue'
 import ProductCard from './ProductCard.vue'
@@ -53,12 +49,8 @@ import { storeToRefs } from 'pinia'
 const productStore = useProductStore()
 
 const { getFilteredProducts: products } = storeToRefs(productStore)
-const state = reactive({
-    confirmDeleteModal: null,
-})
 
 onMounted(() => {
-    state.confirmDeleteModal = new Modal('#confirmDeleteModal', {})
     if (!productStore.productList || productStore.productList.length === 0) {
         productStore.fetchSearchResults()
     }
@@ -74,10 +66,4 @@ function setSelectedProduct(event: Event) {
         productStore.setProductToEdit(product)
     }
 }
-
-
 </script>
-
-<style scoped>
-
-</style>
