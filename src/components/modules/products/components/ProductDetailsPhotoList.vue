@@ -56,16 +56,11 @@ function setSelectedPhoto(photo: PhotoItem) {
     display: block;
     object-fit: cover;
 }
-
 .placeholderImage {
     box-sizing: border-box;
     padding: 5em;
     width: 25em;
     margin: auto;
-}
-
-.photo-list {
-    
 }
 .photo-list-item {
     object-fit: cover;

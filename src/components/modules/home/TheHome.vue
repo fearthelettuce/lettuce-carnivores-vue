@@ -57,14 +57,15 @@ const theBackgroundImage = computed(() => {
 .hero-name{
     font-family: 'Carter One', cursive;
     text-align:center;
-    font-size: clamp(2.25rem, 5vw, 10rem);
+    font-size: clamp(1.8rem, 5vw, 10rem);
+    margin: 0 .2em;
 }
 
 .hero-link {
     font-family: 'Carter One', cursive;
     text-decoration: none;
     margin: 0 1em;
-    font-size: clamp(1.75rem, 3vw, 5rem);
+    font-size: clamp(1.5rem, 3vw, 5rem);
 }
 
 @media (min-width: 40rem) {

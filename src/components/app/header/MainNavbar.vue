@@ -55,6 +55,10 @@ const allowedNavLinks = computed(() => {
     }
     li {
         margin: 0 .25em;
+        font-size: 1.5rem;
+    }
+    a {
+        
     }
 /*     
     .no-background {

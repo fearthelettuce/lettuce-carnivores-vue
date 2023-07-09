@@ -34,11 +34,9 @@ import { Collapse } from 'bootstrap';
 const route = useRoute()
 
 function closeNavbar() {
-    console.log('bananananannananan')
     const menuToggle = document.getElementById('navbarCollapsableContent')
     const bsCollapse = new Collapse(menuToggle)
     bsCollapse.toggle()
-    
 }
 </script>
 
@@ -49,7 +47,8 @@ function closeNavbar() {
     }
     .logo{
         font-weight: bold;
-        font-size: 1.25rem;
+        font-size: clamp(1.25rem, 2.5vw, 2.5rem); 
+
         font-family: 'Carter One', cursive;
     }
 
@@ -59,7 +58,7 @@ function closeNavbar() {
     }
     @media (min-width: 1400px) {
         .logo{     
-            font-size: 2rem;
+           
         }
         header {
             padding: 0 12rem;
