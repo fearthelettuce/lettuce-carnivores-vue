@@ -88,7 +88,6 @@ export const fbGetUserProfile = async () => {
   const docSnap = await getDoc(ref);
 
   if (docSnap.exists()) {
-    console.log("Document data:", docSnap.data());
     return {
       ...docSnap.data(),
       uid: user?.uid,
@@ -127,26 +126,3 @@ export const queryObjectCollection = async ({
   });
   return results;
 };
-
-// export const fbCollectionListener = (collectionName: string, callback: any) => {
-//   //const unsubscribe = onSnapshot(    not sure why this was declared as a variable
-//   onSnapshot(
-//     collection(db, collectionName),
-//     (snapshot) => {
-//       // ...
-//       console.log("Listening To Collection: " + collectionName, snapshot);
-//       const results: any[] = [];
-//       snapshot.forEach((doc) => {
-//         results.push({
-//           id: doc.id,
-//           ...doc.data(),
-//         });
-//       });
-//       callback(results);
-//     },
-//     (error) => {
-//       // ...
-//       console.log("Error Listening To Collection: " + collectionName, error);
-//     }
-//   );
-// };

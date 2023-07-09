@@ -70,13 +70,10 @@ export async function findDocById(collectionName: string, id: number | string) {
 }
 
 export async function findByProperty(collectionName: string, property: string, value: any) {
-    console.log(collectionName)
     const returnArr: Array<any> = []
     const q = query(collection(db, collectionName), where(property, "==", value))
     const querySnapshot = await getDocs(q)
-    console.log(querySnapshot)
     querySnapshot.forEach((doc) => {
-        console.log(doc.data())
         returnArr.push(doc.data())
     })
     return returnArr
