@@ -7,7 +7,7 @@
                     </router-link>
                 </div>
                 <button
-                    class="navbar-toggler border-0"
+                    class="navbar-toggler border-0 px-2"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#navbarCollapsableContent"
@@ -42,7 +42,7 @@ function closeNavbar() {
 
 <style scoped>
     header {
-        padding: 0 1rem;
+        padding: 0 .3rem;
         background: #383838
     }
     .logo{
