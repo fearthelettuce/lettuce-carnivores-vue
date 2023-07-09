@@ -32,6 +32,7 @@ export const useUserStore = defineStore('user', {
   getters: {
     isLoggedIn: (state) => state.user !== null,
     isAdmin: (state) => state.userRoles?.admin,
+    isFamily: (state) => state.userRoles?.family,
     userError: (state) => state.error,
   },
   actions: {
