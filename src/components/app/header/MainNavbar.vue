@@ -42,6 +42,9 @@ const allowedNavLinks = computed(() => {
     if(!userStore.isLoggedIn) {
         allowedNavData = allowedNavData.filter((ele) => {return !ele.meta.requiresLogin})
     }
+    if(!userStore.isFamily) {
+        allowedNavData = allowedNavData.filter((ele) => {return !ele.meta.requiresFamily})
+    }
     return allowedNavData
 })
 const emit = defineEmits(['collapseNavbar'])
