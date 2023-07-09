@@ -7,7 +7,7 @@
                     </router-link>
                 </div>
                 <button
-                    class="navbar-toggler border-0 px-2"
+                    class="navbar-toggler border-0 px-1"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#navbarCollapsableContent"
@@ -42,26 +42,16 @@ function closeNavbar() {
 
 <style scoped>
     header {
-        padding: 0 .3rem;
+        padding: 0 clamp(.3rem, 5vw, 20rem);
         background: #383838
     }
     .logo{
         font-weight: bold;
         font-size: clamp(1.25rem, 2.5vw, 2.5rem); 
-
         font-family: 'Carter One', cursive;
     }
-
     .logo-link {
         text-decoration: none;
         cursor: pointer;
-    }
-    @media (min-width: 1400px) {
-        .logo{     
-           
-        }
-        header {
-            padding: 0 12rem;
-        }
     }
 </style>
