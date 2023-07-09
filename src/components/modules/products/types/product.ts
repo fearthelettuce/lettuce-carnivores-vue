@@ -7,6 +7,9 @@ type Product = {
     isDiscountable?: boolean,
     photoData?: PhotoDetails,
     photos: Array<PhotoItem>,
+    propagationMethod: string,
+    size: string,
+    description: string,
 }
 
 type PhotoDetails = {

@@ -19,6 +19,8 @@ const newProduct = {
     clone: '',
     propagationMethod: '',
     source: '',
+    size: '',
+    description: '',
 }
 
 export const useProductStore = defineStore('product', {
