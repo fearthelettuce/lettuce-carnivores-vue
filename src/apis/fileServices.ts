@@ -19,13 +19,3 @@ export function getPhotoUrl(fileName: string) {
     const urlSuffix = '?alt=media'
     return `${urlRoot}${encodedFileName}${urlSuffix}`
 }
-// export async function getUrl(fileName: string, subfolder: string) {
-//     const filePath = `/${subfolder}/${fileName}`
-//     const storageRef = ref(storage, filePath)
-    
-//     const snapshot = await getDownloadURL(storageRef).catch(err => console.error(err))
-//     if (snapshot) {
-//         console.log(snapshot)
-//         return snapshot
-//     }
-// }

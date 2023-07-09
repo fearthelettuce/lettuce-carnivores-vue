@@ -134,7 +134,6 @@ export const useProductStore = defineStore('product', {
                     }
                     return { success: true, message: res.message }
                 } else {
-                    console.log(res)
                     return {success: false, error: true, errorDetails: res.error, message: 'There was an error saving'}
                 }
             } catch (err) {
@@ -175,7 +174,6 @@ export const useProductStore = defineStore('product', {
                 if(photo.type && photo.type !== 'additional' && product.photoData) {
                     product.photoData[photo.type] = {name: photo.name, fullPath:photo.path}
                 }
-                console.log(product.photoData)
             }
 
             if (product.id) {

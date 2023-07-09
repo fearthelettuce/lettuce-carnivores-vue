@@ -145,7 +145,6 @@ async function deleteProduct() {
         const productId = product.value.id
         const res = await productStore.deleteById(product.value.id).catch(err => console.error(err))
         if (res && res.success) {
-            console.log('banana')
             toast.success(`Product ${productId} deleted`)
             state.confirmDeleteModal.hide()
             resetForm()
