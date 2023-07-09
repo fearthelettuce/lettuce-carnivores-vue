@@ -1,30 +1,46 @@
 <template>
-    <div class="container">
-        <div v-if="state.product">
-            <h1>{{ state.product.name }}</h1>
-            <p>{{ formattedPrice }}</p>
+    <main class="container-fluid d-flex justify-content-center">
+        <section v-if="state.product" class="d-flex flex-row" >
+            
+            
             <aside>
-                <ProductDetailsPhotoList :photos="state.product.photos" :photoData="state.product.photoData? state.product.photoData : undefined" />
+                <ProductDetailsPhotoList 
+                    :photos="state.product.photos" 
+                    :photoData="state.product.photoData ? state.product.photoData : undefined" />
             </aside>
-            <div>
-                <button 
-                v-if="availableForSale" 
-                class="btn btn-primary">
-                Add to Cart
-                </button>
-                <button 
-                v-else
-                class="btn btn-secondary"
-                disabled>
-                Out of Stock
-                </button>
-            </div>       
-        </div>
-        <div v-else>
+            <article class="d-flex align-content-center flex-column ms-5">
+                <div>
+                    <h1>{{ state.product.name }}</h1>   
+                </div>
+                <div>
+                    <p>{{ state.product.description }}</p>   
+                </div>
+                <div class="d-flex flex-row justify-content-around">
+                    <span>{{ state.product.propagationMethod }}</span>
+                    <span>banana{{ state.product.size }}</span>
+                </div>
+                <div class="d-flex flex-row justify-content-around mt-3">
+                    {{ formattedPrice }}
+                    <button 
+                    v-if="availableForSale" 
+                    class="btn btn-primary">
+                    Add to Cart
+                    </button>
+                    <button 
+                    v-else
+                    class="btn btn-secondary"
+                    disabled>
+                    Out of Stock
+                    </button>
+                </div>       
+
+            </article>
+        </section>
+        <section v-else>
             <p>Sorry, unable to find that product</p>
-            <router-link to="products">Click here to go back</router-link>
-        </div>
-</div>
+            <router-link to="/products">Click here to go back</router-link>
+        </section>
+    </main>
 </template>
 
 <script setup lang="ts">
@@ -77,4 +93,7 @@ const formattedPrice = computed(() => {
 
 <style scoped>
 
+    main {
+        padding: 0 clamp(.1em, 6vw, 20rem)
+    }
 </style>

@@ -84,6 +84,14 @@ import { useToast } from 'vue-toastification'
 import { useProductStore } from '../stores/product'
 import type { Plant } from '../types/plants'
 
+//TODO: Add fields for all values:
+// clone: '',
+//     propagationMethod: '',
+//     source: '',
+//     size: '',
+//     description: '',
+
+
 
 const productStore = useProductStore()
 const toast = useToast()
