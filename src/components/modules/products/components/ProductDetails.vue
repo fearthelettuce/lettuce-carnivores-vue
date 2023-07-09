@@ -1,29 +1,27 @@
 <template>
     <main class="container-fluid d-flex justify-content-center">
-        <section v-if="state.product" class="d-flex flex-row" >
-            
-            
-            <aside>
-                <ProductDetailsPhotoList 
-                    :photos="state.product.photos" 
-                    :photoData="state.product.photoData ? state.product.photoData : undefined" />
-            </aside>
-            <article class="d-flex align-content-center flex-column ms-5">
-                <div>
-                    <h1>{{ state.product.name }}</h1>   
+        <section v-if="state.product" class="d-flex productDetailSection" >
+        <ProductDetailsPhotoList 
+            :photos="state.product.photos" 
+            :photoData="state.product.photoData ? state.product.photoData : undefined" />
+            <article class="product-information d-flex align-content-center flex-column">
+                <div class="d-flex justify-content-center">
+                    <h1 class="text-center">{{ state.product.name }}</h1>   
                 </div>
                 <div>
-                    <p>{{ state.product.description }}</p>   
+                    <p class="text-center">{{ state.product.description }}</p>   
                 </div>
                 <div class="d-flex flex-row justify-content-around">
                     <span>{{ state.product.propagationMethod }}</span>
-                    <span>banana{{ state.product.size }}</span>
+                    <span>{{ state.product.clone }}</span>
+                    <span>{{ state.product.size }}</span>
                 </div>
                 <div class="d-flex flex-row justify-content-around mt-3">
                     {{ formattedPrice }}
                     <button 
                     v-if="availableForSale" 
-                    class="btn btn-primary">
+                    class="btn btn-primary"
+                    @click="addToCart">
                     Add to Cart
                     </button>
                     <button 
@@ -89,11 +87,29 @@ const formattedPrice = computed(() => {
     return formatter.format(state.product.price)
 })
 
+function addToCart() {
+    alert('This feature is still growing, please check back in a few days!')
+}
 </script>
 
 <style scoped>
-
     main {
-        padding: 0 clamp(.1em, 6vw, 20rem)
+        padding: 0 clamp(.1em, 6vw, 20rem);
+        margin: 2em 0;
     }
+    .productDetailSection {
+        flex-direction: column;
+    }
+    .product-information {
+        margin: 2rem 0;
+    }
+
+    @media (min-width: 80rem) {
+    .productDetailSection {
+        flex-direction: row;
+    }
+    .product-information {
+        width: 30vw;
+    }
+}
 </style>

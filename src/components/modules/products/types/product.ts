@@ -10,6 +10,10 @@ type Product = {
     propagationMethod: string,
     size: string,
     description: string,
+    clone: string,
+    genus: string,
+    source: string,
+
 }
 
 type PhotoDetails = {
