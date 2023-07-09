@@ -12,15 +12,15 @@
                 v-if="!userStore.isLoggedIn"
                 to="/login"
                 class="nav-link text-light"
+                @click="$emit('collapseNavbar')"
             >Login</router-link>
             <div v-else class="nav-link text-light p-0">
                 <button
-               
-                to="/login"
-                type="button"
-                class="nav-link text-light"
-                @click="userStore.logoutUser"
-            >Logout</button>
+                    to="/login"
+                    type="button"
+                    class="nav-link text-light"
+                    @click="handleLogout"
+                >Logout</button>
             </div>
             
         </li>
@@ -44,7 +44,11 @@ const allowedNavLinks = computed(() => {
     }
     return allowedNavData
 })
-
+const emit = defineEmits(['collapseNavbar'])
+function handleLogout() {
+    userStore.logoutUser()
+    emit('collapseNavbar',{})
+}
 </script>
 
 <style scoped>
@@ -57,14 +61,6 @@ const allowedNavLinks = computed(() => {
         margin: 0 .25em;
         font-size: 1.5rem;
     }
-/*     
-    .no-background {
-        background-color: transparent !important;
-    }
-    a {
-        margin: 0 0.25rem;
-    } */
-
     .nav-link:hover {
         border-radius: 0.4rem;
         background-color: #515151;
