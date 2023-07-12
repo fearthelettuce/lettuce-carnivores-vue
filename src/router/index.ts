@@ -2,14 +2,16 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '@/components/modules/auth/stores/users'
 import HomeView from '@/views/HomeView.vue'
 import ProductsView from '@/views/ProductsView.vue'
-import ProductDetailView from '@/views/ProductDetailView.vue'
-import ProductAdminView from '@/components/modules/products/components/ProductAdmin.vue'
-import AboutView from '@/views/AboutView.vue'
-import CareGuideView from '@/views/CareGuideView.vue'
-import RecommendationView from '@/views/RecommendationView.vue'
-import LoginView from '@/views/LoginView.vue'
-import ResetPasswordView from '@/views/ResetPasswordView.vue'
-import EasterEggView from '@/views/EasterEggView.vue'
+const ProductDetailView = () => import( '@/views/ProductDetailView.vue')
+const ProductAdminView = () => import('@/components/modules/products/components/ProductAdmin.vue')
+const AboutView = () => import('@/views/AboutView.vue')
+const CareGuideView = () => import('@/views/CareGuideView.vue')
+const RecommendationView = () => import( '@/views/RecommendationView.vue')
+const LoginView  = () => import('@/views/LoginView.vue')
+const ResetPasswordView  = () => import('@/views/ResetPasswordView.vue')
+const EasterEggView  = () => import('@/views/EasterEggView.vue')
+
+const AccountView = () => import('@/views/AccountView.vue')
 
 const routeData = [
     {
@@ -95,7 +97,7 @@ const routeData = [
       path: "/account",
       name: 'account',
       label: 'Account',
-      component: LoginView,
+      component: AccountView,
       meta: {
         showInNav: true,
         requiresLogin: true,

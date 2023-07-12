@@ -19,13 +19,12 @@ import {
 export const fbCreateAccount = async (
   email: string,
   password: string,
-  first: string,
-  last: string
+  profileDetails: object,
 ) => {
   const response = await createUserWithEmailAndPassword(auth, email, password);
   console.log(response)
   if (response) {
-    await fbSetUserProfile({ first, last });
+    await fbSetUserProfile(profileDetails);
     const profile = await fbGetUserProfile();
     return {
       user: response.user,
@@ -59,23 +58,16 @@ export const fbAuthStateListener = (callback: any) => {
   });
 };
 
-export const fbSetUserProfile = async ({
-  first,
-  last,
-}: {
-  first: string;
-  last: string;
-}) => {
+export const fbSetUserProfile = async (profileDetails: object) => {
   const user = auth.currentUser;
   const defaultRoles = {user: true, admin: false}
   const ref = doc(db, "users", user?.uid as string);
   await setDoc(
     ref,
     {
-      first,
-      last,
-      roles: defaultRoles,
       uid: user?.uid,
+      roles: defaultRoles,
+      ...profileDetails,
     },
     { merge: true }
   );

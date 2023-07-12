@@ -36,14 +36,14 @@ import { useUserStore } from '@/components/modules/auth/stores/users';
 const userStore = useUserStore()
 const allowedNavLinks = computed(() => {
     let allowedNavData = navData.filter((ele) => {return ele.meta.showInNav})
+    if(!userStore.isFamily) {
+        allowedNavData = allowedNavData.filter((ele) => {return !ele.meta.requiresFamily})
+    }
     if(!userStore.isAdmin) {
         allowedNavData = allowedNavData.filter((ele) => {return !ele.meta.requiresAdmin})
     }
     if(!userStore.isLoggedIn) {
         allowedNavData = allowedNavData.filter((ele) => {return !ele.meta.requiresLogin})
-    }
-    if(!userStore.isFamily) {
-        allowedNavData = allowedNavData.filter((ele) => {return !ele.meta.requiresFamily})
     }
     return allowedNavData
 })
