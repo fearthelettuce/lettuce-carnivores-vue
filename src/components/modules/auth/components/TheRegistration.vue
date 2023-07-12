@@ -47,13 +47,20 @@ const register = async () => {
         return
     }
     try {
-        const response = await userStore.createAccount(registrationForm.email, registrationForm.password, registrationForm.firstName, registrationForm.lastName)
-        console.log(response)
+        const userResponse = await userStore.createAccount(registrationForm.email, registrationForm.password)
+        console.log(userResponse)
+        const profileResponse = await userStore.setUserProfile(
+            {
+                name: {firstName: registrationForm.firstName, lastName: registrationForm.lastName},
+                contactInformation: {email: registrationForm.email},
+            }
+        )
+        console.log(profileResponse)
         toast.success('Welcome!', {timeout: 1500})
     } catch(error) {
         console.log(error)
     }
-    router.push('/')
+    router.push('/products')
 }
 
 </script>
