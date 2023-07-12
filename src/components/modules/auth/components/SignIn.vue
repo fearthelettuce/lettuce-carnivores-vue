@@ -42,7 +42,7 @@ async function login () {
     try {
         const res = await userStore.logInUser(loginEmail.value, loginPassword.value)
         if(res) {
-            toast.success('Welcome!', {timeout: 1500})
+            toast.success('Welcome!', {timeout: 750})
             router.push('/products')
         }
         else {
