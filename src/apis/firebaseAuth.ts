@@ -18,25 +18,28 @@ import {
 
 export const fbCreateAccount = async (
   email: string,
-  password: string,
-  profileDetails: object,
+  password: string
 ) => {
   const response = await createUserWithEmailAndPassword(auth, email, password);
-  console.log(response)
   if (response) {
-    await fbSetUserProfile(profileDetails);
-    const profile = await fbGetUserProfile();
-    return {
-      user: response.user,
-      profile,
-    };
+    return response.user
   } else {
-    return {
-      user: null,
-      profile: null,
-    };
+    return null
   }
-};
+}
+//   await fbSetUserProfile(profileDetails);
+//   const profileResponse = await fbGetUserProfile();
+//   if(!profileResponse) {
+//     return {
+//       user: userResponse.user,
+//       profile: null
+//     }
+//   }
+//   return {
+//     user: userResponse.user,
+//     profile: profileResponse.profile
+//   };
+// };
 
 export const fbSignIn = async (email: string, password: string) => {
   const response = await signInWithEmailAndPassword(auth, email, password);
@@ -60,17 +63,17 @@ export const fbAuthStateListener = (callback: any) => {
 
 export const fbSetUserProfile = async (profileDetails: object) => {
   const user = auth.currentUser;
-  const defaultRoles = {user: true, admin: false}
   const ref = doc(db, "users", user?.uid as string);
-  await setDoc(
-    ref,
-    {
-      uid: user?.uid,
-      roles: defaultRoles,
-      ...profileDetails,
-    },
-    { merge: true }
-  );
+  if(ref && user ) {
+    await setDoc(
+      ref,
+      {
+        uid: user?.uid,
+        ...profileDetails,
+      },
+      { merge: true }
+    );
+  }
   return true;
 };
 
@@ -78,7 +81,6 @@ export const fbGetUserProfile = async () => {
   const user = auth.currentUser;
   const ref = doc(db, "users", user?.uid as string);
   const docSnap = await getDoc(ref);
-
   if (docSnap.exists()) {
     return {
       ...docSnap.data(),
