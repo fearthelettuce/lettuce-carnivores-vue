@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import {
   fbAuthStateListener,
   fbCreateAccount,
+  fbSetUserProfile,
 //   fbGetUserProfile,
   fbSignIn,
   fbSignOut,
@@ -30,7 +31,7 @@ type Profile = {
   contactInformation: {
     email: string,
   }
-  shippingAddress: {
+  shippingAddress?: {
     firstName: string,
     lastName: string,
     address1: string,
@@ -67,19 +68,31 @@ export const useUserStore = defineStore('user', {
         });
       });
     },
-    async createAccount(email: string, password: string, profileDetails: object) {
-        try {
-            const {user, profile} = await fbCreateAccount(email, password, profileDetails);
-            this.user = user ? user : null;
-            this.profile = profile ? profile : null;
-            this.error = null;
-            return true;
-        } catch (e: any) {
-            this.user = null;
-            this.error = e;
-            console.log(e)
-            return false;
-        } 
+    async createAccount(email: string, password: string) {
+      try {
+          const user = await fbCreateAccount(email, password);
+          this.user = user ? user : null;
+          this.error = null;
+          return true;
+      } catch (e: any) {
+          this.user = null;
+          this.error = e;
+          console.log(e)
+          return false;
+      } 
+    },
+    async setUserProfile(userProfile: Profile) {
+      try {
+        await fbSetUserProfile({profile: userProfile});
+        this.profile = userProfile ? userProfile : null;
+        this.error = null;
+        return true;
+    } catch (e: any) {
+        this.profile = null;
+        this.error = e;
+        console.log(e)
+        return false;
+    } 
     },
     async logInUser(email: string, password: string) {
       try {
