@@ -34,9 +34,11 @@ import { Collapse } from 'bootstrap';
 const route = useRoute()
 
 function closeNavbar() {
-    const menuToggle = document.getElementById('navbarCollapsableContent')
-    const bsCollapse = new Collapse(menuToggle)
-    bsCollapse.toggle()
+    const collapsableEle = document.getElementById('navbarCollapsableContent')
+    if(collapsableEle?.classList.contains('show')) {
+        const bsCollapse = new Collapse(collapsableEle)
+        bsCollapse.toggle()
+    }
 }
 </script>
 
