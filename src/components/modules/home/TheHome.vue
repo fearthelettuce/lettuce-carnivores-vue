@@ -3,7 +3,7 @@
         <div class="hero-image" :style="{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(${theBackgroundImage})`}">
             <main class="hero-content">
                 <section class="hero-text">
-                    <h1 class="hero-name">Lettuce Carnivorous Plants</h1>
+                    <h1 class="hero-name">Danger Lettuce Carnivorous Plants</h1>
                     <nav class="">
                         <router-link to="products" class="hero-link">Shop</router-link>
                         <router-link to="care" class="hero-link">Learn</router-link>
