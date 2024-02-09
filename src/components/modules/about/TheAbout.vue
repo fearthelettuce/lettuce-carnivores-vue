@@ -8,8 +8,8 @@
         <h4>My Plants</h4>
         <p>My primary interest in with highland Nepenthes, Heliamphora and Cephalotus. My grow space is limited, so my inventory won't be the same as the larger sellers.  However, I primarily sell rooted divisions/cuttings.  Unlike many other sellers, that import tissue culture plants, the plants you will buy from me are generally established, actively growing, divisions that won't take years to grow to a decent size.</p>   
         <h4>Contact</h4>
-        <p>For questions, plesae contact me at fearthelettuce@gmail.com.</p>
-        <a href="https://www.ebay.com/usr/fearthelettuce#tab2" target="_blank">See my feedback on eBay</a>
+        <p>For questions, plesae contact me at dangerlettucecarnivores@gmail.com.</p>
+        <a href="https://www.ebay.com/usr/dangerlettuce?_tab=1" target="_blank">See my feedback on eBay</a>
     </div>
 
 </template>
