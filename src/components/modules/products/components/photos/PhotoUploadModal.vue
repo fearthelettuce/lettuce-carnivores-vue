@@ -97,8 +97,8 @@ import { uploadFile } from '@/apis/fileServices';
 import type {PhotoItem} from '@/components/modules/products/types//product'
 import { PhotoTypes } from '@/components/modules/products/types//product'
 
-const emit = defineEmits(['closeModal','showToast', 'updatePhotoData'])
-const props = defineProps(['storageFolder'])
+const emit = defineEmits(['closeModal', 'showToast', 'updatePhotoData'])
+const props = defineProps(['storageFolder', 'photos'])
 const selectedFiles: Array<{
     file?: File, 
     tempUrl: string, 
@@ -106,6 +106,21 @@ const selectedFiles: Array<{
     type?: PhotoTypes | undefined
 }> = reactive([])
 
+
+watch(props.photos, (newVal, oldVal) => {
+    console.log('banana')
+    console.log(newVal)
+    console.log(oldVal)
+    console.log(props.photos)
+    selectedFiles.length = 0
+    for(let photo of props.photos) {
+        selectedFiles.push(photo)
+    }
+})
+watch(props.photos, () => {
+    console.log(props.photos)
+    //TODO: need to combine concept of selectedFiles with props.photos.  Maybe just do away with selectedFiles and just make sure to save state before unmounted?
+})
 const photoDetails: Array<PhotoItem> = reactive([])
 
 function onFileChanged($event: Event) {
