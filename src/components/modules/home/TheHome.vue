@@ -3,7 +3,8 @@
         <div class="hero-image" :style="{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(${theBackgroundImage})`}">
             <main class="hero-content">
                 <section class="hero-text">
-                    <h1 class="hero-name">Danger Lettuce Carnivorous Plants</h1>
+                    <h1 class="hero-name">Danger Lettuce</h1>
+                    <h2 class="hero-subtitle">Carnivorous Plants</h2>
                     <nav class="">
                         <router-link to="products" class="hero-link">Shop</router-link>
                         <router-link to="care" class="hero-link">Learn</router-link>
@@ -54,13 +55,14 @@ const theBackgroundImage = computed(() => {
 }
 
 
-.hero-name{
+.hero-text{
     font-family: 'Carter One', cursive;
     text-align:center;
-    font-size: clamp(1.8rem, 5vw, 10rem);
+    
     margin: 0 .2em;
+    .hero-name {font-size: clamp(1.8rem, 5vw, 10rem);}
+    .hero-subtitle{font-size: clamp(1rem, 3vw, 5rem);}
 }
-
 .hero-link {
     font-family: 'Carter One', cursive;
     text-decoration: none;
