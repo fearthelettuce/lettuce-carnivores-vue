@@ -24,8 +24,10 @@ app.use(plugin, defaultConfig)
 
 import BaseModal from '@/components/app/UI/BaseModal.vue'
 import BaseSpinner from '@/components/app/UI/BaseSpinner.vue'
+import BaseContainer from './components/app/UI/BaseContainer.vue'
 app.component('BaseModal', BaseModal)
 app.component('BaseSpinner',BaseSpinner)
+app.component('BaseContainer', BaseContainer)
 
 import { useUserStore } from './components/modules/auth/stores/users';
 const userStore = useUserStore()
