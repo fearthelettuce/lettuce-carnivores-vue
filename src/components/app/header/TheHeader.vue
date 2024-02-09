@@ -3,7 +3,7 @@
             <nav class="container-fluid">
                 <div class="navbar-brand">
                     <router-link to="/" class="logo-link">
-                        <div class="logo">Lettuce Carnivorus Plants</div>
+                        <div class="logo">Danger Lettuce</div>
                     </router-link>
                 </div>
                 <button
