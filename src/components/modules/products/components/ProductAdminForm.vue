@@ -5,6 +5,10 @@
             <h3 v-else>Creating a New Product</h3>
         </div>
         <div class="row g-3 align-items-center">
+            <div class="col-1 mb-3">
+                <label for="id" class="form-label">ID</label>
+                <input name="id" class="form-control" type="id" v-model="product.id">
+            </div>
             <div class="col-3 mb-3">
                 <label for="genus" class="form-label">Genus</label>
                 <select name="genus" class="form-select" aria-label="Select Genus" v-model="product.genus">
@@ -12,19 +16,17 @@
                     <option v-for="genus of productStore.genusList" :value="genus" :key="genus.id">{{ genus.label }}</option>
                 </select>
             </div>
-            <div class="col-5 mb-3">
+            <div class="col-6 mb-3">
                 <label for="name" class="form-label">Name</label>
                 <input name="name" class="form-control" type="text" v-model="product.name">
             </div>
-
+        
+        </div>
+        <div class="row">
             <div class="col-3 mb-3">
                 <label for="propagationType" class="form-label">Propagation Method</label>
                 <input name="propagationType" class="form-control" type="text" v-model="product.propagationMethod">
             </div>
-
-        
-        </div>
-        <div class="row">
             <div class="col-3 mb-3">
                 <label for="source" class="form-label">Source</label>
                 <input name="source" class="form-control" type="text" v-model="product.source">
@@ -33,10 +35,10 @@
                 <label for="price" class="form-label">Price</label>
                 <input name="price" class="form-control" type="number" v-model.number="product.price">
             </div>
-            <div class="col-3 mb-3">
-                    <label for="quantity" class="form-label">Available Quantity</label>
-                    <input name="quantity" class="form-control" type="number" v-model.number="product.quantity">
-                </div>
+            <div class="col-2 mb-3">
+                <label for="quantity" class="form-label">Available Quantity</label>
+                <input name="quantity" class="form-control" type="number" v-model.number="product.quantity">
+            </div>
             
         </div>
         <div class="row">

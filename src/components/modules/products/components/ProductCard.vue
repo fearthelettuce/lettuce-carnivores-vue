@@ -51,6 +51,7 @@ img {
     display: block;
     height: 25em;
     object-fit: cover;
+    object-position: 0% 15%;
 }
 
 .placeholderImage {
