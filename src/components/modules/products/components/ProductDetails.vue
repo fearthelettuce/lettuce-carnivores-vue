@@ -35,8 +35,7 @@
             </article>
         </section>
         <section v-else>
-            <p>Sorry, unable to find that product</p>
-            <router-link to="/products">Click here to go back</router-link>
+            <BaseSpinner />
         </section>
     </BaseContainer>
 </template>

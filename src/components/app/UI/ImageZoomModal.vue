@@ -66,14 +66,14 @@ function expandImage() {
         display: flex;
         justify-content: center;
         width: 100%;
-        height: 90dvh;
     }
     .image-container {
-        position:relative;
+        position: relative;
+        margin: 0 1rem;
     }
     img {
         max-height: 100%;
-        object-fit: contain;
+        object-fit: cover;
         width: 100%;
     }
     .btn-close{
