@@ -6,7 +6,7 @@
         </main>
 </template>
 
-<style>
+<style scoped>
     main {
         padding: 0 clamp(.5dvw, 5dvw, 10dvw);
     }

@@ -54,15 +54,15 @@ function showImageZoomModal() {
 
 </script>
 
-<style>
+<style scoped>
 .product-photo-container {
-    width: 90vw;
+    width: 100%;
 }
 .image-preview {
-    width: 20em;
-    height: 35em;
-    display: block;
+    width: 100%;
     object-fit: cover;
+    object-position: 0% 25%;
+    cursor: pointer;
 }
 .placeholderImage {
     box-sizing: border-box;
@@ -72,7 +72,8 @@ function showImageZoomModal() {
 }
 .photo-list-item {
     object-fit: cover;
-    height: 10em;
+    object-position: 0% 25%;
+    height: 15em;
 }
 
 @media (min-width: 80rem) {
@@ -80,7 +81,7 @@ function showImageZoomModal() {
         width: 45vw;
     }
     .image-preview {
-        width: 35em;
+        width: 100%;
         height: 50em;
     }
 }

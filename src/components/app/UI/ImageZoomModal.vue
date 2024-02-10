@@ -1,16 +1,27 @@
 <template>
-    <BaseModal 
+    <div
         ref="expandImage"
         id="expandImage"
-        @closeModal="state.expandImage.hide()"
+        class="modal fade"
+        tabindex="-1"
+        aria-hidden="true"
     >
-        <template #body>
+        <div   
+            class="modal-dialog modal-xl modal-dialog-centered"
+            @closeModal="state.expandImage.hide()"
+        >
+            <button 
+                type="button" 
+                class="btn-close" 
+                aria-label="Close"
+                data-bs-dismiss="modal"
+                @click="$emit('closeModal')"
+            ></button>
             <div class="image-hover-container">
                 <img :src="getPhotoUrl(photo?.path?.toString())" :alt="imageAltText">
             </div>
-        </template>
-        
-    </BaseModal>
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -52,11 +63,21 @@ function expandImage() {
 
 <style scoped>
     .image-hover-container {
-
-        width: 80dvh;
+        width: 100%;
     }
     img {
         width: 100%;
         height: 100%;
+    }
+    .btn-close{
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 10px;
+        cursor: pointer;
+    }
+    .btn-close:hover{
+        cursor: pointer;
+
     }
 </style>
