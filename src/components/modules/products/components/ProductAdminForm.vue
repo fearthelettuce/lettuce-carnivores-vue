@@ -48,7 +48,7 @@
             </div>
         </div>
         <div class="row justify-content-around d-flex flex-row mt-4">
-            <button type="button" class="col-auto btn btn-danger mx-4" :class="!product.id ? 'disabled' : ''" @click="confirmDelete" >Delete Product</button>
+            <button type="button" class="col-auto btn btn-danger mx-4" :class="!product.id ? 'disabled' : ''" @click="confirmDelete">Delete Product</button>
             <button type="button" class="col-auto btn btn-secondary mx-4" @click="resetForm">Reset Form</button>
             <button type="button" class="col-auto px-4 btn btn-primary mx-4" @click="saveProduct">Save</button>
             <button type="button" class="col-auto btn btn-primary mx-4" @click="saveAndNew">Save & New</button>
@@ -56,35 +56,31 @@
 
         
     </form>
-
-    <BaseModal 
-        ref="confirmDeleteModal"
-        id="confirmDeleteModal"
-        @closeModal="state.confirmDeleteModal.hide()"
-    >
+    
+    <BaseModal ref="confirmDeleteModalRef">
         <template #title>Are you sure?</template>
-        <template #body>
-            <div>Are you sure you want to delete this product?<br><br> {{ product.name }}({{ product.id }})</div>
-        </template>
-        <template #modalAction>
-            <button 
-            type="button" 
-            class="btn btn-danger"
-            @click="deleteProduct"
-            >
-            Delete
-            </button>
-        </template>
+            <template #body>
+                <div>Are you sure you want to delete this product?<br><br> {{ product.name }}({{ product.id }})</div>
+            </template>
+            <template #modalAction>
+                <button 
+                type="button" 
+                class="btn btn-danger"
+                @click="deleteProduct"
+                >
+                Delete
+                </button>
+            </template>
     </BaseModal>
 </template>
 
 <script setup lang="ts">
-import { reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { storeToRefs } from 'pinia'
-import { Modal } from 'bootstrap'
 import { useToast } from 'vue-toastification' 
 import { useProductStore } from '../stores/product'
 import type { Plant } from '../types/plants'
+import BaseModal from '@/components/app/UI/BaseModal.vue';
 
 //TODO: Add fields for all values:
 // clone: '',
@@ -94,7 +90,6 @@ import type { Plant } from '../types/plants'
 //     description: '',
 
 
-
 const productStore = useProductStore()
 const toast = useToast()
 
@@ -102,13 +97,13 @@ const { getProductToEdit: product } = storeToRefs(productStore)
 
 const state = reactive({
     isSaved: false,
-    confirmDeleteModal: Modal || null,
     successMessage: null,
     isEditMode: false,
 })
 
+const confirmDeleteModalRef = ref<InstanceType<typeof BaseModal> | null>(null)
+
 onMounted(() => {
-    state.confirmDeleteModal = new Modal('#confirmDeleteModal', {})
     if (!productStore.productList || productStore.productList.length === 0) {
         productStore.fetchSearchResults()
     }
@@ -139,7 +134,7 @@ async function saveProduct() {
 }
 
 function confirmDelete() {
-    state.confirmDeleteModal.show()
+    confirmDeleteModalRef.value?.showModal()
 }
 
 async function deleteProduct() {
@@ -148,7 +143,7 @@ async function deleteProduct() {
         const res = await productStore.deleteById(product.value.id).catch(err => console.error(err))
         if (res && res.success) {
             toast.success(`Product ${productId} deleted`)
-            state.confirmDeleteModal.hide()
+            confirmDeleteModalRef.value?.hideModal()
             resetForm()
         } else {
             if(res && res.message) {
