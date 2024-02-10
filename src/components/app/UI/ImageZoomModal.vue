@@ -7,7 +7,7 @@
         aria-hidden="true"
     >
         <div   
-            class="modal-dialog modal-xl modal-dialog-centered"
+            class="modal-dialog modal-xl modal-fullscreen-lg-down modal-dialog-centered"
             @closeModal="state.expandImage.hide()"
         >
             <button 
@@ -73,7 +73,7 @@ function expandImage() {
         position: absolute;
         top: 0;
         right: 0;
-        padding: 10px;
+        padding: 1em 2em;
         cursor: pointer;
     }
     .btn-close:hover{

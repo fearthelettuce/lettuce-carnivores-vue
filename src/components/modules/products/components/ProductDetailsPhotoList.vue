@@ -9,7 +9,8 @@
             :key=photo.path.toString() 
             :src="getPhotoUrl(photo.path.toString())"
             class="col-4 photo-list-item"
-            @click="setSelectedPhoto(photo)">
+            @click="setSelectedPhoto(photo)"
+            @mouseover="setSelectedPhoto(photo)">
         </div>
         <ImageZoomModal ref="imageZoomModalRef" :photo="state.selectedPhoto"/>
     </aside>
@@ -73,16 +74,22 @@ function showImageZoomModal() {
 .photo-list-item {
     object-fit: cover;
     object-position: 0% 25%;
-    height: 15em;
+    height: 20rem;
+    cursor: pointer;
 }
 
 @media (min-width: 80rem) {
     .product-photo-container {
-        width: 45vw;
+        width: 50vw;
     }
     .image-preview {
         width: 100%;
         height: 50em;
+    }
+    .photo-list-item {
+        object-fit: cover;
+        object-position: 0% 0%;
+        height: 16rem;
     }
 }
 

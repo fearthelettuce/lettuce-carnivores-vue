@@ -10,7 +10,6 @@ const RecommendationView = () => import( '@/views/RecommendationView.vue')
 const LoginView  = () => import('@/views/LoginView.vue')
 const ResetPasswordView  = () => import('@/views/ResetPasswordView.vue')
 const EasterEggView  = () => import('@/views/EasterEggView.vue')
-
 const AccountView = () => import('@/views/AccountView.vue')
 
 const routeData = [

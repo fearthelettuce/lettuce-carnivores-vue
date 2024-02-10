@@ -93,10 +93,6 @@ function addToCart() {
 </script>
 
 <style scoped>
-    main {
-        padding: 0 clamp(.1em, 6vw, 20rem);
-        margin: 2em 0;
-    }
     .productDetailSection {
         flex-direction: column;
         justify-content: space-around;

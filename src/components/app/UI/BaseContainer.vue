@@ -8,6 +8,6 @@
 
 <style scoped>
     main {
-        padding: 0 clamp(.5dvw, 5dvw, 10dvw);
+        padding: 0 clamp(.1dvw,2.5dvw, 10dvw);
     }
 </style>
