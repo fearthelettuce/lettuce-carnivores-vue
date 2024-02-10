@@ -139,7 +139,7 @@ const routeData = [
     }
 ]
 //Ignore ES Lint barfing an unused variable error, this line is specifically to exclude that variable from the exported object 
-export const navData = routeData.map(({ component, ...rest }) => rest) 
+export const navData = routeData.map(({ component, ...rest }) => rest) //eslint-disable-line @typescript-eslint/no-unused-vars
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: routeData,
