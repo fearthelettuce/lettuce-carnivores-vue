@@ -10,15 +10,16 @@
             class="modal-dialog modal-xl modal-fullscreen-lg-down modal-dialog-centered"
             @closeModal="state.expandImage.hide()"
         >
-            <button 
-                type="button" 
-                class="btn-close" 
-                aria-label="Close"
-                data-bs-dismiss="modal"
-                @click="$emit('closeModal')"
-            ></button>
-            <div class="image-hover-container">
-                <img :src="getPhotoUrl(photo?.path?.toString())" :alt="imageAltText">
+            <div class="image-container">
+                <div class="image-hover-container">
+                    <button 
+                        type="button" 
+                        class="btn-close btn btn-lg" 
+                        aria-label="Close"
+                        data-bs-dismiss="modal"
+                        @click="$emit('closeModal')" />
+                    <img :src="getPhotoUrl(photo?.path?.toString())" :alt="imageAltText">
+                </div>
             </div>
         </div>
     </div>
@@ -62,17 +63,23 @@ function expandImage() {
 
 <style scoped>
     .image-hover-container {
+        display: flex;
+        justify-content: center;
         width: 100%;
+        height: 90dvh;
+    }
+    .image-container {
+        position:relative;
     }
     img {
-        width: 100%;
         height: 100%;
+
     }
     .btn-close{
         position: absolute;
         top: 0;
         right: 0;
-        padding: 1em 2em;
+        margin: 0.5em 0.5em;
         cursor: pointer;
     }
     .btn-close:hover{
