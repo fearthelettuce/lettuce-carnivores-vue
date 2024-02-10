@@ -1,19 +1,16 @@
 <template>
-    <aside class="product-photo-container">
-        <div class="row">
-            <img class="col-12 image-preview" :src="displayPhoto" @click="showImageZoomModal">
-        </div>
-        <div class="photo-list row mt-2 g-4">
-            <img 
-            v-for="photo of props.photos" 
-            :key=photo.path.toString() 
-            :src="getPhotoUrl(photo.path.toString())"
-            class="col-4 photo-list-item"
+    <section class="photo-grid">
+        <figure
+            v-for="photo of props.photos"
+            :key=photo.path.toString()
             @click="setSelectedPhoto(photo)"
-            @mouseover="setSelectedPhoto(photo)">
-        </div>
-        <ImageZoomModal ref="imageZoomModalRef" :photo="state.selectedPhoto"/>
-    </aside>
+            @mouseover="setSelectedPhoto(photo)"
+            class="photo-list-item">
+            <img :src="getPhotoUrl(photo.path.toString())">
+        </figure>
+        <figure class="selected-image" @click="showImageZoomModal"><img :src="displayPhoto"></figure>
+    </section>
+    <ImageZoomModal ref="imageZoomModalRef" :photo="state.selectedPhoto"/>
 </template>
 
 <script setup lang="ts">
@@ -47,6 +44,7 @@ onMounted(() => {
 
 function setSelectedPhoto(photo: PhotoItem) {
     state.selectedPhoto = photo
+    //TODO: add transitions when setSelectedPhoto is called https://vuejs.org/guide/built-ins/transition
 }
 
 function showImageZoomModal() {
@@ -56,41 +54,50 @@ function showImageZoomModal() {
 </script>
 
 <style scoped>
-.product-photo-container {
+img {
+    display: block;
+    height: 100%;
     width: 100%;
 }
-.image-preview {
-    width: 100%;
-    object-fit: cover;
-    object-position: 0% 25%;
-    cursor: pointer;
+figure {
+    margin: 0;
 }
-.placeholderImage {
-    box-sizing: border-box;
-    padding: 5em;
-    width: 25em;
-    margin: auto;
+.photo-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-auto-rows: 15dvh;
+}
+.selected-image {
+    grid-row: 1 / 5;
+    grid-column: 1 / 4;
+    order: 1;
+    img{
+        height: 100%;
+        object-fit:cover;
+        border-radius: 1rem;
+    }
 }
 .photo-list-item {
-    object-fit: cover;
-    object-position: 0% 25%;
-    height: 20rem;
-    cursor: pointer;
-}
-
-@media (min-width: 80rem) {
-    .product-photo-container {
-        width: 50vw;
-    }
-    .image-preview {
-        width: 100%;
-        height: 50em;
-    }
-    .photo-list-item {
+    grid-row: span 1 / auto;
+    grid-column: span 1 / auto;
+    img{
         object-fit: cover;
-        object-position: 0% 0%;
-        height: 16rem;
+        border-radius: 1rem;
     }
 }
 
+@media (min-width: 60rem) {
+    .photo-grid {
+        grid-template-columns: 2fr 5fr;
+        grid-auto-rows: 29dvh;
+    }
+    .selected-image {
+        grid-row: 1 / 4;
+        grid-column: 2 / auto;
+        img{
+            object-fit:contain;
+        }
+    }
+}
 </style>

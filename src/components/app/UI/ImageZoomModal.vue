@@ -72,8 +72,9 @@ function expandImage() {
         position:relative;
     }
     img {
-        height: 100%;
-
+        max-height: 100%;
+        object-fit: contain;
+        width: 100%;
     }
     .btn-close{
         position: absolute;
