@@ -3,7 +3,7 @@
 
     <div class="row">
         <div 
-            v-for="product of productStore.$state.productList"
+            v-for="product of productStore.findAllAvailableProducts()"
             :key="product.id"
             class="col-xs-12 col-md-6 col-lg-4 col-xxl-3"
             >

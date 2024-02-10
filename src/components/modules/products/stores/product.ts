@@ -25,8 +25,8 @@ const newProduct = {
 
 export const useProductStore = defineStore('product', {
     state: () => ({
-        productList: undefined as Array<Plant> | undefined,
-        filteredProductList: undefined as Array<Plant> | undefined,
+        productList: [] as Array<Plant>,
+        filteredProductList: [] as Array<Plant>,
         searchFilters: {} as ProductFilters,
         isLoading: false,
         productToEdit: { ...newProduct } as Plant | typeof newProduct ,
@@ -44,13 +44,13 @@ export const useProductStore = defineStore('product', {
     getters: {
         getProductById: (state) => {
             if (state.productList) {
-                return (id: number) => state.productList?.find(product => product.id == id)
+                return (id: number) => state.productList.find(product => product.id == id)
             }
         },
-        getProductList(state): Array<Plant> | undefined {
+        getProductList(state): Array<Plant> {
             return state.productList
         },
-        getFilteredProducts(state): Array<Plant> | undefined {
+        getFilteredProducts(state): Array<Plant> {
             return state.filteredProductList
         },
         getSearchFilters(state): ProductFilters {
@@ -115,6 +115,12 @@ export const useProductStore = defineStore('product', {
 
         async findAllProducts() {
             this.productList = await findAll(collectionName) as Array<Plant>
+        },
+
+        findAllAvailableProducts(): Array<Plant> {
+            return this.productList?.filter((product: Plant) => {
+                return product.quantity > 0 && product.isForSale
+            })
         },
 
         async saveProduct(product: Product | Plant) {

@@ -1,7 +1,7 @@
 <template>
-    <div class="container">
+    <BaseContainer>
         <div class="row">
-            <div class="col-auto">
+            <div class="col-7">
                 <div class="row my-4 g-3 align-items-center">
                     <div class="col-auto">
                         <div class="form-floating">
@@ -30,12 +30,12 @@
                 />
             </div>
         </div>
-    </div>
-    <div>
-        <hr class="mt-5"/>
-        <ProductPhotoList
-        :product="productStore.getProductToEdit" />
-    </div>
+        <div>
+            <hr class="mt-5"/>
+            <ProductPhotoList
+            :product="productStore.getProductToEdit" />
+        </div>
+    </BaseContainer>
 </template>
 
 <script setup lang="ts">
