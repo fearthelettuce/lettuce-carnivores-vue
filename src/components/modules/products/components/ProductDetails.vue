@@ -1,9 +1,9 @@
 <template>
-    <main class="container-fluid d-flex justify-content-center">
+    <BaseContainer>
         <section v-if="state.product" class="d-flex productDetailSection" >
         <ProductDetailsPhotoList 
             :photos="state.product.photos" 
-            :photoData="state.product.photoData ? state.product.photoData : undefined" />
+            :photoData="state.product.photoData ?? undefined" />
             <article class="product-information d-flex align-content-center flex-column">
                 <div class="d-flex justify-content-center">
                     <h1 class="text-center">{{ state.product.name }}</h1>   
@@ -38,7 +38,7 @@
             <p>Sorry, unable to find that product</p>
             <router-link to="/products">Click here to go back</router-link>
         </section>
-    </main>
+    </BaseContainer>
 </template>
 
 <script setup lang="ts">
@@ -99,6 +99,7 @@ function addToCart() {
     }
     .productDetailSection {
         flex-direction: column;
+        justify-content: space-around;
     }
     .product-information {
         margin: 2rem 0;
