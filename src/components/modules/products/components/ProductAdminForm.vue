@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue';
+import { computed, ref, reactive, onMounted } from 'vue';
 import { storeToRefs } from 'pinia'
 import { useToast } from 'vue-toastification' 
 import { useProductStore } from '../stores/product'
@@ -106,6 +106,24 @@ const confirmDeleteModalRef = ref<InstanceType<typeof BaseModal> | null>(null)
 onMounted(() => {
     if (!productStore.productList || productStore.productList.length === 0) {
         productStore.fetchSearchResults()
+    }
+})
+
+const getGenus = computed(()=>{
+    const firstChar = product.value.name.charAt(0).toLowerCase();
+    switch (firstChar) {
+        case '':
+            return undefined;
+        case 'c':
+            return 'Cephalotus';
+        case 'd':
+            return 'Drosera';
+        case 'h':
+            return 'Heliamphora';
+        case 'n':
+            return 'Nepenthes';
+        case 'p':
+            return 'Pinguicula';
     }
 })
 

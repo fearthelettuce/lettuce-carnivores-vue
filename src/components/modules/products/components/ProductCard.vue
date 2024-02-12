@@ -2,7 +2,7 @@
     <article class="card">
        <figure> 
         <router-link :to="`/products/${product.id}`">
-            <img :src="cardImageUrl" :class="cardImageUrl == placeholderUrl ? 'placeholderImage': ''" :alt="`An image of ${product.name}`" />
+            <img :src="cardImageUrl" :class="cardImageUrl == placeholderUrl ? 'placeholderImage': 'cardImage'" :alt="`An image of ${product.name}`" />
         </router-link>
         </figure>
         <header class="card-title my-0 justify-content-center align-items-center">
@@ -51,14 +51,19 @@ img {
     display: block;
     height: 25em;
     object-fit: cover;
+}
+.cardImage{
     object-position: 0% 15%;
 }
 
 .placeholderImage {
     box-sizing: border-box;
-    padding: 5em;
+    padding: 1em;
     height: 25em;
     margin: auto;
+    img{
+        object-position: 0% 0%;
+    }
 }
 .card {
     display: flex;
