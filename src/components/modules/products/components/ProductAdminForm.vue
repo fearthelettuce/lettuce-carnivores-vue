@@ -31,6 +31,16 @@
                 <label for="source" class="form-label">Source</label>
                 <input name="source" class="form-control" type="text" v-model="product.source">
             </div>
+            <div class="col-3 mb-3">
+                <label for="size" class="form-label">Size</label>
+                <input name="size" class="form-control" type="text" v-model="product.size">
+            </div>
+            <div class="row">
+            <div class="col-auto mb-3 align-items-center">
+                <label for="description" class="form-label">Description</label>
+                <input name="description" class="form-control" type="text" v-model="product.description">
+            </div>
+        </div>
             <div class="col-2 mb-3">
                 <label for="price" class="form-label">Price</label>
                 <input name="price" class="form-control" type="number" v-model.number="product.price">
@@ -47,6 +57,7 @@
                     <input name="forSale" class="form-check-input" type="checkbox" v-model="product.isForSale">
             </div>
         </div>
+        
         <div class="row justify-content-around d-flex flex-row mt-4">
             <button type="button" class="col-auto btn btn-danger mx-4" :class="!product.id ? 'disabled' : ''" @click="confirmDelete">Delete Product</button>
             <button type="button" class="col-auto btn btn-secondary mx-4" @click="resetForm">Reset Form</button>
@@ -75,7 +86,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, watch } from 'vue';
 import { storeToRefs } from 'pinia'
 import { useToast } from 'vue-toastification' 
 import { useProductStore } from '../stores/product'
@@ -109,24 +120,27 @@ onMounted(() => {
     }
 })
 
-const getGenus = computed(()=>{
-    const firstChar = product.value.name.charAt(0).toLowerCase();
-    switch (firstChar) {
-        case '':
-            return undefined;
-        case 'c':
-            return 'Cephalotus';
-        case 'd':
-            return 'Drosera';
-        case 'h':
-            return 'Heliamphora';
-        case 'n':
-            return 'Nepenthes';
-        case 'p':
-            return 'Pinguicula';
-    }
-})
+// watch(product.value,(newVal)=>{
+//     product.value.genus = getGenus(newVal.name);
+// })
 
+// function getGenus(name: string) {
+//     const firstChar = name.charAt(0).toLowerCase();
+//     switch (firstChar) {
+//         case 'c':
+//             return 'Cephalotus';
+//         case 'd':
+//             return 'Drosera';
+//         case 'h':
+//             return 'Heliamphora';
+//         case 'n':
+//             return 'Nepenthes';
+//         case 'p':
+//             return 'Pinguicula';
+//         default:
+//             return undefined;
+//     }
+// }
 function resetForm() {
     productStore.setProductToEdit(null)
     state.isSaved = false

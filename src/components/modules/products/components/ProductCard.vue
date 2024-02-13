@@ -58,7 +58,7 @@ img {
 
 .placeholderImage {
     box-sizing: border-box;
-    padding: 1em;
+    padding: 2em;
     height: 25em;
     margin: auto;
     img{

@@ -15,7 +15,7 @@ const newProduct = {
     isDiscountable: true,
     photos: [] as Array<PhotoItem>,
     photoData: {} as PhotoDetails,
-    genus: null,
+    genus: undefined,
     clone: '',
     propagationMethod: '',
     source: '',
@@ -33,7 +33,9 @@ export const useProductStore = defineStore('product', {
         genusList: [ 
             { id: 1, label: 'Nepenthes' }, 
             { id: 2, label: 'Heliamphora' }, 
-            { id: 3, label: 'Cephalotus' }
+            { id: 3, label: 'Cephalotus' },
+            { id: 4, label: 'Pinguicula'},
+            { id: 5, label: 'Drosera' }
         ],
         propagationMethodList: ['Stem Cutting', 'Basal Division', 'Division', 'Seed', 'Tissue Culture', 'Other', 'Unknown'],
         sourceList: ['Borneo Exotics', 'Exotica Plants', 'Wistuba', 'eBay/Facebook', 'Other', 'Unknown'],
