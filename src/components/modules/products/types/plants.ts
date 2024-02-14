@@ -4,6 +4,7 @@ type Plant = {
     genus?: string,
     clone?: string | undefined,
     propagationMethod?: string,
+    propagationDate?: Date,
     source?: string,
 } & Product
 

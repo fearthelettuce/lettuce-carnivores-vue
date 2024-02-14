@@ -35,7 +35,7 @@ const cardImageUrl = computed(() => {
     : placeholderUrl
 })
 const formattedPrice = computed(() => {
-    return USDollar.format(props.product.price)
+    return props.product.price > 0 ? USDollar.format(props.product.price) : '-'
 })
 //TODO: Move USDollar to composables
 const USDollar = new Intl.NumberFormat('en-US', {

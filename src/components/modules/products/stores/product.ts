@@ -3,13 +3,13 @@ import { defineStore } from 'pinia'
 import { saveItem, findAll, findByProperty, deleteItem, findDocById } from '@/apis/dataServices'
 import type { Plant } from '../types/plants'
 import type { Product, ProductFilters } from '../types/product'
-import type {PhotoItem, PhotoDetails} from '@/components/modules/products/types//product'
+import type {PhotoItem, PhotoDetails} from '@/components/modules/products/types/product'
 const collectionName = 'products'
 
 const newProduct = {
     id: undefined,
     name: '',
-    price: 0,
+    price: undefined,
     isForSale: true,
     quantity: 1,
     isDiscountable: true,
@@ -18,6 +18,7 @@ const newProduct = {
     genus: undefined,
     clone: '',
     propagationMethod: '',
+    propagationDate: new Date().toLocaleDateString('en-us'),
     source: '',
     size: '',
     description: '',
@@ -29,7 +30,7 @@ export const useProductStore = defineStore('product', {
         filteredProductList: [] as Array<Plant>,
         searchFilters: {} as ProductFilters,
         isLoading: false,
-        productToEdit: { ...newProduct } as Plant | typeof newProduct ,
+        productToEdit:  {...newProduct} as Plant | typeof newProduct ,
         genusList: [ 
             { id: 1, label: 'Nepenthes' }, 
             { id: 2, label: 'Heliamphora' }, 
@@ -49,31 +50,39 @@ export const useProductStore = defineStore('product', {
                 return (id: number) => state.productList.find(product => product.id == id)
             }
         },
-        getProductList(state): Array<Plant> {
-            return state.productList
+        getProductList(): Array<Plant> {
+            return this.productList
         },
-        getFilteredProducts(state): Array<Plant> {
-            return state.filteredProductList
+        getFilteredProducts(): Array<Plant> {
+            return this.filteredProductList
         },
-        getSearchFilters(state): ProductFilters {
-            return state.searchFilters
+        getSearchFilters(): ProductFilters {
+            return this.searchFilters
         },
-        getGenusList(state): Array<object>{
-            return state.genusList
+        getGenusList(): Array<object>{
+            return this.genusList
         },
-        getProductToEdit(state): Plant | typeof newProduct {
-            return state.productToEdit
+        getProductToEdit(): Plant | typeof newProduct {
+            return this.productToEdit
         },
     },
 
     actions: {
         setProductToEdit(product: Plant | null) {
+            console.log('calling setProductToEdit in store ' + product)
             if(product) {
                 this.productToEdit = product
             }
-            else { this.productToEdit = newProduct }
+            else { 
+                
+                for(const [key, value] of Object.entries(this.productToEdit.photoData)) {
+                    
+                    this.productToEdit.photoData[key as keyof PhotoDetails] = undefined
+                    
+                }
+                this.productToEdit = {...newProduct};
+            }
         },
-
         async fetchSearchResults() {
             this.isLoading = true
             await this.findAllProducts()
@@ -186,7 +195,7 @@ export const useProductStore = defineStore('product', {
 
             if (product.id) {
                 this.saveProduct(product)
-                this.setProductToEdit(product)
+                //this.setProductToEdit(product)
                 // const someProduct = await this.findProductById(product.id).catch((err) => { console.log(err)}) as Product
                 // if (someProduct) {
                 //     this.saveProduct(someProduct)

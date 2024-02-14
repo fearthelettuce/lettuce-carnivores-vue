@@ -4,62 +4,68 @@
             <h3 v-if="product?.id">Edit Existing Product</h3>
             <h3 v-else>Creating a New Product</h3>
         </div>
-        <div class="row g-3 align-items-center">
-            <div class="col-1 mb-3">
-                <label for="id" class="form-label">ID</label>
-                <input name="id" class="form-control" type="id" v-model="product.id">
+        <div class="form-grid">
+            <div class="form-floating">
+                <input name="id" class="form-control" type="id" v-model="product.id" placeholder="ID">
+                <label for="id">ID</label>
             </div>
-            <div class="col-3 mb-3">
-                <label for="genus" class="form-label">Genus</label>
-                <select name="genus" class="form-select" aria-label="Select Genus" v-model="product.genus">
-                    <option id="placeholder" selected disabled value="">Select Genus</option>
-                    <option v-for="genus of productStore.genusList" :value="genus" :key="genus.id">{{ genus.label }}</option>
-                </select>
+            <div class="form-floating">
+                <input name="name" 
+                    class="form-control" 
+                    type="text" 
+                    v-model="product.name" 
+                    placeholder="Name"
+                    @change="updateGenus">
+                <label for="name" class="">Name</label>
             </div>
-            <div class="col-6 mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input name="name" class="form-control" type="text" v-model="product.name">
+            <div class="form-floating">
+                <input name="source" class="form-control" type="text" v-model="product.source" placeholder="Source">
+                <label for="source">Source</label>
             </div>
-        
-        </div>
-        <div class="row">
-            <div class="col-3 mb-3">
-                <label for="propagationType" class="form-label">Propagation Method</label>
-                <input name="propagationType" class="form-control" type="text" v-model="product.propagationMethod">
+            <div class="form-floating">
+                <input name="clone" class="form-control" type="text" v-model="product.clone" placeholder="Clone">
+                <label for="clone">Clone</label>
             </div>
-            <div class="col-3 mb-3">
-                <label for="source" class="form-label">Source</label>
-                <input name="source" class="form-control" type="text" v-model="product.source">
+            <div class="form-floating">
+                <input name="propagationType" 
+                    class="form-control" 
+                    type="text" 
+                    v-model="product.propagationMethod" 
+                    placeholder="Propagation Method">
+                <label for="propagationType">Propagation Method</label>
             </div>
-            <div class="col-3 mb-3">
-                <label for="size" class="form-label">Size</label>
-                <input name="size" class="form-control" type="text" v-model="product.size">
+            <div class="form-floating">
+                <input name="propagaionDate" 
+                    class="form-control" 
+                    type="text" 
+                    v-model.lazy="product.propagationDate" 
+                    placeholder="Propagation Date"
+                    @paste="pasteDate">
+                <label for="propagaionDate">Propagation Date</label>
             </div>
-            <div class="row">
-            <div class="col-auto mb-3 align-items-center">
-                <label for="description" class="form-label">Description</label>
-                <input name="description" class="form-control" type="text" v-model="product.description">
+            <div class="form-floating">
+                <input name="size" class="form-control" type="text" v-model="product.size" placeholder="Size">
+                <label for="size">Size</label>
             </div>
-        </div>
-            <div class="col-2 mb-3">
-                <label for="price" class="form-label">Price</label>
-                <input name="price" class="form-control" type="number" v-model.number="product.price">
+            <div class="form-floating">
+                <input name="description" class="form-control" type="text" v-model="product.description" placeholder="Description">
+                <label for="description">Description</label>
             </div>
-            <div class="col-2 mb-3">
-                <label for="quantity" class="form-label">Available Quantity</label>
+            <div class="form-floating">
+                <input name="price" class="form-control" type="number" v-model.number="product.price" placeholder="Price">
+                <label for="price">Price</label>
+            </div>
+            <div class="form-floating">
                 <input name="quantity" class="form-control" type="number" v-model.number="product.quantity">
+                <label for="quantity">Available Quantity</label>
             </div>
-            
-        </div>
-        <div class="row">
-            <div class="col-auto mb-3 align-items-center form-check form-switch">
+            <div class="pt-2 align-items-center form-check form-switch">
                     <label for="forSale" class="form-check-label">Available for Sale</label>
                     <input name="forSale" class="form-check-input" type="checkbox" v-model="product.isForSale">
             </div>
         </div>
-        
         <div class="row justify-content-around d-flex flex-row mt-4">
-            <button type="button" class="col-auto btn btn-danger mx-4" :class="!product.id ? 'disabled' : ''" @click="confirmDelete">Delete Product</button>
+            <button type="button" class="col-auto btn btn-danger mx-4" :class="!product.id && !product.name ? 'disabled' : ''" @click="confirmDelete">Delete Product</button>
             <button type="button" class="col-auto btn btn-secondary mx-4" @click="resetForm">Reset Form</button>
             <button type="button" class="col-auto px-4 btn btn-primary mx-4" @click="saveProduct">Save</button>
             <button type="button" class="col-auto btn btn-primary mx-4" @click="saveAndNew">Save & New</button>
@@ -86,19 +92,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, watch } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { storeToRefs } from 'pinia'
 import { useToast } from 'vue-toastification' 
 import { useProductStore } from '../stores/product'
 import type { Plant } from '../types/plants'
 import BaseModal from '@/components/app/UI/BaseModal.vue';
-
-//TODO: Add fields for all values:
-// clone: '',
-//     propagationMethod: '',
-//     source: '',
-//     size: '',
-//     description: '',
 
 
 const productStore = useProductStore()
@@ -108,7 +107,7 @@ const { getProductToEdit: product } = storeToRefs(productStore)
 
 const state = reactive({
     isSaved: false,
-    successMessage: null,
+    successMessage: String,
     isEditMode: false,
 })
 
@@ -120,35 +119,43 @@ onMounted(() => {
     }
 })
 
-// watch(product.value,(newVal)=>{
-//     product.value.genus = getGenus(newVal.name);
-// })
+function updateGenus () {
+    let parsedGenus: string;
+    const firstChar = product.value.name.charAt(0).toLowerCase();
+    switch (firstChar) {
+        case 'c':
+            parsedGenus = 'Cephalotus'
+            break;
+        case 'd':
+            parsedGenus = 'Drosera';
+            break;
+        case 'h':
+            parsedGenus = 'Heliamphora';
+            break;
+        case 'n':
+            parsedGenus = 'Nepenthes';
+            break;
+        case 'p':
+            parsedGenus = 'Pinguicula';
+            break;
+        default:
+            parsedGenus = '';
+            break;
+    }
+    product.value.genus = parsedGenus ?? undefined;
+    console.log(product.value.genus)
+}
 
-// function getGenus(name: string) {
-//     const firstChar = name.charAt(0).toLowerCase();
-//     switch (firstChar) {
-//         case 'c':
-//             return 'Cephalotus';
-//         case 'd':
-//             return 'Drosera';
-//         case 'h':
-//             return 'Heliamphora';
-//         case 'n':
-//             return 'Nepenthes';
-//         case 'p':
-//             return 'Pinguicula';
-//         default:
-//             return undefined;
-//     }
-// }
 function resetForm() {
+    console.log('calling resetForm in component')
     productStore.setProductToEdit(null)
     state.isSaved = false
+    console.log(productStore.getProductToEdit)
 }
 
 async function saveProduct() {
     if (!validateProduct()) {
-        alert("Failed validation, bro")
+        toast.error('Invalid product, missing ID')
         return
     }
     const res = await productStore.saveProduct(product.value as Plant).catch(err => console.error(err))
@@ -185,6 +192,16 @@ async function deleteProduct() {
     }
 }
 
+function pasteDate(event: ClipboardEvent) {
+    console.log(product.value.propagationDate)
+    const pastedData = event.clipboardData?.getData('text');
+    const date = Date.parse(pastedData ?? "0")
+    console.log(`date: ${date}`)
+    if(date !==0) {console.log('poop'); product.value.propagationDate = new Date(date); console.log(product.value.propagationDate)}
+    console.log(pastedData)
+    console.log(new Date(date))
+}
+
 async function saveAndNew() {
     await saveProduct()
     resetForm()
@@ -192,11 +209,12 @@ async function saveAndNew() {
 
 function validateProduct() {
     //TODO: Need to add validation
-    return true
+    //must have ID to save
+    if(product.value.id) {return true}
+    else {return false}
 }
 
 </script>
-
 
 <style scoped>
 input::-webkit-inner-spin-button {

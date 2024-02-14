@@ -11,7 +11,7 @@
                                 class="form-select" 
                                 aria-label="Select a product to edit" 
                                 @change="setSelectedProduct" 
-                                :value="productStore.getProductToEdit.id">
+                                :value="productToEdit.id">
                                 <option v-for="product of products" :value="product.id" :key="product.id" >{{ product.name }} ({{ product.id }})</option>
                             </select>
                             <label for="editProduct">Select a product to edit</label>
@@ -26,14 +26,14 @@
             </div>
             <div class="col-3">
                 <ProductCard 
-                :product="productStore.getProductToEdit"
+                :product="productToEdit"
                 />
             </div>
         </div>
         <div>
             <hr class="mt-5"/>
             <ProductPhotoList
-            :product="productStore.getProductToEdit" />
+            :product="productToEdit" />
         </div>
     </BaseContainer>
 </template>
@@ -49,7 +49,7 @@ import { storeToRefs } from 'pinia'
 const productStore = useProductStore()
 
 const { getFilteredProducts: products } = storeToRefs(productStore)
-
+const { getProductToEdit: productToEdit } = storeToRefs(productStore)
 onMounted(() => {
     if (!productStore.productList || productStore.productList.length === 0) {
         productStore.fetchSearchResults()
