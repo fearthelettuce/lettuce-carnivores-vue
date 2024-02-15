@@ -1,8 +1,8 @@
 <template>
     <BaseContainer>
-        <div class="row">
-            <div class="col-7">
-                <div class="row my-4 g-3 align-items-center">
+        <div class="admin-grid">
+            <div class="">
+                <div class="my-4 g-3 align-items-center">
                     <div class="col-auto">
                         <div class="form-floating">
                             <select 
@@ -18,13 +18,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-auto">
+                <div class="">
+                    <div class="">
                         <ProductAdminForm />
                     </div>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="">
                 <ProductCard 
                 :product="productToEdit"
                 />
@@ -67,3 +67,18 @@ function setSelectedProduct(event: Event) {
     }
 }
 </script>
+
+<style scoped>
+.admin-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media(min-width: 60rem) {
+    .admin-grid {
+        grid-template-columns: 70% 30%;
+    }
+}
+
+</style>

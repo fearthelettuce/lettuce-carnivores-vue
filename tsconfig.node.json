@@ -7,5 +7,6 @@
     "module": "nodenext",
     "baseUrl": ".",
     "ignoreDeprecations": "5.0",
+    "noErrorTruncation": true,
   }
 }

@@ -27,4 +27,12 @@
 //     genus: []
 // })
 
+
+//Design:
+// Product Store
+// Set fitler - takes in a filter type and filter criteria
+// loop through products and apply filter
+// Need an array/obj of filters and criteria
+
 </script>
+

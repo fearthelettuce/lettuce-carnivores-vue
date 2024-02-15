@@ -1,5 +1,5 @@
 <template>
-    <form class="container" @submit.prevent>
+    <form class="" @submit.prevent>
         <div class="align-items-center">
             <h3 v-if="product?.id">Edit Existing Product</h3>
             <h3 v-else>Creating a New Product</h3>
@@ -9,7 +9,7 @@
                 <input name="id" class="form-control" type="id" v-model="product.id" placeholder="ID">
                 <label for="id">ID</label>
             </div>
-            <div class="form-floating grid-item-lg">
+            <div class="form-floating grid-item-lg grid-item-name ">
                 <input name="name" 
                     class="form-control" 
                     type="text" 
@@ -32,7 +32,7 @@
                     type="text" 
                     v-model="product.propagationMethod" 
                     placeholder="Propagation Method">
-                <label for="propagationType">Propagation Method</label>
+                <label for="propagationType">Prop. Method</label>
             </div>
             <div class="form-floating">
                 <input name="propagaionDate" 
@@ -41,7 +41,7 @@
                     v-model.lazy="product.propagationDate" 
                     placeholder="Propagation Date"
                     @paste="pasteDate">
-                <label for="propagaionDate">Propagation Date</label>
+                <label for="propagaionDate">Prop. Date</label>
             </div>
             <div class="form-floating">
                 <input name="size" class="form-control" type="text" v-model="product.size" placeholder="Size">
@@ -54,14 +54,18 @@
             </div>
             <div class="form-floating">
                 <input name="quantity" class="form-control" type="number" v-model.number="product.quantity">
-                <label for="quantity">Available Quantity</label>
+                <label for="quantity">Quantity</label>
             </div>
-            <div class="pt-2 align-items-center form-check form-switch">
-                    <label for="forSale" class="form-check-label">Available for Sale</label>
+            <div class="align-items-center form-check form-switch grid-item-md">
+                    <label for="forSale" class="form-check-label">For Sale</label>
                     <input name="forSale" class="form-check-input" type="checkbox" v-model="product.isForSale">
             </div>
-            <div class="form-floating grid-item-xl">
-                <input name="description" class="form-control" type="text" v-model="product.description" placeholder="Description">
+            <div class="form-floating grid-item-xl grid-item-two-rows">
+                <textarea name="description" 
+                class="form-control" 
+                style="height: 10rem;"
+                v-model="product.description" 
+                placeholder="Description"></textarea>
                 <label for="description">Description</label>
             </div>
         </div>
@@ -220,35 +224,48 @@ function validateProduct() {
 <style scoped>
 .form-grid {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: .5rem;
-    grid-auto-rows: minmax(4rem, auto);
+    grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+    grid-auto-rows: 1fr;
+    grid-gap: 0 .5rem;
+    grid-auto-flow: row;
 }
-
+label {
+    height: 3rem;
+}
+.form-check {
+    margin: auto;
+}
+.form-floating {
+    margin: 0;
+    padding: 0;
+}
 .grid-item-sm {
     grid-column: span 1;
 }
 
-.grid-item-md {
+.grid-item-lg {
     grid-column: span 2;
 }
-
-.grid-item-lg {
-    grid-column: span 3;
+.grid-item-name {
+    grid-column: 2 / -1
 }
-
 .grid-item-xl {
-    grid-column: span 4;
+    grid-column: 1 / -1;
 }
+
+.grid-item-two-rows {
+    grid-row: span 2;   
+}
+
 
 
 input::-webkit-inner-spin-button {
     -webkit-appearance: none
 }
-
+/* 
 @media (min-width: 40rem) {
     .form-grid {
         grid-template-columns: repeat(4, 1fr);
     }
-}
+} */
 </style>
