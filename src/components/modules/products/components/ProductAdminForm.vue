@@ -9,7 +9,7 @@
                 <input name="id" class="form-control" type="id" v-model="product.id" placeholder="ID">
                 <label for="id">ID</label>
             </div>
-            <div class="form-floating">
+            <div class="form-floating grid-item-lg">
                 <input name="name" 
                     class="form-control" 
                     type="text" 
@@ -47,10 +47,7 @@
                 <input name="size" class="form-control" type="text" v-model="product.size" placeholder="Size">
                 <label for="size">Size</label>
             </div>
-            <div class="form-floating">
-                <input name="description" class="form-control" type="text" v-model="product.description" placeholder="Description">
-                <label for="description">Description</label>
-            </div>
+
             <div class="form-floating">
                 <input name="price" class="form-control" type="number" v-model.number="product.price" placeholder="Price">
                 <label for="price">Price</label>
@@ -62,6 +59,10 @@
             <div class="pt-2 align-items-center form-check form-switch">
                     <label for="forSale" class="form-check-label">Available for Sale</label>
                     <input name="forSale" class="form-check-input" type="checkbox" v-model="product.isForSale">
+            </div>
+            <div class="form-floating grid-item-xl">
+                <input name="description" class="form-control" type="text" v-model="product.description" placeholder="Description">
+                <label for="description">Description</label>
             </div>
         </div>
         <div class="row justify-content-around d-flex flex-row mt-4">
@@ -217,7 +218,37 @@ function validateProduct() {
 </script>
 
 <style scoped>
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: .5rem;
+    grid-auto-rows: minmax(4rem, auto);
+}
+
+.grid-item-sm {
+    grid-column: span 1;
+}
+
+.grid-item-md {
+    grid-column: span 2;
+}
+
+.grid-item-lg {
+    grid-column: span 3;
+}
+
+.grid-item-xl {
+    grid-column: span 4;
+}
+
+
 input::-webkit-inner-spin-button {
     -webkit-appearance: none
+}
+
+@media (min-width: 40rem) {
+    .form-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
 </style>
