@@ -30,6 +30,7 @@ export const useProductStore = defineStore('product', {
         filteredProductList: [] as Array<Plant>,
         searchFilters: {} as ProductFilters,
         isLoading: false,
+        //need to destructure object so newProduct doesn't retain properties
         productToEdit:  {...newProduct} as Plant | typeof newProduct ,
         genusList: [ 
             { id: 1, label: 'Nepenthes' }, 
@@ -39,10 +40,11 @@ export const useProductStore = defineStore('product', {
             { id: 5, label: 'Drosera' }
         ],
         propagationMethodList: ['Stem Cutting', 'Basal Division', 'Division', 'Seed', 'Tissue Culture', 'Other', 'Unknown'],
-        sourceList: ['Borneo Exotics', 'Exotica Plants', 'Wistuba', 'eBay/Facebook', 'Other', 'Unknown'],
-        growingConditionsList: ['Highland', 'Intermediate'],
+        sourceList: ['Borneo Exotics', 'Exotica Plants', 'Wistuba', 'Florae', 'Carnivero', 'eBay', 'Facebook', 'Other', 'Unknown'],
+        growingConditionsList: ['Highland', 'Intermediate', 'Lowland', 'Temperate'],
         experienceLevelList: ['Beginner', 'Intermediate', 'Expert'],
         classificationList: ['Species', 'Hybrid', 'Registered Cultivar', 'Unregistered Cultivar'],
+        sizeList: ['2.5"', '3.5"', '3.5" deep', '4.25" deep', 'Specimen']
     }),
     getters: {
         getProductById: (state) => {
@@ -61,6 +63,15 @@ export const useProductStore = defineStore('product', {
         },
         getGenusList(): Array<object>{
             return this.genusList
+        },
+        getSourceList(): Array<string>{
+            return this.sourceList;
+        },
+        getSizeList(): Array<string>{
+            return this.sizeList;
+        },
+        getPropagationMethodList(): Array<string>{
+            return this.propagationMethodList;
         },
         getProductToEdit(): Plant | typeof newProduct {
             return this.productToEdit

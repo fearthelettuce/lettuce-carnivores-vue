@@ -1,5 +1,5 @@
 <template>
-    <form class="" @submit.prevent>
+    <form @submit.prevent>
         <div class="align-items-center">
             <h3 v-if="product?.id">Edit Existing Product</h3>
             <h3 v-else>Creating a New Product</h3>
@@ -19,7 +19,12 @@
                 <label for="name" class="">Name</label>
             </div>
             <div class="form-floating">
-                <input name="source" class="form-control" type="text" v-model="product.source" placeholder="Source">
+                <input name="source" 
+                class="form-control" 
+                type="text" 
+                v-model="product.source" 
+                placeholder="Source"
+                list="sourceList">
                 <label for="source">Source</label>
             </div>
             <div class="form-floating">
@@ -31,9 +36,10 @@
                     class="form-control" 
                     type="text" 
                     v-model="product.propagationMethod" 
-                    placeholder="Propagation Method">
+                    placeholder="Propagation Method"
+                    list="propagationMethodList">
                 <label for="propagationType">Prop. Method</label>
-            </div>
+            </div>        
             <div class="form-floating">
                 <input name="propagaionDate" 
                     class="form-control" 
@@ -44,10 +50,9 @@
                 <label for="propagaionDate">Prop. Date</label>
             </div>
             <div class="form-floating">
-                <input name="size" class="form-control" type="text" v-model="product.size" placeholder="Size">
+                <input name="size" class="form-control" type="text" v-model="product.size" placeholder="Size" list="sizeList">
                 <label for="size">Size</label>
             </div>
-
             <div class="form-floating">
                 <input name="price" class="form-control" type="number" v-model.number="product.price" placeholder="Price">
                 <label for="price">Price</label>
@@ -76,6 +81,15 @@
             <button type="button" class="col-auto btn btn-primary mx-4" @click="saveAndNew">Save & New</button>
         </div>
 
+        <datalist id="sizeList">
+            <option v-for="item of productStore.getSizeList">{{ item }}</option>
+        </datalist>
+        <datalist id="sourceList">
+            <option v-for="item of productStore.sourceList">{{ item }}</option>
+        </datalist>
+        <datalist id="propagationMethodList">
+            <option v-for="item of productStore.getPropagationMethodList">{{ item }}</option>
+        </datalist>
         
     </form>
     

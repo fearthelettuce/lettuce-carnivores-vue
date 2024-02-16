@@ -7,7 +7,7 @@
                         <div class="form-floating">
                             <select 
                                 name="editProduct" 
-                                it="editProduct"
+                                id="editProduct"
                                 class="form-select" 
                                 aria-label="Select a product to edit" 
                                 @change="setSelectedProduct" 
