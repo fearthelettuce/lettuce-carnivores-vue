@@ -26,7 +26,7 @@
                 <input name="clone" class="form-control" type="text" v-model="product.clone" placeholder="Clone">
                 <label for="clone">Clone</label>
             </div>
-            <div class="form-floating">
+            <div class="form-floating grid-item-lg">
                 <input name="propagationType" 
                     class="form-control" 
                     type="text" 
@@ -69,7 +69,7 @@
                 <label for="description">Description</label>
             </div>
         </div>
-        <div class="row justify-content-around d-flex flex-row mt-4">
+        <div class="action-grid">
             <button type="button" class="col-auto btn btn-danger mx-4" :class="!product.id && !product.name ? 'disabled' : ''" @click="confirmDelete">Delete Product</button>
             <button type="button" class="col-auto btn btn-secondary mx-4" @click="resetForm">Reset Form</button>
             <button type="button" class="col-auto px-4 btn btn-primary mx-4" @click="saveProduct">Save</button>
@@ -257,6 +257,12 @@ label {
     grid-row: span 2;   
 }
 
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 0.5rem;
+    margin: 3rem 2rem;
+}
 
 
 input::-webkit-inner-spin-button {

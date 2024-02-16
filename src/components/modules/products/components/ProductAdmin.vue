@@ -12,6 +12,7 @@
                                 aria-label="Select a product to edit" 
                                 @change="setSelectedProduct" 
                                 :value="productToEdit.id">
+                                <option :value="undefined" style="color: lightsalmon;">Create New Product</option>
                                 <option v-for="product of products" :value="product.id" :key="product.id" >{{ product.name }} ({{ product.id }})</option>
                             </select>
                             <label for="editProduct">Select a product to edit</label>
@@ -59,6 +60,9 @@ onMounted(() => {
 function setSelectedProduct(event: Event) {
     let product
     let productId = (event.target as HTMLInputElement).value
+    if(!productId) {
+        productStore.setProductToEdit(null);
+    }
     if(event && event.target && productId && productStore.getProductById) {
         product = productStore.getProductById(Number(productId))
     }
