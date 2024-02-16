@@ -50,3 +50,11 @@ npm run test:unit
 ```sh
 npm run lint
 ```
+
+### Deploy to Firebase
+
+```
+npm run build
+firebase login (if not already logged in)
+firebase deploy
+```
