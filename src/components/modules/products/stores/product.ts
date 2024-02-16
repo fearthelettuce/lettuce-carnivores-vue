@@ -75,9 +75,10 @@ export const useProductStore = defineStore('product', {
             }
             else { 
                 // @ts-expect-error TODO
-                for(const [key, value] of Object.entries(this.productToEdit.photoData)) {
-                    // @ts-expect-error TODO
-                    this.productToEdit.photoData[key as keyof PhotoDetails] = undefined
+                for(const [key] of Object.entries(this.productToEdit.photoData)) {
+                    if(this.productToEdit.photoData) {
+                        this.productToEdit.photoData[key as keyof PhotoDetails] = undefined
+                    }
                     
                 }
                 this.productToEdit = {...newProduct};
