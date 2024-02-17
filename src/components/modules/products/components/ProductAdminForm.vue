@@ -82,13 +82,13 @@
         </div>
 
         <datalist id="sizeList">
-            <option v-for="item of productStore.getSizeList">{{ item }}</option>
+            <option v-for="item of productStore.getSizeList" :key="item">{{ item }}</option>
         </datalist>
         <datalist id="sourceList">
-            <option v-for="item of productStore.sourceList">{{ item }}</option>
+            <option v-for="item of productStore.sourceList" :key="item">{{ item }}</option>
         </datalist>
         <datalist id="propagationMethodList">
-            <option v-for="item of productStore.getPropagationMethodList">{{ item }}</option>
+            <option v-for="item of productStore.getPropagationMethodList" :key="item">{{ item }}</option>
         </datalist>
         
     </form>
@@ -259,9 +259,6 @@ label {
 
 .grid-item-lg {
     grid-column: span 2;
-}
-.grid-item-name {
-    grid-column: 2 / -1
 }
 .grid-item-xl {
     grid-column: 1 / -1;

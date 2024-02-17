@@ -1,38 +1,30 @@
 <template>
     <BaseContainer> 
         <!-- TODO remove x padding/margin at small screen sizes -->
-        <div class="row justify-content-around d-flex flex-row">
-            <div class="col-8 col-12-md">
-                <div class="my-4 g-3 align-items-center">
-                    <div class="col-auto">
-                        <div class="form-floating">
-                            <select 
-                                name="editProduct" 
-                                id="editProduct"
-                                class="form-select" 
-                                aria-label="Select a product to edit" 
-                                @change="setSelectedProduct" 
-                                :value="productToEdit.id">
-                                <option :value="undefined" style="color: lightsalmon;">Create New Product</option>
-                                <option v-for="product of products" :value="product.id" :key="product.id" >{{ product.name }} ({{ product.id }})</option>
-                            </select>
-                            <label for="editProduct">Select a product to edit</label>
-                        </div>
+        <!-- <div class="row justify-content-around d-flex flex-row"> -->
+        <div class="admin-grid">
+            <section>
+                <div class="grid-item-xl">
+                    <div class="form-floating mb-4">
+                        <select 
+                            name="editProduct" 
+                            id="editProduct"
+                            class="form-select" 
+                            aria-label="Select a product to edit" 
+                            @change="setSelectedProduct" 
+                            :value="productToEdit.id">
+                            <option :value="undefined" style="color: lightsalmon;">Create New Product</option>
+                            <option v-for="product of products" :value="product.id" :key="product.id" >{{ product.name }} ({{ product.id }})</option>
+                        </select>
+                        <label for="editProduct">Select a product to edit</label>
                     </div>
                 </div>
-                <div class="">
-                    <div class="">
-                        <ProductAdminForm />
-                    </div>
-                </div>
-            </div>
-            <div class="col-auto">
-                <ProductCard 
-                :product="productToEdit"
-                />
-            </div>
+                <ProductAdminForm />
+            </section>
+
+            <ProductCard :product="productToEdit" />
         </div>
-        <div>
+        <div class="grid-item-xl">
             <hr class="mt-5"/>
             <ProductPhotoList
             :product="productToEdit" />
@@ -78,6 +70,10 @@ function setSelectedProduct(event: Event) {
     display: grid;
     grid-template-columns: 1fr;
     gap: 2rem;
+}
+
+.grid-item-xl {
+    grid-column: 1 / -1
 }
 
 @media(min-width: 60rem) {
