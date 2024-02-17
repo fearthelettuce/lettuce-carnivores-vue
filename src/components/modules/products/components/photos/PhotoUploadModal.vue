@@ -94,8 +94,8 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue';
 import { uploadFile } from '@/apis/fileServices';
-import type {PhotoItem} from '@/components/modules/products/types//product'
-import { PhotoTypes } from '@/components/modules/products/types//product'
+import type {PhotoItem} from '@/components/modules/products/types/product'
+import { PhotoTypes } from '@/components/modules/products/types/product'
 
 const emit = defineEmits(['closeModal', 'showToast', 'updatePhotoData'])
 const props = defineProps(['storageFolder', 'photos'])
