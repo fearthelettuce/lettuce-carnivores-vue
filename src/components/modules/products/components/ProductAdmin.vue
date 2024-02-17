@@ -1,7 +1,8 @@
 <template>
-    <BaseContainer>
-        <div class="admin-grid">
-            <div class="">
+    <BaseContainer> 
+        <!-- TODO remove x padding/margin at small screen sizes -->
+        <div class="row justify-content-around d-flex flex-row">
+            <div class="col-8 col-12-md">
                 <div class="my-4 g-3 align-items-center">
                     <div class="col-auto">
                         <div class="form-floating">
@@ -25,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <div class="">
+            <div class="col-auto">
                 <ProductCard 
                 :product="productToEdit"
                 />

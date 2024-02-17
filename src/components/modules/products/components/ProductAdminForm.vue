@@ -5,18 +5,18 @@
             <h3 v-else>Creating a New Product</h3>
         </div>
         <div class="form-grid">
-            <div class="form-floating">
-                <input name="id" class="form-control" type="id" v-model="product.id" placeholder="ID">
-                <label for="id">ID</label>
-            </div>
-            <div class="form-floating grid-item-lg grid-item-name ">
+            <div class="form-floating grid-item-lg">
                 <input name="name" 
-                    class="form-control" 
-                    type="text" 
-                    v-model="product.name" 
-                    placeholder="Name"
-                    @change="updateGenus">
+                class="form-control" 
+                type="text" 
+                v-model="product.name" 
+                placeholder="Name"
+                @change="updateGenus">
                 <label for="name" class="">Name</label>
+            </div>
+            <div class="form-floating">
+                <input name="id" class="form-control" type="id" v-model="product.id" placeholder="ID" required>
+                <label for="id">ID</label>
             </div>
             <div class="form-floating">
                 <input name="source" 
@@ -75,10 +75,10 @@
             </div>
         </div>
         <div class="action-grid">
-            <button type="button" class="col-auto btn btn-danger mx-4" :class="!product.id && !product.name ? 'disabled' : ''" @click="confirmDelete">Delete Product</button>
-            <button type="button" class="col-auto btn btn-secondary mx-4" @click="resetForm">Reset Form</button>
-            <button type="button" class="col-auto px-4 btn btn-primary mx-4" @click="saveProduct">Save</button>
-            <button type="button" class="col-auto btn btn-primary mx-4" @click="saveAndNew">Save & New</button>
+            <button type="button" class="btn btn-danger" :class="!product.id && !product.name ? 'disabled' : ''" @click="confirmDelete">Delete Product</button>
+            <button type="button" class="btn btn-secondary" @click="resetForm">Reset Form</button>
+            <button type="button" class="btn btn-primary" @click="saveProduct">Save</button>
+            <button type="button" class="btn btn-primary" @click="saveAndNew">Save & New</button>
         </div>
 
         <datalist id="sizeList">
@@ -273,8 +273,8 @@ label {
 
 .action-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 0.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    grid-gap: 2rem;
     margin: 3rem 2rem;
 }
 
@@ -282,10 +282,10 @@ label {
 input::-webkit-inner-spin-button {
     -webkit-appearance: none
 }
-/* 
+
 @media (min-width: 40rem) {
     .form-grid {
         grid-template-columns: repeat(4, 1fr);
     }
-} */
+}
 </style>
