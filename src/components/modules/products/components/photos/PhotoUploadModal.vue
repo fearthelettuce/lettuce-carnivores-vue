@@ -103,15 +103,12 @@ const selectedFiles: Array<{
     file?: File, 
     tempUrl: string, 
     name: string,
-    type?: PhotoTypes | undefined
+    type?: PhotoTypes | undefined,
+    isReferencePhoto: boolean,
 }> = reactive([])
 
 
 watch(props.photos, (newVal, oldVal) => {
-    console.log('banana')
-    console.log(newVal)
-    console.log(oldVal)
-    console.log(props.photos)
     selectedFiles.length = 0
     for(let photo of props.photos) {
         selectedFiles.push(photo)
@@ -131,6 +128,7 @@ function onFileChanged($event: Event) {
                 file: target.files[i],
                 tempUrl: URL.createObjectURL(target.files[i]),
                 name: target.files[i].name,
+                isReferencePhoto: false,
             })
         }
     }    
@@ -148,7 +146,6 @@ function arrayMove(arr: Array<any>, fromIndex: number, toIndex: number) {
 }
 
 async function uploadFiles() {
-    //TODO Need to add logic to set photoData if no photoType is selected.  Causing a bug with delete
     const photosToUpload = selectedFiles.filter((photo) => photo.file)
     if(photosToUpload.length === 0) {
         emit('showToast',{message: `No files to upload`, type: 'error'})
@@ -161,10 +158,12 @@ async function uploadFiles() {
         if (res && res.success === true && res.filePath) {
             photoDetails.push({
                 name: photo.name,
-                type: photo.type ? photo.type : PhotoTypes.Additional,
+                type: photo.type,
+                folder: props.storageFolder,
                 path: res.filePath,
                 originalFilename: photo.name,
                 date: new Date(),
+                isReferencePhoto: photo.isReferencePhoto,
             })
             fileUploadCounter++
             if (fileUploadCounter >= photosToUpload.length) {

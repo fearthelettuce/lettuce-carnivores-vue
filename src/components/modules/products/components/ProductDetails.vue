@@ -1,9 +1,7 @@
 <template>
     <BaseContainer>
         <section v-if="state.product" class="d-flex productDetailSection" >
-        <ProductDetailsPhotoList 
-            :photos="state.product.photos" 
-            :photoData="state.product.photoData ?? undefined" />
+        <ProductDetailsPhotoList :photos="state.product.photos" />
             <article class="product-information d-flex align-content-center flex-column">
                 <div class="d-flex justify-content-center">
                     <h1 class="text-center">{{ state.product.name }}</h1>   

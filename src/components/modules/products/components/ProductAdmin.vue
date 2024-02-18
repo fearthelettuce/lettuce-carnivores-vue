@@ -39,7 +39,6 @@ import ProductAdminForm from './ProductAdminForm.vue'
 import ProductPhotoList from './photos/ProductPhotoList.vue'
 import ProductCard from './ProductCard.vue'
 import { storeToRefs } from 'pinia'
-import { faCropSimple } from '@fortawesome/free-solid-svg-icons'
 
 const productStore = useProductStore()
 
@@ -52,11 +51,8 @@ onMounted(() => {
 })
 
 function setSelectedProduct(event: Event) {
-    console.log(event.target.value)
     let product
     let productId = (event.target as HTMLInputElement).value
-    console.log(productId)
-    console.log(!productId)
     if(!productId) {
         productStore.setProductToEdit(null);
     }

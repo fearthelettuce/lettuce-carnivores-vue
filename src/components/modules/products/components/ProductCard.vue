@@ -28,13 +28,9 @@ import { computed } from 'vue'
 import {getPhotoUrl} from '@/apis/fileServices'
 const props = defineProps(['product', 'cardAction'])
 const placeholderUrl = 'https://cdn-icons-png.flaticon.com/512/1033/1033018.png'
-//TODO: need to find a way to call store getPhotoUrl, or just build into this component.  Composable?
 const cardImageUrl = computed(() => {
-    const photoData = props.product.photoData
-    const cardPhoto = photoData.card || photoData.primary || photoData.additional || undefined
-    console.log(photoData)
-    console.log(cardPhoto ? getPhotoUrl(cardPhoto.fullPath) : placeholderUrl)
-    return cardPhoto ? getPhotoUrl(cardPhoto.fullPath) : placeholderUrl
+    const cardPhoto = props.product.photos[0] || undefined
+    return cardPhoto ? getPhotoUrl(cardPhoto.path) : placeholderUrl
 })
 const formattedPrice = computed(() => {
     return props.product.price > 0 ? USDollar.format(props.product.price) : '-'

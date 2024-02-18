@@ -16,7 +16,6 @@ const newProduct = {
     quantity: 1,
     isDiscountable: true,
     photos: [] as Array<PhotoItem>,
-    photoData: {} as PhotoDetails,
     genus: undefined,
     clone: '',
     propagationMethod: '',
@@ -86,11 +85,6 @@ export const useProductStore = defineStore('product', {
                 this.productToEdit = product
             }
             else { 
-                if(this.productToEdit.photoData) {
-                    for(const [key] of Object.entries(this.productToEdit.photoData)) {
-                        this.productToEdit.photoData[key as keyof PhotoDetails] = undefined                       
-                    }
-                }
                 this.productToEdit = {...newProduct};
             }
         },
@@ -196,46 +190,31 @@ export const useProductStore = defineStore('product', {
             } else {
                 product.photos = photoArr
             }
-            if(!('photoData' in product)) {
-                product['photoData'] = {} as PhotoDetails
-            }
-            for(const photo of product.photos) {
-                if(photo.type && photo.type !== 'additional' && product.photoData) {
-                    product.photoData[photo.type] = {name: photo.name, fullPath:photo.path}
-                }
-            }
 
             if (product.id) {
                 this.saveProduct(product)
-                //this.setProductToEdit(product)
-                // const someProduct = await this.findProductById(product.id).catch((err) => { console.log(err)}) as Product
-                // if (someProduct) {
-                //     this.saveProduct(someProduct)
-                // }
             }
         },
         async removePhoto(product: Product | typeof newProduct, photoToRemove: PhotoItem) {
             //BUG: if photo was uploaded without a type, one is assinged, but product.photoData is not updated.
-            console.log(product.photoData)
             if(!product || !photoToRemove || !product.photos) return
-            console.log(1)
             const photoIndex = product.photos.findIndex((ele) => ele.path === photoToRemove.path)
+            console.log(product.photos)
             console.log(photoIndex)
             product.photos.splice(photoIndex, 1)
-            console.log(product.photoData)
-            if(product.photoData) {
-                for(const [key, value] of Object.entries(product.photoData)) {
-                    if(value.fullPath === photoToRemove.path) {
-                        if(product.id) {
-                            const res = await deleteFile(photoToRemove)
-                            if(!res.error) {
-                                product.photoData[key as keyof PhotoDetails] = undefined
-                                this.saveProduct(product)
-                            }
-                            return res
-                        }
-                    }
-                }
+            if(product.id) {
+                try {
+                    const res = await deleteFile(photoToRemove)
+                    console.log(res)
+                    this.saveProduct(product)
+                    
+                    return res
+                } catch (err) {
+                    return err
+                }                
+            } else {
+
+                return
             }
         },
 

@@ -178,9 +178,7 @@ async function saveProduct() {
         toast.success(res.message)
         state.isSaved = true
     } else {
-        console.log(res)
         if (res && res.message) {
-            console.log(res)
             toast.error(res.message)
             state.isSaved = false
         }

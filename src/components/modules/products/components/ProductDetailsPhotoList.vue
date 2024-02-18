@@ -16,13 +16,12 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue';
 import ImageZoomModal from '@/components/app/UI/ImageZoomModal.vue';
-import type { PhotoDetails, PhotoItem,  } from '../types/product';
+import type { PhotoItem,  } from '../types/product';
 import {getPhotoUrl} from '@/apis/fileServices'
 const placeholderUrl = 'https://cdn-icons-png.flaticon.com/512/1033/1033018.png'
 
 const props = defineProps<{
     photos: Array<PhotoItem>,
-    photoData?: PhotoDetails,
 }>()
 
 const state = reactive({
