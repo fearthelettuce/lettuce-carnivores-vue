@@ -30,7 +30,13 @@
                         id="formFile" 
                         @change="onFileChanged($event)" 
                         accept="image/*" 
-                        multiple>
+                        multiple
+                        capture>
+                        <div class="mt-5">
+                            <input type="file" class="form-control" id="imageCapture" accept="image/*" capture>
+                            <label for="imageCapture" class="btn btn-primary">Capture</label>
+                        </div>
+
                         <div v-if="selectedFiles.length !== 0" class="d-inline-block mx-3">{{ selectedFiles.length }} files selected</div>
                     </div>
                         <TransitionGroup name="list">
