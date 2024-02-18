@@ -215,13 +215,14 @@ export const useProductStore = defineStore('product', {
             }
         },
         async removePhoto(product: Product | typeof newProduct, photoToRemove: PhotoItem) {
-            console.log(product)
+            //BUG: if photo was uploaded without a type, one is assinged, but product.photoData is not updated.
+            console.log(product.photoData)
             if(!product || !photoToRemove || !product.photos) return
+            console.log(1)
             const photoIndex = product.photos.findIndex((ele) => ele.path === photoToRemove.path)
-            
-            const res = await deleteFile(photoToRemove)
-            console.log(res)
+            console.log(photoIndex)
             product.photos.splice(photoIndex, 1)
+            console.log(product.photoData)
             if(product.photoData) {
                 for(const [key, value] of Object.entries(product.photoData)) {
                     if(value.fullPath === photoToRemove.path) {

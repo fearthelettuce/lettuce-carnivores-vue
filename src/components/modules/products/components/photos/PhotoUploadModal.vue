@@ -148,6 +148,7 @@ function arrayMove(arr: Array<any>, fromIndex: number, toIndex: number) {
 }
 
 async function uploadFiles() {
+    //TODO Need to add logic to set photoData if no photoType is selected.  Causing a bug with delete
     const photosToUpload = selectedFiles.filter((photo) => photo.file)
     if(photosToUpload.length === 0) {
         emit('showToast',{message: `No files to upload`, type: 'error'})
