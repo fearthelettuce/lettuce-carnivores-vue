@@ -4,9 +4,10 @@
   "compilerOptions": {
     "composite": true,
     "types": ["node"],
-    "module": "nodenext",
     "baseUrl": ".",
     "ignoreDeprecations": "5.0",
     "noErrorTruncation": true,
+    "module": "ESNext",
+    "target": "ESNext",
   }
 }

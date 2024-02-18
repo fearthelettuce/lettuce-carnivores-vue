@@ -11,8 +11,10 @@
     "noUnusedLocals": false,
     "ignoreDeprecations": "5.0",
     "resolveJsonModule": true,
-    "esModuleInterop": true,
+    "esModuleInterop": false,
     "noErrorTruncation": true,
     "moduleResolution": "node",
+    "module": "ESNext",
+    "target": "ESNext",
   }
 }

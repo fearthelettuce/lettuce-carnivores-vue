@@ -1,24 +1,18 @@
 <template>
-    <div class="container">
-        <button class="btn btn-primary" @click="showModal">Add Photo</button>
-        <div v-if="product.photos && product.photos.length > 0">
-            <div class="row">
-                <div class="my-4"></div>
-                <div class="col-4 centered"></div>
-                <div class="col-2 centered">Filename</div>
-                <div class="col-1 centered">Type</div>
-                <div class="col-4 centered">Path</div>
-                <div class="col-1 centered">Delete</div>
-            </div>
-            <ProductPhotoItem
+    <header class="photo-upload-header">
+        <button class="btn btn-primary" @click="showModal">Add Photos</button>
+    </header>
+    <section v-if="product.photos && product.photos.length > 0">
+        <ProductPhotoItem
             v-for="photo of product.photos"
             :photo="photo"
             :key="photo.path.toString"
             @deletePhoto="deletePhoto(photo)"
-            />
-        </div>
+        />
+    </section>
         
-    </div>
+    <footer class="my-5"></footer>
+
 
     <PhotoUploadModal
         ref="photoUploadModal"
