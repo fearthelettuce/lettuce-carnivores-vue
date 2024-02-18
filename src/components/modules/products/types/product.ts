@@ -32,6 +32,7 @@ type PhotoItem = {
     type: PhotoTypes | undefined,
     path: string,
     originalFilename: string,
+    date: Date,
 }
 
 export enum PhotoTypes {

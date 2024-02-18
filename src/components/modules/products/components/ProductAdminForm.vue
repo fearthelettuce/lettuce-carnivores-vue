@@ -118,7 +118,6 @@ import { useProductStore } from '../stores/product'
 import type { Plant } from '../types/plants'
 import BaseModal from '@/components/app/UI/BaseModal.vue';
 
-
 const productStore = useProductStore()
 const toast = useToast()
 
@@ -162,14 +161,11 @@ function updateGenus () {
             break;
     }
     product.value.genus = parsedGenus ?? undefined;
-    console.log(product.value.genus)
 }
 
 function resetForm() {
-    console.log('calling resetForm in component')
     productStore.setProductToEdit(null)
     state.isSaved = false
-    console.log(productStore.getProductToEdit)
 }
 
 async function saveProduct() {

@@ -163,7 +163,7 @@ async function uploadFiles() {
                 type: photo.type ? photo.type : PhotoTypes.Additional,
                 path: res.filePath,
                 originalFilename: photo.name,
-                
+                date: new Date(),
             })
             fileUploadCounter++
             if (fileUploadCounter >= photosToUpload.length) {
