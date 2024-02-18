@@ -4,6 +4,8 @@ import { saveItem, findAll, findByProperty, deleteItem, findDocById } from '@/ap
 import type { Plant } from '../types/plants'
 import type { Product, ProductFilters } from '../types/product'
 import type {PhotoItem, PhotoDetails} from '@/components/modules/products/types/product'
+import { deleteFile } from '@/apis/fileServices'
+import { resourceLimits } from 'worker_threads'
 const collectionName = 'products'
 
 const newProduct = {
@@ -80,17 +82,14 @@ export const useProductStore = defineStore('product', {
 
     actions: {
         setProductToEdit(product: Plant | null) {
-            console.log('calling setProductToEdit in store ' + product)
             if(product) {
                 this.productToEdit = product
             }
             else { 
-                // @ts-expect-error TODO
-                for(const [key] of Object.entries(this.productToEdit.photoData)) {
-                    if(this.productToEdit.photoData) {
-                        this.productToEdit.photoData[key as keyof PhotoDetails] = undefined
+                if(this.productToEdit.photoData) {
+                    for(const [key] of Object.entries(this.productToEdit.photoData)) {
+                        this.productToEdit.photoData[key as keyof PhotoDetails] = undefined                       
                     }
-                    
                 }
                 this.productToEdit = {...newProduct};
             }
@@ -171,7 +170,8 @@ export const useProductStore = defineStore('product', {
             }
         },
 
-        async deleteById(id: number | string) {
+        async deleteById(id: number) { 
+            this.deleteAllPhotos(await this.findProductById(id))
             const res = await deleteItem(collectionName, id).catch(err => {
                 console.log(err)
                 return { success: false, error: true, response: err, message: 'Unable to delete' }
@@ -215,23 +215,33 @@ export const useProductStore = defineStore('product', {
             }
         },
         async removePhoto(product: Product | typeof newProduct, photoToRemove: PhotoItem) {
+            console.log(product)
             if(!product || !photoToRemove || !product.photos) return
             const photoIndex = product.photos.findIndex((ele) => ele.path === photoToRemove.path)
-            product.photos.splice(photoIndex,1)
-            //look through product.photoData to see if photoData.fullPath === photoToRemove.path and delete that item from photoData
+            
+            const res = await deleteFile(photoToRemove)
+            console.log(res)
+            product.photos.splice(photoIndex, 1)
             if(product.photoData) {
                 for(const [key, value] of Object.entries(product.photoData)) {
                     if(value.fullPath === photoToRemove.path) {
-                        product.photoData[key as keyof PhotoDetails] = undefined
+                        if(product.id) {
+                            const res = await deleteFile(photoToRemove)
+                            if(!res.error) {
+                                product.photoData[key as keyof PhotoDetails] = undefined
+                                this.saveProduct(product)
+                            }
+                            return res
+                        }
                     }
                 }
             }
-            if (product.id) {
-                this.saveProduct(product)
-                this.setProductToEdit(product)
-            }
-            return
-            //TODO: delete photo from firestore
+        },
+
+        async deleteAllPhotos(product: Product) {
+            product.photos.forEach(async (photo) => {
+                await deleteFile(photo)
+            })
         },
 
         //TODO: Firebase extension storage -resize images

@@ -157,21 +157,21 @@ async function uploadFiles() {
     for (let photo of photosToUpload) {
         if(!photo.file) continue
         const res = await uploadFile(photo.name, props.storageFolder, photo.file)
-        if (res) {
+        if (res && res.success === true && res.filePath) {
             photoDetails.push({
                 name: photo.name,
                 type: photo.type ? photo.type : PhotoTypes.Additional,
-                path: res,
+                path: res.filePath,
                 originalFilename: photo.name,
                 
             })
-
             fileUploadCounter++
             if (fileUploadCounter >= photosToUpload.length) {
                 emit('closeModal')
                 emit('showToast',{message: `${fileUploadCounter} of ${photosToUpload.length} files uploaded`, type: 'success'})
                 emit('updatePhotoData',photoDetails)
             }
+            selectedFiles.length = 0;
         } else {
             emit('showToast',{message: `Sorry, something went wrong`, type: 'error'})
         }
