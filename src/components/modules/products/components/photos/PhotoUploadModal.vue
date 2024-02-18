@@ -29,14 +29,8 @@
                         type="file" 
                         id="formFile" 
                         @change="onFileChanged($event)" 
-                        accept="image/*" 
-                        multiple
-                        capture>
-                        <div class="mt-5">
-                            <input type="file" class="form-control" id="imageCapture" accept="image/*" capture>
-                            <label for="imageCapture" class="btn btn-primary">Capture</label>
-                        </div>
-
+                        accept="capture=camera,image/*" 
+                        multiple>
                         <div v-if="selectedFiles.length !== 0" class="d-inline-block mx-3">{{ selectedFiles.length }} files selected</div>
                     </div>
                         <TransitionGroup name="list">
@@ -154,6 +148,7 @@ function arrayMove(arr: Array<any>, fromIndex: number, toIndex: number) {
 }
 
 async function uploadFiles() {
+    //TODO Need to add logic to set photoData if no photoType is selected.  Causing a bug with delete
     const photosToUpload = selectedFiles.filter((photo) => photo.file)
     if(photosToUpload.length === 0) {
         emit('showToast',{message: `No files to upload`, type: 'error'})
@@ -163,21 +158,21 @@ async function uploadFiles() {
     for (let photo of photosToUpload) {
         if(!photo.file) continue
         const res = await uploadFile(photo.name, props.storageFolder, photo.file)
-        if (res) {
+        if (res && res.success === true && res.filePath) {
             photoDetails.push({
                 name: photo.name,
                 type: photo.type ? photo.type : PhotoTypes.Additional,
-                path: res,
+                path: res.filePath,
                 originalFilename: photo.name,
-                
+                date: new Date(),
             })
-
             fileUploadCounter++
             if (fileUploadCounter >= photosToUpload.length) {
                 emit('closeModal')
                 emit('showToast',{message: `${fileUploadCounter} of ${photosToUpload.length} files uploaded`, type: 'success'})
                 emit('updatePhotoData',photoDetails)
             }
+            selectedFiles.length = 0;
         } else {
             emit('showToast',{message: `Sorry, something went wrong`, type: 'error'})
         }

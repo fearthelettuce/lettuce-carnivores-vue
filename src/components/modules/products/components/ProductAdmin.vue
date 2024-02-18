@@ -13,7 +13,7 @@
                             aria-label="Select a product to edit" 
                             @change="setSelectedProduct" 
                             :value="productToEdit.id">
-                            <option :value="undefined" style="color: lightsalmon;">Create New Product</option>
+                            <option value="" style="color: lightsalmon;">Create New Product</option>
                             <option v-for="product of products" :value="product.id" :key="product.id" >{{ product.name }} ({{ product.id }})</option>
                         </select>
                         <label for="editProduct">Select a product to edit</label>
@@ -39,6 +39,7 @@ import ProductAdminForm from './ProductAdminForm.vue'
 import ProductPhotoList from './photos/ProductPhotoList.vue'
 import ProductCard from './ProductCard.vue'
 import { storeToRefs } from 'pinia'
+import { faCropSimple } from '@fortawesome/free-solid-svg-icons'
 
 const productStore = useProductStore()
 
@@ -51,8 +52,11 @@ onMounted(() => {
 })
 
 function setSelectedProduct(event: Event) {
+    console.log(event.target.value)
     let product
     let productId = (event.target as HTMLInputElement).value
+    console.log(productId)
+    console.log(!productId)
     if(!productId) {
         productStore.setProductToEdit(null);
     }

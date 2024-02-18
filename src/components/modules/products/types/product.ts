@@ -30,8 +30,9 @@ type ProductDetailItem = {
 type PhotoItem = {
     name: string,
     type: PhotoTypes | undefined,
-    path: string | URL,
+    path: string,
     originalFilename: string,
+    date: Date,
 }
 
 export enum PhotoTypes {

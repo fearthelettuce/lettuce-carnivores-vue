@@ -64,9 +64,14 @@ function appendPhotos(selectedPhotosArr:Array<PhotoItem>) {
     productStore.appendPhotoData(props.product, selectedPhotosArr)
 }
 
-function deletePhoto(photoToRemove: PhotoItem) {
-    console.log(photoToRemove)
-    productStore.removePhoto(props.product, photoToRemove)
+async function deletePhoto(photoToRemove: PhotoItem) {
+    const res = await productStore.removePhoto(props.product, photoToRemove)
+    if (!res) {return}
+    if(res.success) {
+        toast.success(res.message)
+    } else {
+        toast.error(res.message)
+    }
 }
 
 </script>
