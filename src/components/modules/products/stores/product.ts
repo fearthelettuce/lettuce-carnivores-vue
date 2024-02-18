@@ -197,24 +197,19 @@ export const useProductStore = defineStore('product', {
         },
         async removePhoto(product: Product | typeof newProduct, photoToRemove: PhotoItem) {
             //BUG: if photo was uploaded without a type, one is assinged, but product.photoData is not updated.
-            if(!product || !photoToRemove || !product.photos) return
+            if(!product || !photoToRemove || !product.photos) return {success: false, error: true, message: 'Unable to find photo or product'}
             const photoIndex = product.photos.findIndex((ele) => ele.path === photoToRemove.path)
-            console.log(product.photos)
-            console.log(photoIndex)
             product.photos.splice(photoIndex, 1)
             if(product.id) {
                 try {
                     const res = await deleteFile(photoToRemove)
-                    console.log(res)
                     this.saveProduct(product)
-                    
                     return res
                 } catch (err) {
-                    return err
+                    return {success: false, error: true, message: 'Something went wrong', errorDetails: err}
                 }                
             } else {
-
-                return
+                return {success: true, error: false, message: 'Photo removed'}
             }
         },
 

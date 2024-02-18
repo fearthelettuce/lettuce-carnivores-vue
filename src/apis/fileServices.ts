@@ -14,10 +14,10 @@ export async function uploadFile(fileName: string, subfolder: string, file: File
     const storageRef = ref(storage,filePath)
     try {
         const res = await uploadBytes(storageRef, file)
-        return {success: true, filePath: res.metadata.fullPath};
+        return {success: true, filePath: res.metadata.fullPath, message: 'Photo uploaded'};
     } catch (err) {
         console.error(err);
-        return {success: false, error: true, message: "Error uploading file", errorDetails: err}
+        return {success: false, error: true, message: 'Error uploading file', errorDetails: err}
     }
 }
 
@@ -30,6 +30,6 @@ export async function deleteFile(photo: PhotoItem) {
         return {success: true, error: false}
     } catch (err) {
         console.log(err);
-        return {success: false, error: true, message: "Error deleting file from Firebase Storage", errorDetails: err}
+        return {success: false, error: true, message: 'Error deleting file from Firebase Storage', errorDetails: err}
     }
 }
