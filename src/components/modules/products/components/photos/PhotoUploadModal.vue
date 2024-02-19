@@ -96,8 +96,8 @@ import { reactive, watch } from 'vue';
 import { uploadFile } from '@/apis/fileServices';
 import type {PhotoItem} from '@/components/modules/products/types/product'
 import { PhotoTypes } from '@/components/modules/products/types/product'
-
-const emit = defineEmits(['closeModal', 'showToast', 'updatePhotoData']) //TODO: change to vue3-toastify
+import { toast } from 'vue3-toastify'
+const emit = defineEmits(['closeModal', 'updatePhotoData'])
 const props = defineProps(['storageFolder', 'photos'])
 const selectedFiles: Array<{
     file?: File, 
@@ -148,7 +148,7 @@ function arrayMove(arr: Array<any>, fromIndex: number, toIndex: number) {
 async function uploadFiles() {
     const photosToUpload = selectedFiles.filter((photo) => photo.file)
     if(photosToUpload.length === 0) {
-        emit('showToast',{message: `No files to upload`, type: 'error'})
+        toast.warning('No files to upload')
         return
     }
     let fileUploadCounter = 0
@@ -168,12 +168,12 @@ async function uploadFiles() {
             fileUploadCounter++
             if (fileUploadCounter >= photosToUpload.length) {
                 emit('closeModal')
-                emit('showToast',{message: `${fileUploadCounter} of ${photosToUpload.length} files uploaded`, type: 'success'})
+                toast.success(`${fileUploadCounter} of ${photosToUpload.length} files uploaded`)
                 emit('updatePhotoData',photoDetails)
             }
             selectedFiles.length = 0;
         } else {
-            emit('showToast',{message: `Sorry, something went wrong`, type: 'error'})
+            toast.error(`Sorry, something went wrong`)
         }
     }
 }

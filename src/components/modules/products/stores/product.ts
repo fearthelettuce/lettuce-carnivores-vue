@@ -180,7 +180,7 @@ export const useProductStore = defineStore('product', {
             if (this.productToEdit.id === id) {
                 this.setProductToEdit(null)
             }
-            return { success: true, error: false, response: res, message: '' }
+            return { success: true, error: false, response: res, message: 'Deleted' }
         },
 
         async appendPhotoData(product: Product | typeof newProduct, photoArr: Array<PhotoItem>) {

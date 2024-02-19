@@ -20,7 +20,6 @@
         :photos="product.photos"
         @closeModal="state.photoUploadModal.hide()"
         @updatePhotoData="appendPhotos"
-        @showToast="showToast"
     />
 </template>
 
@@ -29,7 +28,7 @@
 import { onMounted, reactive } from 'vue';
 import { useProductStore } from '../../stores/product';
 // import { storeToRefs } from 'pinia'
-import { useToast } from 'vue-toastification'  //TODO: change to vue3-toastify
+import { toast } from 'vue3-toastify'
 import ProductPhotoItem from './ProductPhotoItem.vue';
 import PhotoUploadModal from './PhotoUploadModal.vue';
 import type {PhotoItem} from '@/components/modules/products/types//product'
@@ -38,7 +37,6 @@ import { Modal } from 'bootstrap';
 const productStore = useProductStore()
 // const { getProductToEdit: product } = storeToRefs(productStore)
 const props = defineProps(['product'])
-const toast = useToast()
 
 const state = reactive({
     photoUploadModal: Modal || null,
@@ -50,14 +48,6 @@ onMounted(() => {
 function showModal() {
     state.photoUploadModal = new Modal('#photoUploadModal', {})
     state.photoUploadModal.show()
-}
-
-function showToast(obj: any) {
-    if(obj.type === 'success'){
-        toast.success(obj.message)
-    } else {
-        toast.warning(obj.message)
-    }
 }
 
 function appendPhotos(selectedPhotosArr:Array<PhotoItem>) {

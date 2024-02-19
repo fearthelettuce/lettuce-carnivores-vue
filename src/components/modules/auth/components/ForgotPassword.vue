@@ -21,10 +21,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useUserStore } from '@/components/modules/auth/stores/users'
-import { useToast } from 'vue-toastification' //TODO: change to vue3-toastify
+import { toast } from 'vue3-toastify';
 
 const userStore = useUserStore()
-const toast = useToast()
 const loginEmail = ref("")
 const hasEmailBeenSent = ref(false)
 

@@ -15,9 +15,13 @@ library.add(fas);
 library.add(far);
 app.component('FontAwesome', FontAwesomeIcon)
 
-import Toast from 'vue-toastification' //TODO: change to vue3-toastify
-import 'vue-toastification/dist/index.css' //TODO: change to vue3-toastify
-app.use(Toast, { showCloseButtonOnHover: true,}) //TODO: change to vue3-toastify
+import Vue3Toastify, {type ToastContainerOptions } from 'vue3-toastify'
+import 'vue3-toastify/dist/index.css';
+app.use(Vue3Toastify, {
+    autoClose: 2000,
+    clearOnUrlChange: false,
+    theme: 'colored',
+  } as ToastContainerOptions)
 
 import { plugin, defaultConfig } from '@formkit/vue'
 app.use(plugin, defaultConfig)

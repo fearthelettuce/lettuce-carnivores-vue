@@ -18,6 +18,9 @@
       "@/*": ["src/*"],
       "bootstrap/dist/js/bootstrap" : ["./node_modules/types/bootstrap"]
     },
+    "types": [
+      "vue3-toastify/global"
+    ]
   },
   
   "include": [

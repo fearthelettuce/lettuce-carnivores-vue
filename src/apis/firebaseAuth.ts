@@ -98,8 +98,7 @@ export async function requestPasswordResetEmail(email: string) {
     await sendPasswordResetEmail(auth, email)
       return {success: true, error: false, message: 'Password reset email sent!'}
   } catch (e) {
-    console.log(e)
-    return {error: true, success: false, message: String(e)} 
+    return {success: true, error: false, message: 'Password reset email sent!'} 
   }
 }
 

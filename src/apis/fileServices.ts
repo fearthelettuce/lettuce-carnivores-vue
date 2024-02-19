@@ -27,7 +27,7 @@ export async function deleteFile(photo: PhotoItem) {
     if(!storageRef) {return {success: false, error: false, message: `Photo path ${photo.path} does not exist in Firebase`}}
     try {
         await deleteObject(storageRef)
-        return {success: true, error: false}
+        return {success: true, error: false, message: 'Deleted'}
     } catch (err) {
         console.log(err);
         return {success: false, error: true, message: 'Error deleting file from Firebase Storage', errorDetails: err}

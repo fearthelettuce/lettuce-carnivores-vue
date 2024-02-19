@@ -29,10 +29,9 @@
 import { reactive } from 'vue';
 import { useUserStore } from '@/components/modules/auth/stores/users'
 import { router } from '@/router/index'
-import { useToast } from 'vue-toastification' //TODO: change to vue3-toastify
+import { toast } from 'vue3-toastify'
 
 const userStore = useUserStore()
-const toast = useToast()
 
 const registrationForm = reactive({
     email: null,
@@ -43,7 +42,7 @@ const registrationForm = reactive({
 
 const register = async () => {
     if(!registrationForm.email || !registrationForm.password ||  !registrationForm.firstName || !registrationForm.lastName) {
-        toast.error('Please check your inputs!', {timeout: 1500})
+        toast.error('Please check your inputs!')
         return
     }
     try {
@@ -56,7 +55,7 @@ const register = async () => {
             }
         )
         console.log(profileResponse)
-        toast.success('Welcome!', {timeout: 1500})
+        toast.success('Welcome!')
     } catch(error) {
         console.log(error)
     }

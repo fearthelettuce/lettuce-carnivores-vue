@@ -113,13 +113,12 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
 import { storeToRefs } from 'pinia'
-import { useToast } from 'vue-toastification' //TODO: change to vue3-toastify
+import { toast } from 'vue3-toastify'
 import { useProductStore } from '../stores/product'
 import type { Plant } from '../types/plants'
 import BaseModal from '@/components/app/UI/BaseModal.vue';
 
 const productStore = useProductStore()
-const toast = useToast()
 
 const { getProductToEdit: product } = storeToRefs(productStore)
 
@@ -191,10 +190,9 @@ function confirmDelete() {
 
 async function deleteProduct() {
     if (product.value.id) {
-        const productId = product.value.id
         const res = await productStore.deleteById(product.value.id).catch(err => console.error(err))
         if (res && res.success) {
-            toast.success(`Product ${productId} deleted`)
+            toast.success(res.message)
             confirmDeleteModalRef.value?.hideModal()
             resetForm()
         } else {

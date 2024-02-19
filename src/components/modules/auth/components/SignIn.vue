@@ -26,10 +26,9 @@
 import { ref } from 'vue';
 import { useUserStore } from '@/components/modules/auth/stores/users'
 import { router } from '@/router/index'
-import { useToast } from 'vue-toastification' //TODO: change to vue3-toastify
+import { toast } from 'vue3-toastify'
 
 const userStore = useUserStore()
-const toast = useToast()
 
 const loginEmail = ref("")
 const loginPassword = ref("")
@@ -40,21 +39,12 @@ async function login () {
         return
     }
     try {
-        const res = await userStore.logInUser(loginEmail.value, loginPassword.value)
-        if(res) {
-            toast.success('Welcome!', {timeout: 750})
-            router.push('/products')
-        }
-        else {
-            console.log(res)
-            toast.error('Sorry, something went wrong')
-        }
+        await userStore.logInUser(loginEmail.value, loginPassword.value)
+        router.push('/products').then(()=>{toast.success('Welcome!')})
     } catch(error) {
         console.log(error)
         toast.error('Sorry, something went wrong')
     }
-    
-    
 }
 
 function resetPassword(){
