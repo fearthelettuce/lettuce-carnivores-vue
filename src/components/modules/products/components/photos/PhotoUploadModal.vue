@@ -97,7 +97,7 @@ import { uploadFile } from '@/apis/fileServices';
 import type {PhotoItem} from '@/components/modules/products/types/product'
 import { PhotoTypes } from '@/components/modules/products/types/product'
 
-const emit = defineEmits(['closeModal', 'showToast', 'updatePhotoData'])
+const emit = defineEmits(['closeModal', 'showToast', 'updatePhotoData']) //TODO: change to vue3-toastify
 const props = defineProps(['storageFolder', 'photos'])
 const selectedFiles: Array<{
     file?: File, 

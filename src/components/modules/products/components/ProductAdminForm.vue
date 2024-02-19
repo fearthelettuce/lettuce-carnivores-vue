@@ -113,7 +113,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
 import { storeToRefs } from 'pinia'
-import { useToast } from 'vue-toastification' 
+import { useToast } from 'vue-toastification' //TODO: change to vue3-toastify
 import { useProductStore } from '../stores/product'
 import type { Plant } from '../types/plants'
 import BaseModal from '@/components/app/UI/BaseModal.vue';
