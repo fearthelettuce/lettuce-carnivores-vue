@@ -83,8 +83,7 @@ export const useProductStore = defineStore('product', {
         setProductToEdit(product: Plant | null) {
             if(product) {
                 this.productToEdit = product
-            }
-            else { 
+            } else { 
                 this.productToEdit = {...newProduct};
             }
         },
@@ -163,7 +162,7 @@ export const useProductStore = defineStore('product', {
                 return {success: false, error: true, errorDetails: err, message: 'There was an error saving'}
             }
         },
-
+        //TODO add logic to check if any active specimens
         async deleteById(id: number) { 
             this.deleteAllPhotos(await this.findProductById(id))
             const res = await deleteItem(collectionName, id).catch(err => {
@@ -196,7 +195,6 @@ export const useProductStore = defineStore('product', {
             }
         },
         async removePhoto(product: Product | typeof newProduct, photoToRemove: PhotoItem) {
-            //BUG: if photo was uploaded without a type, one is assinged, but product.photoData is not updated.
             if(!product || !photoToRemove || !product.photos) return {success: false, error: true, message: 'Unable to find photo or product'}
             const photoIndex = product.photos.findIndex((ele) => ele.path === photoToRemove.path)
             product.photos.splice(photoIndex, 1)
