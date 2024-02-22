@@ -25,12 +25,10 @@
 
 //TODO look at cards for inspiration on this website: https://jamesbigleyranches.com/
 import { computed } from 'vue'
-import {getPhotoUrl} from '@/apis/fileServices'
+import {getPhotoUrl, placeholderUrl} from '@/composables/usePhotoUtils'
 const props = defineProps(['product', 'cardAction'])
-const placeholderUrl = 'https://cdn-icons-png.flaticon.com/512/1033/1033018.png'
 const cardImageUrl = computed(() => {
-    const cardPhoto = props.product.photos[0] || undefined
-    return cardPhoto ? getPhotoUrl(cardPhoto.path) : placeholderUrl
+    return getPhotoUrl(props.product?.photos[0]?.path ?? null)
 })
 const formattedPrice = computed(() => {
     return props.product.price > 0 ? USDollar.format(props.product.price) : '-'
@@ -45,22 +43,23 @@ const USDollar = new Intl.NumberFormat('en-US', {
 
 <style scoped>
 img {
-    width: 100%;
     display: block;
     height: 25em;
     object-fit: cover;
 }
 .cardImage{
+    width: 100%;
     object-position: 0% 15%;
 }
 
 .placeholderImage {
     box-sizing: border-box;
-    padding: 2em;
+    padding-top: 1rem;
     height: 25em;
     margin: auto;
     img{
-        object-position: 0% 0%;
+        width: 100%;
+        object-fit: cover;
     }
 }
 .card {

@@ -171,11 +171,12 @@ async function uploadFiles() {
                 toast.success(`${fileUploadCounter} of ${photosToUpload.length} files uploaded`)
                 emit('updatePhotoData',photoDetails)
             }
-            selectedFiles.length = 0;
         } else {
             toast.error(`Sorry, something went wrong`)
         }
     }
+    selectedFiles.length = 0;
+    photoDetails.length = 0;
 }
 
 </script>

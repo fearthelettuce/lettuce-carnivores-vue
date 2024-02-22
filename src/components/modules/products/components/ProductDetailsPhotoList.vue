@@ -17,8 +17,7 @@
 import { ref, reactive, computed, onMounted } from 'vue';
 import ImageZoomModal from '@/components/app/UI/ImageZoomModal.vue';
 import type { PhotoItem,  } from '../types/product';
-import {getPhotoUrl} from '@/apis/fileServices'
-const placeholderUrl = 'https://cdn-icons-png.flaticon.com/512/1033/1033018.png'
+import {getPhotoUrl} from '@/composables/usePhotoUtils'
 
 const props = defineProps<{
     photos: Array<PhotoItem>,
@@ -29,8 +28,7 @@ const state = reactive({
 })
 
 const displayPhoto = computed(() => {
-    if(!state.selectedPhoto || !state.selectedPhoto.path ) return placeholderUrl
-    return getPhotoUrl(state.selectedPhoto.path.toString())
+    return getPhotoUrl(state.selectedPhoto.path)
 })
 
 const imageZoomModalRef = ref<InstanceType<typeof ImageZoomModal> | null>(null)

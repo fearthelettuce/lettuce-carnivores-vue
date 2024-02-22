@@ -45,8 +45,7 @@
                     class="form-control" 
                     type="text" 
                     v-model.lazy="product.propagationDate" 
-                    placeholder="Propagation Date"
-                    @paste="pasteDate">
+                    placeholder="Propagation Date">
                 <label for="propagaionDate">Prop. Date</label>
             </div>
             <div class="form-floating">
@@ -201,16 +200,6 @@ async function deleteProduct() {
             }
         }
     }
-}
-
-function pasteDate(event: ClipboardEvent) {
-    console.log(product.value.propagationDate)
-    const pastedData = event.clipboardData?.getData('text');
-    const date = Date.parse(pastedData ?? "0")
-    console.log(`date: ${date}`)
-    if(date !==0) {console.log('poop'); product.value.propagationDate = new Date(date); console.log(product.value.propagationDate)}
-    console.log(pastedData)
-    console.log(new Date(date))
 }
 
 async function saveAndNew() {

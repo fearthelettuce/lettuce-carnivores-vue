@@ -30,7 +30,7 @@ import { reactive, computed, onMounted } from 'vue';
 import type { PropType } from 'vue';
 import { Modal } from 'bootstrap'
 import type { PhotoItem } from '@/components/modules/products/types/product';
-import {getPhotoUrl} from '@/apis/fileServices'
+import {getPhotoUrl} from '@/composables/usePhotoUtils'
 
 const state = reactive({
     expandImage: Modal || null,

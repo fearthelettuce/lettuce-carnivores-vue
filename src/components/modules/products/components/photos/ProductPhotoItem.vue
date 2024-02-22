@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import {getPhotoUrl} from '@/apis/fileServices'
+import {getPhotoUrl} from '@/composables/usePhotoUtils'
 
 const props = defineProps(['photo'])
 const emit = defineEmits(['deletePhoto'])
