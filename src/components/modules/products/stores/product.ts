@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia'
-// import {toRaw} from 'vue'
 import { saveItem, findAll, findByProperty, deleteItem, findDocById } from '@/apis/dataServices'
 import type { Plant } from '../types/plants'
 import type { Product, ProductFilters } from '../types/product'
 import type {PhotoItem} from '@/components/modules/products/types/product'
 import { deleteFile } from '@/apis/fileServices'
-import { resourceLimits } from 'worker_threads'
+import {appendPhotoDataUtil, removePhotoUtil} from '@/composables/usePhotoUtils'
+import {deleteById, saveProductUtil} from '@/composables/useProductUtils'
 const collectionName = 'products'
 
 const newProduct = {
@@ -139,92 +139,32 @@ export const useProductStore = defineStore('product', {
         },
 
         async saveProduct(product: Product | Plant) {
-            try {
-                const res = await saveItem(collectionName, product)
-                //TODO convert to toRaw
-                if(res.success) {
-                    const productDetails = JSON.parse(JSON.stringify( res.documentDetails))
-                    const productIndex = this.productList?.findIndex(item => item.id === productDetails.id)
-                    if (this.productList && productIndex !== null && productIndex !== undefined && productIndex > -1) {
-                        this.productList.splice(productIndex, 1, productDetails)
-                    } else {
-                        this.productList?.push(productDetails)
-                    }
-                    if (this.searchFilters) {
-                        this.filterProducts()
-                    }
-                    return { success: true, message: res.message }
-                } else {
-                    return {success: false, error: true, errorDetails: res.error, message: 'There was an error saving'}
-                }
-            } catch (err) {
-                console.log(err)
-                return {success: false, error: true, errorDetails: err, message: 'There was an error saving'}
-            }
+            return saveProductUtil(product, collectionName, this.productList)
         },
-        //TODO add logic to check if any active specimens
         async deleteById(id: number) { 
-            this.deleteAllPhotos(await this.findProductById(id))
-            const res = await deleteItem(collectionName, id).catch(err => {
-                console.log(err)
-                return { success: false, error: true, response: err, message: 'Unable to delete' }
-            })
-            if(res.error) {
-                return { success: false, error: true, response: res.error, message: 'Unable to delete' }
-            }
-            const productIndex = this.productList?.findIndex(item => item.id === id)
-            if (this.productList && productIndex && productIndex > -1) {
-                this.productList?.splice(productIndex, 1)
-            }
+            //TODO add logic to check if any active specimens
+            const res = deleteById(id, collectionName,this.productList)
             if (this.productToEdit.id === id) {
                 this.setProductToEdit(null)
             }
-            return { success: true, error: false, response: res, message: 'Deleted' }
+            return res
         },
 
         async appendPhotoData(product: Product | typeof newProduct, photoArr: Array<PhotoItem>) {
-            if(!product || !photoArr) return
-            if(product.photos) {
-                product.photos = product.photos.concat(photoArr)
-            } else {
-                product.photos = photoArr
-            }
-
+            appendPhotoDataUtil(product as Product, photoArr)
             if (product.id) {
                 this.saveProduct(product)
             }
         },
         async removePhoto(product: Product | typeof newProduct, photoToRemove: PhotoItem) {
-            if(!product || !photoToRemove || !product.photos) return {success: false, error: true, message: 'Unable to find photo or product'}
-            const photoIndex = product.photos.findIndex((ele) => ele.path === photoToRemove.path)
-            product.photos.splice(photoIndex, 1)
+            const res = removePhotoUtil(product as Product, photoToRemove)
             if(product.id) {
-                try {
-                    const res = await deleteFile(photoToRemove)
-                    this.saveProduct(product)
-                    return res
-                } catch (err) {
-                    return {success: false, error: true, message: 'Something went wrong', errorDetails: err}
-                }                
-            } else {
-                return {success: true, error: false, message: 'Photo removed'}
+                this.saveProduct(product)
             }
-        },
-
-        async deleteAllPhotos(product: Product) {
-            product.photos.forEach(async (photo) => {
-                await deleteFile(photo)
-            })
-        },
+            return res
+        }
 
         //TODO: Firebase extension storage -resize images
-
-        getPhotoUrl(fileName: string) {
-            const urlRoot = 'https://firebasestorage.googleapis.com/v0/b/lettuce-carnivores.appspot.com/o/'
-            const encodedFileName = encodeURIComponent(fileName)
-            const urlSuffix = '?alt=media'
-            return `${urlRoot}${encodedFileName}${urlSuffix}`
-        },
     }
 
     

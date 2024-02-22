@@ -22,7 +22,6 @@ export async function appendPhotoDataUtil(product: Product | Specimen, photoArr:
 }
 
 export async function removePhotoUtil(product: Product | Specimen, photoToRemove: PhotoItem) {
-
     if(!product || !photoToRemove || !product.photos) return {success: false, error: true, message: 'Unable to find photo or product'}
     const photoIndex = product.photos.findIndex((ele) => ele.path === photoToRemove.path)
     console.log(photoIndex)
@@ -40,3 +39,8 @@ export async function removePhotoUtil(product: Product | Specimen, photoToRemove
     }
 }
 
+export async function deleteAllPhotosUtil(product: Product) {
+    product.photos.forEach(async (photo) => {
+        await deleteFile(photo)
+    })
+}
