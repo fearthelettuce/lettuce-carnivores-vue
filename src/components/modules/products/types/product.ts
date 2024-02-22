@@ -1,18 +1,14 @@
-type Product = {
+interface Product {
     id: number,
     name: string,
-    price: number,
+    price?: number,
     isForSale: boolean,
     quantity: number,
     isDiscountable?: boolean,
     photos: Array<PhotoItem>,
-    propagationMethod: string,
-    size: string,
     description: string,
-    clone: string,
-    genus: string,
-    source: string,
-
+    category?: string,
+    plantId?: number,
 }
 
 type PhotoItem = {

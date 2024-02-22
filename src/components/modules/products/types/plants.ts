@@ -1,23 +1,22 @@
 import type {Product, PhotoItem} from './product'
 
 export type Plant = {
-    genus?: string,
-    clone?: string | undefined,
-    propagationMethod?: string,
-    propagationDate?: Date,
-    source?: string,
-} & Product
-
-export type Specimen = {
     id: number,
+    name: string,
+    genus?: string,
+    classification?: "Species" | "Hybrid",
+    clone?: string,
+    source?: string,
+    photos?: Array<PhotoItem>,
+    acquisitionDate?: Date,
+
+}
+
+export interface Specimen extends Product {
     productId: number,
     size: string,
     propagationMethod?: string,
     propagationDate?: Date,
-    price?: number,
-    isForSale?: boolean,
-    quantity: number,
-    photos: Array<PhotoItem>,
 }
 
 export enum propagationMethods {
