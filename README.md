@@ -58,3 +58,10 @@ npm run build
 firebase login (if not already logged in)
 firebase deploy
 ```
+
+
+Bootstrap replacement:
+- DaisyUI = single class of multiple TW classes, similar to Bootstrap
+- Preline = Tailwind templates - copy/paste standard TW + library that injects JS to open/close dialog
+- ShadCn = copy/paste TW
+
