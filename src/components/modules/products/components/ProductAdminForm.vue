@@ -10,47 +10,12 @@
                 class="form-control" 
                 type="text" 
                 v-model="product.name" 
-                placeholder="Name"
-                @change="updateGenus">
+                placeholder="Name">
                 <label for="name" class="">Name</label>
             </div>
             <div class="form-floating">
                 <input name="id" class="form-control" type="id" v-model="product.id" placeholder="ID" required>
                 <label for="id">ID</label>
-            </div>
-            <div class="form-floating">
-                <input name="source" 
-                class="form-control" 
-                type="text" 
-                v-model="product.source" 
-                placeholder="Source"
-                list="sourceList">
-                <label for="source">Source</label>
-            </div>
-            <div class="form-floating">
-                <input name="clone" class="form-control" type="text" v-model="product.clone" placeholder="Clone">
-                <label for="clone">Clone</label>
-            </div>
-            <div class="form-floating grid-item-lg">
-                <input name="propagationType" 
-                    class="form-control" 
-                    type="text" 
-                    v-model="product.propagationMethod" 
-                    placeholder="Propagation Method"
-                    list="propagationMethodList">
-                <label for="propagationType">Prop. Method</label>
-            </div>        
-            <div class="form-floating">
-                <input name="propagaionDate" 
-                    class="form-control" 
-                    type="text" 
-                    v-model.lazy="product.propagationDate" 
-                    placeholder="Propagation Date">
-                <label for="propagaionDate">Prop. Date</label>
-            </div>
-            <div class="form-floating">
-                <input name="size" class="form-control" type="text" v-model="product.size" placeholder="Size" list="sizeList">
-                <label for="size">Size</label>
             </div>
             <div class="form-floating">
                 <input name="price" class="form-control" type="number" v-model.number="product.price" placeholder="Price">
@@ -114,7 +79,7 @@ import { ref, reactive, onMounted } from 'vue';
 import { storeToRefs } from 'pinia'
 import { toast } from 'vue3-toastify'
 import { useProductStore } from '../stores/product'
-import type { Plant } from '../types/plants'
+import type { Product } from '../types/product'
 import BaseModal from '@/components/app/UI/BaseModal.vue';
 
 const productStore = useProductStore()
@@ -135,32 +100,6 @@ onMounted(() => {
     }
 })
 
-function updateGenus () {
-    let parsedGenus: string;
-    const firstChar = product.value.name.charAt(0).toLowerCase();
-    switch (firstChar) {
-        case 'c':
-            parsedGenus = 'Cephalotus'
-            break;
-        case 'd':
-            parsedGenus = 'Drosera';
-            break;
-        case 'h':
-            parsedGenus = 'Heliamphora';
-            break;
-        case 'n':
-            parsedGenus = 'Nepenthes';
-            break;
-        case 'p':
-            parsedGenus = 'Pinguicula';
-            break;
-        default:
-            parsedGenus = '';
-            break;
-    }
-    product.value.genus = parsedGenus ?? undefined;
-}
-
 function resetForm() {
     productStore.setProductToEdit(null)
     state.isSaved = false
@@ -171,7 +110,7 @@ async function saveProduct() {
         toast.error('Invalid product, missing ID')
         return
     }
-    const res = await productStore.saveProduct(product.value as Plant).catch(err => console.error(err))
+    const res = await productStore.saveProduct(product.value as Product).catch(err => console.error(err))
     if (res && res.success && res.message) {
         toast.success(res.message)
         state.isSaved = true

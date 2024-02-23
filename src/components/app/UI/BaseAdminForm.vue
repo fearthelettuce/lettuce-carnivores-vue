@@ -1,72 +1,75 @@
 <template>
     <form @submit.prevent>
         <div class="align-items-center">
-            <h3 v-if="plant?.id">Edit Existing Plant</h3>
-            <h3 v-else>Creating a New Plant</h3>
+            <h3 v-if="product?.id">Edit Existing Product</h3>
+            <h3 v-else>Creating a New Product</h3>
         </div>
         <div class="form-grid">
             <div class="form-floating grid-item-lg">
                 <input name="name" 
                 class="form-control" 
                 type="text" 
-                v-model="plant.name" 
-                placeholder="Name"
-                @change="updateGenus">
+                v-model="product.name" 
+                placeholder="Name">
                 <label for="name" class="">Name</label>
             </div>
             <div class="form-floating">
-                <input name="id" class="form-control" type="id" v-model="plant.id" placeholder="ID" required>
+                <input name="id" class="form-control" type="id" v-model="product.id" placeholder="ID" required>
                 <label for="id">ID</label>
             </div>
             <div class="form-floating">
-                <input name="source" 
-                class="form-control" 
-                type="text" 
-                v-model="plant.source" 
-                placeholder="Source"
-                list="sourceList">
-                <label for="source">Source</label>
+                <input name="price" class="form-control" type="number" v-model.number="product.price" placeholder="Price">
+                <label for="price">Price</label>
             </div>
             <div class="form-floating">
-                <input name="clone" class="form-control" type="text" v-model="plant.clone" placeholder="Clone">
-                <label for="clone">Clone</label>
+                <input name="quantity" class="form-control" type="number" v-model.number="product.quantity">
+                <label for="quantity">Quantity</label>
             </div>
-            <div class="form-floating">
-                <input name="acquisitionDate" 
-                    class="form-control" 
-                    type="text" 
-                    v-model.lazy="plant.acquisitionDate" 
-                    placeholder="Acquisition Date">
-                <label for="propagaionDate">Acquisition Date</label>
+            <div class="align-items-center form-check form-switch grid-item-md">
+                    <label for="forSale" class="form-check-label">For Sale</label>
+                    <input name="forSale" class="form-check-input" type="checkbox" v-model="product.isForSale">
             </div>
             <div class="form-floating grid-item-xl grid-item-two-rows">
                 <textarea name="description" 
                 class="form-control" 
                 style="height: 10rem;"
-                v-model="plant.description" 
+                v-model="product.description" 
                 placeholder="Description"></textarea>
                 <label for="description">Description</label>
             </div>
         </div>
+        <template></template>
         <div class="action-grid">
-            <button type="button" class="btn btn-danger" :class="!plant.id && !plant.name ? 'disabled' : ''" @click="confirmDelete">Delete plant</button>
+            <button type="button" class="btn btn-danger" :class="!product.id && !product.name ? 'disabled' : ''" @click="confirmDelete">Delete Product</button>
             <button type="button" class="btn btn-secondary" @click="resetForm">Reset Form</button>
-            <button type="button" class="btn btn-primary" @click="savePlant">Save</button>
+            <button type="button" class="btn btn-primary" @click="saveProduct">Save</button>
             <button type="button" class="btn btn-primary" @click="saveAndNew">Save & New</button>
         </div>
+        <template v-slot:datalist>
+
+        </template>
+        <datalist id="sizeList">
+            <option v-for="item of productStore.getSizeList" :key="item">{{ item }}</option>
+        </datalist>
+        <datalist id="sourceList">
+            <option v-for="item of productStore.sourceList" :key="item">{{ item }}</option>
+        </datalist>
+        <datalist id="propagationMethodList">
+            <option v-for="item of productStore.getPropagationMethodList" :key="item">{{ item }}</option>
+        </datalist>
         
     </form>
     
     <BaseModal ref="confirmDeleteModalRef">
         <template #title>Are you sure?</template>
             <template #body>
-                <div>Are you sure you want to delete this plant?<br><br> {{ plant.name }}({{ plant.id }})</div>
+                <div>Are you sure you want to delete this product?<br><br> {{ product.name }}({{ product.id }})</div>
             </template>
             <template #modalAction>
                 <button 
                 type="button" 
                 class="btn btn-danger"
-                @click="deletePlant"
+                @click="deleteProduct"
                 >
                 Delete
                 </button>
@@ -78,13 +81,13 @@
 import { ref, reactive, onMounted } from 'vue';
 import { storeToRefs } from 'pinia'
 import { toast } from 'vue3-toastify'
-import { usePlantStore } from '../stores/plant'
-import type { Plant } from '../types/plants'
+import { useProductStore } from '../stores/product'
+import type { Product } from '../types/product'
 import BaseModal from '@/components/app/UI/BaseModal.vue';
 
-const plantStore = usePlantStore()
+const productStore = useProductStore()
 
-const { getPlantToEdit: plant } = storeToRefs(plantStore)
+const { getProductToEdit: product } = storeToRefs(productStore)
 
 const state = reactive({
     isSaved: false,
@@ -95,48 +98,22 @@ const state = reactive({
 const confirmDeleteModalRef = ref<InstanceType<typeof BaseModal> | null>(null)
 
 onMounted(() => {
-    if (!plantStore.plantList || plantStore.plantList.length === 0) {
-        plantStore.fetchSearchResults()
+    if (!productStore.productList || productStore.productList.length === 0) {
+        productStore.fetchSearchResults()
     }
 })
 
-function updateGenus () {
-    let parsedGenus: string;
-    const firstChar = plant.value.name.charAt(0).toLowerCase();
-    switch (firstChar) {
-        case 'c':
-            parsedGenus = 'Cephalotus'
-            break;
-        case 'd':
-            parsedGenus = 'Drosera';
-            break;
-        case 'h':
-            parsedGenus = 'Heliamphora';
-            break;
-        case 'n':
-            parsedGenus = 'Nepenthes';
-            break;
-        case 'p':
-            parsedGenus = 'Pinguicula';
-            break;
-        default:
-            parsedGenus = '';
-            break;
-    }
-    plant.value.genus = parsedGenus ?? undefined;
-}
-
 function resetForm() {
-    plantStore.setplantToEdit(null)
+    productStore.setProductToEdit(null)
     state.isSaved = false
 }
 
-async function savePlant() {
-    if (!validatePlant()) {
-        toast.error('Invalid plant, missing ID')
+async function saveProduct() {
+    if (!validateProduct()) {
+        toast.error('Invalid product, missing ID')
         return
     }
-    const res = await plantStore.savePlant(plant.value as Plant)
+    const res = await productStore.saveProduct(product.value as Product).catch(err => console.error(err))
     if (res && res.success && res.message) {
         toast.success(res.message)
         state.isSaved = true
@@ -152,9 +129,9 @@ function confirmDelete() {
     confirmDeleteModalRef.value?.showModal()
 }
 
-async function deletePlant() {
-    if (plant.value.id) {
-        const res = await plantStore.deleteById(plant.value.id)
+async function deleteProduct() {
+    if (product.value.id) {
+        const res = await productStore.deleteById(product.value.id).catch(err => console.error(err))
         if (res && res.success) {
             toast.success(res.message)
             confirmDeleteModalRef.value?.hideModal()
@@ -168,14 +145,14 @@ async function deletePlant() {
 }
 
 async function saveAndNew() {
-    await savePlant()
+    await saveProduct()
     resetForm()
 }
 
-function validatePlant() {
+function validateProduct() {
     //TODO: Need to add validation
     //must have ID to save
-    if(plant.value.id) {return true}
+    if(product.value.id) {return true}
     else {return false}
 }
 

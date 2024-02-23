@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { saveItem, findAll, findByProperty, deleteItem, findDocById } from '@/apis/dataServices'
-import type { Plant } from '../types/plants'
 import type { Product, ProductFilters } from '../types/product'
 import type {PhotoItem} from '@/components/modules/products/types/product'
 import { deleteFile } from '@/apis/fileServices'
@@ -16,23 +15,19 @@ const newProduct = {
     quantity: 1,
     isDiscountable: true,
     photos: [] as Array<PhotoItem>,
-    genus: undefined,
-    clone: '',
-    propagationMethod: '',
-    propagationDate: new Date().toLocaleDateString('en-us'),
-    source: '',
-    size: '',
     description: '',
+    category: '',
+    plantId: undefined,
 }
 
 export const useProductStore = defineStore('product', {
     state: () => ({
-        productList: [] as Array<Plant>,
-        filteredProductList: [] as Array<Plant>,
+        productList: [] as Array<Product>,
+        filteredProductList: [] as Array<Product>,
         searchFilters: {} as ProductFilters,
         isLoading: false,
         //need to destructure object so newProduct doesn't retain properties
-        productToEdit:  {...newProduct} as Plant | typeof newProduct ,
+        productToEdit:  {...newProduct} as Product | typeof newProduct ,
         genusList: [ 
             { id: 1, label: 'Nepenthes' }, 
             { id: 2, label: 'Heliamphora' }, 
@@ -53,10 +48,10 @@ export const useProductStore = defineStore('product', {
                 return (id: number) => state.productList.find(product => product.id == id)
             }
         },
-        getProductList(): Array<Plant> {
+        getProductList(): Array<Product> {
             return this.productList
         },
-        getFilteredProducts(): Array<Plant> {
+        getFilteredProducts(): Array<Product> {
             return this.filteredProductList
         },
         getSearchFilters(): ProductFilters {
@@ -74,13 +69,13 @@ export const useProductStore = defineStore('product', {
         getPropagationMethodList(): Array<string>{
             return this.propagationMethodList;
         },
-        getProductToEdit(): Plant | typeof newProduct {
+        getProductToEdit(): Product | typeof newProduct {
             return this.productToEdit
         },
     },
 
     actions: {
-        setProductToEdit(product: Plant | null) {
+        setProductToEdit(product: Product | null) {
             if(product) {
                 this.productToEdit = product
             } else { 
@@ -129,16 +124,16 @@ export const useProductStore = defineStore('product', {
         },
 
         async findAllProducts() {
-            this.productList = await findAll(collectionName) as Array<Plant>
+            this.productList = await findAll(collectionName) as Array<Product>
         },
 
-        findAllAvailableProducts(): Array<Plant> {
-            return this.productList?.filter((product: Plant) => {
+        findAllAvailableProducts(): Array<Product> {
+            return this.productList?.filter((product: Product) => {
                 return product.quantity > 0 && product.isForSale
             })
         },
 
-        async saveProduct(product: Product | Plant) {
+        async saveProduct(product: Product) {
             return saveProductUtil(product, collectionName, this.productList)
         },
         async deleteById(id: number) { 

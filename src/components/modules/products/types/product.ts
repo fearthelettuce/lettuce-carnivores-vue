@@ -8,7 +8,7 @@ interface Product {
     photos: Array<PhotoItem>,
     description: string,
     category?: string,
-    plantId?: number,
+    plantId?: number | undefined,
 }
 
 type PhotoItem = {
