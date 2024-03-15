@@ -9,12 +9,7 @@
     }
   ],
   "compilerOptions": {
-    "resolveJsonModule": true,
-    "module": "NodeNext",
-    "ignoreDeprecations": "5.0",
-    "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"],
       "bootstrap/dist/js/bootstrap" : ["./node_modules/types/bootstrap"]
     },
     "types": [
@@ -22,15 +17,4 @@
     ]
   },
   
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "src/**/*.json",
-    "tests/**/*.ts",
-    "tests/**/*.tsx",
-  ],
-  "exclude": [
-    "node_modules"
-  ]
 }
