@@ -1,36 +1,27 @@
 <template>
-    <div>
-
-        <select 
-            :name="props.selectId" 
-            :id="props.selectId"
-            class="" 
-            :aria-label="props.label" 
-            @change="$emit('selectChanged')" 
-            :value="productToEdit.id">
-            <option value="" style="color: lightsalmon;">Create New Product</option>
-            <option v-for="product of products" :value="product.id" :key="product.id" >{{ product.name }} ({{ product.id }})</option>
-        </select>
-
-    </div>
+    <select 
+        :name="props.label" 
+        :id="props.label"
+        class="form-select" 
+        :aria-label="props.label"  
+        v-model="model">
+        <option v-for="option in options" :value="option" :key="option.id" >{{ option.name }} ({{ option.id }})</option>
+    </select>
 </template>
 
-<script setup lang="ts">
-import { emit } from 'process';
+<script setup lang="ts" generic="T extends SelectItem">
+import {type PropType } from 'vue';
+    
+    export type SelectItem = {
+        id: number, 
+        name: string,
+    }
+    const model = defineModel({type: Object as PropType<T>})
+    const props = defineProps<{
+        options: T[];
+        label: string,
+    }>();
 
-
-    const props = defineProps({
-        selectId: {
-            type: String,
-            required: true,
-        },
-        label: {
-            type: String,
-            required: false,
-        }
-    })
-
-    const emits = defineEmits(['selectChanged'])
 
 </script>
 

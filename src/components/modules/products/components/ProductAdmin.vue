@@ -6,18 +6,10 @@
             <section>
                 <div class="grid-item-xl">
                     <div class="form-floating mb-4">
-                        <select 
-                            name="editProduct" 
-                            id="editProduct"
-                            class="form-select" 
-                            aria-label="Select a product to edit" 
-                            @change="setSelectedProduct" 
-                            :value="productToEdit.id">
-                            <option value="" style="color: lightsalmon;">Create New Product</option>
-                            <option v-for="product of products" :value="product.id" :key="product.id" >{{ product.name }} ({{ product.id }})</option>
-                        </select>
+                        <ItemSelect :options="products" v-model="productToEdit" label="Product" :include-create="true"/>
                         <label for="editProduct">Select a product to edit</label>
                     </div>
+                    <button @click.prevent="createNewProduct">Create New Product</button>
                 </div>
                 <ProductAdminForm />
             </section>
@@ -38,31 +30,23 @@ import { useProductStore } from '../stores/product'
 import ProductAdminForm from './ProductAdminForm.vue'
 import ProductPhotoList from './photos/ProductPhotoList.vue'
 import ProductCard from './ProductCard.vue'
+import ItemSelect from '@/components/app/admin/ItemSelect.vue'
 import { storeToRefs } from 'pinia'
 
 const productStore = useProductStore()
 
 const { getFilteredProducts: products } = storeToRefs(productStore)
-const { getProductToEdit: productToEdit } = storeToRefs(productStore)
+const { productToEdit } = storeToRefs(useProductStore())
 onMounted(() => {
     if (!productStore.productList || productStore.productList.length === 0) {
         productStore.fetchSearchResults()
     }
 })
 
-function setSelectedProduct(event: Event) {
-    let product
-    let productId = (event.target as HTMLInputElement).value
-    if(!productId) {
-        productStore.setProductToEdit(null);
-    }
-    if(event && event.target && productId && productStore.getProductById) {
-        product = productStore.getProductById(Number(productId))
-    }
-    if(product) {
-        productStore.setProductToEdit(product)
-    }
+const createNewProduct = ()=>{
+    productStore.setProductToEdit(null)
 }
+
 </script>
 
 <style scoped>
