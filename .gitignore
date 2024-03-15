@@ -27,3 +27,5 @@ coverage
 *.sln
 *.sw?
 .firebase/*
+tsconfig.app.tsbuildinfo
+tsconfig.node.tsbuildinfo

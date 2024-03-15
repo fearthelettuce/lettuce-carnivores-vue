@@ -1,17 +1,16 @@
 {
+  "files": [],
   "references": [
     {
-      "path": "./tsconfig.app.json"
+      "path": "./tsconfig.node.json"
     },
     {
-      "path": "./tsconfig.vitest.json"
+      "path": "./tsconfig.app.json"
     }
   ],
   "compilerOptions": {
     "resolveJsonModule": true,
-    "module": "es2022",
-    "moduleResolution": "nodenext",
-    "esModuleInterop": true,
+    "module": "NodeNext",
     "ignoreDeprecations": "5.0",
     "baseUrl": "./",
     "paths": {

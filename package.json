@@ -6,11 +6,11 @@
   "scripts": {
     "dev": "vite",
     "start": "vite",
-    "build": "run-p type-check build-only",
+    "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "test:unit": "vitest",
     "build-only": "vite build",
-    "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
+    "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/"
   },
@@ -26,6 +26,7 @@
     "vue3-toastify": "^0.2.1"
   },
   "devDependencies": {
+    "@tsconfig/node18": "^18.2.2",
     "@types/bootstrap": "^5.2.10",
     "@types/jsdom": "^21.1.6",
     "@types/node": "^20.11.19",
@@ -33,7 +34,7 @@
     "@typescript-eslint/parser": "^7.0.1",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/eslint-config-prettier": "^9.0.0",
-    "@vue/eslint-config-typescript": "^12.0.0",
+    "@vue/eslint-config-typescript": "^13.0.0",
     "@vue/test-utils": "^2.4.4",
     "@vue/tsconfig": "^0.5.1",
     "autoprefixer": "^10.4.18",

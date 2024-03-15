@@ -4,8 +4,13 @@ export default {
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
+  prefix: "tw-",
+  important: true,
+  corePlugins: {
+      preflight: false,
+  },
   theme: {
     extend: {},
   },
   plugins: [],
-}
+}   
