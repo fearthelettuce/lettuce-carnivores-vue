@@ -4,11 +4,14 @@
         <!-- <div class="row justify-content-around d-flex flex-row"> -->
         <div class="admin-grid">
             <section>
-                <div class="grid-item-xl">
-                    <div class="form-floating mb-4">
-                        <ItemSelect :options="products" v-model="productToEdit" label="Product" :include-create="true"/>
-                        <label for="editProduct">Select a product to edit</label>
-                    </div>
+                <div class="max-w-sm mx-auto">
+                    <form class="tw-max-w-sm tw-mx-auto tw-mb-4">
+                        <ItemSelect :options="products" 
+                            v-model="productToEdit" 
+                            id="selectProduct" 
+                            label="Select a product to edit" 
+                            :includeCreate="true"/>
+                    </form>
                     <button @click.prevent="createNewProduct">Create New Product</button>
                 </div>
                 <ProductAdminForm />
