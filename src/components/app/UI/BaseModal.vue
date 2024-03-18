@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import { reactive, onMounted } from 'vue';
-import { Modal } from 'bootstrap'
+// import { Modal } from 'bootstrap' TODO: primevue replace modal
 
 
 const state = reactive({

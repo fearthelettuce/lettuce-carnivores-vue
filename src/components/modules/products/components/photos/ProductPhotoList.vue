@@ -32,7 +32,7 @@ import { toast } from 'vue3-toastify'
 import ProductPhotoItem from './ProductPhotoItem.vue';
 import PhotoUploadModal from './PhotoUploadModal.vue';
 import type {PhotoItem} from '@/components/modules/products/types//product'
-import { Modal } from 'bootstrap';
+// import { Modal } from 'bootstrap'; TODO: primevue replace modal
 
 const productStore = useProductStore()
 // const { getProductToEdit: product } = storeToRefs(productStore)

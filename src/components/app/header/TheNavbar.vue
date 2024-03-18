@@ -55,11 +55,11 @@
 
 
             <li class="nav-item" v-for="item of allowedNavLinks" :key="item.name">
-            <router-link
-                :to="item.path"
-                class="nav-link text-light"
-                @click="$emit('collapseNavbar')"
-            >{{ item.label }}</router-link>
+                <router-link
+                    :to="item.path"
+                    class="nav-link text-light"
+                    @click="$emit('collapseNavbar')"
+                >{{ item.label }}</router-link>
             </li>
             <li class="nav-item">
                 <router-link

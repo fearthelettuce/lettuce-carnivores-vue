@@ -30,7 +30,7 @@
 
 import MainNavbar from './MainNavbar.vue';
 import { useRoute } from 'vue-router';
-import { Collapse } from 'bootstrap';
+// import { Collapse } from 'bootstrap'; TODO: primevue replace modal
 const route = useRoute()
 
 function closeNavbar() {

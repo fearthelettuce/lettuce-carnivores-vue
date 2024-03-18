@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import { reactive, computed, onMounted } from 'vue';
 import type { PropType } from 'vue';
-import { Modal } from 'bootstrap'
+// import { Modal } from 'bootstrap' TODO: primevue replace modal
 import type { PhotoItem } from '@/components/modules/products/types/product';
 import {getPhotoUrl} from '@/composables/usePhotoUtils'
 
