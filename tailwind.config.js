@@ -3,9 +3,6 @@ export default {
   content: 
     ["./index.html", "./src/**/*.{js,ts,jsx,tsx,vue}",],
   theme: {
-    colors: {
-
-    },
     extend: {
       colors: {
         'primary-50': 'rgb(var(--primary-50))',
@@ -31,13 +28,15 @@ export default {
         'surface-800': 'rgb(var(--surface-800))',
         'surface-900': 'rgb(var(--surface-900))',
         'surface-950': 'rgb(var(--surface-950))',
-        'bone': 'rgb(var(--bone))'
+        'bone': 'rgb(var(--bone))',
+        'current-color': 'current-color',
+        'transparent': 'transparent',
+      },
+      fontFamily: {
+        'carter-one': ['"Carter One"', "sans-serif"]
       }
     },
   },
   plugins: [],
   darkMode: 'media',
-  safelist: [
-    'text-bone-100'
-  ]
 }   

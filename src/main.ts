@@ -5,15 +5,6 @@ const app = createApp(App)
 import { createPinia } from 'pinia'
 app.use(createPinia())
 
-import PrimeVue from 'primevue/config';
-import Lara from '@/lib/lara';
-app.use(PrimeVue, {
-  unstyled: true,
-  pt: Lara,
-  ripple: true,
-});
-app.directive('ripple', Ripple)
-
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
@@ -44,7 +35,6 @@ import { useUserStore } from './components/modules/auth/stores/users';
 const userStore = useUserStore()
 
 import { router } from './router'
-import Ripple from 'primevue/ripple'
 userStore.initializeAuthListener().then(() => {
     app.use(router).mount('#app')
 })

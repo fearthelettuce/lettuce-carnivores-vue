@@ -20,8 +20,8 @@
     "@fortawesome/free-regular-svg-icons": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/vue-fontawesome": "^3.0.6",
+    "flowbite": "^2.3.0",
     "pinia": "^2.1.7",
-    "primevue": "^3.50.0",
     "vue3-toastify": "^0.2.1"
   },
   "devDependencies": {
