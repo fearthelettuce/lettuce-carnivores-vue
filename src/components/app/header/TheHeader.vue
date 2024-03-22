@@ -1,6 +1,7 @@
 <template>
     <header v-if="!route.meta.hideHeader" class="navbar navbar-expand-lg my-1 sticky-top">
-            <nav class="container-fluid">
+        <TheNavbar />
+            <!-- <nav class="container-fluid">
                 <div class="navbar-brand">
                     <router-link to="/" class="logo-link">
                         <div class="logo">Danger Lettuce</div>
@@ -15,35 +16,36 @@
                     <span class="text-light">
                         <FontAwesome icon="fa-bars" />
                     </span>
-                </button>
+                </button> -->
                 
-                <div class="collapse navbar-collapse" id="navbarCollapsableContent">
-                    <MainNavbar
+                <!-- <div class="collapse navbar-collapse" id="navbarCollapsableContent">
+                    <TheNavbar
                     @collapseNavbar="closeNavbar"
                     />
-                </div>
-            </nav>
+                </div> 
+            </nav>-->
     </header>
 </template>
 
 <script setup lang="ts">
 
-import MainNavbar from './MainNavbar.vue';
+// import MainNavbar from './MainNavbar.vue';
+import TheNavbar from './TheNavbar.vue';
 import { useRoute } from 'vue-router';
 // import { Collapse } from 'bootstrap'; TODO: primevue replace modal
 const route = useRoute()
 
-function closeNavbar() {
-    const collapsableEle = document.getElementById('navbarCollapsableContent')
-    if(collapsableEle?.classList.contains('show')) {
-        const bsCollapse = new Collapse(collapsableEle)
-        bsCollapse.toggle()
-    }
-}
+// function closeNavbar() {
+//     const collapsableEle = document.getElementById('navbarCollapsableContent')
+//     if(collapsableEle?.classList.contains('show')) {
+//         const bsCollapse = new Collapse(collapsableEle)
+//         bsCollapse.toggle()
+//     }
+// }
 </script>
 
 <style scoped>
-    header {
+    /* header {
         padding: 0 clamp(.3rem, 5vw, 20rem);
         background: #383838
     }
@@ -55,5 +57,5 @@ function closeNavbar() {
     .logo-link {
         text-decoration: none;
         cursor: pointer;
-    }
+    } */
 </style>

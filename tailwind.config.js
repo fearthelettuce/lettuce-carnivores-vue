@@ -33,10 +33,12 @@ export default {
         'transparent': 'transparent',
       },
       fontFamily: {
+        sans: ['Graphik', 'sans-serif'],
+        serif: ['Merriweather', 'serif'],
         'carter-one': ['"Carter One"', "sans-serif"]
       }
     },
   },
-  plugins: [],
-  darkMode: 'media',
+  plugins: [require('flowbite/plugin')],
+  darkMode: 'class',
 }   

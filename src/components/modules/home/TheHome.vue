@@ -3,11 +3,11 @@
         <div class="hero-image" :style="{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(${theBackgroundImage})`}">
             <main class="hero-content">
                 <section class="hero-text">
-                    <h1 class="hero-name dark:text-primary">Danger Lettuce</h1>
-                    <h2 class="hero-subtitle text-white">Carnivorous Plants</h2>
+                    <h1 class="hero-name text-bone">Danger Lettuce</h1>
+                    <h2 class="hero-subtitle text-bone">Carnivorous Plants</h2>
                     <nav class="">
-                        <router-link to="products" class="hero-link">Shop</router-link>
-                        <router-link to="care" class="hero-link">Learn</router-link>
+                        <router-link to="products" class="hero-link text-primary-300">Shop</router-link>
+                        <router-link to="care" class="hero-link text-primary-300">Learn</router-link>
                         <!-- <router-link to="recommendations" class="hero-link">Recommend</router-link> -->
                     </nav>
                 </section>
@@ -25,9 +25,9 @@ const theBackgroundImage = computed(() => {
 })
 
 
+//TODO: https://www.w3schools.com/howto/howto_css_hero_image.asp
 
 </script>
-//TODO: https://www.w3schools.com/howto/howto_css_hero_image.asp
 <style scoped>
 .hero-container {
     height: 100dvh;

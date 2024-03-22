@@ -8,7 +8,7 @@
     >
         <div   
             class="modal-dialog modal-lg"
-            @closeModal="hideModal"
+            @closeModal="console.log('hideModal')"
         >
             <div class="modal-content">
                 <div class="modal-header border-0">
@@ -17,7 +17,7 @@
                     type="button" 
                     class="btn-close" 
                     aria-label="Close"
-                    @click="hideModal"
+                    @click="console.log('hideModal')"
                     ></button>
                     <slot name="close-action"></slot>
                 </div>
@@ -25,7 +25,7 @@
                     <slot name="body"></slot>
                 </div>
                 <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-secondary" @click="hideModal">Close</button>
+                    <button type="button" class="btn btn-secondary" @click="console.log('hideModal')">Close</button>
                     <slot name="modalAction"></slot>
 
                 </div>
@@ -39,9 +39,9 @@ import { reactive, onMounted } from 'vue';
 // import { Modal } from 'bootstrap' TODO: primevue replace modal
 
 
-const state = reactive({
-    modal: Modal || null,
-})
+// const state = reactive({
+//     modal: Modal || null,
+// })
 
 defineProps({
     modalAction: {
@@ -50,22 +50,22 @@ defineProps({
     }
 })
 
-defineExpose({
-    showModal,
-    hideModal
-})
+// defineExpose({
+//     showModal,
+//     hideModal
+// })
 
-onMounted(()=>{
-    state.modal = new Modal('#modal', {})
-})
+// onMounted(()=>{
+//     state.modal = new Modal('#modal', {})
+// })
 
-function showModal() {
-    state.modal.show()
-}
+// function showModal() {
+//     state.modal.show()
+// }
 
-function hideModal() {
-    state.modal.hide()
-}
+// function hideModal() {
+//     state.modal.hide()
+// }
 </script>
 
 <style scoped>

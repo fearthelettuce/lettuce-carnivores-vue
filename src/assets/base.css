@@ -3,13 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    font-family: "Arial", Arial, Helvitica, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    text-align: center;
-    margin: 0;
-}
-
 :root {
     --primary-50: 247 254 231;
     --primary-100: 236 252 203;

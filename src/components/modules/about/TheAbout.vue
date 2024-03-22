@@ -1,5 +1,8 @@
 <template>
     <div class="container mb-5">
+        <h1 class="text-3xl font-bold underline text-blue-50">
+    Hello world!
+  </h1>
         <h4>About Me</h4>
         <p>When I was a kid, my aunt brought me a venus flytrap from a trip to South Carolina.  I quickly proceeded to kill it, not knowing how to care for it, nor putting in the effort to learn.  However, this VFT did not die in vain.  It sparked an itch in me that I have spent a lifetime scratching.  I have seriously been growing carnivorous plants for about 14 years.</p>
         <p>In my day job, I work in Product Management, and I'm an aspiring software engineer.</p>
