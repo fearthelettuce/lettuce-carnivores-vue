@@ -7,7 +7,7 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   define: {
     __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'true',
-    __VUE_OPTIONS_API__: 'false',
+    __VUE_OPTIONS_API__: 'true',
   },
   plugins: [vue()],
   resolve: {
@@ -17,9 +17,7 @@ export default defineConfig({
   },
   css: {
     preprocessorOptions: {
-      scss: {
-        additionalData: '@import "@/assets/scss/_variables.scss";'
-      }
+      
     }
   }
 })

@@ -1,38 +1,40 @@
 module.exports = {
-    "env": {
-        "browser": true,
-        "node": true
+    env: {
+        'browser': true,
+        'node': true
     },
-    "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:vue/vue3-essential"
+    extends: [
+        'eslint:recommended',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:vue/vue3-essential'
     ],
-    "overrides": [
+    overrides: [
         {
-            "env": {
-                "node": true
+            'env': {
+                'node': true
             },
-            "files": [
-                ".eslintrc.{js,cjs}"
+            'files': [
+                '.eslintrc.{js,cjs}'
             ],
-            "parserOptions": {
-                "sourceType": "script"
+            'parserOptions': {
+                'sourceType': 'script'
             }
         }
     ],
-    "parserOptions": {
-        "ecmaVersion": "latest",
-        "parser": "@typescript-eslint/parser",
-        "sourceType": "module"
+    parserOptions: {
+        'ecmaVersion': 'latest',
+        'parser': '@typescript-eslint/parser',
+        'sourceType': 'module'
     },
-    "plugins": [
-        "@typescript-eslint",
-        "vue"
+    plugins: [
+        '@typescript-eslint',
+        'vue',
+        'prettier'
     ],
-    "rules": {
-        "@typescript-eslint/no-explicit-any": "off",
-        "no-unused-vars": "off",
-        "@typescript-eslint/no-unused-vars": "error"
+    rules: {
+        '@typescript-eslint/no-explicit-any': 'error',
+        'no-unused-vars': 'off',
+        '@typescript-eslint/no-unused-vars': 'error',
+        'vue/html-indent': ['error', 4]
     }
 }

@@ -6,8 +6,10 @@ import { createPinia } from 'pinia'
 app.use(createPinia())
 
 import PrimeVue from 'primevue/config';
+import Lara from '@/lib/lara';
 app.use(PrimeVue, {
-  unstyled: true
+  unstyled: true,
+  pt: Lara,
 });
 
 import { library } from '@fortawesome/fontawesome-svg-core';
