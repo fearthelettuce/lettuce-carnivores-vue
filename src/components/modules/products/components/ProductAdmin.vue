@@ -33,7 +33,7 @@ import { useProductStore } from '../stores/product'
 import ProductAdminForm from './ProductAdminForm.vue'
 import ProductPhotoList from './photos/ProductPhotoList.vue'
 import ProductCard from './ProductCard.vue'
-import ItemSelect from '@/components/app/admin/ItemSelect.vue'
+import ItemSelect from '@/components/app/UI/ItemSelect.vue'
 import { storeToRefs } from 'pinia'
 
 const productStore = useProductStore()
