@@ -17,5 +17,10 @@ a {
 li {
   list-style: none;
 }
+body {
+  @apply bg-stone-800 ;
+  padding: 0 clamp(.1dvw, 2.5dvw, 10dvw);
+  width: 100%;
+}
 
 </style>
