@@ -1,11 +1,11 @@
 <template>
-  <TheNavbar />
+  <TheHeader />
   <RouterView />
 </template>
 
 <script setup lang="ts">
   import { RouterView } from 'vue-router'
-  import TheNavbar from '@/components/app/header/TheNavbar.vue'
+  import TheHeader from './components/app/header/TheHeader.vue';
 </script>
 
 <style lang="scss">
@@ -18,8 +18,6 @@ li {
   list-style: none;
 }
 body {
-  @apply bg-stone-800 ;
-  padding: 0 clamp(.1dvw, 2.5dvw, 10dvw);
   width: 100%;
 }
 
