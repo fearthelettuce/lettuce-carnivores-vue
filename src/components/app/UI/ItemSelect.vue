@@ -2,7 +2,7 @@
     <select 
         :name="props.id" 
         :id="props.id"
-        class="" 
+        class="form-select"
         :aria-label="props.label"  
         v-model="model">
         <option v-for="option in options" :value="option" :key="option.id" >{{ option.name }} ({{ option.id }})</option>
