@@ -1,9 +1,7 @@
 <template>
-    <main>
-        <div class="container-fluid">
-            <slot></slot>
-        </div>
-        </main>
+    <div class="container">
+        <slot></slot>
+    </div>
 </template>
 
 <style scoped>
@@ -11,7 +9,7 @@
         padding: 0 clamp(.1dvw,2.5dvw, 10dvw);
         margin-top: 1.5rem;
     }
-    .container-fluid {
+    .container {
         padding: 0;
     }
 </style>
