@@ -1,6 +1,6 @@
 <template>
     <header class="photo-upload-header">
-        <button class="btn btn-primary" @click="showModal">Add Photos</button>
+        <button class="btn btn-primary" @click="console.log('showModal')">Add Photos</button>
     </header>
     <section v-if="product.photos && product.photos.length > 0">
         <ProductPhotoItem
@@ -18,37 +18,38 @@
         ref="photoUploadModal"
         storageFolder="plantPhotos"
         :photos="product.photos"
-        @closeModal="state.photoUploadModal.hide()"
         @updatePhotoData="appendPhotos"
     />
 </template>
 
 <script setup lang="ts">
 //TODO: add way to upload reference photos using props, different methods.  
-import { onMounted, reactive } from 'vue';
+import { ref, onMounted, reactive } from 'vue';
 import { useProductStore } from '../../stores/product';
 // import { storeToRefs } from 'pinia'
 import { toast } from 'vue3-toastify'
 import ProductPhotoItem from './ProductPhotoItem.vue';
 import PhotoUploadModal from './PhotoUploadModal.vue';
 import type {PhotoItem} from '@/components/modules/products/types//product'
+import BaseModal from '@/components/app/UI/BaseModal.vue';
 // import { Modal } from 'bootstrap'; TODO: primevue replace modal
 
 const productStore = useProductStore()
 // const { getProductToEdit: product } = storeToRefs(productStore)
 const props = defineProps(['product'])
 
-const state = reactive({
-    photoUploadModal: Modal || null,
-})
-onMounted(() => {
-    state.photoUploadModal = new Modal('#photoUploadModal', {})
-})
+// const photoUploadModalRef = ref<InstanceType<typeof PhotoUploadModal> | null>(null)
+// const state = reactive({
+//     photoUploadModal: Modal || null,
+// })
+// onMounted(() => {
+//     state.photoUploadModal = new Modal('#photoUploadModal', {})
+// })
 
-function showModal() {
-    state.photoUploadModal = new Modal('#photoUploadModal', {})
-    state.photoUploadModal.show()
-}
+// function showModal() {
+//     state.photoUploadModal = new Modal('#photoUploadModal', {})
+//     state.photoUploadModal.show()
+// }
 
 function appendPhotos(selectedPhotosArr:Array<PhotoItem>) {
     productStore.appendPhotoData(props.product, selectedPhotosArr)

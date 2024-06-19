@@ -62,7 +62,7 @@
             <template #body>
                 <div>Are you sure you want to delete this product?<br><br> {{ product.name }}({{ product.id }})</div>
             </template>
-            <template #modalAction>
+            <template #footer>
                 <button 
                 type="button" 
                 class="btn btn-danger"

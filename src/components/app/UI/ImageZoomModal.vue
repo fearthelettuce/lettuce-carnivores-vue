@@ -33,7 +33,7 @@ import type { PhotoItem } from '@/components/modules/products/types/product';
 import {getPhotoUrl} from '@/composables/usePhotoUtils'
 
 const state = reactive({
-    expandImage: Modal || null,
+    expandImage: null,
 })
 
 const props = defineProps({

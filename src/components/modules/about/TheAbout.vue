@@ -14,9 +14,18 @@
         <p>For questions, plesae contact me at dangerlettucecarnivores@gmail.com.</p>
         <a href="https://www.ebay.com/usr/dangerlettuce?_tab=1" target="_blank">See my feedback on eBay</a>
     </div>
+    <button @click="showModal">Modal</button>
+    <BaseModal modalId="poop" ref="plop">
+        <div name="header">Hi</div>
+    </BaseModal>
 
 </template>
 
-<scripit setup lang="ts">
-
-</scripit>
+<script setup lang="ts">
+import { ref } from 'vue';
+import BaseModal from '@/components/app/UI/BaseModal.vue';
+const plop = ref<InstanceType<typeof BaseModal> | null>(null)
+function showModal() {
+    plop.value?.showModal()
+}
+</script>

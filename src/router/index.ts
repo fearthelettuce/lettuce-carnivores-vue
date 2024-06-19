@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, type RouteLocationRaw } from 'vue-router'
+import { createRouter, createWebHistory, type RouteLocationRaw, type RouteComponet} from 'vue-router'
 import { useUserStore } from '@/components/modules/auth/stores/users'
 import HomeView from '@/views/HomeView.vue'
 import ProductsView from '@/views/ProductsView.vue'
@@ -16,15 +16,17 @@ export type NavItem = {
   path: RouteLocationRaw,
   name: String,
   label: String,
-  hasChildren: boolean,
+  component: RouteComponet,
+  hasChildren?: boolean,
   children?: Array<NavItem>,
-  props: true,
+  props?: true,
   icon?: String,
   meta?: {
       showInNav: boolean,
       requiresLogin: boolean,
       requiresAdmin: boolean,
       requiresFamily?: boolean,
+      hideHeader?: boolean,
   }
 }
 
@@ -51,14 +53,7 @@ const routeData: Array<NavItem> = [
         showInNav: true,
         requiresLogin: false,
         requiresAdmin: false,
-      },
-      // hasChildren: true,
-      // children: {
-      //   path: "/heliamphora",
-      //   label: "Heliamphora",
-      //   name: "heliamphora",
-        
-      // }
+      }
     },
     {
       path: "/products/:id",
