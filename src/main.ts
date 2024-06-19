@@ -23,9 +23,6 @@ app.use(Vue3Toastify, {
     theme: 'colored',
   } as ToastContainerOptions)
 
-import { plugin, defaultConfig } from '@formkit/vue'
-app.use(plugin, defaultConfig)
-
 import BaseModal from '@/components/app/UI/BaseModal.vue'
 import BaseSpinner from '@/components/app/UI/BaseSpinner.vue'
 import BaseContainer from './components/app/UI/BaseContainer.vue'
