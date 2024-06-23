@@ -14,19 +14,24 @@
                     <span>{{ state.product.clone }}</span>
                     <span>{{ state.product.size }}</span>
                 </div>
+                <div class="d-flex flex-row justify-content-around my-3">
+                    <button v-for="size in sizes" class="btn btn-dark text-body px-4">{{ size }}</button>
+                </div>
                 <div class="d-flex flex-row justify-content-around mt-3">
-                    {{ formattedPrice }}
+                    <div class="align-content-center">
+                        <h5 class="m-0">{{ formattedPrice }}</h5>
+                    </div>
                     <button 
-                    v-if="availableForSale" 
-                    class="btn btn-primary"
-                    @click="addToCart">
-                    Add to Cart
+                        v-if="availableForSale" 
+                        class="btn btn-primary"
+                        @click="addToCart">
+                        Add to Cart
                     </button>
                     <button 
-                    v-else
-                    class="btn btn-secondary"
-                    disabled>
-                    Out of Stock
+                        v-else
+                        class="btn btn-secondary"
+                        disabled>
+                        Out of Stock
                     </button>
                 </div>       
 
@@ -56,6 +61,9 @@ const state = reactive({
 onMounted(() => {
     fetchData()
 })
+
+const sizes = ['2.5"', '3"', '3.5"']
+const specimens = [1004, 1117, 1889]
 
 
 async function fetchData() {
