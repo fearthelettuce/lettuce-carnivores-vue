@@ -87,7 +87,7 @@ figure {
 @media (min-width: 60rem) {
     .photo-grid {
         grid-template-columns: 2fr 5fr;
-        grid-auto-rows: 29dvh;
+        grid-auto-rows: 28dvh;
     }
     .selected-image {
         grid-row: 1 / 4;
