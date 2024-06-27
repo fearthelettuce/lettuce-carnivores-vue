@@ -37,7 +37,7 @@
                     type="text" 
                     v-model.lazy="plant.acquisitionDate" 
                     placeholder="Acquisition Date">
-                <label for="propagaionDate">Acquisition Date</label>
+                <label for="acquisitionDate">Acquisition Date</label>
             </div>
             <div class="form-floating grid-item-xl grid-item-two-rows">
                 <textarea name="description" 
@@ -127,7 +127,7 @@ function updateGenus () {
 }
 
 function resetForm() {
-    plantStore.setplantToEdit(null)
+    plantStore.setPlantToEdit(null)
     state.isSaved = false
 }
 

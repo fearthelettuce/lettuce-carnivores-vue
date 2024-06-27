@@ -50,7 +50,7 @@ function closeNavbar() {
 <style scoped>
     nav {
         padding: 0 clamp(.3rem, 5vw, 20rem);
-        background: #383838
+        background:var(--bs-body-bg);
     }
     .logo{
         font-weight: bold;

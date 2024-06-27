@@ -10,11 +10,9 @@
                     <p class="text-center">{{ state.product.description }}</p>   
                 </div>
                 <div class="d-flex flex-row justify-content-around">
-                    <span>{{ state.product.propagationMethod }}</span>
-                    <span>{{ state.product.clone }}</span>
-                    <span>{{ state.product.size }}</span>
+                    <span>{{ state.product.clone }}</span>  
                 </div>
-                <div class="d-flex flex-row justify-content-around my-3">
+                <div class="size-select d-flex flex-row justify-content-evenly p-1 my-2 mx-4 rounded">
                     <button v-for="size in sizes" class="btn btn-dark text-body px-4">{{ size }}</button>
                 </div>
                 <div class="d-flex flex-row justify-content-around mt-3">
@@ -105,6 +103,11 @@ function addToCart() {
     .product-information {
         margin: 2rem 0;
     }
+
+    .size-select {
+        filter: brightness(110%);
+    }
+
 
     @media (min-width: 80rem) {
     .productDetailSection {
