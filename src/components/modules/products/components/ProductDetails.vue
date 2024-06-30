@@ -14,9 +14,7 @@
                     <span>{{ state.product.clone }}</span>
                     <span>{{ state.product.size }}</span>
                 </div>
-                <div class="d-flex flex-row justify-content-around my-3">
-                    <button v-for="size in sizes" class="btn btn-dark text-body px-4">{{ size }}</button>
-                </div>
+                <ProductDetailsForm :product="state.product"/>
                 <div class="d-flex flex-row justify-content-around mt-3">
                     <div class="align-content-center">
                         <h5 class="m-0">{{ formattedPrice }}</h5>
@@ -49,6 +47,7 @@ import { useRoute } from 'vue-router'
 import { useProductStore } from '../stores/product'
 import type {Product} from '@/components/modules/products/types/product'
 import ProductDetailsPhotoList from './ProductDetailsPhotoList.vue'
+import ProductDetailsForm from './ProductDetailsForm.vue'
 
 const route = useRoute()
 const productStore = useProductStore()
@@ -61,9 +60,6 @@ const state = reactive({
 onMounted(() => {
     fetchData()
 })
-
-const sizes = ['2.5"', '3"', '3.5"']
-const specimens = [1004, 1117, 1889]
 
 
 async function fetchData() {

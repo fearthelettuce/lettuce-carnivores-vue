@@ -4,8 +4,8 @@
         <!-- <div class="row justify-content-around d-flex flex-row"> -->
         <div class="admin-grid">
             <section>
-                <div class="grid-item-xl">
-                    <form class="form-floating mb-4">
+                <div class="grid-item-xl mb-3">
+                    <form class="mb-4">
                         <ItemSelect :options="products" 
                             v-model="productToEdit" 
                             id="selectProduct" 
