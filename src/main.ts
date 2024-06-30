@@ -30,6 +30,10 @@ app.component('BaseModal', BaseModal)
 app.component('BaseSpinner',BaseSpinner)
 app.component('BaseContainer', BaseContainer)
 
+import { plugin, defaultConfig } from '@formkit/vue'
+
+app.use(plugin, defaultConfig)
+
 import { useUserStore } from './components/modules/auth/stores/users';
 const userStore = useUserStore()
 
