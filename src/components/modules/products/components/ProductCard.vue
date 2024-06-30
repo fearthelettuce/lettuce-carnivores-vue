@@ -1,12 +1,12 @@
 <template>
     <article class="card">
-       <figure> 
+       <figure class="mb-2"> 
         <router-link :to="`/products/${product.id}`">
             <img :src="cardImageUrl" :class="cardImageUrl == placeholderUrl ? 'placeholderImage': 'cardImage'" :alt="`An image of ${product.name}`" />
         </router-link>
         </figure>
         <header class="card-title my-0 justify-content-center align-items-center">
-            <h5 class="text-primary text-center card-name m-0">{{ product.name }}</h5>
+            <h5 class="text-primary text-center align-content-center card-name m-0">{{ product.name }}</h5>
         </header>
         <footer class="card-footer d-flex flex-row">
             <div class="d-flex align-items-center text-primary">
@@ -65,7 +65,7 @@ img {
 .card {
     display: flex;
     flex-direction: column;
-    background-color: rgb(65, 65, 65);
+    filter: brightness(110%);   
     border-radius: 2em;
     overflow:hidden;
     margin: 1em;
@@ -76,11 +76,15 @@ img {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 1em;
+    margin: .5rem;
 }
 
 .card-name {
-    min-height: 2.5em;
+    line-height: 1.2em;
+    height: 3.8em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
 }
 
 .card-footer {

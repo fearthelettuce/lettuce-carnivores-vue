@@ -20,7 +20,7 @@
                 </span>
             </button>
             
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="collapse navbar-collapse" id="navbarCollapsableContent">
                 <MainNavbar
                 @collapseNavbar="closeNavbar"
                 />
@@ -38,6 +38,7 @@ import { Collapse } from 'bootstrap';
 const route = useRoute()
 
 function closeNavbar() {
+    console.log('hi')
     const collapsableEle = document.getElementById('navbarCollapsableContent')
     if(collapsableEle?.classList.contains('show')) {
         const bsCollapse = new Collapse(collapsableEle)
@@ -49,7 +50,7 @@ function closeNavbar() {
 <style scoped>
     nav {
         padding: 0 clamp(.3rem, 5vw, 20rem);
-        background: #383838
+        background:var(--bs-body-bg);
     }
     .logo{
         font-weight: bold;
