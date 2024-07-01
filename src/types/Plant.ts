@@ -8,24 +8,18 @@ export type PlantCategory = {
     id: number | undefined,
     plants?: Plant[],
     status: string,
-    referencePhotos?: PhotoItem,
+    referencePhotos?: PhotoItem[],
 }
 
 export type Plant = {
     id: number,
+    isRepresentative: boolean,
     size: Sizes,
     propagationDate?: Date,
     status: string,
     price: number
     quantity: number,
-}
-
-export type PlantGeneric = {
-    size: Sizes,
-    propagationDate: Date,
-    status: string,
-    price: number
-    quantity: number,
+    photos: PhotoItem[],
 }
 
 export enum Sizes {

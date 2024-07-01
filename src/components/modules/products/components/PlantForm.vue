@@ -1,9 +1,9 @@
 <template>
-    <div>
+    <form @submit.prevent>
         <FormKit 
             type="text"
             label="Name"
-            :value="newPlantInput.name" 
+            :value="plantFormInput.name" 
         />
         <FormKit 
             type="text"
@@ -23,17 +23,17 @@
             number
         />
 
-    </div>
+    </form>
     
-    <div>
+    <!-- <div>
         <ProductPhotoList />
-    </div>
+    </div> -->
 
 </template>
 
 <script setup lang="ts">
-import { ref, type PropType, type Ref } from 'vue';
-import { type PlantCategory } from 
+import { ref, type Ref } from 'vue';
+import { type PlantCategory } from '@/types/Plant'
 import ProductPhotoList from './photos/ProductPhotoList.vue';
 
 type PlantFormInput = {

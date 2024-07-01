@@ -11,6 +11,7 @@ const LoginView  = () => import('@/views/LoginView.vue')
 const ResetPasswordView  = () => import('@/views/ResetPasswordView.vue')
 const EasterEggView  = () => import('@/views/EasterEggView.vue')
 const AccountView = () => import('@/views/AccountView.vue')
+const PlantAdminView = () => import('@/views/PlantAdmin.vue')
 
 const routeData = [
     {
@@ -108,6 +109,17 @@ const routeData = [
       name: 'Admin',
       label: 'Admin',
       component: ProductAdminView,
+      meta: {
+        showInNav: true,
+        requiresLogin: true,
+        requiresAdmin: true,
+      }
+    },
+    {
+      path: "/newadmin",
+      name: 'NewAdmin',
+      label: 'New Admin',
+      component: PlantAdminView,
       meta: {
         showInNav: true,
         requiresLogin: true,
