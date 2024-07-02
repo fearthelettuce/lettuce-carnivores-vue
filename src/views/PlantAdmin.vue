@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="contain mx-5">
         <PlantForm />
     </div>
 

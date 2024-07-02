@@ -21,4 +21,23 @@ body {
   width: 100%;
 }
 
+.contain {
+    padding: 1rem clamp(.3rem, 5vw, 20rem);
+}
+.grid-col-2 {
+    grid-column: span 2;
+}
+.grid-col-3 {
+    grid-column: span 3;
+}
+.grid-col-4 {
+    grid-column: span 4;
+}
+.grid-col-5 {
+    grid-column: span 5;
+}
+.grid-col-10 {
+    grid-column: span 10;
+}
+
 </style>

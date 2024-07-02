@@ -1,8 +1,14 @@
 <template>
-    <form @submit.prevent>
+    <form @submit.prevent class="plant-admin-form">
+        <FormKit 
+            type="text"
+            label="ID"
+            number
+        />
         <FormKit 
             type="text"
             label="Name"
+            outer-class="grid-col-3"
             :value="plantFormInput.name" 
         />
         <FormKit 
@@ -13,15 +19,12 @@
             type="text"
             label="Clone"
         />
-        <FormKit 
+        <FormKit
             type="textarea"
             label="Description"
+            outer-class="grid-col-5"
         />
-        <FormKit 
-            type="text"
-            label="ID"
-            number
-        />
+        
 
     </form>
     
@@ -63,5 +66,12 @@ const { plantCategory } = defineProps<PlantCategory>()
 </script>
 
 <style scoped>
+
+.plant-admin-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    margin-bottom: 2rem;
+    gap: 0 2em;
+}
 
 </style>
