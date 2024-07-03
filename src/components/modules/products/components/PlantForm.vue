@@ -8,7 +8,7 @@
         <FormKit 
             type="text"
             label="Name"
-            outer-class="grid-col-3"
+            outer-class="grid-col-2"
             :value="plantFormInput.name" 
         />
         <FormKit 
@@ -25,7 +25,7 @@
             outer-class="grid-col-5"
         />
         
-
+        <button class="btn btn-primary" @click.prevent="savePlant">Save Plant</button>
     </form>
     
     <!-- <div>
@@ -62,6 +62,10 @@ const { plantCategory } = defineProps<PlantCategory>()
 //Clone
 //Description
 //Photos
+
+function savePlant() {
+    
+}
 
 </script>
 
