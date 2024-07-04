@@ -4,25 +4,34 @@
             type="text"
             label="ID"
             number
+            v-model="plantFormInput.id"
         />
         <FormKit 
             type="text"
             label="Name"
             outer-class="grid-col-2"
-            :value="plantFormInput.name" 
+            v-model="plantFormInput.name" 
         />
         <FormKit 
             type="text"
             label="Genus"
+            v-model="plantFormInput.genus" 
         />
         <FormKit
             type="text"
             label="Clone"
+            v-model="plantFormInput.clone" 
+        />
+        <FormKit
+            type="text"
+            label="Status"
+            v-model="plantFormInput.status" 
         />
         <FormKit
             type="textarea"
             label="Description"
             outer-class="grid-col-5"
+            v-model="plantFormInput.description" 
         />
         
         <button class="btn btn-primary" @click.prevent="savePlant">Save Plant</button>
@@ -38,24 +47,30 @@
 import { ref, type Ref } from 'vue';
 import { type PlantCategory } from '@/types/Plant'
 import ProductPhotoList from './photos/ProductPhotoList.vue';
+import { usePlantStore } from '../stores/plant';
+
+const store = usePlantStore()
 
 type PlantFormInput = {
+    id: number | undefined,
     name: string,
     genus: string,
     clone: string,
     description: string,
-    id: number | undefined
+    status: string,
 }
 
 const plantFormInput: Ref<PlantFormInput> = ref({
+    id: undefined,
     name: '',
     genus: '',
     clone: '',
     description: '',
-    id: undefined
+    status: '',
+    
 })
 
-const { plantCategory } = defineProps<PlantCategory>()
+// const { plantCategory } = defineProps<PlantCategory>()
 
 //Name
 //Genus
@@ -63,8 +78,9 @@ const { plantCategory } = defineProps<PlantCategory>()
 //Description
 //Photos
 
-function savePlant() {
-    
+async function savePlant() {
+    console.log(plantFormInput.value)
+    await store.saveCategory(plantFormInput.value)
 }
 
 </script>
