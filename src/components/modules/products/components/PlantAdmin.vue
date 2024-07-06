@@ -22,7 +22,7 @@
             <ProductCard
                 :name="plantCategoryToEdit.name"
                 :price=" 0" 
-                :photoUrl="undefined"
+                :photoUrl="plantCategoryToEdit.photos[0]?.path ?? undefined"
                 :link="`/plants/${plantCategoryToEdit.id}`"
             />
         </div>
@@ -61,6 +61,7 @@ const isExpanded = ref(true)
 function toggleExpand () {
     isExpanded.value = !isExpanded.value
 }
+
 </script>
 <style scoped>
     .layout {

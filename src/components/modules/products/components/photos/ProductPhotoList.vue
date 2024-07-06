@@ -2,7 +2,7 @@
     <header class="photo-upload-header">
         <button class="btn btn-primary" @click="showModal">Add Photos</button>
     </header>
-    <section v-if="product.photos && product.photos.length > 0">
+    <section v-if="product && product.photos && product.photos.length > 0">
         <ProductPhotoItem
             v-for="photo of product.photos"
             :photo="photo"
@@ -15,6 +15,7 @@
 
 
     <PhotoUploadModal
+        v-if="product"
         ref="photoUploadModal"
         storageFolder="plantPhotos"
         :photos="product.photos"
@@ -41,9 +42,9 @@ const props = defineProps(['product'])
 const state = reactive({
     photoUploadModal: Modal || null,
 })
-onMounted(() => {
-    state.photoUploadModal = new Modal('#photoUploadModal', {})
-})
+// onMounted(() => {
+//     state.photoUploadModal = new Modal('#photoUploadModal', {})
+// })
 
 function showModal() {
     state.photoUploadModal = new Modal('#photoUploadModal', {})

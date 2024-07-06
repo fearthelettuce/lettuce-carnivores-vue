@@ -50,7 +50,9 @@
             Save<span class="spinner-border" role="status" v-if="isSaving"></span>
         </button>
     </section>
-    
+
+    <!-- <PhotoManagementModal ref="plantCategoryPhotoModal" :data="plantCategoryToEdit"/> -->
+    <PhotoUploadModal :photos="plantCategoryToEdit.photos" storageFolder="plantCategories" ref="plantCategoryPhotoModal" @uploadSuccess="saveCategory(plantCategoryToEdit)"/>
     <BaseModal ref="confirmDeleteModalRef">
         <template #title>Are you sure?</template>
             <template #body>
@@ -66,14 +68,17 @@
                 </button>
             </template>
     </BaseModal>
+    
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { toast } from 'vue3-toastify'
-import { usePlantStore } from '../stores/plant';
+import { usePlantStore } from '../stores/plant'
 import { storeToRefs } from 'pinia';
-import BaseModal from '@/components/app/UI/BaseModal.vue';
+import PhotoManagementModal from './photos/PhotoManagementModal.vue'
+import BaseModal from '@/components/app/UI/BaseModal.vue'
+import PhotoUploadModal from './photos/PhotoUploadModal.vue';
 
 const {saveCategory, setCategoryToEdit, deleteCategoryById, genusList, statusList} = usePlantStore()
 const isSaving = ref(false);
@@ -87,10 +92,12 @@ async function savePlant() {
     toast.success('Saved')
     isSaving.value = false
 }
+const plantCategoryPhotoModal = ref()
 
 function addPhotos() {
-
+    plantCategoryPhotoModal.value.toggleModal()
 }
+
 
 const confirmDeleteModalRef = ref<InstanceType<typeof BaseModal> | null>(null)
 

@@ -17,7 +17,6 @@ type PhotoItem = {
     folder: string,
     originalFilename: string,
     path: string,
-    isReferencePhoto: boolean,
     date: Date,
 }
 
