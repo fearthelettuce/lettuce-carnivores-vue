@@ -44,7 +44,7 @@
             Reset Form
         </button>
         <button class="btn btn-info form-action" @click.prevent="addPhotos">
-            Add Photos
+            Photos
         </button>
         <button class="btn btn-primary form-action" @click.prevent="savePlant" :disabled="isSaving">
             Save<span class="spinner-border" role="status" v-if="isSaving"></span>
