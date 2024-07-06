@@ -5,7 +5,7 @@ export type PlantCategory = {
     genus: string,
     clone: string,
     description: string,
-    id: number | undefined,
+    id: string | number,
     plants?: Plant[],
     status: string,
     referencePhotos?: PhotoItem[],

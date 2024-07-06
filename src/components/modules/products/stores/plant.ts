@@ -6,26 +6,28 @@ import { saveItem, findAll, findByProperty, deleteItem, findDocById } from '@/ap
 export const usePlantStore = defineStore('plant', () => {
 
     const isLoading = ref(false)
+    const collectionName = 'plantCategories' as const
     const plantCategories: Ref<PlantCategory[]> = ref([])
     
     const newPlantCategory = {
+        id: '',
         name: '',
         genus: '',
         clone: '',
         description: '',
-        id: undefined,
         plants: [] as Plant[],
         status: '',
         referencePhotos: [] as PhotoItem[]
     }
 
-    const plantCategoryToEdit: Ref<PlantCategory | null> = ref(null)
+    const plantCategoryToEdit: Ref<PlantCategory> = ref({...newPlantCategory})
 
     const setCategoryToEdit = (plantCategory: PlantCategory | null) => {
         if(plantCategory) {
             plantCategoryToEdit.value = plantCategory
         } else { 
             plantCategoryToEdit.value = {...newPlantCategory};
+            plantCategoryToEdit.value.id = ''
         }
     }
 
@@ -33,7 +35,7 @@ export const usePlantStore = defineStore('plant', () => {
         if(plantCategoryToEdit === null) { return false}
         isLoading.value = true
         try {
-            return saveItem('plantCategories',plantCategory)
+            return saveItem(collectionName,plantCategory)
         } catch(e: any) {
             throw new Error(e.toString())
         } finally {
@@ -41,10 +43,11 @@ export const usePlantStore = defineStore('plant', () => {
         }
     }
 
-    const findCategoryById = async (id: number) => {
+    const findPlantCategoryById = async (id: number|string) => {
         isLoading.value = true
         try{
-            const res: unknown = findDocById('plantCategories', id)
+            const res: unknown = await findDocById(collectionName, id)
+            console.log(res)
             return res as unknown as PlantCategory
         } catch (e: any) {
             throw new Error(e.toString())
@@ -55,7 +58,11 @@ export const usePlantStore = defineStore('plant', () => {
     const fetchAllCategories = async () => {
         isLoading.value = true
         try{
-            return findAll('plantCategories')
+            const categories = await findAll(collectionName)
+            if(categories !== undefined && categories.length !== 0) {
+                plantCategories.value = categories as PlantCategory[]
+            }
+            
         } catch (e: any) {
             throw new Error(e.toString())
         } finally {
@@ -79,5 +86,5 @@ export const usePlantStore = defineStore('plant', () => {
 
     }
 
-    return { isLoading, plantCategories, plantCategoryToEdit, setCategoryToEdit, saveCategory, fetchAllCategories}
+    return { isLoading, plantCategories, newPlantCategory, plantCategoryToEdit, setCategoryToEdit, saveCategory, findPlantCategoryById, fetchAllCategories}
 })

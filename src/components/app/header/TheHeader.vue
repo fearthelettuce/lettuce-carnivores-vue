@@ -22,7 +22,7 @@
             
             <div class="collapse navbar-collapse" id="navbarCollapsableContent">
                 <MainNavbar
-                @collapseNavbar="closeNavbar"
+                    @collapseNavbar="closeNavbar"
                 />
             </div>
             
@@ -38,7 +38,6 @@ import { Collapse } from 'bootstrap';
 const route = useRoute()
 
 function closeNavbar() {
-    console.log('hi')
     const collapsableEle = document.getElementById('navbarCollapsableContent')
     if(collapsableEle?.classList.contains('show')) {
         const bsCollapse = new Collapse(collapsableEle)

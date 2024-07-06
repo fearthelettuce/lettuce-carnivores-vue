@@ -42,7 +42,6 @@ export async function saveItem(collectionName: string, obj: any) {
     } 
     try {
         const res = await setDoc(doc(db, collectionName, obj.id.toString()), { ...obj })
-        console.log(res)
         return { success: true, error: false, message: 'Saved successfully', errorDetails: null, documentDetails: obj}
     } catch (err) {
         console.log(err)

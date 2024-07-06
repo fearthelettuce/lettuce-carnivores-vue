@@ -116,9 +116,9 @@ const routeData = [
       }
     },
     {
-      path: "/newadmin",
-      name: 'NewAdmin',
-      label: 'New Admin',
+      path: "/plantadmin/:id?",
+      name: 'PlantAdmin',
+      label: 'Plant Admin',
       component: PlantAdminView,
       meta: {
         showInNav: true,
@@ -149,6 +149,7 @@ const routeData = [
       }
     }
 ]
+
 //Ignore ES Lint barfing an unused variable error, this line is specifically to exclude that variable from the exported object 
 export const navData = routeData.map(({ component, ...rest }) => rest) //eslint-disable-line @typescript-eslint/no-unused-vars
 export const router = createRouter({

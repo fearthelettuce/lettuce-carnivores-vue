@@ -17,7 +17,7 @@
 import {type PropType } from 'vue';
     
     export type SelectItem = {
-        id: number, 
+        id: string | number, 
         name: string,
     }
     const model = defineModel({type: Object as PropType<T>})
@@ -25,7 +25,7 @@ import {type PropType } from 'vue';
         options: T[],
         label: string,
         id: string,
-        includeCreate: boolean,
+        includeCreate?: boolean,
     }>();
 
 

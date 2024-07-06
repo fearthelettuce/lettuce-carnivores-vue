@@ -1,12 +1,12 @@
 <template>
     <div class="contain mx-5">
-        <PlantForm />
+        <PlantAdmin />
     </div>
-
+    
 
 
 </template>
 
 <script setup lang="ts">
-import PlantForm from '@/components/modules/products/components/PlantForm.vue';
+import PlantAdmin from '@/components/modules/products/components/PlantAdmin.vue';
 </script>
