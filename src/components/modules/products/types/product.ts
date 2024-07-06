@@ -13,7 +13,6 @@ interface Product {
 
 type PhotoItem = {
     name: string,
-    type: PhotoTypes | undefined,
     folder: string,
     originalFilename: string,
     path: string,

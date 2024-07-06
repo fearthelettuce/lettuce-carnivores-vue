@@ -51,8 +51,7 @@
         </button>
     </section>
 
-    <!-- <PhotoManagementModal ref="plantCategoryPhotoModal" :data="plantCategoryToEdit"/> -->
-    <PhotoUploadModal :photos="plantCategoryToEdit.photos" storageFolder="plantCategories" ref="plantCategoryPhotoModal" @uploadSuccess="saveCategory(plantCategoryToEdit)"/>
+    <PhotoUploadModal :photos="plantCategoryToEdit.photos" storageFolder="plantCategories" ref="plantCategoryPhotoModal" @triggerSave="saveCategory(plantCategoryToEdit)"/>
     <BaseModal ref="confirmDeleteModalRef">
         <template #title>Are you sure?</template>
             <template #body>
@@ -76,7 +75,6 @@ import { ref } from 'vue';
 import { toast } from 'vue3-toastify'
 import { usePlantStore } from '../stores/plant'
 import { storeToRefs } from 'pinia';
-import PhotoManagementModal from './photos/PhotoManagementModal.vue'
 import BaseModal from '@/components/app/UI/BaseModal.vue'
 import PhotoUploadModal from './photos/PhotoUploadModal.vue';
 
