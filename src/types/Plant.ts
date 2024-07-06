@@ -8,7 +8,7 @@ export type PlantCategory = {
     id: string | number,
     plants?: Plant[],
     status: string,
-    referencePhotos?: PhotoItem[],
+    photos: PhotoItem[],
 }
 
 export type Plant = {

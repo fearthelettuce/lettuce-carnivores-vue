@@ -1,5 +1,6 @@
 import type {Product, PhotoItem} from '@/components/modules/products/types/product'
 import type {Specimen} from '@/components/modules/products/types/plants.ts'
+import type { Plant, PlantCategory } from '@/types/Plant'
 import { deleteFile } from '@/apis/fileServices'
 
 export const placeholderUrl = 'https://cdn-icons-png.flaticon.com/512/1033/1033018.png'
@@ -12,22 +13,20 @@ export function getPhotoUrl(fileName: string | null | undefined) {
     return `${urlRoot}${encodedFileName}${urlSuffix}`
 }
 
-export async function appendPhotoDataUtil(product: Product | Specimen, photoArr: Array<PhotoItem>) {
-    if(!product || !photoArr) return
-    if(product.photos) {
-        product.photos = product.photos.concat(photoArr)
+export async function appendPhotoDataUtil(item: Product | Plant | Specimen | PlantCategory, photoArr: Array<PhotoItem>) {
+    if(!item || !photoArr) return
+    if(item.photos) {
+        item.photos = item.photos.concat(photoArr)
     } else {
-        product.photos = photoArr
+        item.photos = photoArr
     }
 }
 
-export async function removePhotoUtil(product: Product | Specimen, photoToRemove: PhotoItem) {
-    if(!product || !photoToRemove || !product.photos) return {success: false, error: true, message: 'Unable to find photo or product'}
-    const photoIndex = product.photos.findIndex((ele) => ele.path === photoToRemove.path)
-    console.log(photoIndex)
-    product.photos.splice(photoIndex, 1)
-    console.log(product.photos)
-    if(product.id) {
+export async function removePhotoUtil(item: Product | Plant | PlantCategory | Specimen, photoToRemove: PhotoItem) {
+    if(!item || !photoToRemove || !item.photos) return {success: false, error: true, message: 'Unable to find photo or product'}
+    const photoIndex = item.photos.findIndex((ele) => ele.path === photoToRemove.path)
+    item.photos.splice(photoIndex, 1)
+    if(item.id) {
         try {
             const res = await deleteFile(photoToRemove)
             return res

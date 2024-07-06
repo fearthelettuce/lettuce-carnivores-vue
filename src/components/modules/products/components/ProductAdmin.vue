@@ -17,7 +17,13 @@
                 <ProductAdminForm />
             </section>
 
-            <ProductCard :product="productToEdit" />
+            <ProductCard 
+                :name="productToEdit.name"
+                :price="productToEdit.price || 0" 
+                :photoUrl="productToEdit.photos[0]?.path || undefined" 
+                :link="`/products/${productToEdit.id}`" 
+                
+            />
         </div>
         <div class="grid-item-xl">
             <hr class="mt-5"/>

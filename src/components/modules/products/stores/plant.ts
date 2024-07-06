@@ -2,11 +2,15 @@ import { ref, type Ref } from "vue"
 import { defineStore } from "pinia"
 import { type PlantCategory,  type Plant} from "@/types/Plant"
 import { type PhotoItem } from "../types/product"
-import { saveItem, findAll, findByProperty, deleteItem, findDocById } from '@/apis/dataServices'
+import { saveItem, findAll, findByProperty, findDocById } from '@/apis/dataServices'
+import {deleteById, saveProductUtil} from '@/composables/useProductUtils'
+import {appendPhotoDataUtil, removePhotoUtil} from '@/composables/usePhotoUtils'
 export const usePlantStore = defineStore('plant', () => {
 
     const isLoading = ref(false)
     const collectionName = 'plantCategories' as const
+    const genusList = ['Heliamphora', 'Nepenthes', 'Cephalotus', 'Other']
+    const statusList = ['For Sale', 'Coming Soon', 'Archived', 'Hidden']
     const plantCategories: Ref<PlantCategory[]> = ref([])
     
     const newPlantCategory = {
@@ -17,7 +21,7 @@ export const usePlantStore = defineStore('plant', () => {
         description: '',
         plants: [] as Plant[],
         status: '',
-        referencePhotos: [] as PhotoItem[]
+        photos: [] as PhotoItem[]
     }
 
     const plantCategoryToEdit: Ref<PlantCategory> = ref({...newPlantCategory})
@@ -43,6 +47,15 @@ export const usePlantStore = defineStore('plant', () => {
         }
     }
 
+    const deleteCategoryById = async (id: number | string) => { 
+        //TODO add logic to check if any active plants
+        const res = deleteById(id, collectionName, plantCategories.value)
+        if (plantCategoryToEdit.value.id === id) {
+            setCategoryToEdit(null)
+        }
+        return res
+    }
+
     const findPlantCategoryById = async (id: number|string) => {
         isLoading.value = true
         try{
@@ -55,6 +68,7 @@ export const usePlantStore = defineStore('plant', () => {
             isLoading.value = false
         }
     }
+
     const fetchAllCategories = async () => {
         isLoading.value = true
         try{
@@ -70,21 +84,57 @@ export const usePlantStore = defineStore('plant', () => {
         }
     }
 
-    const fetchSearchResults = async () => {
-        isLoading.value = true
-        await fetchAllCategories()
-        await filterCategories()
-        isLoading.value = true
-    }
+    // const fetchSearchResults = async () => {
+    //     isLoading.value = true
+    //     await fetchAllCategories()
+    //     await filterCategories()
+    //     isLoading.value = true
+    // }
 
     const categoryFilters = ref({
         inStock: true,
-        genus: ['Heliamphora', 'Nepenthes', 'Cephalotus'],
+        genus: genusList,
+        status: statusList.filter(item => item !== 'Hidden')
     })
 
     async function filterCategories() {
 
     }
 
-    return { isLoading, plantCategories, newPlantCategory, plantCategoryToEdit, setCategoryToEdit, saveCategory, findPlantCategoryById, fetchAllCategories}
+
+
+
+
+
+     const appendPhotoData = async(plantCategory: PlantCategory, photoArr: Array<PhotoItem>) => {
+        const res = appendPhotoDataUtil(plantCategory, photoArr)
+        if (plantCategory.id) {
+            saveCategory(plantCategory)
+        }
+        return res
+    }
+    const removePhoto = async (plantCategory: PlantCategory, photoToRemove: PhotoItem) => {
+        const res = removePhotoUtil(plantCategory, photoToRemove)
+        if(plantCategory.id) {
+            saveCategory(plantCategory)
+        }
+        return res
+    }
+
+
+    return { 
+        isLoading,
+        genusList,
+        statusList,
+        plantCategories, 
+        newPlantCategory, 
+        plantCategoryToEdit, 
+        setCategoryToEdit, 
+        saveCategory, 
+        findPlantCategoryById, 
+        fetchAllCategories, 
+        deleteCategoryById,
+        appendPhotoData,
+        removePhoto,
+    }
 })

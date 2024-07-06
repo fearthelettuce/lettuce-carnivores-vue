@@ -1,6 +1,10 @@
 import { generateClasses } from '@formkit/themes'
+import { createAutoHeightTextareaPlugin } from '@formkit/addons'
 
-const config = {
+export default {
+  plugins: [
+    createAutoHeightTextareaPlugin(),
+  ],
   config: {
     classes: generateClasses({
       global: {
@@ -18,9 +22,8 @@ const config = {
       submit: {
         outer: '$reset mt-3',
         input: '$reset btn btn-primary'
-      }
+      },
     })
-  }
-}
+  },
 
-export default config
+}

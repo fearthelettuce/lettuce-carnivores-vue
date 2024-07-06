@@ -7,7 +7,7 @@ export type Plant = {
     classification?: "Species" | "Hybrid",
     clone?: string,
     source?: string,
-    photos?: Array<PhotoItem>,
+    photos: Array<PhotoItem>,
     acquisitionDate?: Date,
 
 }

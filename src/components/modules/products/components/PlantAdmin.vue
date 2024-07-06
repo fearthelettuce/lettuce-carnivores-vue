@@ -1,18 +1,31 @@
 <template>
-    <div>
-        
-        <ItemSelect :options="plantCategories" 
-            v-model="plantCategoryToEdit" 
-            id="selectProduct" 
-            label="Select a product to edit" 
-            :includeCreate="true"
-        />
-        <div class="mt-4">
-            <PlantForm />
+    <div class="layout"> 
+        <div>
+            <ItemSelect 
+                :options="plantCategories" 
+                v-model="plantCategoryToEdit" 
+                id="selectProduct" 
+                label="Select a product to edit" 
+                :includeCreate="true"
+            />
+            <div class="mt-4">
+                <Transition name="slide-up">
+                    <div v-if="isExpanded">
+                        <PlantForm />
+                    </div>
+                </Transition>
+                <button class="btn btn-secondary" @click="toggleExpand"> {{isExpanded ? 'Hide Form' : `Edit ${plantCategoryToEdit.name !== '' ? plantCategoryToEdit.name : 'Category'}`  }}</button>
+                
+            </div>
         </div>
-    </div>
-    <div>
-        <ProductCard :product="plantCategoryToEdit" />
+        <div>
+            <ProductCard
+                :name="plantCategoryToEdit.name"
+                :price=" 0" 
+                :photoUrl="undefined"
+                :link="`/plants/${plantCategoryToEdit.id}`"
+            />
+        </div>
     </div>
 </template>
 
@@ -42,4 +55,37 @@ onMounted(async () => {
     }
     
 })
+
+
+const isExpanded = ref(true)
+function toggleExpand () {
+    isExpanded.value = !isExpanded.value
+}
 </script>
+<style scoped>
+    .layout {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0 2rem;
+    }
+    .slide-up-enter-active,
+    .slide-up-leave-active {
+    transition: all 0.5s ease-out;
+    }
+
+    .slide-up-enter-from {
+    opacity: 0;
+    transform: translateY(30px);
+    }
+
+    .slide-up-leave-to {
+    opacity: 0;
+    transform: translateY(-30px);
+    }
+
+    @media(min-width: 62rem) {
+        .layout {
+            grid-template-columns: 2fr 1fr;
+        }
+    }
+</style>

@@ -13,8 +13,9 @@
             v-model="plantCategoryToEdit.name" 
         />
         <FormKit 
-            type="text"
+            type="select"
             label="Genus"
+            :options="genusList"
             v-model="plantCategoryToEdit.genus" 
         />
         <FormKit
@@ -23,74 +24,130 @@
             v-model="plantCategoryToEdit.clone" 
         />
         <FormKit
-            type="text"
+            type="select"
             label="Status"
+            :options="statusList"
             v-model="plantCategoryToEdit.status" 
         />
         <FormKit
             type="textarea"
             label="Description"
-            outer-class="grid-col-5"
+            outer-class="description"
             v-model="plantCategoryToEdit.description" 
         />
     </form>
     <section class="form-actions">
-        <button class="btn btn-danger form-action" @click.prevent="savePlant" :disabled="!plantCategoryToEdit.id">
+        <button class="btn btn-danger form-action" @click.prevent="confirmDelete" :disabled="!plantCategoryToEdit.id">
             Delete Plant<span class="spinner-border" role="status" v-if="isSaving"></span>
         </button>
         <button class="btn btn-secondary form-action" @click.prevent="setCategoryToEdit(null)">
             Reset Form
         </button>
-        <button class="btn btn-info form-action" @click.prevent="savePlant">
+        <button class="btn btn-info form-action" @click.prevent="addPhotos">
             Add Photos
         </button>
         <button class="btn btn-primary form-action" @click.prevent="savePlant" :disabled="isSaving">
-            Save Plant<span class="spinner-border" role="status" v-if="isSaving"></span>
+            Save<span class="spinner-border" role="status" v-if="isSaving"></span>
         </button>
     </section>
     
+    <BaseModal ref="confirmDeleteModalRef">
+        <template #title>Are you sure?</template>
+            <template #body>
+                <div>Are you sure you want to delete this product?<br><br> {{ plantCategoryToEdit.name }}({{ plantCategoryToEdit.id }})</div>
+            </template>
+            <template #modalAction>
+                <button 
+                type="button" 
+                class="btn btn-danger"
+                @click="deleteProduct"
+                >
+                Delete
+                </button>
+            </template>
+    </BaseModal>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { toast } from 'vue3-toastify'
 import { usePlantStore } from '../stores/plant';
 import { storeToRefs } from 'pinia';
+import BaseModal from '@/components/app/UI/BaseModal.vue';
 
-const {saveCategory, setCategoryToEdit} = usePlantStore()
+const {saveCategory, setCategoryToEdit, deleteCategoryById, genusList, statusList} = usePlantStore()
 const isSaving = ref(false);
 const {plantCategoryToEdit} = storeToRefs(usePlantStore())
 
 async function savePlant() {
-    if(!plantCategoryToEdit.value.id){return}
+    if(!plantCategoryToEdit.value.id) { return }
+
     isSaving.value = true
     await saveCategory(plantCategoryToEdit.value)
+    toast.success('Saved')
     isSaving.value = false
 }
 
+function addPhotos() {
 
+}
+
+const confirmDeleteModalRef = ref<InstanceType<typeof BaseModal> | null>(null)
+
+function confirmDelete() {
+    confirmDeleteModalRef.value?.showModal()
+}
+
+async function deleteProduct() {
+    if (plantCategoryToEdit.value.id) {
+        const res = await deleteCategoryById(plantCategoryToEdit.value.id).catch(err => console.error(err))
+        if (res && res.success) {
+            toast.success(res.message)
+            confirmDeleteModalRef.value?.hideModal()
+            setCategoryToEdit(null)
+        } else {
+            if(res && res.message) {
+                toast.error(res.message)
+            }
+        }
+    }
+}
 </script>
 
 <style scoped>
 
     .plant-admin-form {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+        grid-template-columns: 1fr 1fr 1fr;
         margin-bottom: 2rem;
         gap: 0 2em;
     }
     .form-action {
-        min-width: 12rem;
+        min-width: 7rem;
     }
     .form-actions {
         display: flex;
+        flex-wrap: wrap;
         flex-direction: row;
         justify-content: space-evenly;
         margin-bottom: 2rem;
-        gap: 0 2em;
+        gap: 1.5em 1.5em;
     }
     .spinner-border {
         height: 1rem;
         width: 1rem;
         margin-left: 1rem;
+    }
+    .description {
+        grid-column: span 8;
+    }
+    @media (min-width: 40rem) {
+        .plant-admin-form {
+            grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+        }
+        .form-actions {
+            flex-wrap: nowrap;
+        }
+
     }
 </style>

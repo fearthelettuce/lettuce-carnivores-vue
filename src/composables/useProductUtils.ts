@@ -3,7 +3,7 @@ import type { Product } from "@/components/modules/products/types/product"
 import { deleteAllPhotosUtil } from '@/composables/usePhotoUtils'
 import { saveItem, findAll, findByProperty, deleteItem, findDocById } from '@/apis/dataServices'
 
-export async function findProductById(id: number, collectionName: string) {
+export async function findProductById(id: number | string, collectionName: string) {
     const res = await findDocById(collectionName, id).catch(err => console.log(err))
     return res as Product
 }
@@ -32,7 +32,7 @@ export async function saveProductUtil(product: Product | Specimen, collectionNam
     }
 }
 
-export async function deleteById(id: number, collectionName: string, productList: Array<Product>) { 
+export async function deleteById(id: number | string, collectionName: string, collectionList: Array<any>) { 
     deleteAllPhotosUtil(await findProductById(id, collectionName))
     const res = await deleteItem(collectionName, id).catch(err => {
         console.log(err)
@@ -41,9 +41,9 @@ export async function deleteById(id: number, collectionName: string, productList
     if(res.error) {
         return { success: false, error: true, response: res.error, message: 'Unable to delete' }
     }
-    const productIndex = productList?.findIndex(item => item.id === id)
-    if (productList && productIndex && productIndex > -1) {
-        productList?.splice(productIndex, 1)
+    const productIndex = collectionList?.findIndex(item => item.id === id)
+    if (collectionList && productIndex && productIndex > -1) {
+        collectionList?.splice(productIndex, 1)
     }
 
     return { success: true, error: false, response: res, message: 'Deleted' }
