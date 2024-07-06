@@ -13,11 +13,14 @@ export type PlantCategory = {
 
 export type Plant = {
     id: number,
+    sku?: string,
     isRepresentative: boolean,
     size: Sizes,
     propagationDate?: Date,
     status: string,
-    price: number
+    price: number,
+    discountedPrice?: number,
+    isDiscounted: boolean,
     quantity: number,
     photos: PhotoItem[],
 }
