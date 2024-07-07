@@ -81,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, type PropType, type Ref} from 'vue';
+import { ref, onMounted, type PropType, type Ref} from 'vue';
 import { uploadFile } from '@/apis/fileServices';
 import type {PhotoItem} from '@/components/modules/products/types/product'
 import { toast } from 'vue3-toastify'

@@ -44,7 +44,7 @@
             Reset Form
         </button>
         <button class="btn btn-info form-action" @click.prevent="addPhotos">
-            Photos
+            Photos <span>({{ plantCategoryToEdit.photos.length }})</span>
         </button>
         <button class="btn btn-primary form-action" @click.prevent="saveCategory(plantCategoryToEdit)" :disabled="isSaving">
             Save<span class="spinner-border" role="status" v-if="isSaving"></span>

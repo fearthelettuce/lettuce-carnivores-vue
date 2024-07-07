@@ -44,6 +44,9 @@ export const usePlantStore = defineStore('plant', () => {
             throw new Error(e.toString())
         } finally {
             isSaving.value = false
+            if(!plantCategories.value.some(plant => plantCategory.id === plant.id)) {
+                plantCategories.value.push(plantCategory)
+            }
         }
     }
 
@@ -103,20 +106,42 @@ export const usePlantStore = defineStore('plant', () => {
 
 
     const addPlant = (plantCategory: PlantCategory) => {
-        plantCategory?.plants.push({
-            id: '',
-            sku: '',
-            isRepresentative: false,
-            size: undefined,
-            propagationDate: new Date(),
-            status: 'Coming Soon',
-            price: 0,
-            discountedPrice: 0,
-            isDiscounted: false,
-            quantity: 1,
-            photos: [],
-
-        })
+        if(plantCategory.plants.length === 0) {
+            plantCategory?.plants.push({
+                id: '',
+                sku: '',
+                isRepresentative: false,
+                size: undefined,
+                propagationDate: new Date(),
+                status: 'Coming Soon',
+                price: 0,
+                discountedPrice: 0,
+                isDiscounted: false,
+                quantity: 1,
+                photos: [],
+    
+            })
+        } else {
+            const lastPlant = plantCategory.plants[plantCategory.plants.length - 1]
+            console.log('hi')
+            const nextId = lastPlant.id !== '' ? parseInt(lastPlant.id.toString()) + 1 : ''
+            console.log(nextId)
+            plantCategory?.plants.push({
+                id: nextId,
+                sku: '',
+                isRepresentative: lastPlant.isRepresentative,
+                size: undefined,
+                propagationDate: new Date(),
+                status: 'Coming Soon',
+                price: lastPlant.price,
+                discountedPrice: lastPlant.discountedPrice,
+                isDiscounted: lastPlant.isDiscounted,
+                quantity: 1,
+                photos: [],
+    
+            })
+        }
+        
     }
 
 

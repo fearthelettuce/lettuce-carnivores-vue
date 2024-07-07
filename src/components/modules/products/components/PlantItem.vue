@@ -3,15 +3,15 @@
     <form class="plant-item-form">
         <FormKit 
             type="text"
-            label="SKU"
-            class="grid-col-1"
-            v-model="plant.sku"
-        />
-        <FormKit 
-            type="text"
             label="ID"
             class="grid-col-1"
             v-model="plant.id"
+        />
+        <FormKit 
+            type="text"
+            label="SKU"
+            class="grid-col-1"
+            v-model="plant.sku"
         />
         <FormKit 
             type="select"
@@ -62,7 +62,7 @@
             v-model="plant.isDiscounted"
         />
         <div class="center-content">
-            <button class="btn btn-info" @click.prevent="addPhotos">Photos</button>
+            <button class="btn btn-info" @click.prevent="addPhotos">Photos <span>({{ plant.photos.length }})</span></button>
         </div>
         
     </form>
