@@ -28,7 +28,7 @@ import { computed } from 'vue'
 import {getPhotoUrl, placeholderUrl} from '@/composables/usePhotoUtils'
 const props = defineProps<{
     name: string,
-    price: number,
+    price: number | string,
     link: string,
     photoUrl: string | undefined | null,
 }>()
@@ -36,12 +36,18 @@ const cardImageUrl = computed(() => {
     return getPhotoUrl(props.photoUrl ?? null)
 })
 const formattedPrice = computed(() => {
-    return props.price > 0 ? USDollar.format(props.price) : '-'
+    if(typeof props.price === 'number') {
+        return props.price > 0 ? USDollar.format(props.price) : '-'
+    } else {
+        return props.price || '-'
+    }
+    
 })
 //TODO: Move USDollar to composables
 const USDollar = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
+    minimumFractionDigits: 0, 
 });
 
 </script>

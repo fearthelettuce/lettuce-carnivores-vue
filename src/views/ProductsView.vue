@@ -1,7 +1,13 @@
 <template>
-<ProductsList />
+    <div class="contain">
+        <ProductFilters />
+        <PlantList />
+    </div>
 </template>
 
 <script setup lang="ts">
-import ProductsList from '@/components/modules/products/components/ProductsList.vue'
+
+import PlantList from '@/components/modules/products/components/PlantList.vue';
+import ProductFilters from '@/components/modules/products/components/ProductFilters.vue';
+
 </script>

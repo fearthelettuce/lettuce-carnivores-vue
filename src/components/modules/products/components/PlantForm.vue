@@ -51,7 +51,6 @@
         </button>
     </section>
 
-    <!-- <PhotoUploadModal :photos="photoModalArr" :storageFolder="photoModalFolder" ref="photoModal" @triggerSave="saveCategory(plantCategoryToEdit)"/> -->
     <BaseModal ref="confirmDeleteModalRef">
         <template #title>Are you sure?</template>
             <template #body>
@@ -77,19 +76,8 @@ import { usePlantStore } from '../stores/plant'
 import { storeToRefs } from 'pinia';
 import BaseModal from '@/components/app/UI/BaseModal.vue'
 
-
 const {saveCategory, setCategoryToEdit, deleteCategoryById, genusList, statusList} = usePlantStore()
-
 const {plantCategoryToEdit, isSaving} = storeToRefs(usePlantStore())
-
-// const photoModal = ref()
-// const photoModalFolder = ref()
-// const photoModalArr = ref()
-// function managePhotos(folder: string, arr: PhotoItem[]) {
-//     photoModalFolder.value = folder
-//     photoModalArr.value = arr
-//     photoModal.value.toggleModal()
-// }
 
 
 const confirmDeleteModalRef = ref<InstanceType<typeof BaseModal> | null>(null)
@@ -116,10 +104,11 @@ async function deleteProduct() {
 
 const managePhotos = inject<Function>('managePhotos')
 
-    function addPhotos() {
-        if(managePhotos === undefined) { return }
-        managePhotos('plantCategories', plantCategoryToEdit.value.photos)
-    }
+function addPhotos() {
+    if(managePhotos === undefined) { return }
+    managePhotos('plantCategories', plantCategoryToEdit.value.photos)
+}
+
 
 </script>
 

@@ -71,7 +71,11 @@
                             multiple>
                             <div v-if="selectedFiles.length !== 0" class="d-inline-block mx-3 text-light">{{ selectedFiles.length }} files selected</div>
                         </div>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="uploadFiles">Upload</button>
+                    <div>
+                        <button type="button" class="btn btn-secondary me-4" @click="toggleModal" data-bs-dismiss="modal":disabled="selectedFiles.length !== 0">Close</button>    
+                        <button type="button" class="btn btn-primary" @click="uploadFiles" :disabled="selectedFiles.length === 0">Upload</button>
+                    </div>
+
                 </footer>
                 
             
