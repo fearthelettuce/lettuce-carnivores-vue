@@ -39,3 +39,11 @@ onMounted(() => {
   });
 });
 </script>
+
+<style scoped>
+
+dialog::backdrop {
+  background-color: rgba(0,0,0,.5);
+}
+
+</style>

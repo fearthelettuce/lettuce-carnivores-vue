@@ -1,5 +1,6 @@
 <template>
-    <BaseDialog :open="open" :inline="false" class="bg-dark border-0 rounded p-0">
+
+    <BaseDialog :open="open" class="bg-dark border-0 rounded p-0">
         <div class="photo-modal p-3">
             <header class="mb-2 border-0">
                 <h5 class="modal-title text-light">Manage Photos</h5>
@@ -214,7 +215,6 @@ footer {
 
 .photo-modal {
     min-width: 40rem;
-    
     overflow: none;
 }
 .modal-header {
@@ -234,7 +234,8 @@ footer {
     grid-template-columns: 1fr 4fr 4fr 1fr;
     gap: 1rem 0;
     max-height: 75dvh;
-    overflow-y: scroll;
+    overflow-y:auto;
+    min-height: 20rem;
 }
 
 .move-arrow {
