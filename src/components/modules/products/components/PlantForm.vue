@@ -46,12 +46,12 @@
         <button class="btn btn-info form-action" @click.prevent="addPhotos">
             Photos
         </button>
-        <button class="btn btn-primary form-action" @click.prevent="savePlant" :disabled="isSaving">
+        <button class="btn btn-primary form-action" @click.prevent="saveCategory(plantCategoryToEdit)" :disabled="isSaving">
             Save<span class="spinner-border" role="status" v-if="isSaving"></span>
         </button>
     </section>
 
-    <PhotoUploadModal :photos="plantCategoryToEdit.photos" storageFolder="plantCategories" ref="plantCategoryPhotoModal" @triggerSave="saveCategory(plantCategoryToEdit)"/>
+    <!-- <PhotoUploadModal :photos="photoModalArr" :storageFolder="photoModalFolder" ref="photoModal" @triggerSave="saveCategory(plantCategoryToEdit)"/> -->
     <BaseModal ref="confirmDeleteModalRef">
         <template #title>Are you sure?</template>
             <template #body>
@@ -71,30 +71,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import { toast } from 'vue3-toastify'
 import { usePlantStore } from '../stores/plant'
 import { storeToRefs } from 'pinia';
 import BaseModal from '@/components/app/UI/BaseModal.vue'
-import PhotoUploadModal from './photos/PhotoUploadModal.vue';
+
 
 const {saveCategory, setCategoryToEdit, deleteCategoryById, genusList, statusList} = usePlantStore()
-const isSaving = ref(false);
-const {plantCategoryToEdit} = storeToRefs(usePlantStore())
 
-async function savePlant() {
-    if(!plantCategoryToEdit.value.id) { return }
+const {plantCategoryToEdit, isSaving} = storeToRefs(usePlantStore())
 
-    isSaving.value = true
-    await saveCategory(plantCategoryToEdit.value)
-    toast.success('Saved')
-    isSaving.value = false
-}
-const plantCategoryPhotoModal = ref()
-
-function addPhotos() {
-    plantCategoryPhotoModal.value.toggleModal()
-}
+// const photoModal = ref()
+// const photoModalFolder = ref()
+// const photoModalArr = ref()
+// function managePhotos(folder: string, arr: PhotoItem[]) {
+//     photoModalFolder.value = folder
+//     photoModalArr.value = arr
+//     photoModal.value.toggleModal()
+// }
 
 
 const confirmDeleteModalRef = ref<InstanceType<typeof BaseModal> | null>(null)
@@ -117,6 +112,15 @@ async function deleteProduct() {
         }
     }
 }
+
+
+const managePhotos = inject<Function>('managePhotos')
+
+    function addPhotos() {
+        if(managePhotos === undefined) { return }
+        managePhotos('plantCategories', plantCategoryToEdit.value.photos)
+    }
+
 </script>
 
 <style scoped>

@@ -1,5 +1,6 @@
 <template>
-    <Form>
+    <hr />
+    <form class="plant-item-form">
         <FormKit 
             type="text"
             label="SKU"
@@ -14,7 +15,7 @@
         />
         <FormKit 
             type="select"
-            label="SKU"
+            label="Size"
             class="grid-col-1"
             :options="Sizes"
             v-model="plant.size"
@@ -22,22 +23,16 @@
         <FormKit 
             type="text"
             number
-            label="Regular Price"
+            label="Price"
             class="grid-col-1"
             v-model="plant.price"
         />
         <FormKit 
             type="text"
             number
-            label="Discounted Price"
+            label="Discount Price"
             class="grid-col-1"
             v-model="plant.discountedPrice"
-        />
-        <FormKit 
-            type="checkbox"
-            label="Discounted?"
-            class="grid-col-1"
-            v-model="plant.isDiscounted"
         />
         <FormKit 
             type="text"
@@ -59,22 +54,61 @@
             class="grid-col-1"
             v-model="plant.propagationDate"
         />
-        <button class="btn btn-primary" @click.prevent="managePhotos">Photos</button>
-    </Form>
+        <FormKit 
+            type="checkbox"
+            label="Discounted?"
+            class="grid-col-1"
+            outer-class="align-content-center"
+            v-model="plant.isDiscounted"
+        />
+        <div class="center-content">
+            <button class="btn btn-info" @click.prevent="addPhotos">Photos</button>
+        </div>
+        
+    </form>
 </template>
 
 <script setup lang="ts">
-import { type PropType } from 'vue'
+import { inject, type PropType } from 'vue'
 import { type Plant } from '@/types/Plant';
 import { Sizes } from '@/types/Plant';
 
-
+    defineEmits(['triggerSave'])
     const plant = defineModel('plant', {type: Object as PropType<Plant>, required: true})
     const plantStatuses = ['Available', 'Growing', 'Sold', 'Archived']
 
-    function managePhotos() {
-        console.log(plant.value)
+    const managePhotos = inject<Function>('managePhotos')
+
+    function addPhotos() {
+        if(managePhotos === undefined) { return }
+        managePhotos('plants', plant.value.photos)
     }
-    // Add Photo
 
 </script>
+
+<style scoped>
+
+    .plant-item-form {
+        margin: 2rem 0;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: .5rem;
+    }
+    .center-content {
+        justify-self: center;
+        align-content: center;
+    }
+
+    
+    @media(min-width: 45rem) {
+        .plant-item-form {
+            grid-template-columns: repeat(6, 1fr);
+        }
+    }
+    @media(min-width: 120rem) {
+        .plant-item-form {
+            grid-template-columns: repeat(10, 1fr);
+        }
+    }
+
+</style>

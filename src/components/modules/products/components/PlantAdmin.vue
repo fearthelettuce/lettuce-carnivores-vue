@@ -17,6 +17,13 @@
                 <button class="btn btn-secondary" @click="toggleExpand"> {{isExpanded ? 'Hide Form' : `Edit ${plantCategoryToEdit.name !== '' ? plantCategoryToEdit.name : 'Category'}`  }}</button>
                 
             </div>
+            <div class="plant-list mt-5">
+                <PlantItem v-for="(plant, index) in plantCategoryToEdit.plants" :key="index" :plant @triggerSave="saveCategory(plantCategoryToEdit)"/>
+                <div class="mt-5">
+                    <button class="btn btn-primary" @click.prevent="addPlant(plantCategoryToEdit)">Add Plant Item</button>
+                    <button class="btn btn-primary ms-4" @click.prevent="saveCategory(plantCategoryToEdit)">Save <span class="spinner-border" role="status" v-if="isSaving"></span></button>
+                </div>
+            </div>
         </div>
         <div>
             <ProductCard
@@ -27,19 +34,26 @@
             />
         </div>
     </div>
+
+    <PhotoUploadModal :photos="photoModalArr" :storageFolder="photoModalFolder" ref="photoModal" @triggerSave="saveCategory(plantCategoryToEdit)"/>
+
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, provide } from 'vue';
+import { toast } from 'vue3-toastify'
 import ProductCard from './ProductCard.vue';
 import PlantForm from './PlantForm.vue';
 import ItemSelect from '@/components/app/UI/ItemSelect.vue';
+import PlantItem from './PlantItem.vue';
 import { usePlantStore } from '../stores/plant';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router'
+import PhotoUploadModal from './photos/PhotoUploadModal.vue';
+import { type PhotoItem } from '../types/product';
 
-const {fetchAllCategories, findPlantCategoryById, setCategoryToEdit} = usePlantStore()
-const {plantCategories, plantCategoryToEdit} = storeToRefs(usePlantStore())
+const {fetchAllCategories, findPlantCategoryById, setCategoryToEdit, saveCategory, addPlant,} = usePlantStore()
+const {plantCategories, plantCategoryToEdit, isSaving} = storeToRefs(usePlantStore())
 const route = useRoute()
 
 onMounted(async () => {
@@ -53,14 +67,22 @@ onMounted(async () => {
     } else {
         setCategoryToEdit(null)
     }
-    
 })
-
 
 const isExpanded = ref(true)
 function toggleExpand () {
     isExpanded.value = !isExpanded.value
 }
+
+const photoModal = ref()
+const photoModalFolder = ref()
+const photoModalArr = ref()
+function managePhotos(folder: string, arr: PhotoItem[]) {
+    photoModalFolder.value = folder
+    photoModalArr.value = arr
+    photoModal.value.toggleModal()
+}
+provide('managePhotos', managePhotos)
 
 </script>
 <style scoped>
@@ -83,10 +105,14 @@ function toggleExpand () {
     opacity: 0;
     transform: translateY(-30px);
     }
-
+    .spinner-border {
+        height: 1rem;
+        width: 1rem;
+        margin-left: 1rem;
+    }
     @media(min-width: 62rem) {
         .layout {
-            grid-template-columns: 2fr 1fr;
+            grid-template-columns: 3fr 1fr;
         }
     }
 </style>

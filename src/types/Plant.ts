@@ -6,16 +6,16 @@ export type PlantCategory = {
     clone: string,
     description: string,
     id: string | number,
-    plants?: Plant[],
+    plants: Plant[],
     status: string,
     photos: PhotoItem[],
 }
 
 export type Plant = {
-    id: number,
-    sku?: string,
+    id: number | string,
+    sku: string,
     isRepresentative: boolean,
-    size: Sizes,
+    size: Sizes | undefined,
     propagationDate?: Date,
     status: string,
     price: number,

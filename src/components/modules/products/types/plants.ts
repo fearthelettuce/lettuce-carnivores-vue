@@ -1,16 +1,17 @@
 import type {Product, PhotoItem} from './product'
 
-export type Plant = {
-    id: number,
-    name: string,
-    genus?: string,
-    classification?: "Species" | "Hybrid",
-    clone?: string,
-    source?: string,
-    photos: Array<PhotoItem>,
-    acquisitionDate?: Date,
+// export type Plant = {
+//     id: number | string,
+//     sku: string,
+//     name: string,
+//     genus?: string,
+//     classification?: "Species" | "Hybrid",
+//     clone?: string,
+//     source?: string,
+//     photos: Array<PhotoItem>,
+//     acquisitionDate?: Date,
 
-}
+// }
 
 export interface Specimen extends Product {
     productId: number,

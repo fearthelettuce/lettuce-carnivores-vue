@@ -34,16 +34,16 @@ export const usePlantStore = defineStore('plant', () => {
             plantCategoryToEdit.value.id = ''
         }
     }
-
+    const isSaving = ref(false)
     const saveCategory = async (plantCategory: PlantCategory) => {
         if(plantCategoryToEdit === null) { return false}
-        isLoading.value = true
+        isSaving.value = true
         try {
             return saveItem(collectionName,plantCategory)
         } catch(e: any) {
             throw new Error(e.toString())
         } finally {
-            isLoading.value = false
+            isSaving.value = false
         }
     }
 
@@ -102,6 +102,23 @@ export const usePlantStore = defineStore('plant', () => {
     }
 
 
+    const addPlant = (plantCategory: PlantCategory) => {
+        plantCategory?.plants.push({
+            id: '',
+            sku: '',
+            isRepresentative: false,
+            size: undefined,
+            propagationDate: new Date(),
+            status: 'Coming Soon',
+            price: 0,
+            discountedPrice: 0,
+            isDiscounted: false,
+            quantity: 1,
+            photos: [],
+
+        })
+    }
+
 
 
 
@@ -127,10 +144,12 @@ export const usePlantStore = defineStore('plant', () => {
         genusList,
         statusList,
         plantCategories, 
-        newPlantCategory, 
-        plantCategoryToEdit, 
-        setCategoryToEdit, 
-        saveCategory, 
+        newPlantCategory,
+        plantCategoryToEdit,
+        setCategoryToEdit,
+        saveCategory,
+        isSaving,
+        addPlant,
         findPlantCategoryById, 
         fetchAllCategories, 
         deleteCategoryById,

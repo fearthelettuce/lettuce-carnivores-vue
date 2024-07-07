@@ -16,8 +16,10 @@ export default {
       form: {
         form: "col-md-4 col-lg-3 mt-5 mx-auto p-5 border rounded"
       },
-      range: {
-        input: '$reset form-range',
+      checkbox: {
+        outer: 'form-check',
+        label: 'form-check-label',
+        input: '$reset form-check-input',
       },
       submit: {
         outer: '$reset mt-3',
