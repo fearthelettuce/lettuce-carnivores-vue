@@ -5,6 +5,7 @@ import { type PhotoItem } from "../types/product"
 import { saveItem, findAll, findByProperty, findDocById } from '@/apis/dataServices'
 import {deleteById, saveProductUtil} from '@/composables/useProductUtils'
 import {appendPhotoDataUtil, removePhotoUtil} from '@/composables/usePhotoUtils'
+import { toast } from 'vue3-toastify'
 export const usePlantStore = defineStore('plant', () => {
 
     const isLoading = ref(false)
@@ -35,12 +36,14 @@ export const usePlantStore = defineStore('plant', () => {
             plantCategoryToEdit.value.id = ''
         }
     }
-    const isSaving = ref(false)
+    const isSaving: Ref<boolean> = ref(false)
     const saveCategory = async (plantCategory: PlantCategory) => {
         if(plantCategoryToEdit === null) { return false}
         isSaving.value = true
+        console.log(isSaving.value)
         try {
-            return saveItem(collectionName,plantCategory)
+            await saveItem(collectionName,plantCategory)
+            toast.success('Saved')
         } catch(e: any) {
             throw new Error(e.toString())
         } finally {
@@ -51,11 +54,11 @@ export const usePlantStore = defineStore('plant', () => {
         }
     }
 
-    const deleteCategoryById = async (id: number | string) => { 
-        //TODO add logic to check if any active plants
+    const deleteCategoryById = async (id: number | string) => {
         const res = deleteById(id, collectionName, plantCategories.value)
         if (plantCategoryToEdit.value.id === id) {
             setCategoryToEdit(null)
+            plantCategoryToEdit.value.plants.length = 0
         }
         return res
     }
@@ -147,7 +150,7 @@ export const usePlantStore = defineStore('plant', () => {
                 id: nextId,
                 sku: '',
                 isRepresentative: lastPlant.isRepresentative,
-                size: undefined,
+                size: '',
                 propagationDate: new Date(),
                 status: 'Available',
                 price: lastPlant.price,
@@ -161,6 +164,10 @@ export const usePlantStore = defineStore('plant', () => {
         
     }
 
+    const removePlant = async(index: number) => {
+        plantCategoryToEdit.value.plants.splice(index,1)
+        await saveCategory(plantCategoryToEdit.value)
+    }
 
 
 
@@ -192,6 +199,7 @@ export const usePlantStore = defineStore('plant', () => {
         saveCategory,
         isSaving,
         addPlant,
+        removePlant,
         findPlantCategoryById, 
         fetchAllCategories, 
         deleteCategoryById,

@@ -18,19 +18,19 @@
                 
             </div>
             <div class="plant-list mt-5">
-                <PlantItem v-for="(plant, index) in plantCategoryToEdit.plants" :key="index" :plant @triggerSave="saveCategory(plantCategoryToEdit)"/>
+                <PlantItem v-for="(plant, index) in plantCategoryToEdit.plants" :key="index" :plant @triggerSave="saveCategory(plantCategoryToEdit)" @deletePlant="removePlant(index)"/>
                 <div class="mt-5">
                     <button class="btn btn-primary" @click.prevent="addPlant(plantCategoryToEdit)">Add Plant Item</button>
-                    <button class="btn btn-primary ms-4" @click.prevent="saveCategory(plantCategoryToEdit)">Save <span class="spinner-border" role="status" v-if="isSaving"></span></button>
+                    <button class="btn btn-primary ms-4" @click.prevent="save">Save <span class="spinner-border" role="status" v-show="isSaving"></span></button>
                 </div>
             </div>
         </div>
         <div>
             <ProductCard
-                :name="plantCategoryToEdit.name"
-                :price=" 0" 
-                :photoUrl="plantCategoryToEdit.photos[0]?.path ?? undefined"
-                :link="`/plants/${plantCategoryToEdit.id}`"
+                :name="getCardName(plantCategoryToEdit)"
+                :price="getDisplayPrice(plantCategoryToEdit, getAvailablePlants(plantCategoryToEdit))"
+                :link="`/plants/${encodeURIComponent(plantCategoryToEdit.id)}`"
+                :photoUrl="getCardPhoto(plantCategoryToEdit)"
             />
         </div>
     </div>
@@ -51,8 +51,9 @@ import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router'
 import PhotoUploadModal from './photos/PhotoUploadModal.vue';
 import { type PhotoItem } from '../types/product';
+import { getCardName, getDisplayPrice, getCardPhoto } from '@/composables/useCardUtils';
 
-const {fetchAllCategories, findPlantCategoryById, setCategoryToEdit, saveCategory, addPlant,} = usePlantStore()
+const {fetchAllCategories, findPlantCategoryById, setCategoryToEdit, saveCategory, addPlant, getAvailablePlants, removePlant} = usePlantStore()
 const {plantCategories, plantCategoryToEdit, isSaving} = storeToRefs(usePlantStore())
 const route = useRoute()
 
@@ -68,6 +69,12 @@ onMounted(async () => {
         setCategoryToEdit(null)
     }
 })
+
+async function save() {
+    console.log(isSaving.value)
+    await saveCategory(plantCategoryToEdit.value)
+    console.log(isSaving.value)
+}
 
 const isExpanded = ref(true)
 function toggleExpand () {

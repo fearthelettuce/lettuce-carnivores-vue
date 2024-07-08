@@ -7,20 +7,14 @@
                     <h1 class="text-center">{{ plantCategory.name }}</h1>   
                 </div>
                 <div v-if="plantCategory.clone !== ''" class="d-flex flex-row justify-content-around">
-                    <span>Clone {{ plantCategory.clone }}</span>  
+                    <h3>Clone {{ plantCategory.clone }}</h3>  
                 </div>
                 <div>
-                    <p class="text-center my-5">{{ plantCategory.description }}</p>   
+                    <p class="text-center my-4">{{ plantCategory.description }}</p>   
                 </div>
                 
-                <!-- <div class="size-select d-flex flex-row justify-content-evenly p-1 my-2 mx-4 rounded">
-                    <button v-for="size in categorySizes" class="btn btn-dark text-body px-4">{{ size }}</button>
-                    <button v-for="plant in referencePlants" class="btn btn-dark text-body px-4">{{ plant.size }}</button>
-                </div> -->
-                <div>Selected: {{ selectedPlant?.sku }}</div>
-                <div>{{ selectedPlant?.size }}</div>
                 <div v-if="referencePlants.length !== 0">
-                    <h4>Represenative Plants<span ppopovertarget="representativePopover">About</span></h4>
+                    <h4>Represenative Plants<span class="ms-4" popovertarget="representativePopover">About</span></h4>
                     <div id="representativePopover" popover><p>These plants are representative of the plants you will receive. Representative plants are generally cheaper than specimens.</p></div>
 
                     <div class="d-flex justify-content-evenly">
@@ -33,8 +27,8 @@
                         >{{plant.size}}</button>
                     </div>
                 </div>
-                <div v-if="specimenPlants.length !== 0" >
-                    <h4>Specimen Plants<button popovertarget="specimenPopover">About</button></h4>
+                <div v-if="specimenPlants.length !== 0" class="mt-4">
+                    <h4>Specimen Plants<button class="ms-4"popovertarget="specimenPopover">About</button></h4>
                     <div id="specimenPopover" popover><p>Photos of specimen plants are of the exact plant you will receive. Please be aware that old/dying pitchers may be trimmed before shipping, especially to ensure safe packaging.</p></div>
                     <div class="d-flex justify-content-evenly">
                         <button 
@@ -148,6 +142,7 @@ const referencePlants = computed(() => {
 })
 
 const specimenPlants = computed(() => {
+    console.log(getAvailablePlants(plantCategory.value))
     return getAvailablePlants(plantCategory.value).filter(plant => !plant.isRepresentative).sort(function(a, b) {
         const textA = a.id
         const textB = b.id

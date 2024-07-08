@@ -66,6 +66,7 @@
         />
         <div class="center-content">
             <button class="btn btn-info" @click.prevent="addPhotos">Photos <span>({{ plant.photos.length }})</span></button>
+            <button class="btn btn-danger mt-2" @click.prevent="$emit('deletePlant')">Delete</button>
         </div>
         
     </form>
@@ -73,9 +74,9 @@
 
 <script setup lang="ts">
 import { inject, watch, type PropType } from 'vue'
-import { type Plant, type Sizes } from '@/types/Plant';
+import { type Plant } from '@/types/Plant';
 
-defineEmits(['triggerSave'])
+defineEmits(['triggerSave', 'deletePlant'])
 const plant = defineModel('plant', {type: Object as PropType<Plant>, required: true})
 const plantStatuses = ['Available', 'Growing', 'Sold', 'Archived']
 

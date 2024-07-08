@@ -38,17 +38,6 @@ const routeData = [
       }
     },
     {
-      path: "/products/:id",
-      name: 'productDetails',
-      label: 'Products Details',
-      component: ProductDetailView,
-      meta: {
-        showInNav: false,
-        requiresLogin: false,
-        requiresAdmin: false,
-      }
-    },
-    {
       path: "/plants/:id",
       name: 'productDetails',
       label: 'Products Details',
@@ -87,7 +76,7 @@ const routeData = [
       label: 'About',
       component: AboutView,
       meta: {
-        showInNav: true,
+        showInNav: false,
         requiresLogin: false,
         requiresAdmin: false,
       }
@@ -119,17 +108,6 @@ const routeData = [
       path: "/admin",
       name: 'Admin',
       label: 'Admin',
-      component: ProductAdminView,
-      meta: {
-        showInNav: true,
-        requiresLogin: true,
-        requiresAdmin: true,
-      }
-    },
-    {
-      path: "/plantadmin/:id?",
-      name: 'PlantAdmin',
-      label: 'Plant Admin',
       component: PlantAdminView,
       meta: {
         showInNav: true,

@@ -85,6 +85,7 @@ const {plantCategoryToEdit, isSaving} = storeToRefs(usePlantStore())
 const confirmDeleteModalRef = ref<InstanceType<typeof BaseModal> | null>(null)
 
 function confirmDelete() {
+    //TODO add logic to check if any active plants, show in modal?
     confirmDeleteModalRef.value?.showModal()
 }
 
@@ -94,7 +95,6 @@ async function deleteProduct() {
         if (res && res.success) {
             toast.success(res.message)
             confirmDeleteModalRef.value?.hideModal()
-            setCategoryToEdit(null)
         } else {
             if(res && res.message) {
                 toast.error(res.message)
