@@ -6,10 +6,13 @@
             label="ID"
             class="grid-col-1"
             v-model="plant.id"
+            @change="setRepresentative"
         />
         <FormKit 
             type="text"
             label="SKU"
+            validation="required"
+            validation-visibility="blur"
             class="grid-col-1"
             v-model="plant.sku"
         />
@@ -17,7 +20,7 @@
             type="select"
             label="Size"
             class="grid-col-1"
-            :options="Sizes"
+            :options="sizes"
             v-model="plant.size"
         />
         <FormKit 
@@ -69,20 +72,37 @@
 </template>
 
 <script setup lang="ts">
-import { inject, type PropType } from 'vue'
-import { type Plant } from '@/types/Plant';
-import { Sizes } from '@/types/Plant';
+import { inject, watch, type PropType } from 'vue'
+import { type Plant, type Sizes } from '@/types/Plant';
 
-    defineEmits(['triggerSave'])
-    const plant = defineModel('plant', {type: Object as PropType<Plant>, required: true})
-    const plantStatuses = ['Available', 'Growing', 'Sold', 'Archived']
+defineEmits(['triggerSave'])
+const plant = defineModel('plant', {type: Object as PropType<Plant>, required: true})
+const plantStatuses = ['Available', 'Growing', 'Sold', 'Archived']
 
-    const managePhotos = inject<Function>('managePhotos')
+const managePhotos = inject<Function>('managePhotos')
 
-    function addPhotos() {
-        if(managePhotos === undefined) { return }
-        managePhotos('plants', plant.value.photos)
+function addPhotos() {
+    if(managePhotos === undefined) { return }
+    managePhotos('plants', plant.value.photos)
+}
+
+function setRepresentative() {
+    plant.value.isRepresentative = plant.value.id === '';
+}
+watch(() => plant.value.id, () => {
+    if(plant.value.sku === '' && plant.value.id.toString().length === 4) {
+        plant.value.sku = plant.value.id.toString()
     }
+})
+
+const sizes = [
+    '2.5"',
+    '3" deep',
+    '3.5"',
+    '3.5" deep',
+    '4" deep',
+    'Bare Root'
+]
 
 </script>
 

@@ -30,6 +30,7 @@ export const usePlantStore = defineStore('plant', () => {
         if(plantCategory) {
             plantCategoryToEdit.value = plantCategory
         } else { 
+            plantCategoryToEdit.value.plants.length = 0
             plantCategoryToEdit.value = {...newPlantCategory};
             plantCategoryToEdit.value.id = ''
         }
@@ -63,7 +64,6 @@ export const usePlantStore = defineStore('plant', () => {
         isLoading.value = true
         try{
             const res: unknown = await findDocById(collectionName, id)
-            console.log(res)
             return res as unknown as PlantCategory
         } catch (e: any) {
             throw new Error(e.toString())
@@ -99,7 +99,24 @@ export const usePlantStore = defineStore('plant', () => {
         genus: genusList,
         status: statusList.filter(item => item !== 'Hidden')
     })
+    // const availablePlants: Ref<PlantCategory[]> = ref([])
+    // const filteredCategories: Ref<PlantCategory[]> = ref([])
 
+    // const getAvailablePlants = async () => {
+    //     if(plantCategories.value.length === 0) {
+    //         await fetchAllCategories()
+    //     }
+    //     categoriesWithAvailablePlants.value = plantCategories.value.plants.filter((plant) => {
+    //     console.log(plant)
+    //     console.log(plant.quantity > 0 && plant.status === 'Available' && plant.price !== 0)
+    //     return plant.quantity > 0 && plant.status === 'Available' && plant.price !== 0})
+    // }
+    
+    const getAvailablePlants = (category: PlantCategory | undefined) => {
+        if(category === undefined) {return []}
+        return category.plants.filter((plant) => {
+            return plant.status === 'Available' && plant.quantity > 0 && plant.status === 'Available' && plant.price !== 0})
+    } 
     async function filterCategories() {
 
     }
@@ -111,9 +128,9 @@ export const usePlantStore = defineStore('plant', () => {
                 id: '',
                 sku: '',
                 isRepresentative: false,
-                size: undefined,
+                size: '',
                 propagationDate: new Date(),
-                status: 'Coming Soon',
+                status: 'Available',
                 price: 0,
                 discountedPrice: 0,
                 isDiscounted: false,
@@ -132,7 +149,7 @@ export const usePlantStore = defineStore('plant', () => {
                 isRepresentative: lastPlant.isRepresentative,
                 size: undefined,
                 propagationDate: new Date(),
-                status: 'Coming Soon',
+                status: 'Available',
                 price: lastPlant.price,
                 discountedPrice: lastPlant.discountedPrice,
                 isDiscounted: lastPlant.isDiscounted,
@@ -180,5 +197,6 @@ export const usePlantStore = defineStore('plant', () => {
         deleteCategoryById,
         appendPhotoData,
         removePhoto,
+        getAvailablePlants,
     }
 })

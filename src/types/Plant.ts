@@ -15,7 +15,7 @@ export type Plant = {
     id: number | string,
     sku: string,
     isRepresentative: boolean,
-    size: Sizes | undefined,
+    size: Sizes,
     propagationDate?: Date,
     status: string,
     price: number,
@@ -25,12 +25,11 @@ export type Plant = {
     photos: PhotoItem[],
 }
 
-export enum Sizes {
-    '_2.5' = '2.5"',
-    '_3' = '3" deep',
-    '_3.5' = '3.5"',
-    '_3.5 deep' = '3.5" deep',
-    '_4 deep' = '4" deep',
-    '_bare' = 'Bare Root',
-    
-}
+export type Sizes = 
+    '' |
+    '2.5"' | 
+    '3" deep' | 
+    '3.5"' | 
+    '3.5" deep' | 
+    '4" deep' | 
+    'Bare Root'

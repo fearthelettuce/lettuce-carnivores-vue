@@ -4,6 +4,8 @@
             type="text"
             label="ID"
             number
+            validation="required|number"
+            validation-visibility="blur"
             v-model="plantCategoryToEdit.id"
         />
         <FormKit 

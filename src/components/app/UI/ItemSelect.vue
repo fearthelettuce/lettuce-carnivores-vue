@@ -7,7 +7,7 @@
             :aria-label="props.label"  
             v-model="model"
         >
-            <option v-for="option in options" :value="option" :key="option.id" >{{ option.name }} ({{ option.id }})</option>
+            <option v-for="option in options" :value="option" :key="option.id" >{{`${option.name} ${option?.clone} (${option.id})`}}</option>
         </select>
         <label :for="props.id">{{ props.label }}</label>
     </div>
@@ -19,6 +19,7 @@ import {type PropType } from 'vue';
     export type SelectItem = {
         id: string | number, 
         name: string,
+        clone?: string,
     }
     const model = defineModel({type: Object as PropType<T>})
     const props = defineProps<{

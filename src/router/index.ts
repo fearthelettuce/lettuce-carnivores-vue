@@ -29,7 +29,7 @@ const routeData = [
     {
       path: "/products",
       name: 'products',
-      label: 'Products',
+      label: 'Shop',
       component: ProductsView,
       meta: {
         showInNav: true,
@@ -39,6 +39,17 @@ const routeData = [
     },
     {
       path: "/products/:id",
+      name: 'productDetails',
+      label: 'Products Details',
+      component: ProductDetailView,
+      meta: {
+        showInNav: false,
+        requiresLogin: false,
+        requiresAdmin: false,
+      }
+    },
+    {
+      path: "/plants/:id",
       name: 'productDetails',
       label: 'Products Details',
       component: ProductDetailView,

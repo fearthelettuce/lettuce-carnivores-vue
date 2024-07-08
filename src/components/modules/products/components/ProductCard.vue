@@ -60,7 +60,6 @@ img {
 }
 .cardImage{
     width: 100%;
-    object-position: 0% 15%;
 }
 
 .placeholderImage {

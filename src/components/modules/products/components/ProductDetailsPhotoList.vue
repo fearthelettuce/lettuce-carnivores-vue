@@ -1,20 +1,23 @@
 <template>
-    <section class="photo-grid">
-        <figure
-            v-for="photo of props.photos"
-            :key=photo.path.toString()
-            @click="setSelectedPhoto(photo)"
-            @mouseover="setSelectedPhoto(photo)"
-            class="photo-list-item">
-            <img :src="getPhotoUrl(photo.path.toString())">
-        </figure>
-        <figure class="selected-image" @click="showImageZoomModal"><img :src="displayPhoto"></figure>
+    <section >
+        <div v-if="props.photos.length === 0"> No photos to display</div>
+        <div v-else class="photo-grid">
+            <figure
+                v-for="photo of props.photos"
+                :key=photo.path.toString()
+                @click="setSelectedPhoto(photo)"
+                @mouseover="setSelectedPhoto(photo)"
+                class="photo-list-item">
+                <img :src="getPhotoUrl(photo.path.toString())">
+            </figure>
+            <figure class="selected-image" @click="showImageZoomModal"><img :src="displayPhoto"></figure>
+        </div>
     </section>
-    <ImageZoomModal ref="imageZoomModalRef" :photo="state.selectedPhoto"/>
+    <ImageZoomModal v-if="props.photos.length !== 0" ref="imageZoomModalRef" :photo="state.selectedPhoto"/>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, watch } from 'vue';
 import ImageZoomModal from '@/components/app/UI/ImageZoomModal.vue';
 import type { PhotoItem,  } from '../types/product';
 import {getPhotoUrl} from '@/composables/usePhotoUtils'
@@ -32,7 +35,11 @@ const displayPhoto = computed(() => {
 })
 
 const imageZoomModalRef = ref<InstanceType<typeof ImageZoomModal> | null>(null)
-
+watch(() => props.photos,() => {
+    if(props.photos) {
+        state.selectedPhoto = props.photos[0]
+    }
+})
 onMounted(() => {
     if(props.photos) {
         state.selectedPhoto = props.photos[0]
