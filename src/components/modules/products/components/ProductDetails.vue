@@ -12,39 +12,45 @@
                 <div>
                     <p class="text-center my-4">{{ plantCategory.description }}</p>   
                 </div>
-                
-                <div v-if="referencePlants.length !== 0">
-                    <h4>Represenative Plants<span class="ms-4" popovertarget="representativePopover">About</span></h4>
-                    <div id="representativePopover" popover><p>These plants are representative of the plants you will receive. Representative plants are generally cheaper than specimens.</p></div>
-
-                    <div class="d-flex justify-content-evenly">
-                        <button 
-                            v-for="plant in referencePlants"
-                            :key="plant.size" 
-                            class="btn px-4"
-                            :class="selectedPlant?.sku == plant.sku ? 'btn-primary' : 'btn-outline-secondary text-body'"
-                            @click="setSelectedPlant(plant)"
-                        >{{plant.size}}</button>
+                <div class="mt-2">
+                    <div v-if="referencePlants.length !== 0">
+                        <h4 class="mb-3">Represenative Plants</h4>
+    
+                        <div class="d-flex justify-content-evenly">
+                            <button 
+                                v-for="plant in referencePlants"
+                                :key="plant.size" 
+                                class="btn px-4"
+                                :class="selectedPlant?.sku == plant.sku ? 'btn-primary' : 'btn-outline-secondary text-body'"
+                                @click="setSelectedPlant(plant)"
+                            >{{plant.size}}</button>
+                        </div>
+                        <div class="mt-4">
+                            <small>Photos are representative of the plants you will receive. Representative plants are generally cheaper than specimens due to streamlined inventory management.</small>
+                        </div>
+                    </div>
+                    <div v-if="specimenPlants.length !== 0" class="mt-5">
+                        <h4 class="mb-3">Specimen Plants</h4>
+                        
+                        <div class="d-flex justify-content-evenly">
+                            <button 
+                                v-for="plant in specimenPlants" 
+                                :key="plant.id"
+                                class="btn px-4"
+                                :class="selectedPlant?.sku === plant.sku ? 'btn-primary' : 'btn-outline-secondary text-body'"
+                                @click="setSelectedPlant(plant)"
+                            >{{`#${plant.id} - ${plant.size}`}}</button>
+                        </div>
+                        <div class="mt-4">
+                            <small>Photos of specimen plants show the exact plant for sale. Old/dying pitchers may be trimmed before shipping to ensure safe packaging.</small>
+                        </div>
+    
                     </div>
                 </div>
-                <div v-if="specimenPlants.length !== 0" class="mt-4">
-                    <h4>Specimen Plants<button class="ms-4"popovertarget="specimenPopover">About</button></h4>
-                    <div id="specimenPopover" popover><p>Photos of specimen plants are of the exact plant you will receive. Please be aware that old/dying pitchers may be trimmed before shipping, especially to ensure safe packaging.</p></div>
-                    <div class="d-flex justify-content-evenly">
-                        <button 
-                            v-for="plant in specimenPlants" 
-                            :key="plant.id"
-                            class="btn px-4"
-                            :class="selectedPlant?.sku === plant.sku ? 'btn-primary' : 'btn-outline-secondary text-body'"
-                            @click="setSelectedPlant(plant)"
-                        >{{`Specimen ${plant.id}`}}</button>
-                    </div>
-
-                </div>
-
-                <div class="d-flex flex-row justify-content-evenly mt-3">
+                <hr />
+                <div class="d-flex flex-row justify-content-evenly mt-2">
                     <div class="align-content-center">
-                        <h5 class="m-0">${{ formattedPrice }}</h5>
+                        <h5 class="m-0">{{ formattedPrice }}</h5>
                     </div>
                     <button 
                         v-if="availableForSale" 
@@ -72,11 +78,8 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, type Ref } from 'vue'
 import { useRoute } from 'vue-router'
-
 import { usePlantStore } from '../stores/plant'
-import type {Product} from '@/components/modules/products/types/product'
 import ProductDetailsPhotoList from './ProductDetailsPhotoList.vue'
-import ProductDetailsForm from './ProductDetailsForm.vue'
 import type { PlantCategory, Plant} from '@/types/Plant'
 import { storeToRefs } from 'pinia'
 
@@ -86,8 +89,13 @@ const plantCategory: Ref<PlantCategory | undefined> = ref()
 const { findPlantCategoryById, getAvailablePlants} = usePlantStore()
 const {isLoading} = storeToRefs(usePlantStore())
 
-onMounted(() => {
-    fetchData()
+onMounted(async () => {
+    await fetchData()
+    const availablePlants = getAvailablePlants(plantCategory.value)
+    console.log(availablePlants[0])
+    if(availablePlants.length === 1) {
+        setSelectedPlant(availablePlants[0])
+    }
 })
 
 async function fetchData() {
@@ -98,6 +106,7 @@ async function fetchData() {
 }
 
 const selectedPlant: Ref<Plant | undefined> = ref()
+
 
 function setSelectedPlant(plant: Plant | undefined) {
     if(plant === undefined || plant.sku === selectedPlant.value?.sku) {
@@ -122,17 +131,6 @@ const photosToDisplay = computed(() => {
     return []
 })
 
-// const categorySizes = computed(() => {
-//     if(plantCategory.value === undefined) { return []}
-//     const arr = plantCategory.value.plants
-//     let unique = arr.reduce(function (acc:string[], curr: Plant) {
-//         if (!acc.includes(curr.size))
-//             acc.push(curr.size);
-//         return acc;
-//     }, []);
-//     return unique.sort();
-// })
-
 const referencePlants = computed(() => {
     return getAvailablePlants(plantCategory.value).filter(plant => plant.isRepresentative).sort(function(a, b) {
         const textA = a.size.toUpperCase();
@@ -152,14 +150,13 @@ const specimenPlants = computed(() => {
 
 
 const formattedPrice = computed(() => {
-    // if(!plantCategory.value.price) return '-'
-    // if(state.product.price == 0 || state.product.price < 0 || !state.product.price ) return '-'
-    // const formatter = new Intl.NumberFormat('en-US', {
-    //     style: 'currency',
-    //     currency: 'USD',
-    // })
-    // return formatter.format(state.product.price)
-    return selectedPlant?.value?.price
+    if(!selectedPlant.value || selectedPlant.value.price === 0 || !selectedPlant.value.price) { return '-'}
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    })
+    return formatter.format(selectedPlant.value.price)
+
 })
 
 const availableForSale = computed(() => {
@@ -180,13 +177,6 @@ function addToCart() {
         margin: 0 1rem;
     }
 
-    .size-select {
-        filter: brightness(110%);
-    }
-
-    .selected {
-
-    }
     @media (min-width: 80rem) {
     .productDetailSection {
         flex-direction: row;

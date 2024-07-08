@@ -11,7 +11,7 @@ export const usePlantStore = defineStore('plant', () => {
     const isLoading = ref(false)
     const collectionName = 'plantCategories' as const
     const genusList = ['Heliamphora', 'Nepenthes', 'Cephalotus', 'Other']
-    const statusList = ['For Sale', 'Coming Soon', 'Archived', 'Hidden']
+    const statusList = ['Available', 'Coming Soon', 'Archived', 'Hidden']
     const plantCategories: Ref<PlantCategory[]> = ref([])
     
     const newPlantCategory = {
@@ -114,11 +114,15 @@ export const usePlantStore = defineStore('plant', () => {
     //     console.log(plant.quantity > 0 && plant.status === 'Available' && plant.price !== 0)
     //     return plant.quantity > 0 && plant.status === 'Available' && plant.price !== 0})
     // }
-    
+    const getAvailableCategories = () => {
+        return plantCategories.value.filter((category) => {
+            return category.status === 'Available' && getAvailablePlants(category).length > 0
+        })
+    }
     const getAvailablePlants = (category: PlantCategory | undefined) => {
         if(category === undefined) {return []}
         return category.plants.filter((plant) => {
-            return plant.status === 'Available' && plant.quantity > 0 && plant.status === 'Available' && plant.price !== 0})
+            return plant.quantity > 0 && plant.status === 'Available' && plant.price !== 0})
     } 
     async function filterCategories() {
 
@@ -206,5 +210,6 @@ export const usePlantStore = defineStore('plant', () => {
         appendPhotoData,
         removePhoto,
         getAvailablePlants,
+        getAvailableCategories
     }
 })
