@@ -164,7 +164,7 @@ const availableForSale = computed(() => {
 })
 
 function addToCart() {
-    alert('This feature is still growing, please check back in a few days!')
+    alert('The shopping cart is still under construction.  Please meassge @dangerlettuce on Instagram, Facebook, or eBay to purchase any of the plants listed here.')
 }
 </script>
 
