@@ -1,5 +1,5 @@
 <template>
-    <div class="contain">
+    <div class="container-fluid">
         <ProductFilters />
         <PlantList />
     </div>

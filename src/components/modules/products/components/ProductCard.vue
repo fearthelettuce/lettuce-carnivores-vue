@@ -53,6 +53,16 @@ const USDollar = new Intl.NumberFormat('en-US', {
 </script>
 
 <style scoped>
+
+.card {
+    display: flex;
+    flex-direction: column;
+    filter: brightness(110%);   
+    border-radius: 2em;
+    overflow:hidden;
+
+}
+
 img {
     display: block;
     height: 25em;
@@ -76,15 +86,6 @@ img {
         text-align: center;
         margin: auto auto;
     }
-}
-.card {
-    display: flex;
-    flex-direction: column;
-    filter: brightness(110%);   
-    border-radius: 2em;
-    overflow:hidden;
-    margin: 1em;
-    max-width: 24rem;
 }
 
 .card-title {

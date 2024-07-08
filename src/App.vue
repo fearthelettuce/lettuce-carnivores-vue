@@ -22,7 +22,7 @@ body {
 }
 
 .contain {
-    padding: 1rem clamp(.3rem, 5vw, 20rem);
+    
 }
 .grid-col-2 {
     grid-column: span 2;
