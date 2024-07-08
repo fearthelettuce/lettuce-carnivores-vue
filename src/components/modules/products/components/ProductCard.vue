@@ -84,7 +84,7 @@ img {
     border-radius: 2em;
     overflow:hidden;
     margin: 1em;
-    max-width: 30rem;
+    max-width: 26rem;
 }
 
 .card-title {

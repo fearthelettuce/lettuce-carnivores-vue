@@ -58,6 +58,9 @@ function showImageZoomModal() {
 </script>
 
 <style scoped>
+section {
+    padding-bottom: 1rem;
+}
 img {
     display: block;
     height: 100%;
