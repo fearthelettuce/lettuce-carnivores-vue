@@ -1,7 +1,7 @@
 import { generateClasses } from '@formkit/themes'
 import { createAutoHeightTextareaPlugin } from '@formkit/addons'
 
-export default {
+const config = {
   plugins: [
     createAutoHeightTextareaPlugin(),
   ],
@@ -29,3 +29,5 @@ export default {
   },
 
 }
+
+export default config

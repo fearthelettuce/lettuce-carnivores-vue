@@ -31,10 +31,11 @@ app.component('BaseSpinner',BaseSpinner)
 app.component('BaseContainer', BaseContainer)
 
 import { plugin, defaultConfig } from '@formkit/vue'
-import customnConfig from '../formkit.config.ts'
+// @ts-ignore  
+import customConfig from '../formkit.config.js'
 
 app.use(plugin, defaultConfig({
-  config: customnConfig.config
+  config: customConfig.config
 }))
 
 import { useUserStore } from './components/modules/auth/stores/users';
