@@ -28,7 +28,9 @@
                         <div class="mt-4">
                             <small>Photos are representative of the plants you will receive. Representative plants are generally cheaper than specimens due to streamlined inventory management.</small>
                         </div>
+                        <hr />
                     </div>
+
                     <div v-if="specimenPlants.length !== 0" class="mt-5">
                         <h4 class="mb-3">Specimen Plants</h4>
                         
@@ -46,8 +48,9 @@
                         </div>
     
                     </div>
+                    <hr />
                 </div>
-                <hr />
+                
                 <div class="d-flex flex-row justify-content-evenly mt-2">
                     <div class="align-content-center">
                         <h5 class="m-0">{{ formattedPrice }}</h5>

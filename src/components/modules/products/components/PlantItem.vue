@@ -57,13 +57,22 @@
             class="grid-col-1"
             v-model="plant.propagationDate"
         />
-        <FormKit 
-            type="checkbox"
-            label="Discounted?"
-            class="grid-col-1"
-            outer-class="align-content-center"
-            v-model="plant.isDiscounted"
-        />
+        <div>
+            <FormKit
+                type="checkbox"
+                label="Discounted?"
+                class="grid-col-1"
+                outer-class="align-content-center"
+                v-model="plant.isDiscounted"
+            />
+            <FormKit
+                type="checkbox"
+                label="Representative?"
+                class="grid-col-1"
+                outer-class="align-content-center"
+                v-model="plant.isRepresentative"
+            />
+        </div>
         <div class="center-content">
             <button class="btn btn-info" @click.prevent="addPhotos">Photos <span>({{ plant.photos.length }})</span></button>
             <button class="btn btn-danger mt-2" @click.prevent="$emit('deletePlant')">Delete</button>
