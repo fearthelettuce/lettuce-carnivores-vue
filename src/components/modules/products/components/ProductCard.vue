@@ -60,7 +60,7 @@ const USDollar = new Intl.NumberFormat('en-US', {
     filter: brightness(110%);   
     border-radius: 2em;
     overflow:hidden;
-
+    margin: 0 2rem;
 }
 
 img {
@@ -108,6 +108,17 @@ img {
     overflow: hidden;
     display: flex;
     justify-content: space-around;
+}
+
+@media(min-width > 60rem) {
+    .card {
+        display: flex;
+        flex-direction: column;
+        filter: brightness(110%);   
+        border-radius: 2em;
+        overflow:hidden;
+        margin: 0;
+    }
 }
 
 </style>
