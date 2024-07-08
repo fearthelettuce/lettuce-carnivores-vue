@@ -60,7 +60,7 @@ const USDollar = new Intl.NumberFormat('en-US', {
     filter: brightness(110%);   
     border-radius: 2em;
     overflow:hidden;
-    margin: 0 2rem;
+    margin: 0 1rem;
 }
 
 img {
