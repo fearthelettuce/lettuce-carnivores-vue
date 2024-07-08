@@ -55,7 +55,8 @@
                     <button 
                         v-if="availableForSale" 
                         class="btn btn-primary"
-                        @click="addToCart">
+                        @click="addToCart"
+                        :disabled="selectedPlant === undefined">
                         Add to Cart
                     </button>
                     <button 
