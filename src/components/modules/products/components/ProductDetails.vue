@@ -1,6 +1,6 @@
 <template>
     <BaseContainer>
-        <section v-if="plantCategory" class="d-flex productDetailSection" >
+        <section v-if="plantCategory" class="d-flex product-detail-section" >
         <ProductDetailsPhotoList :photos="photosToDisplay" />
             <article class="product-information d-flex align-content-center flex-column">
                 <div class="d-flex justify-content-center">
@@ -172,17 +172,19 @@ function addToCart() {
 </script>
 
 <style scoped>
-    .productDetailSection {
+    .product-detail-section {
         flex-direction: column;
         justify-content: space-around;
+        margin: 0 2rem 2rem;
     }
     .product-information {
         margin: 0 1rem;
     }
 
     @media (min-width: 80rem) {
-    .productDetailSection {
+    .product-detail-section {
         flex-direction: row;
+        margin: 0 5dvw 1rem;
     }
     .product-information {
         width: 30vw;
