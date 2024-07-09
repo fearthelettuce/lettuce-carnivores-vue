@@ -106,11 +106,11 @@ export const usePlantStore = defineStore('plant', () => {
     //     isLoading.value = true
     // }
 
-    const categoryFilters = ref({
-        inStock: true,
-        genus: genusList,
-        status: statusList.filter(item => item !== 'Hidden')
-    })
+    // const categoryFilters = ref({
+    //     inStock: true,
+    //     genus: genusList,
+    //     status: statusList.filter(item => item !== 'Hidden')
+    // })
     // const availablePlants: Ref<PlantCategory[]> = ref([])
     // const filteredCategories: Ref<PlantCategory[]> = ref([])
 
