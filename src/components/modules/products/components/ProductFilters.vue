@@ -28,58 +28,53 @@ const filterCategories = [
     {
         label: 'Genus',
         options: [
-            {
-                label: 'Heliamphora',
-                value: true,
-                visible: true,
-            },
-            {
-                label: 'Nepenthes',
-                value: true,
-                visible: true,
-            },
-            {
-                label: 'Cephalotus',
-                value: true,
-                visible: true,
-            },
+            {label: 'Heliamphora', value: true, visible: true,},
+            {label: 'Nepenthes', value: true, visible: true,},
+            {label: 'Cephalotus', value: true, visible: true,},
+            {label: 'Other', value: true, visible: false,},
         ],
     },
     {
         label: 'Availability',
         options: [
-            {
-                label:'In-Stock',
-                value: true,
-                visible: true,
-            },
-            {
-                label: 'Coming Soon',
-                value: false,
-                visible: true,
-            },
-            {
-                label: 'Archived',
-                value: false,
-                visible: true,
-            }
+            {label:'In-Stock',value: true,visible: true,},
+            {label: 'Coming Soon', value: false, visible: true,},
+            {label: 'Archived', value: false, visible: false,}
         ],
-    }
+    },
+    {
+        label: 'Experience',
+        options: [
+            {label:'Beginner', value: true, visible: true,},
+            {label: 'Intermediate', value: true, visible: true,},
+            {label: 'Advanced', value: true, visible: false,}
+        ],
+    },
+    {
+        label: 'Other FIlters',
+        options: [
+            {label:'Species', value: true, visible: true,},
+            {label: 'Hybrid', value: true, visible: true,},
+            {label:'Specimen', value: true, visible: true,},
+            {label: 'Represenatative', value: true, visible: true,},
+            {label:'On Sale', value: true, visible: false,},
+        ],
+    },
+]
+
+const sortCategories = [
+    {
+        label: 'Alphabetical'
+    },
+    {
+        label: 'Price'
+    },
+
 ]
 
 //Size - 2.5, 3.0, 3.5, 3.5d, etc.
-//Specimen vs Represenatative
-//Species vs Hybrid
-//Conditions Highland vs Intermediate
-//On Sale?
-//Experience
-//Recommended for beginner
-//Expanding Collection
-//Hardcore Collector
 
 //Sort:
-//Name A-Z Z-A
-//Price $ - $$$$
 //Popular?
 //Size Big - Small Small - Big
 
