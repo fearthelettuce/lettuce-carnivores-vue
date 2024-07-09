@@ -96,7 +96,7 @@ const plantTypeLabel = computed(() => {
 
 const plantTypeDescription = computed(() => {
     if (selectedPlant.value === undefined) { return '' }
-    return selectedPlant.value.isRepresentative ? 'The photos for this plant are representative of the plants you will receive. Representative plants are generally less expensive.'
+    return selectedPlant.value.isRepresentative ? 'The photos for this plant show a plant that is similar to the plant that you will receive. Representative plants are generally less expensive due to streamlined inventory management..'
      : 'Photos of specimen plants show the exact plant for sale. Old/dying pitchers may be trimmed before shipping to ensure safe packaging.'
 })
 
@@ -167,7 +167,7 @@ const availableForSale = computed(() => {
 })
 
 function addToCart() {
-    alert('The shopping cart is still under construction.  Please meassge @dangerlettuce on Instagram, Facebook, or eBay to purchase any of the plants listed here.')
+    alert('The shopping cart is still under construction.  Please message @dangerlettuce on Instagram, Facebook, or eBay to purchase any of the plants listed here.')
 }
 </script>
 
