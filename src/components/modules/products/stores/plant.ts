@@ -11,7 +11,16 @@ export const usePlantStore = defineStore('plant', () => {
     const isLoading = ref(false)
     const collectionName = 'plantCategories' as const
     const genusList = ['Heliamphora', 'Nepenthes', 'Cephalotus', 'Other']
-    const statusList = ['Available', 'Coming Soon', 'Archived', 'Hidden']
+    const statusList = [{label:'', value: ''}, {label:'Available', value: 'Available'}, {label:'Coming Soon', value: 'Coming Soon'},{label:'Sold', value: 'Sold'}, {label:'Archived', value: 'Archived'}, {label:'Hidden', value: 'Hidden'}]
+    const sizeList = [
+        {label: '', value: '',},
+        {label: '2.5"', value: '2,5"'},
+        {label: '3" deep', value: '3" deep'},
+        {label: '3.5"', value: '3,5"'},
+        {label: '3.5" deep', value:'3.5" deep'},
+        {label: '4" deep', value: '4" deep'},
+        {label: 'Bare Root', value: 'Bare Root'}
+    ]
     const plantCategories: Ref<PlantCategory[]> = ref([])
     
     const newPlantCategory = {
@@ -21,7 +30,7 @@ export const usePlantStore = defineStore('plant', () => {
         clone: '',
         description: '',
         plants: [] as Plant[],
-        status: '',
+        status: 'Available',
         photos: [] as PhotoItem[]
     }
 
@@ -137,7 +146,7 @@ export const usePlantStore = defineStore('plant', () => {
                 isRepresentative: false,
                 size: '',
                 propagationDate: new Date(),
-                status: 'Available',
+                status: 'Coming Soon',
                 price: 0,
                 discountedPrice: 0,
                 isDiscounted: false,
@@ -147,12 +156,10 @@ export const usePlantStore = defineStore('plant', () => {
             })
         } else {
             const lastPlant = plantCategory.plants[plantCategory.plants.length - 1]
-            console.log('hi')
             const nextId = lastPlant.id !== '' ? parseInt(lastPlant.id.toString()) + 1 : ''
-            console.log(nextId)
             plantCategory?.plants.push({
                 id: nextId,
-                sku: '',
+                sku: nextId.toString(),
                 isRepresentative: lastPlant.isRepresentative,
                 size: '',
                 propagationDate: new Date(),
@@ -196,6 +203,7 @@ export const usePlantStore = defineStore('plant', () => {
         isLoading,
         genusList,
         statusList,
+        sizeList,
         plantCategories, 
         newPlantCategory,
         plantCategoryToEdit,

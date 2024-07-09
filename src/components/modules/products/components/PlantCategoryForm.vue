@@ -6,6 +6,7 @@
             number
             validation="required|number"
             validation-visibility="blur"
+            class="grid-col-1"
             v-model="plantCategoryToEdit.id"
         />
         <FormKit 
@@ -18,17 +19,20 @@
             type="select"
             label="Genus"
             :options="genusList"
+            class="grid-col-1"
             v-model="plantCategoryToEdit.genus" 
         />
         <FormKit
             type="text"
             label="Clone"
+            class="grid-col-1"
             v-model="plantCategoryToEdit.clone" 
         />
         <FormKit
             type="select"
             label="Status"
             :options="statusList"
+            class="grid-col-1"
             v-model="plantCategoryToEdit.status" 
         />
         <FormKit
@@ -117,10 +121,10 @@ function addPhotos() {
 <style scoped>
 
     .plant-admin-form {
+        margin: 2rem 0;
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        margin-bottom: 2rem;
-        gap: 0 2em;
+        grid-template-columns: repeat(auto-fit, 10rem);
+        gap: .5rem;
     }
     .form-action {
         min-width: 7rem;
@@ -139,15 +143,26 @@ function addPhotos() {
         margin-left: 1rem;
     }
     .description {
-        grid-column: span 8;
+        grid-column: span 3;
     }
-    @media (min-width: 40rem) {
+
+    @media(min-width: 45rem) {
         .plant-admin-form {
-            grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+            grid-template-columns: repeat(6, 1fr);
         }
         .form-actions {
             flex-wrap: nowrap;
         }
-
+        .description {
+        grid-column: span 4;
+    }
+    }
+    @media(min-width: 120rem) {
+        .plant-admin-form {
+            grid-template-columns: repeat(10, 1fr);
+        }
+        .description {
+        grid-column: span 6;
+    }
     }
 </style>

@@ -20,7 +20,7 @@
             type="select"
             label="Size"
             class="grid-col-1"
-            :options="sizes"
+            :options="sizeList"
             v-model="plant.size"
         />
         <FormKit 
@@ -48,7 +48,7 @@
             type="select"
             label="Status"
             class="grid-col-1"
-            :options="plantStatuses"
+            :options="statusList"
             v-model="plant.status"
         />
         <FormKit 
@@ -74,8 +74,8 @@
             />
         </div>
         <div class="center-content">
-            <button class="btn btn-info" @click.prevent="addPhotos">Photos <span>({{ plant.photos.length }})</span></button>
-            <button class="btn btn-danger mt-2" @click.prevent="$emit('deletePlant')">Delete</button>
+            <button class="btn btn-info m-1" @click.prevent="addPhotos">Photos <span>({{ plant.photos.length }})</span></button>
+            <button class="btn btn-danger m-1" @click.prevent="$emit('deletePlant')">Delete</button>
         </div>
         
     </form>
@@ -84,10 +84,13 @@
 <script setup lang="ts">
 import { inject, watch, type PropType } from 'vue'
 import { type Plant } from '@/types/Plant';
+import { usePlantStore } from '../stores/plant';
 
 defineEmits(['triggerSave', 'deletePlant'])
+
+const {statusList, sizeList} = usePlantStore()
 const plant = defineModel('plant', {type: Object as PropType<Plant>, required: true})
-const plantStatuses = ['Available', 'Growing', 'Sold', 'Archived']
+
 
 const managePhotos = inject<Function>('managePhotos')
 
@@ -105,14 +108,7 @@ watch(() => plant.value.id, () => {
     }
 })
 
-const sizes = [
-    '2.5"',
-    '3" deep',
-    '3.5"',
-    '3.5" deep',
-    '4" deep',
-    'Bare Root'
-]
+
 
 </script>
 

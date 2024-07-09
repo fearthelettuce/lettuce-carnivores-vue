@@ -31,13 +31,16 @@ const availableCateogires = computed(() => {
 <style scoped>
     .product-list {
         display: grid;
-        gap: 1rem;
-        grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+        gap: .5rem;
+        grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
         margin: 2rem .5rem;
     }
-    /* @media(min-width: 60rem) {
+
+    @media(min-width: 82rem) {
         .product-list {
-            margin: 1rem 5dvw;
+            grid-template-columns: repeat(auto-fit, minmax(26rem, 1fr));
+            gap: 1rem;
+            margin: 2rem 6rem;
         }
-    } */
+    }
 </style>

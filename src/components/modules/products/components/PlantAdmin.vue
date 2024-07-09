@@ -1,5 +1,5 @@
 <template>
-    <div class="layout"> 
+    <div class="container-fluid layout"> 
         <div>
             <ItemSelect 
                 :options="plantCategories" 
@@ -11,7 +11,7 @@
             <div class="mt-4">
                 <Transition name="slide-up">
                     <div v-if="isExpanded">
-                        <PlantForm />
+                        <PlantCategoryForm />
                     </div>
                 </Transition>
                 <button class="btn btn-secondary" @click="toggleExpand"> {{isExpanded ? 'Hide Form' : `Edit ${plantCategoryToEdit.name !== '' ? plantCategoryToEdit.name : 'Category'}`  }}</button>
@@ -25,12 +25,13 @@
                 </div>
             </div>
         </div>
-        <div>
+        <div class="product-list">
             <ProductCard
                 :name="getCardName(plantCategoryToEdit)"
                 :price="getDisplayPrice(plantCategoryToEdit, getAvailablePlants(plantCategoryToEdit))"
                 :link="`/plants/${encodeURIComponent(plantCategoryToEdit.id)}`"
                 :photoUrl="getCardPhoto(plantCategoryToEdit)"
+                class="product-card"
             />
         </div>
     </div>
@@ -43,7 +44,7 @@
 import { ref, onMounted, provide } from 'vue';
 import { toast } from 'vue3-toastify'
 import ProductCard from './ProductCard.vue';
-import PlantForm from './PlantForm.vue';
+import PlantCategoryForm from './PlantCategoryForm.vue';
 import ItemSelect from '@/components/app/UI/ItemSelect.vue';
 import PlantItem from './PlantItem.vue';
 import { usePlantStore } from '../stores/plant';
@@ -97,6 +98,19 @@ provide('managePhotos', managePhotos)
         display: grid;
         grid-template-columns: 1fr;
         gap: 0 2rem;
+    }
+    .product-list {
+        display: grid;
+        gap: .5rem;
+        grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+        margin: 2rem .5rem;
+    }
+
+    @media(min-width: 82rem) {
+        .product-list {
+            grid-template-columns: repeat(auto-fit, minmax(26rem, 1fr));
+            gap: 1rem;
+        }
     }
     .slide-up-enter-active,
     .slide-up-leave-active {
