@@ -17,13 +17,8 @@ a {
 li {
   list-style: none;
 }
-body {
-  width: 100dvw;
-}
 
-.contain {
-    
-}
+
 .grid-col-2 {
     grid-column: span 2;
 }

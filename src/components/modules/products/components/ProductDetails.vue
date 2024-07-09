@@ -9,49 +9,40 @@
                 <div v-if="plantCategory.clone !== ''" class="d-flex flex-row justify-content-around">
                     <h3>Clone {{ plantCategory.clone }}</h3>  
                 </div>
+
                 <div>
                     <p class="text-center my-4">{{ plantCategory.description }}</p>   
                 </div>
-                <div class="mt-2">
-                    <div v-if="referencePlants.length !== 0">
-                        <h4 class="mb-3">Represenative Plants</h4>
-    
-                        <div class="d-flex justify-content-evenly">
-                            <button 
-                                v-for="plant in referencePlants"
-                                :key="plant.size" 
-                                class="btn px-4"
-                                :class="selectedPlant?.sku == plant.sku ? 'btn-primary' : 'btn-outline-secondary text-body'"
-                                @click="setSelectedPlant(plant)"
-                            >{{plant.size}}</button>
-                        </div>
-                        <div class="mt-4">
-                            <small>Photos are representative of the plants you will receive. Representative plants are generally cheaper than specimens due to streamlined inventory management.</small>
-                        </div>
-                        <hr />
-                    </div>
 
-                    <div v-if="specimenPlants.length !== 0" class="mt-5">
-                        <h4 class="mb-3">Specimen Plants</h4>
-                        
-                        <div class="d-flex justify-content-evenly">
-                            <button 
-                                v-for="plant in specimenPlants" 
-                                :key="plant.id"
-                                class="btn px-4"
-                                :class="selectedPlant?.sku === plant.sku ? 'btn-primary' : 'btn-outline-secondary text-body'"
-                                @click="setSelectedPlant(plant)"
-                            >{{`#${plant.id} - ${plant.size}`}}</button>
-                        </div>
-                        <div class="mt-4">
-                            <small>Photos of specimen plants show the exact plant for sale. Old/dying pitchers may be trimmed before shipping to ensure safe packaging.</small>
-                        </div>
-    
-                    </div>
-                    <hr />
+                <div class="d-flex justify-content-evenly">
+                    <button 
+                        v-for="plant in referencePlants"
+                        :key="plant.size" 
+                        class="btn px-4"
+                        :class="selectedPlant?.sku == plant.sku ? 'btn-primary' : 'btn-outline-secondary text-body'"
+                        @click="setSelectedPlant(plant)"
+                    >{{plant.size}}</button>
+                </div>
+                <div class="d-flex justify-content-evenly mt-3 flex-wrap">
+                    <button 
+                        v-for="plant in specimenPlants" 
+                        :key="plant.id"
+                        class="btn px-4 specimen-button"
+                        :class="selectedPlant?.sku === plant.sku ? 'btn-primary' : 'btn-outline-secondary text-body'"
+                        @click="setSelectedPlant(plant)"
+                    >{{`Specimen ${plant.id} - ${plant.size}`}}</button>
                 </div>
                 
-                <div class="d-flex flex-row justify-content-evenly mt-2">
+
+                
+
+                
+                <div v-if="selectedPlant !== undefined" class="mt-4">
+                    <h5 class="mb-3">{{plantTypeLabel}}</h5>
+                    <small>{{ plantTypeDescription }}</small>
+                </div>
+                <hr class="my-4" />
+                <div class="d-flex flex-row justify-content-evenly">
                     <div class="align-content-center">
                         <h5 class="m-0">{{ formattedPrice }}</h5>
                     </div>
@@ -69,7 +60,6 @@
                         Out of Stock
                     </button>
                 </div>       
-
             </article>
         </section>
         <section v-else>
@@ -84,13 +74,11 @@ import { useRoute } from 'vue-router'
 import { usePlantStore } from '../stores/plant'
 import ProductDetailsPhotoList from './ProductDetailsPhotoList.vue'
 import type { PlantCategory, Plant} from '@/types/Plant'
-import { storeToRefs } from 'pinia'
 
 const route = useRoute()
 const plantCategory: Ref<PlantCategory | undefined> = ref()
 
 const { findPlantCategoryById, getAvailablePlants} = usePlantStore()
-const {isLoading} = storeToRefs(usePlantStore())
 
 onMounted(async () => {
     await fetchData()
@@ -100,6 +88,18 @@ onMounted(async () => {
         setSelectedPlant(availablePlants[0])
     }
 })
+
+const plantTypeLabel = computed(() => {
+    if (selectedPlant.value === undefined) { return '' }
+    return selectedPlant.value.isRepresentative ? 'Representative Plant' : 'Specimen Plant'
+})
+
+const plantTypeDescription = computed(() => {
+    if (selectedPlant.value === undefined) { return '' }
+    return selectedPlant.value.isRepresentative ? 'The photos for this plant are representative of the plants you will receive. Representative plants are generally less expensive.'
+     : 'Photos of specimen plants show the exact plant for sale. Old/dying pitchers may be trimmed before shipping to ensure safe packaging.'
+})
+
 
 async function fetchData() {
     const productData = await findPlantCategoryById(Number(route.params.id))
@@ -181,13 +181,28 @@ function addToCart() {
         margin: 0 1rem;
     }
 
+    .specimen-button {
+        flex-basis: 100%;
+    }
+
+    @media (min-width: 30rem) {
+        .specimen-button {
+            flex-basis: auto;
+        }
+    }
+
     @media (min-width: 80rem) {
     .product-detail-section {
         flex-direction: row;
         margin: 0 5dvw 1rem;
     }
     .product-information {
-        width: 30vw;
+        max-width: 30rem;
+        margin-left: 2rem;
     }
+
+        .specimen-button {
+            flex: 1 1 auto;
+        }
 }
 </style>
