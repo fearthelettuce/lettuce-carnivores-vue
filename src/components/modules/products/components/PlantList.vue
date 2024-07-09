@@ -32,12 +32,12 @@ const availableCateogires = computed(() => {
     .product-list {
         display: grid;
         gap: 1rem;
-        grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-        margin: 1.5rem 0;
+        grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+        margin: 2rem .5rem;
     }
-    @media(min-width: 60rem) {
+    /* @media(min-width: 60rem) {
         .product-list {
             margin: 1rem 5dvw;
         }
-    }
+    } */
 </style>

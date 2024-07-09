@@ -74,7 +74,7 @@
 <script setup lang="ts">
 import { ref, inject } from 'vue';
 import { toast } from 'vue3-toastify'
-import { usePlantStore } from '../stores/plant'
+import { usePlantStore } from '../stores/plant';
 import { storeToRefs } from 'pinia';
 import BaseModal from '@/components/app/UI/BaseModal.vue'
 
