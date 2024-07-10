@@ -51,7 +51,7 @@ import { usePlantStore } from '../stores/plant';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router'
 import PhotoUploadModal from './photos/PhotoUploadModal.vue';
-import { type PhotoItem } from '../types/product';
+import { type PhotoItem } from '../../../../types/Product';
 import { getCardName, getDisplayPrice, getCardPhoto } from '@/composables/useCardUtils';
 
 const {fetchAllCategories, findPlantCategoryById, setCategoryToEdit, saveCategory, addPlant, getAvailablePlants, removePlant} = usePlantStore()

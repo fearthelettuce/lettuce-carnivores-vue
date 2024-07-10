@@ -88,7 +88,7 @@
 <script setup lang="ts">
 import { ref, onMounted, type PropType, type Ref} from 'vue';
 import { uploadFile } from '@/apis/fileServices';
-import type {PhotoItem} from '@/components/modules/products/types/product'
+import type {PhotoItem} from '@/types/Product'
 import { toast } from 'vue3-toastify'
 import BaseDialog from '@/components/app/UI/BaseDialog.vue';
 import {getPhotoUrl} from '@/composables/usePhotoUtils'

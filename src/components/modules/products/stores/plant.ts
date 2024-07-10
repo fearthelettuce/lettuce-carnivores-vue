@@ -1,7 +1,7 @@
 import { ref, type Ref } from "vue"
 import { defineStore } from "pinia"
 import { type PlantCategory,  type Plant} from "@/types/Plant"
-import { type PhotoItem } from "../types/product"
+import { type PhotoItem } from "../../../../types/Product"
 import { saveItem, findAll, findByProperty, findDocById } from '@/apis/dataServices'
 import {deleteById, saveProductUtil} from '@/composables/useProductUtils'
 import {appendPhotoDataUtil, removePhotoUtil} from '@/composables/usePhotoUtils'

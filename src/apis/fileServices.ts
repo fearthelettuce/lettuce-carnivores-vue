@@ -1,6 +1,6 @@
 import { ref, uploadBytes, deleteObject } from 'firebase/storage' 
 import { storage } from '@/apis/firebase'
-import type { PhotoItem } from '@/components/modules/products/types/product'
+import type { PhotoItem } from '@/types/Product'
 
 export function getPhotoUrl(fileName: string) {
     const urlRoot = 'https://firebasestorage.googleapis.com/v0/b/lettuce-carnivores.appspot.com/o/'

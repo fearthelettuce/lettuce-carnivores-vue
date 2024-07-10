@@ -1,4 +1,4 @@
-import type {Product, PhotoItem} from '@/components/modules/products/types/product'
+import type {Product, PhotoItem} from '@/types/Product'
 import type { Plant, PlantCategory } from '@/types/Plant'
 import { deleteFile } from '@/apis/fileServices'
 

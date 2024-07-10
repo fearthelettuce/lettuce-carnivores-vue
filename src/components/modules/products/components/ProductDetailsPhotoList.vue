@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, watch } from 'vue';
 import ImageZoomModal from '@/components/app/UI/ImageZoomModal.vue';
-import type { PhotoItem,  } from '../types/product';
+import type { PhotoItem,  } from '../../../../types/Product';
 import {getPhotoUrl} from '@/composables/usePhotoUtils'
 
 const props = defineProps<{

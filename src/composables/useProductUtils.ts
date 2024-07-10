@@ -1,5 +1,5 @@
 import type { Plant } from "@/types/Plant"
-import type { Product } from "@/components/modules/products/types/product"
+import type { Product } from "@/types/Product"
 import { deleteAllPhotosUtil } from '@/composables/usePhotoUtils'
 import { saveItem, findAll, findByProperty, deleteItem, findDocById } from '@/apis/dataServices'
 

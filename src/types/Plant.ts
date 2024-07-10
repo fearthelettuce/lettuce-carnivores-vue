@@ -1,4 +1,4 @@
-import type { PhotoItem } from "@/components/modules/products/types/product"
+import type { PhotoItem } from "@/types/Product"
 
 export type PlantCategory = {
     name: string,

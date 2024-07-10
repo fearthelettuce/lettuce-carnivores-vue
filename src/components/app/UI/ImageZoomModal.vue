@@ -29,7 +29,7 @@
 import { reactive, computed, onMounted } from 'vue';
 import type { PropType } from 'vue';
 import { Modal } from 'bootstrap'
-import type { PhotoItem } from '@/components/modules/products/types/product';
+import type { PhotoItem } from '@/types/Product';
 import {getPhotoUrl} from '@/composables/usePhotoUtils'
 
 const state = reactive({

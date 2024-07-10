@@ -32,7 +32,7 @@ import { useProductStore } from '../../stores/product';
 import { toast } from 'vue3-toastify'
 import ProductPhotoItem from './ProductPhotoItem.vue';
 import PhotoUploadModal from './PhotoUploadModal.vue';
-import type {PhotoItem} from '@/components/modules/products/types/product'
+import type {PhotoItem} from '@/types/Product'
 import { Modal } from 'bootstrap';
 
 const productStore = useProductStore()

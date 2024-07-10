@@ -79,7 +79,7 @@ import { ref, reactive, onMounted } from 'vue';
 import { storeToRefs } from 'pinia'
 import { toast } from 'vue3-toastify'
 import { useProductStore } from '../stores/product'
-import type { Product } from '../types/product'
+import type { Product } from '../../../../types/Product'
 import BaseModal from '@/components/app/UI/BaseModal.vue';
 
 const productStore = useProductStore()
