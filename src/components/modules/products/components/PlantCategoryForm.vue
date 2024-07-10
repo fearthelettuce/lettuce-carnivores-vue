@@ -80,9 +80,10 @@ import { ref, inject } from 'vue';
 import { toast } from 'vue3-toastify'
 import { usePlantStore } from '../stores/plant';
 import { storeToRefs } from 'pinia';
+import { genusList, statusList } from '@/constants/constants';
 import BaseModal from '@/components/app/UI/BaseModal.vue'
 
-const {saveCategory, setCategoryToEdit, deleteCategoryById, genusList, statusList} = usePlantStore()
+const {saveCategory, setCategoryToEdit, deleteCategoryById } = usePlantStore()
 const {plantCategoryToEdit, isSaving} = storeToRefs(usePlantStore())
 
 

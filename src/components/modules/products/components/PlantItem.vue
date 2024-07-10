@@ -84,11 +84,10 @@
 <script setup lang="ts">
 import { inject, watch, type PropType } from 'vue'
 import { type Plant } from '@/types/Plant';
-import { usePlantStore } from '../stores/plant';
+import { statusList, sizeList } from '@/constants/constants';
 
 defineEmits(['triggerSave', 'deletePlant'])
 
-const {statusList, sizeList} = usePlantStore()
 const plant = defineModel('plant', {type: Object as PropType<Plant>, required: true})
 
 

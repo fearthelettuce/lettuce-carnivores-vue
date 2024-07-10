@@ -5,35 +5,14 @@ import { type PhotoItem } from "../../../../types/Product"
 import { saveItem, findAll, findByProperty, findDocById } from '@/apis/dataServices'
 import {deleteById, saveProductUtil} from '@/composables/useProductUtils'
 import {appendPhotoDataUtil, removePhotoUtil} from '@/composables/usePhotoUtils'
+import { sizeList, statusList, genusList, newPlantCategory, newPlant } from "@/constants/constants"
 import { toast } from 'vue3-toastify'
 export const usePlantStore = defineStore('plant', () => {
 
     const isLoading = ref(false)
     const collectionName = 'plantCategories' as const
-    const genusList = ['Heliamphora', 'Nepenthes', 'Cephalotus', 'Other']
-    const statusList = [{label:'', value: ''}, {label:'Available', value: 'Available'}, {label:'Coming Soon', value: 'Coming Soon'},{label:'Sold', value: 'Sold'}, {label:'Archived', value: 'Archived'}, {label:'Hidden', value: 'Hidden'}]
-    const sizeList = [
-        {label: '', value: '',},
-        {label: '2.5"', value: '2,5"'},
-        {label: '3" deep', value: '3" deep'},
-        {label: '3.5"', value: '3,5"'},
-        {label: '3.5" deep', value:'3.5" deep'},
-        {label: '4" deep', value: '4" deep'},
-        {label: 'Bare Root', value: 'Bare Root'}
-    ]
-    const plantCategories: Ref<PlantCategory[]> = ref([])
-    
-    const newPlantCategory = {
-        id: '',
-        name: '',
-        genus: '',
-        clone: '',
-        description: '',
-        plants: [] as Plant[],
-        status: 'Available',
-        photos: [] as PhotoItem[]
-    }
 
+    const plantCategories: Ref<PlantCategory[]> = ref([])
     const plantCategoryToEdit: Ref<PlantCategory> = ref({...newPlantCategory})
 
     const setCategoryToEdit = (plantCategory: PlantCategory | null) => {
@@ -139,23 +118,11 @@ export const usePlantStore = defineStore('plant', () => {
     } 
 
 
-
     const addPlant = (plantCategory: PlantCategory) => {
         if(plantCategory.plants.length === 0) {
-            plantCategory?.plants.push({
-                id: '',
-                sku: '',
-                isRepresentative: false,
-                size: '',
-                propagationDate: new Date(),
-                status: 'Coming Soon',
-                price: 0,
-                discountedPrice: 0,
-                isDiscounted: false,
-                quantity: 1,
-                photos: [],
-    
-            })
+            const defaultPlant = {...newPlant}
+            defaultPlant.status = 'Coming Soon'
+            plantCategory?.plants.push({...defaultPlant})
         } else {
             const lastPlant = plantCategory.plants[plantCategory.plants.length - 1]
             const nextId = lastPlant.id !== '' ? parseInt(lastPlant.id.toString()) + 1 : ''
@@ -195,20 +162,16 @@ export const usePlantStore = defineStore('plant', () => {
 
     return { 
         isLoading,
-        genusList,
-        statusList,
-        sizeList,
+        isSaving,
         plantCategories, 
-        newPlantCategory,
         plantCategoryToEdit,
         setCategoryToEdit,
         saveCategory,
-        isSaving,
+        deleteCategoryById,
+        findPlantCategoryById, 
+        fetchAllCategories,
         addPlant,
         removePlant,
-        findPlantCategoryById, 
-        fetchAllCategories, 
-        deleteCategoryById,
         appendPhotoData,
         removePhoto,
         getAvailablePlants,
