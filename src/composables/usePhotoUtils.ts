@@ -1,5 +1,4 @@
 import type {Product, PhotoItem} from '@/components/modules/products/types/product'
-import type {Specimen} from '@/components/modules/products/types/plants.ts'
 import type { Plant, PlantCategory } from '@/types/Plant'
 import { deleteFile } from '@/apis/fileServices'
 
@@ -13,7 +12,7 @@ export function getPhotoUrl(fileName: string | null | undefined) {
     return `${urlRoot}${encodedFileName}${urlSuffix}`
 }
 
-export async function appendPhotoDataUtil(item: Product | Plant | Specimen | PlantCategory, photoArr: Array<PhotoItem>) {
+export async function appendPhotoDataUtil(item: Product | Plant | PlantCategory, photoArr: Array<PhotoItem>) {
     if(!item || !photoArr) return
     if(item.photos) {
         item.photos = item.photos.concat(photoArr)
@@ -22,9 +21,9 @@ export async function appendPhotoDataUtil(item: Product | Plant | Specimen | Pla
     }
 }
 
-export async function removePhotoUtil(item: Product | Plant | PlantCategory | Specimen, photoToRemove: PhotoItem) {
+export async function removePhotoUtil(item: Product | Plant | PlantCategory, photoToRemove: PhotoItem) {
     if(!item || !photoToRemove || !item.photos) return {success: false, error: true, message: 'Unable to find photo or product'}
-    const photoIndex = item.photos.findIndex((ele) => ele.path === photoToRemove.path)
+    const photoIndex = item.photos.findIndex((ele: PhotoItem) => ele.path === photoToRemove.path)
     item.photos.splice(photoIndex, 1)
     if(item.id) {
         try {

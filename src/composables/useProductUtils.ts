@@ -1,4 +1,4 @@
-import type { Specimen } from "@/components/modules/products/types/plants"
+import type { Plant } from "@/types/Plant"
 import type { Product } from "@/components/modules/products/types/product"
 import { deleteAllPhotosUtil } from '@/composables/usePhotoUtils'
 import { saveItem, findAll, findByProperty, deleteItem, findDocById } from '@/apis/dataServices'
@@ -7,7 +7,7 @@ export async function findProductById(id: number | string, collectionName: strin
     const res = await findDocById(collectionName, id).catch(err => console.log(err))
     return res as Product
 }
-export async function saveProductUtil(product: Product | Specimen, collectionName: string, productList: Array<Product>) {
+export async function saveProductUtil(product: Product | Plant, collectionName: string, productList: Array<Product>) {
     try {
         const res = await saveItem(collectionName, product)
         //TODO convert to toRaw

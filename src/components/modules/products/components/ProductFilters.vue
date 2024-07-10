@@ -24,8 +24,8 @@
 <script setup lang="ts">
 
 
-const filterCategories = [
-    {
+const filterCategories = {
+    genus: {
         label: 'Genus',
         options: [
             {label: 'Heliamphora', value: true, visible: true,},
@@ -34,7 +34,7 @@ const filterCategories = [
             {label: 'Other', value: true, visible: false,},
         ],
     },
-    {
+    status: {
         label: 'Availability',
         options: [
             {label:'In-Stock',value: true,visible: true,},
@@ -42,7 +42,7 @@ const filterCategories = [
             {label: 'Archived', value: false, visible: false,}
         ],
     },
-    {
+    experienceLevel:{
         label: 'Experience',
         options: [
             {label:'Beginner', value: true, visible: true,},
@@ -50,7 +50,7 @@ const filterCategories = [
             {label: 'Advanced', value: true, visible: false,}
         ],
     },
-    {
+    other:{
         label: 'Other FIlters',
         options: [
             {label:'Species', value: true, visible: true,},
@@ -60,7 +60,7 @@ const filterCategories = [
             {label:'On Sale', value: true, visible: false,},
         ],
     },
-]
+}
 
 const sortCategories = [
     {

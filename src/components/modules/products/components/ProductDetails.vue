@@ -11,7 +11,7 @@
                 </div>
 
                 <div>
-                    <p class="text-center my-4">{{ plantCategory.description }}</p>   
+                    <p class="text-center my-4" :class="hideDescription ? '' : 'description-one-line'" @click="toggleHideDescription">{{ plantCategory.description }}</p>   
                 </div>
 
                 <div class="d-flex justify-content-evenly">
@@ -88,6 +88,12 @@ onMounted(async () => {
         setSelectedPlant(availablePlants[0])
     }
 })
+
+const hideDescription = ref(false)
+
+function toggleHideDescription () {
+    hideDescription.value = !hideDescription.value
+}
 
 const plantTypeLabel = computed(() => {
     if (selectedPlant.value === undefined) { return '' }
@@ -183,6 +189,14 @@ function addToCart() {
 
     .specimen-button {
         flex-basis: 100%;
+    }
+
+    .description-one-line {
+        height: 1.5rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        cursor: pointer;
     }
 
     @media (min-width: 30rem) {

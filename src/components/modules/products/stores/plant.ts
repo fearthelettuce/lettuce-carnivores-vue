@@ -45,7 +45,9 @@ export const usePlantStore = defineStore('plant', () => {
             plantCategoryToEdit.value.id = ''
         }
     }
+
     const isSaving: Ref<boolean> = ref(false)
+
     const saveCategory = async (plantCategory: PlantCategory) => {
         if(plantCategoryToEdit === null) { return false}
         isSaving.value = true
@@ -98,7 +100,9 @@ export const usePlantStore = defineStore('plant', () => {
             isLoading.value = false
         }
     }
+    async function filterCategories() {
 
+    }
     // const fetchSearchResults = async () => {
     //     isLoading.value = true
     //     await fetchAllCategories()
@@ -133,9 +137,7 @@ export const usePlantStore = defineStore('plant', () => {
         return category.plants.filter((plant) => {
             return plant.quantity > 0 && plant.status === 'Available' && plant.price !== 0})
     } 
-    async function filterCategories() {
 
-    }
 
 
     const addPlant = (plantCategory: PlantCategory) => {
@@ -169,7 +171,6 @@ export const usePlantStore = defineStore('plant', () => {
                 isDiscounted: lastPlant.isDiscounted,
                 quantity: 1,
                 photos: [],
-    
             })
         }
         
@@ -180,24 +181,17 @@ export const usePlantStore = defineStore('plant', () => {
         await saveCategory(plantCategoryToEdit.value)
     }
 
-
-
-
-     const appendPhotoData = async(plantCategory: PlantCategory, photoArr: Array<PhotoItem>) => {
+    const appendPhotoData = async(plantCategory: PlantCategory, photoArr: Array<PhotoItem>) => {
         const res = appendPhotoDataUtil(plantCategory, photoArr)
-        if (plantCategory.id) {
-            saveCategory(plantCategory)
-        }
+        if (plantCategory.id) { saveCategory(plantCategory) }
         return res
     }
+
     const removePhoto = async (plantCategory: PlantCategory, photoToRemove: PhotoItem) => {
         const res = removePhotoUtil(plantCategory, photoToRemove)
-        if(plantCategory.id) {
-            saveCategory(plantCategory)
-        }
+        if(plantCategory.id) {saveCategory(plantCategory)}
         return res
     }
-
 
     return { 
         isLoading,
