@@ -36,12 +36,18 @@
         </div>
     </div>
 
-    <PhotoUploadModal :photos="photoModalArr" :storageFolder="photoModalFolder" ref="photoModal" @triggerSave="saveCategory(plantCategoryToEdit)"/>
+    <PhotoUploadModal 
+        v-if="plantCategoryToEdit !== undefined"
+        :photos="photoModalArr" 
+        :storageFolder="photoModalFolder" 
+        ref="photoModal" 
+        @triggerSave="saveCategory(plantCategoryToEdit)"
+    />
 
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, provide } from 'vue';
+import { ref, onMounted, provide, type Ref} from 'vue';
 import { toast } from 'vue3-toastify'
 import ProductCard from './ProductCard.vue';
 import PlantCategoryForm from './PlantCategoryForm.vue';
@@ -62,7 +68,7 @@ onMounted(async () => {
     await fetchAllCategories()
 
     //TODO: find a way to change nav to exclude :id without messy custom lgoic, and then change this to === undefined or null
-    if(route.params.id !== ":id") {
+    if(route.params.id !== ":id" && route.params.id !== undefined) {
         const plantCategory = await findPlantCategoryById(route.params.id as string)
         console.log(plantCategory)
         setCategoryToEdit(plantCategory)
@@ -84,7 +90,7 @@ function toggleExpand () {
 
 const photoModal = ref()
 const photoModalFolder = ref()
-const photoModalArr = ref()
+const photoModalArr: Ref<PhotoItem[]> = ref([])
 function managePhotos(folder: string, arr: PhotoItem[]) {
     photoModalFolder.value = folder
     photoModalArr.value = arr

@@ -49,16 +49,14 @@
                             <FontAwesome icon="dumpster-fire" size="lg" style="color: #f29c07;" />
                         </div>
                         </div>
-                        
-                        
+
                     </template>
                 </TransitionGroup>
             </div>
             
                 <footer class="bg-dark">
-                    
                         <div class="">
-                            <label for="formFile" class="btn btn-primary">
+                            <label for="formFile" class="btn btn-primary" :disabled="isSaving">
                                 Select Files
                             </label>
                             <input 
@@ -68,12 +66,13 @@
                             id="formFile" 
                             @change="onFileChanged($event)" 
                             accept="capture=camera,image/*" 
-                            multiple>
+                            multiple
+                            :disabled="isSaving">
                             <div v-if="selectedFiles.length !== 0" class="d-inline-block mx-3 text-light">{{ selectedFiles.length }} files selected</div>
                         </div>
                     <div>
-                        <button type="button" class="btn btn-secondary me-4" @click="toggleModal" data-bs-dismiss="modal":disabled="selectedFiles.length !== 0">Close</button>    
-                        <button type="button" class="btn btn-primary" @click="uploadFiles" :disabled="selectedFiles.length === 0">Upload</button>
+                        <button type="button" class="btn btn-secondary me-4" @click="toggleModal" data-bs-dismiss="modal":disabled="selectedFiles.length !== 0 || isSaving">Close</button>    
+                        <button type="button" class="btn btn-primary" @click="uploadFiles" :disabled="selectedFiles.length === 0 || isSaving">Upload <span v-if="isSaving" class="spinner-border"></span></button>
                     </div>
 
                 </footer>
@@ -163,12 +162,15 @@ function onFileChanged($event: Event) {
     }    
 }
 
+const isSaving = ref(false)
+
 async function uploadFiles() {
     const photosToUpload = selectedFiles.value.filter((photo) => photo.file)
     if(photosToUpload.length === 0) {
         toast.warning('No files to upload')
         return
     }
+    isSaving.value = true
     let fileUploadCounter = 0
     for (let photo of photosToUpload) {
         if(!photo.file) continue
@@ -192,6 +194,7 @@ async function uploadFiles() {
         }
     }
     selectedFiles.value.length = 0;
+    isSaving.value = false
 }
 
 </script>
@@ -241,7 +244,11 @@ footer {
     overflow-y:auto;
     min-height: 20rem;
 }
-
+.spinner-border {
+    height: 1rem;
+    width: 1rem;
+    margin-left: 1rem;
+}
 .move-arrow {
     --fa-li-margin: 0
 }

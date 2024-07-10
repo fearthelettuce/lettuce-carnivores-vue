@@ -83,7 +83,6 @@ const { findPlantCategoryById, getAvailablePlants} = usePlantStore()
 onMounted(async () => {
     await fetchData()
     const availablePlants = getAvailablePlants(plantCategory.value)
-    console.log(availablePlants[0])
     if(availablePlants.length === 1) {
         setSelectedPlant(availablePlants[0])
     }
@@ -149,7 +148,6 @@ const referencePlants = computed(() => {
 })
 
 const specimenPlants = computed(() => {
-    console.log(getAvailablePlants(plantCategory.value))
     return getAvailablePlants(plantCategory.value).filter(plant => !plant.isRepresentative).sort(function(a, b) {
         const textA = a.id
         const textB = b.id
