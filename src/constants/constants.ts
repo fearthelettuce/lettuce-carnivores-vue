@@ -1,62 +1,6 @@
 import type { PlantCategory, Plant, Sizes } from "@/types/Plant"
 import type { PhotoItem } from "@/types/Product"
 
-export const defaultFilters = {
-    genus: {
-        label: 'Genus',
-        options: [
-            {label: 'Heliamphora', value: true, visible: true,},
-            {label: 'Nepenthes', value: true, visible: true,},
-            {label: 'Cephalotus', value: true, visible: true,},
-            {label: 'Other', value: true, visible: false,},
-        ],
-    },
-    status: {
-        label: 'Availability',
-        options: [
-            {label:'In-Stock',value: true, visible: true,},
-            {label: 'Coming Soon', value: false, visible: true,},
-            {label: 'Archived', value: false, visible: false,}
-        ],
-    },
-    experienceLevel:{
-        label: 'Experience',
-        options: [
-            {label:'Beginner', value: true, visible: true,},
-            {label: 'Intermediate', value: true, visible: true,},
-            {label: 'Advanced', value: true, visible: false,}
-        ],
-    },
-    other:{
-        label: 'Other FIlters',
-        options: [
-            {label:'Species', value: true, visible: true,},
-            {label: 'Hybrid', value: true, visible: true,},
-            {label:'Specimen', value: true, visible: true,},
-            {label: 'Represenatative', value: true, visible: true,},
-            {label:'On Sale', value: true, visible: false,},
-        ],
-    },
-}
-
-export const sortCategories = [
-    {
-        label: 'Alphabetical', 
-        value: 'asc',
-        sortFunction: (arr: Object[], value: String) => {
-            return arr.sort()
-        }
-    },
-    {
-        label: 'Price',
-        value: 'asc',
-        sortFunction: (arr: Object[], value: String) => {
-            return arr.sort()
-        }
-    },
-
-]
-
 export const sizeList = [
     {label: '', value: '',},
     {label: '2.5"', value: '2,5"'},
@@ -77,6 +21,88 @@ export const statusList = [
     {label:'Archived', value: 'Archived'}, 
     {label:'Hidden', value: 'Hidden'}
 ]
+
+export const defaultFilters = {
+    genus: {
+        label: 'Genus',
+        filterKey: 'genus',
+        options: genusList
+    },
+    status: {
+        label: 'Availability',
+        filterKey: 'status',
+        options: ['In Stock', 'Coming Soon', 'Out of Stock']
+    },
+    tags: {
+        species: {
+            label: 'Species',
+            value: true,
+        },
+        hybrid: {
+            label: 'Hybrid',
+            value: true,
+        },
+        specimen: {
+            label: 'Specimen',
+            value: true
+        },
+        representative: {
+            label: 'Representative',
+            value: true
+        },
+        beginner: {
+            label: 'Beginner Friendly',
+            value: true,
+        },
+        intermediate: {
+            label: 'Intermediate',
+            value: true,
+        },
+        advanced: {
+            label: 'Advanced',
+            value: true,
+        },
+        sale: {
+            label: 'On Sale',
+            value: true,
+            hidden: true,
+        },
+    }
+}
+
+export const defaultSort = [
+    {
+        label: 'Sort: A - Z', 
+        value: 'asc',
+        sortFunction: (arr: Object[], value: String) => {
+            return arr.sort()
+        }
+    },
+    {
+        label: 'Sort: Z - A', 
+        value: 'asc',
+        sortFunction: (arr: Object[], value: String) => {
+            return arr.sort()
+        }
+    },
+    {
+        label: 'Sort: $ - $$$',
+        value: 'asc',
+        sortFunction: (arr: Object[], value: String) => {
+            return arr.sort()
+        }
+    },
+    {
+        label: 'Sort: $$$ - $',
+        value: 'asc',
+        sortFunction: (arr: Object[], value: String) => {
+            return arr.sort()
+        }
+    },
+
+]
+
+
 
 export const newPlantCategory: PlantCategory = {
     id: '',
