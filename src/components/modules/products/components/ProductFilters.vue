@@ -23,7 +23,7 @@
             <MultiSelect 
                 v-model="productFilters.experience.items" 
                 display="chip"
-                :options="experienceList"
+                :options="displayExperienceList"
                 :showToggleAll="false"
                 placeholder="Experience"
                 class="filter-item" 
@@ -68,7 +68,7 @@ const selectedGenus = ref()
 const selectedOtherFilters = ref()
 const {productFilters} = storeToRefs(usePlantStore())
 const sortMethod = ref({...defaultSort})
-
+const displayExperienceList = experienceList.filter(item => item !== '')
 onMounted(() => {
     productFilters.value.status.items = productFilters.value.status.items.filter(item => !item.hidden)
 })

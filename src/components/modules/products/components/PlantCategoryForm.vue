@@ -37,6 +37,13 @@
         />
         <FormKit
             type="select"
+            label="Experience"
+            :options="experienceList"
+            class="grid-col-1"
+            v-model="plantCategoryToEdit.experience" 
+        />
+        <FormKit
+            type="select"
             label="Status"
             :options="statusListArr"
             class="grid-col-1"
@@ -87,7 +94,7 @@ import { ref, inject, watch } from 'vue';
 import { toast } from 'vue3-toastify'
 import { usePlantStore } from '../stores/plant';
 import { storeToRefs } from 'pinia';
-import { genusList, statusListArr, speciesHybridArr } from '@/constants/constants';
+import { genusList, statusListArr, speciesHybridArr, experienceList } from '@/constants/constants';
 import BaseModal from '@/components/app/UI/BaseModal.vue'
 
 const {saveCategory, setCategoryToEdit, deleteCategoryById } = usePlantStore()

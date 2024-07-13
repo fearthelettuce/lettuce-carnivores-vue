@@ -15,7 +15,7 @@ export const genusList = ['Heliamphora', 'Nepenthes', 'Cephalotus', 'Other']
 
 export const statusListArr = [
     'In Stock', 'Coming Soon', 'Sold', 'Archived', 'Hidden']
-export const experienceList = ['Beginner Friendly', 'Intermediate', 'Advanced']
+export const experienceList = ['', 'Beginner Friendly', 'Intermediate', 'Advanced']
 export const speciesHybridArr = ['', 'Species', 'Hybrid']
 export const otherFiltersList = [
     {label: 'Species', value: 'Species', hidden: false},
@@ -46,7 +46,7 @@ export const defaultFilters = {
     },
     experience: {
         label: 'Experience',
-        items: experienceList
+        items: experienceList.filter(item => item !== '')
     },
     other: {
         label: 'Other Filters',
@@ -104,6 +104,7 @@ export const newPlantCategory: PlantCategory = {
     genus: '',
     clone: '',
     speciesHybrid: '',
+    experience: '',
     description: '',
     plants: [] as Plant[],
     status: 'In Stock',

@@ -96,12 +96,14 @@ export const usePlantStore = defineStore('plant', () => {
     )
     const getAvailableCategories = () => {
         const selectedOther = productFilters.value.other.items.map(item => item.value)
+        const selectedExperience = productFilters.value.experience.items
         return plantCategories.value.filter(category => {
             const plants = getAvailablePlants(category)
             return plants.length > 0 && 
             !['Hidden', 'Archived'].includes(category.status) &&
             productFilters.value.genus.items.includes(category.genus) &&
-            selectedOther.includes(category.speciesHybrid)
+            selectedOther.includes(category.speciesHybrid) &&
+            productFilters.value.experience.items.includes(category.experience)
         })
     }
     const getAvailablePlants = (category: PlantCategory | undefined) => {

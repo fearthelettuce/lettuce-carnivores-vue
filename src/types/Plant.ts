@@ -1,11 +1,11 @@
 import type { PhotoItem } from "@/types/Product"
-import { statusListArr } from '@/constants/constants'
 
 export type PlantCategory = {
     name: string,
     genus: string,
     clone: string,
     speciesHybrid: '' | 'Species' | 'Hybrid',
+    experience: '' | 'Beginner Friendly' | 'Intermediate' | 'Advanced',
     description: string,
     id: string | number,
     plants: Plant[],
