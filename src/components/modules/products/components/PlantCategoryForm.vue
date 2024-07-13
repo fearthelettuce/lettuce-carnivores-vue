@@ -30,8 +30,15 @@
         />
         <FormKit
             type="select"
+            label="Species/Hybrid"
+            class="grid-col-1"
+            :options="speciesHybridArr"
+            v-model="plantCategoryToEdit.speciesHybrid" 
+        />
+        <FormKit
+            type="select"
             label="Status"
-            :options="statusList"
+            :options="statusListArr"
             class="grid-col-1"
             v-model="plantCategoryToEdit.status" 
         />
@@ -76,16 +83,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from 'vue';
+import { ref, inject, watch } from 'vue';
 import { toast } from 'vue3-toastify'
 import { usePlantStore } from '../stores/plant';
 import { storeToRefs } from 'pinia';
-import { genusList, statusList } from '@/constants/constants';
+import { genusList, statusListArr, speciesHybridArr } from '@/constants/constants';
 import BaseModal from '@/components/app/UI/BaseModal.vue'
 
 const {saveCategory, setCategoryToEdit, deleteCategoryById } = usePlantStore()
 const {plantCategoryToEdit, isSaving} = storeToRefs(usePlantStore())
 
+watch(() => plantCategoryToEdit.value,() =>{
+    if(!plantCategoryToEdit.value.status && !statusListArr.includes(plantCategoryToEdit.value.status)) {
+        alert('Value for status does not match options in   statusListArr ')
+    }
+})
 
 const confirmDeleteModalRef = ref<InstanceType<typeof BaseModal> | null>(null)
 

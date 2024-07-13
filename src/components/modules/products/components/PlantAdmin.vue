@@ -18,7 +18,7 @@
                 
             </div>
             <div class="plant-list mt-5">
-                <PlantItem v-for="(plant, index) in plantCategoryToEdit.plants" :key="index" :plant @triggerSave="saveCategory(plantCategoryToEdit)" @deletePlant="removePlant(index)"/>
+                <PlantItemForm v-for="(plant, index) in plantCategoryToEdit.plants" :key="index" :plant @triggerSave="saveCategory(plantCategoryToEdit)" @deletePlant="removePlant(index)"/>
                 <div class="mt-5">
                     <button class="btn btn-primary" @click.prevent="addPlant(plantCategoryToEdit)">Add Plant Item</button>
                     <button class="btn btn-primary ms-4" @click.prevent="save">Save <span class="spinner-border" role="status" v-show="isSaving"></span></button>
@@ -52,7 +52,7 @@ import { toast } from 'vue3-toastify'
 import ProductCard from './ProductCard.vue';
 import PlantCategoryForm from './PlantCategoryForm.vue';
 import ItemSelect from '@/components/app/UI/ItemSelect.vue';
-import PlantItem from './PlantItem.vue';
+import PlantItemForm from './PlantItemForm.vue';
 import { usePlantStore } from '../stores/plant';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router'

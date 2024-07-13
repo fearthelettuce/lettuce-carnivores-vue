@@ -1,11 +1,11 @@
-import { ref, type Ref } from "vue"
+import { ref, watch, type Ref } from "vue"
 import { defineStore } from "pinia"
-import { type PlantCategory,  type Plant} from "@/types/Plant"
+import { type PlantCategory} from "@/types/Plant"
 import { type PhotoItem } from "../../../../types/Product"
-import { saveItem, findAll, findByProperty, findDocById } from '@/apis/dataServices'
-import {deleteById, saveProductUtil} from '@/composables/useProductUtils'
+import { saveItem, findAll, findDocById } from '@/apis/dataServices'
+import {deleteById} from '@/composables/useProductUtils'
 import {appendPhotoDataUtil, removePhotoUtil} from '@/composables/usePhotoUtils'
-import { sizeList, statusList, genusList, newPlantCategory, newPlant } from "@/constants/constants"
+import { newPlantCategory, newPlant, defaultFilters } from "@/constants/constants"
 import { toast } from 'vue3-toastify'
 export const usePlantStore = defineStore('plant', () => {
 
@@ -79,44 +79,48 @@ export const usePlantStore = defineStore('plant', () => {
             isLoading.value = false
         }
     }
-    async function filterCategories() {
 
+    const filteredCategories: Ref<PlantCategory[]> = ref([])
+
+    const updateFilteredCategories = () => {
+        filteredCategories.value = getAvailableCategories()
     }
-    // const fetchSearchResults = async () => {
-    //     isLoading.value = true
-    //     await fetchAllCategories()
-    //     await filterCategories()
-    //     isLoading.value = true
-    // }
-
-    // const categoryFilters = ref({
-    //     inStock: true,
-    //     genus: genusList,
-    //     status: statusList.filter(item => item !== 'Hidden')
-    // })
-    // const availablePlants: Ref<PlantCategory[]> = ref([])
-    // const filteredCategories: Ref<PlantCategory[]> = ref([])
-
-    // const getAvailablePlants = async () => {
-    //     if(plantCategories.value.length === 0) {
-    //         await fetchAllCategories()
-    //     }
-    //     categoriesWithAvailablePlants.value = plantCategories.value.plants.filter((plant) => {
-    //     console.log(plant)
-    //     console.log(plant.quantity > 0 && plant.status === 'Available' && plant.price !== 0)
-    //     return plant.quantity > 0 && plant.status === 'Available' && plant.price !== 0})
-    // }
+    const productFilters = ref({...defaultFilters})
+    watch(
+        () => productFilters.value,
+        () => {
+            if(plantCategories.value.length === 0) { return }
+            updateFilteredCategories()
+        }, 
+        { deep: true }
+    )
     const getAvailableCategories = () => {
-        return plantCategories.value.filter((category) => {
-            return category.status === 'Available' && getAvailablePlants(category).length > 0
+        const selectedOther = productFilters.value.other.items.map(item => item.value)
+        return plantCategories.value.filter(category => {
+            const plants = getAvailablePlants(category)
+            return plants.length > 0 && 
+            !['Hidden', 'Archived'].includes(category.status) &&
+            productFilters.value.genus.items.includes(category.genus) &&
+            selectedOther.includes(category.speciesHybrid)
         })
     }
     const getAvailablePlants = (category: PlantCategory | undefined) => {
         if(category === undefined) {return []}
-        return category.plants.filter((plant) => {
-            return plant.quantity > 0 && plant.status === 'Available' && plant.price !== 0})
-    } 
+        const selectedStatuses = productFilters.value.status.items.map(status => status.value)
+        const selectedOther = productFilters.value.other.items.map(item => item.value)
+        const visiblePlants = category.plants.filter(plant => 
+            plant.quantity > 0 &&
+            plant.status !== 'Hidden' &&
+            plant.status !== 'Archived' &&
+            plant.price > 0
+        )
 
+        let filteredPlants
+        filteredPlants = visiblePlants.filter(plant => selectedStatuses.includes(plant.status))
+        filteredPlants = filteredPlants.filter(plant => selectedOther.includes('Specimen') ? true : plant.isRepresentative )
+        filteredPlants = filteredPlants.filter(plant => selectedOther.includes('Representative') ? true : !plant.isRepresentative)
+        return filteredPlants
+    }
 
     const addPlant = (plantCategory: PlantCategory) => {
         if(plantCategory.plants.length === 0) {
@@ -132,7 +136,7 @@ export const usePlantStore = defineStore('plant', () => {
                 isRepresentative: lastPlant.isRepresentative,
                 size: '',
                 propagationDate: new Date(),
-                status: 'Available',
+                status: 'In Stock',
                 price: lastPlant.price,
                 discountedPrice: lastPlant.discountedPrice,
                 isDiscounted: lastPlant.isDiscounted,
@@ -175,6 +179,9 @@ export const usePlantStore = defineStore('plant', () => {
         appendPhotoData,
         removePhoto,
         getAvailablePlants,
-        getAvailableCategories
+        getAvailableCategories,
+        productFilters,
+        updateFilteredCategories,
+        filteredCategories
     }
 })

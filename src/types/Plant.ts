@@ -1,13 +1,15 @@
 import type { PhotoItem } from "@/types/Product"
+import { statusListArr } from '@/constants/constants'
 
 export type PlantCategory = {
     name: string,
     genus: string,
     clone: string,
+    speciesHybrid: '' | 'Species' | 'Hybrid',
     description: string,
     id: string | number,
     plants: Plant[],
-    status: string,
+    status: 'In Stock' | 'Coming Soon' | 'Sold' | 'Archived' | 'Hidden',
     photos: PhotoItem[],
 }
 
@@ -17,7 +19,7 @@ export type Plant = {
     isRepresentative: boolean,
     size: Sizes,
     propagationDate?: Date,
-    status: string,
+    status:  'In Stock' | 'Coming Soon' | 'Sold' | 'Archived' | 'Hidden',
     price: number,
     discountedPrice?: number,
     isDiscounted: boolean,

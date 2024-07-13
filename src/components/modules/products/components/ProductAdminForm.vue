@@ -98,6 +98,7 @@ onMounted(() => {
     if (!productStore.productList || productStore.productList.length === 0) {
         productStore.fetchSearchResults()
     }
+    
 })
 
 function resetForm() {

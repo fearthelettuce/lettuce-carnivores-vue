@@ -1,76 +1,81 @@
 <template>
     <div class="filter-container">
-        <div v-for="category in filterCategories" :key="category.label">
+        <div v-if="!isHidden" class="filter-item-container">
+            <MultiSelect 
+                v-model="productFilters.status.items" 
+                display="chip"
+                :options="statusList.filter(item => !item.hidden)"
+                optionLabel="label"
+                placeholder="Status"
+                :showToggleAll="false"
+                class="filter-item" 
+            />
 
+            <MultiSelect 
+                v-model="productFilters.genus.items" 
+                display="chip"
+                :options="genusList"
+                :showToggleAll="false"
+                placeholder="Genus"
+                class="filter-item" 
+            />
 
+            <MultiSelect 
+                v-model="productFilters.experience.items" 
+                display="chip"
+                :options="experienceList"
+                :showToggleAll="false"
+                placeholder="Experience"
+                class="filter-item" 
+            />
+
+            <MultiSelect 
+                v-model="productFilters.other.items" 
+                display="chip"
+                optionLabel="label"
+                :options="otherFiltersList"
+                filter
+                placeholder="Other filters"
+                class="filter-item" 
+            />
+
+            <!-- <Select 
+                v-model="sortMethod"
+                :options="defaultSort"
+                optionLabel="label"
+                placeholder="Sort"
+                class="filter-item" 
+             /> -->
+             <button v-if="!isHidden" class="btn btn-sm-primary" @click="isHidden = !isHidden">Collapse Filters</button>
         </div>
-        <!-- <div class="row my-4 g-3 align-items-center ">
-            <div class="btn-group col-6" role="group" aria-label="Select genus filters">
-                <label v-for="genus of productStore.getGenusList" :key="genus.id" class="btn btn-outline-primary" :for="genus.label"  @click="filterByGenus()">
-                <input type="checkbox" class="btn-check" :name="genus.label" :id="genus.id" autocomplete="off" v-model="filters.genus">
-                    {{ genus.label }}</label>
-            </div>
-            <div class="col-auto">
-                <select name="editProduct" class="form-select" aria-label="Select a product to edit" @change="getProductDetails" v-model="productToEdit">
-                    <option id="placeholder" selected disabled value="">Select a product to edit</option>
-                    <option v-for="product of products" :value="product.id" :key="product.id" >{{ product.name }} ({{ product.id }})</option>
-                </select>
-            </div>
-        </div> -->
+        <div v-else>
+            <button v-if="isHidden" class="btn btn-sm-primary" @click="isHidden = !isHidden">Expand Filters</button>
+        </div>
     </div>
-
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { defaultSort, genusList, statusList, experienceList, otherFiltersList} from '@/constants/constants'
+import { usePlantStore } from '../stores/plant';
+import MultiSelect from 'primevue/multiselect'
+import Select from 'primevue/select';
+import { storeToRefs } from 'pinia'
 
+//TODO: make this responsive
+const isHidden = ref(false)
+const selectedGenus = ref()
+const selectedOtherFilters = ref()
+const {productFilters} = storeToRefs(usePlantStore())
+const sortMethod = ref({...defaultSort})
 
-const filterCategories = {
-    genus: {
-        label: 'Genus',
-        options: [
-            {label: 'Heliamphora', value: true, visible: true,},
-            {label: 'Nepenthes', value: true, visible: true,},
-            {label: 'Cephalotus', value: true, visible: true,},
-            {label: 'Other', value: true, visible: false,},
-        ],
-    },
-    status: {
-        label: 'Availability',
-        options: [
-            {label:'In-Stock',value: true,visible: true,},
-            {label: 'Coming Soon', value: false, visible: true,},
-            {label: 'Archived', value: false, visible: false,}
-        ],
-    },
-    experienceLevel:{
-        label: 'Experience',
-        options: [
-            {label:'Beginner', value: true, visible: true,},
-            {label: 'Intermediate', value: true, visible: true,},
-            {label: 'Advanced', value: true, visible: false,}
-        ],
-    },
-    other:{
-        label: 'Other FIlters',
-        options: [
-            {label:'Species', value: true, visible: true,},
-            {label: 'Hybrid', value: true, visible: true,},
-            {label:'Specimen', value: true, visible: true,},
-            {label: 'Represenatative', value: true, visible: true,},
-            {label:'On Sale', value: true, visible: false,},
-        ],
-    },
+onMounted(() => {
+    productFilters.value.status.items = productFilters.value.status.items.filter(item => !item.hidden)
+})
+
+function updateFilters() {
+
 }
-
-const sortCategories = [
-    {
-        label: 'Alphabetical'
-    },
-    {
-        label: 'Price'
-    },
-
-]
 
 //Size - 2.5, 3.0, 3.5, 3.5d, etc.
 
@@ -96,8 +101,34 @@ const sortCategories = [
 </script>
 
 <style scoped>
-
 .filter-container {
     display: flex;
+    flex-direction: row;
+    justify-content:center;
+
 }
+.filter-item-container {
+    display: flex;
+    flex-direction: column;
+    justify-content:space-evenly;
+    gap: .5rem;
+    flex-wrap: wrap;
+}
+
+.filter-item {
+    max-width: 90dvw;
+}
+
+@media(min-width: 45rem) {
+    .filter-container {
+        margin: 0 7dvw;
+    }
+    .filter-item-container { 
+        gap: 1rem;
+        flex-direction: row;
+    }
+    
+
+}
+
 </style>

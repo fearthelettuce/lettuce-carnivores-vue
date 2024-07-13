@@ -13,87 +13,81 @@ export const sizeList = [
 
 export const genusList = ['Heliamphora', 'Nepenthes', 'Cephalotus', 'Other']
 
-export const statusList = [
-    {label:'', value: ''}, 
-    {label:'Available', value: 'Available'}, 
-    {label:'Coming Soon', value: 'Coming Soon'},
-    {label:'Sold', value: 'Sold'}, 
-    {label:'Archived', value: 'Archived'}, 
-    {label:'Hidden', value: 'Hidden'}
+export const statusListArr = [
+    'In Stock', 'Coming Soon', 'Sold', 'Archived', 'Hidden']
+export const experienceList = ['Beginner Friendly', 'Intermediate', 'Advanced']
+export const speciesHybridArr = ['', 'Species', 'Hybrid']
+export const otherFiltersList = [
+    {label: 'Species', value: 'Species', hidden: false},
+    {label: 'Hybrid', value: 'Hybrid', hidden: false},
+    {label: 'Specimen', value: 'Specimen', hidden: false},
+    {label: 'Representative', value: 'Representative', hidden: false},
+    {label: 'Only Sale Items', value: 'Only Sale Items', hidden: false},
 ]
-
+export const statusList = [
+    {label:'', value: false, hidden: true}, 
+    {label:'In Stock', value: 'In Stock', hidden: false}, 
+    {label:'Coming Soon', value: false, hidden: false},
+    {label:'Archived', value: false, hidden: true}, 
+    {label:'Hidden', value: false, hidden: true}
+]
 export const defaultFilters = {
     genus: {
         label: 'Genus',
         filterKey: 'genus',
-        options: genusList
+        items: genusList
     },
     status: {
         label: 'Availability',
         filterKey: 'status',
-        options: ['In Stock', 'Coming Soon', 'Out of Stock']
+        items: [
+            {label:'In Stock', value: 'In Stock', hidden: false}, 
+        ]
     },
-    tags: {
-        species: {
-            label: 'Species',
-            value: true,
-        },
-        hybrid: {
-            label: 'Hybrid',
-            value: true,
-        },
-        specimen: {
-            label: 'Specimen',
-            value: true
-        },
-        representative: {
-            label: 'Representative',
-            value: true
-        },
-        beginner: {
-            label: 'Beginner Friendly',
-            value: true,
-        },
-        intermediate: {
-            label: 'Intermediate',
-            value: true,
-        },
-        advanced: {
-            label: 'Advanced',
-            value: true,
-        },
-        sale: {
-            label: 'On Sale',
-            value: true,
-            hidden: true,
-        },
-    }
+    experience: {
+        label: 'Experience',
+        items: experienceList
+    },
+    other: {
+        label: 'Other Filters',
+        items: [
+            {label: 'Species', value: 'Species', hidden: false},
+            {label: 'Hybrid', value: 'Hybrid', hidden: false},
+            {label: 'Specimen', value: 'Specimen', hidden: false},
+            {label: 'Representative', value: 'Representative', hidden: false},
+            {label: 'Only Sale Items', value: 'Only Sale Items', hidden: false},
+        ]
+    },
+
+
+
 }
 
+export const sortOptions = []
 export const defaultSort = [
     {
-        label: 'Sort: A - Z', 
+        label: 'A - Z', 
         value: 'asc',
         sortFunction: (arr: Object[], value: String) => {
             return arr.sort()
         }
     },
     {
-        label: 'Sort: Z - A', 
+        label: 'Z - A', 
         value: 'asc',
         sortFunction: (arr: Object[], value: String) => {
             return arr.sort()
         }
     },
     {
-        label: 'Sort: $ - $$$',
+        label: '$ - $$$',
         value: 'asc',
         sortFunction: (arr: Object[], value: String) => {
             return arr.sort()
         }
     },
     {
-        label: 'Sort: $$$ - $',
+        label: '$$$ - $',
         value: 'asc',
         sortFunction: (arr: Object[], value: String) => {
             return arr.sort()
@@ -109,9 +103,10 @@ export const newPlantCategory: PlantCategory = {
     name: '',
     genus: '',
     clone: '',
+    speciesHybrid: '',
     description: '',
     plants: [] as Plant[],
-    status: 'Available',
+    status: 'In Stock',
     photos: [] as PhotoItem[]
 }
 
@@ -121,7 +116,7 @@ export const newPlant: Plant = {
     isRepresentative: false,
     size: '',
     propagationDate: new Date(),
-    status: '',
+    status: 'In Stock',
     price: 0,
     discountedPrice: 0,
     isDiscounted: false,

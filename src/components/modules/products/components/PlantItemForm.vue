@@ -84,13 +84,24 @@
 <script setup lang="ts">
 import { inject, watch, type PropType } from 'vue'
 import { type Plant } from '@/types/Plant';
-import { statusList, sizeList } from '@/constants/constants';
+import { statusList, sizeList, statusListArr} from '@/constants/constants';
 
 defineEmits(['triggerSave', 'deletePlant'])
 
 const plant = defineModel('plant', {type: Object as PropType<Plant>, required: true})
 
-
+watch(
+    () => plant.value,
+    () =>{
+        if(!plant.value.status && !statusListArr.includes(plant.value.status)) {
+            alert(`Plant ${plant.value.id}/${plant.value.sku} value for status does not match options in statusListArr `)
+        }
+        if(!plant.value.size && !statusListArr.includes(plant.value.status)) {
+            alert(`Plant ${plant.value.id}/${plant.value.sku} value for status does not match options in statusListArr `)
+        } 
+    },
+    { immediate: true }
+)
 const managePhotos = inject<Function>('managePhotos')
 
 function addPhotos() {
