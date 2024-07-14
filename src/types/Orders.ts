@@ -10,6 +10,7 @@ export type CartItem = {
     sku: string,
     categoryId: string | number,
     quantity: number,
+    maxQuantity: number,
     price: number,
     name: string,
     clone: string,

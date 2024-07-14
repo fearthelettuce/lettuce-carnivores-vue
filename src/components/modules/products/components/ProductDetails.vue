@@ -85,7 +85,15 @@ onMounted(async () => {
     if(availablePlants.length === 1) {
         setSelectedPlant(availablePlants[0])
     }
+    if(route.params.sku !== undefined) {
+        const skuArr = plantCategory.value?.plants.map(plant => plant.sku)
+        if(skuArr && skuArr.includes(route.params.sku as string)) {
+            setSelectedPlant(plantCategory.value?.plants.find(plant => plant.sku === route.params.sku))
+        }
+    }
 })
+
+
 
 const hideDescription = ref(false)
 
@@ -174,7 +182,8 @@ async function addToCart() {
         const res = await addItemToCart({
         sku: selectedPlant.value.sku,
         price: selectedPlant.value.price,
-        quantity: 1, 
+        quantity: 1,
+        maxQuantity: selectedPlant.value.quantity,
         categoryId: plantCategory.value.id,
         name: plantCategory.value.name,
         clone: plantCategory.value.clone,

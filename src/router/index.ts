@@ -39,7 +39,7 @@ const routeData = [
       }
     },
     {
-      path: "/plants/:id",
+      path: "/plants/:id/:sku?",
       name: 'productDetails',
       label: 'Products Details',
       component: ProductDetailView,
