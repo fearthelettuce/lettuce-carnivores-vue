@@ -1,19 +1,14 @@
 <template>
-    <div class="container">
-        <div class="alert alert-warning mb-5">
-
-            The shopping cart is still under construction.  Please message @dangerlettuce on Instagram, Facebook, or eBay to purchase any of the plants listed here.
-
-        </div>
-        <div v-if="cart.cartItems.length === 0">
+    <div class="container mb-3">
+        
+        <div class="d-flex justify-content-center" v-if="cart.cartItems.length === 0">
            <p>Cart is empty</p> 
         </div>
 
         <div class="cart-grid" v-else>
             <div class="cart-item-container ">
-
                 <div v-for="item in cart.cartItems" :key="item.sku" class="cart-item">
-                    <router-link :to="`/plants/${encodeURIComponent(item.categoryId)}/${item.sku}`">
+                    <router-link :to="`/plants/${encodeURIComponent(item.categoryId)}/${item.sku}`" class="align-content-center">
                         <div class="cart-item-photo">
                             <img :src="getImageUrl(item.photo?.path)" :class="getImageUrl(item.photo?.path) == placeholderUrl ? 'placeholderImage': 'cardImage'" :alt="`An image of ${item.name}`" />
                         </div>
@@ -44,8 +39,29 @@
                     </div>
                 </div>
             </div>
-            <footer>
-                <div class="subTotal-grid">
+            <footer class="d-flex flex-column">
+                <div class="subtotal d-flex flex-column">
+                    <div class="d-flex flex-row justify-content-end gap-3 mx-2 my-2">
+                    <h3 class="m-0">Shipping</h3>
+                    <h3 class="m-0">
+                        Free!<!-- {{ USDollar.format(0)}} -->
+                    </h3>
+                    
+                </div>
+                <div class="d-flex flex-row justify-content-end gap-3 mx-2 my-2">
+                    <h3 class="m-0">Subtotal</h3>
+                    <h3 class="m-0">
+                        {{ USDollar.format(cartTotal)}}
+                    </h3>
+                    
+                </div>
+                </div>
+                
+                <!-- <div class="d-flex flex-row justify-content-end gap-5 m-3">
+                    <h3>Shipping</h3>
+                    <h3>
+                        Free! {{ USDollar.format(0)}}
+                    </h3>
                     
                 </div>
                 <div class="d-flex flex-row justify-content-end gap-5 m-3">
@@ -54,14 +70,7 @@
                         {{ USDollar.format(cartTotal)}}
                     </h3>
                     
-                </div>
-                <div class="d-flex flex-row justify-content-end gap-5 m-3">
-                    <h3>Shipping</h3>
-                    <h3>
-                        {{ USDollar.format(0)}}
-                    </h3>
-                    
-                </div>
+                </div> -->
                 <div class="d-flex flex-row justify-content-center">
                     <button class="btn btn-primary" @click.prevent="checkout">Proceed to Checkout</button>
                 </div>
@@ -137,14 +146,13 @@ function checkout() {
 }
 .cart-item-photo {
     img {
-        width: 10rem;
-        height: 10rem;
+        width: 6rem;
+        height: 6rem;
         object-fit: cover;
     }
-    
 }
 .item-subtotal {
-    margin: 0 1rem 0 auto;
+    margin: 0 .25rem 0 auto;
 }
 .item-footer {
     display: flex;
@@ -159,37 +167,46 @@ function checkout() {
 .item-info {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    margin: 1rem 2rem;
+    margin: 0 .8rem;
 }
+
 .quantity-input {
     width: 6rem;
 }
 
 .cart-item-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
     background:var(--bs-body-bg);
     filter: brightness(85%);
-    padding: 1rem 1rem;
+    padding: .5rem .5rem;
     border-radius: .6rem;
+    
 }
-.cart-item-labels { 
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 1rem;
-    background:var(--bs-body-bg);
-    filter: brightness(85%);
-    border-radius: .6rem;
-    padding: .5rem 1rem;
-    align-items: center;
-    justify-content: center;
-}
-.cart-item-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 1rem;
-    border-radius: .6rem;
-    align-items: center;
-    justify-content: center;
 
+@media(min-width: 27rem) {
+    .cart-item-photo {
+        img {
+            width: 10rem;
+            height: 10rem;
+            object-fit: cover;
+        }
+    }
+    .item-info {
+        margin: .5rem 1rem .5rem 2rem;
+    }
+}
+@media(min-width: 60rem) {
+    .cart-item-photo {
+        img {
+            width: 16rem;
+            height: 16rem;
+            object-fit: cover;
+        }
+    }
+    .cart-item-container {
+        padding: 1rem 1rem;
+    }
 }
 </style>
