@@ -22,17 +22,33 @@
                     @click="handleLogout"
                 >Logout</button>
             </div>
-            
         </li>
+        
     </ul>
+    <div class="cart">
+            <router-link
+                to="/cart"
+                @click="$emit('collapseNavbar')"
+            >
+                <div>
+                    <div class="cart-container">
+                        <svg class="icon" stroke-width="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M19.5 22C20.3284 22 21 21.3284 21 20.5C21 19.6716 20.3284 19 19.5 19C18.6716 19 18 19.6716 18 20.5C18 21.3284 18.6716 22 19.5 22Z" fill="#000000" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9.5 22C10.3284 22 11 21.3284 11 20.5C11 19.6716 10.3284 19 9.5 19C8.67157 19 8 19.6716 8 20.5C8 21.3284 8.67157 22 9.5 22Z" fill="#000000" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M5 4H22L20 15H7L5 4ZM5 4C4.83333 3.33333 4 2 2 2" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M20 15H7H5.23077C3.44646 15 2.5 15.7812 2.5 17C2.5 18.2188 3.44646 19 5.23077 19H19.5" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ `${cartItemCount}` }}</span>
+                    </div>
+                </div>
+            </router-link>
+        </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import { navData } from '@/router/index'
 import { useUserStore } from '@/components/modules/auth/stores/users';
+import { useOrderStore } from '@/components/modules/products/stores/cart';
+import { storeToRefs } from 'pinia'
 
-// const emit = defineEmits(['closeNavbar'])
+const { cartItemCount } = storeToRefs(useOrderStore())
+
 const userStore = useUserStore()
 const allowedNavLinks = computed(() => {
     let allowedNavData = navData.filter((ele) => {return ele.meta.showInNav})
@@ -68,4 +84,25 @@ function handleLogout() {
         border-radius: 0.4rem;
         background-color: #515151;
     }
+
+    .cart {
+        margin-right: 15dvw;
+        margin-left: 0.375rem;
+        align-items: center;
+        justify-content: center;
+    }
+    .cart-container {
+        position: relative;
+        max-width: 2rem;
+    }
+    .icon {
+        width: 2rem;
+        height: 2rem;
+        display: inline-flex;
+        align-self: center;
+        margin: 0;
+        filter: invert(100%) sepia(1%) saturate(2215%) hue-rotate(175deg) brightness(97%) contrast(102%);
+
+    }
+
 </style>

@@ -33,10 +33,6 @@
                     >{{`Specimen ${plant.id} - ${plant.size}`}}</button>
                 </div>
                 
-
-                
-
-                
                 <div v-if="selectedPlant !== undefined" class="mt-4">
                     <h5 class="mb-3">{{plantTypeLabel}}</h5>
                     <small>{{ plantTypeDescription }}</small>
@@ -72,11 +68,14 @@
 import { ref, onMounted, computed, type Ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { usePlantStore } from '../stores/plant'
+import { useOrderStore } from '../stores/cart'
 import ProductDetailsPhotoList from './ProductDetailsPhotoList.vue'
+import { toast } from 'vue3-toastify'
 import type { PlantCategory, Plant} from '@/types/Plant'
 
 const route = useRoute()
 const plantCategory: Ref<PlantCategory | undefined> = ref()
+const { addItemToCart } = useOrderStore()
 
 const { findPlantCategoryById, getAvailablePlants} = usePlantStore()
 
@@ -170,8 +169,26 @@ const availableForSale = computed(() => {
     return specimenPlants.value.length > 0 || referencePlants.value.length > 0
 })
 
-function addToCart() {
-    alert('The shopping cart is still under construction.  Please message @dangerlettuce on Instagram, Facebook, or eBay to purchase any of the plants listed here.')
+async function addToCart() {
+    if(selectedPlant && selectedPlant.value && plantCategory && plantCategory.value) {
+        const res = await addItemToCart({
+        sku: selectedPlant.value.sku,
+        price: selectedPlant.value.price,
+        quantity: 1, 
+        categoryId: plantCategory.value.id})
+
+        if(res && res.success === true) {
+            toast.success('Added to cart!')
+        } else {
+            if(res && res.errorMessage) {
+                toast.error(res.errorMessage)
+            } else {
+                toast.error('Unable to add to cart')
+            }
+        }
+    }
+   
+    //alert('The shopping cart is still under construction.  Please message @dangerlettuce on Instagram, Facebook, or eBay to purchase any of the plants listed here.')
 }
 </script>
 
