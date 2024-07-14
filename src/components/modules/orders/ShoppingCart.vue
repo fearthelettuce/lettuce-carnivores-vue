@@ -9,19 +9,21 @@
             Cart is empty
         </div>
         <div class="cart-grid">
-            <div class="cart-item-grid">
+            <div class="cart-item-labels">
+                <div class="grid-col-2">Item</div>
                 <div>Item #</div>
                 <div>Quantity</div>
                 <div>Price</div>
             </div>
             <div v-for="item in cart.cartItems" :key="item.sku" class="cart-item-grid">
-                    <div>{{item.sku}}</div>
+                    <div class="grid-col-2">{{item.name}}</div>
+                    <div>{{ item.sku }}</div>
                     <div>{{item.quantity}}</div>
                     <div>${{item.price}}</div>
                     
-                        <button class="btn btn-warning mx-4" @click="decreaseQuantity(item)">Remove 1</button>
-                        <button class="btn btn-success mx-4" @click="increaseQuantity(item)">Add 1</button>
-                        <button class="btn btn-danger mx-4" @click="deleteItem(item)">Delete</button>
+                        <button class="btn btn-warning mx-3" @click="decreaseQuantity(item)">Remove 1</button>
+                        <button class="btn btn-success mx-3" @click="increaseQuantity(item)">Add 1</button>
+                        <button class="btn btn-danger mx-3" @click="deleteItem(item)">Delete</button>
                     
                     
 
@@ -52,6 +54,7 @@ function decreaseQuantity(item: CartItem) {
         return
     } else {
         removeItemFromCart(item, false)
+        return
     }
 }
 function deleteItem(item: CartItem) {
@@ -65,16 +68,30 @@ function deleteItem(item: CartItem) {
 .cart-grid {
     display: grid;
     grid-template-columns: repeat(1fr);
-    gap: 2rem;
+    gap: 0rem;
+}
+.cart-item-labels { 
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 1rem;
+    background:var(--bs-body-bg);
+    filter: brightness(85%);
+    border-radius: .6rem;
+    padding: .5rem 1rem;
+    align-items: center;
+    justify-content: center;
 }
 .cart-item-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     gap: 1rem;
-    border: 1px solid lightcoral;
+    background:var(--bs-body-bg);
+    filter: brightness(85%);
+    border-radius: .6rem;
     padding: 1rem 1rem;
     align-items: center;
     justify-content: center;
+    margin: 1rem 0;
 
 }
 </style>

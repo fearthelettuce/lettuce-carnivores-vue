@@ -53,6 +53,7 @@ export const useOrderStore = defineStore('order', () => {
         if(cart && cartIndex !== -1 && cartIndex !== undefined) {
             if(deleteItem) {
                 cart.value.cartItems.splice(cartIndex,1)
+                return
             }
             if(cart.value.cartItems[cartIndex].quantity > 1) {
                 cart.value.cartItems[cartIndex].quantity --
@@ -60,6 +61,7 @@ export const useOrderStore = defineStore('order', () => {
             } 
             if(cart.value.cartItems[cartIndex].quantity = 1) {
                 cart.value.cartItems.splice(cartIndex,1)
+                return
             } 
         }
     }

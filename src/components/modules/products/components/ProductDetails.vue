@@ -175,7 +175,13 @@ async function addToCart() {
         sku: selectedPlant.value.sku,
         price: selectedPlant.value.price,
         quantity: 1, 
-        categoryId: plantCategory.value.id})
+        categoryId: plantCategory.value.id,
+        name: plantCategory.value.name,
+        clone: plantCategory.value.clone,
+        photo: selectedPlant.value.photos[0],
+        size: selectedPlant.value.size,
+        isDiscounted: selectedPlant.value.isDiscounted,
+        isRepresentative: selectedPlant.value.isRepresentative})
 
         if(res && res.success === true) {
             toast.success('Added to cart!')
