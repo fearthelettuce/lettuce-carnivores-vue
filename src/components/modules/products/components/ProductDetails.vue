@@ -187,8 +187,6 @@ async function addToCart() {
             }
         }
     }
-   
-    //alert('The shopping cart is still under construction.  Please message @dangerlettuce on Instagram, Facebook, or eBay to purchase any of the plants listed here.')
 }
 </script>
 
