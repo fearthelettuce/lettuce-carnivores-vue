@@ -88,7 +88,7 @@ const routeData = [
       label: 'About',
       component: AboutView,
       meta: {
-        showInNav: false,
+        showInNav: true,
         requiresLogin: false,
         requiresAdmin: false,
       }
