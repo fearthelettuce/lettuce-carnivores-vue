@@ -1,4 +1,7 @@
 <template>
+    <div class="mx-5 alert alert-warning mb-3">
+    The shopping cart is still under construction.  Please message @dangerlettuce on Instagram, Facebook, or eBay to purchase any of the plants listed here.
+    </div>
     <div class="container mb-3">
         
         <div class="d-flex justify-content-center" v-if="cart.cartItems.length === 0">
@@ -34,7 +37,7 @@
                             
                         </div>
 
-                    <div class="item-subtotal align-content-center">
+                    <div class="item-subtotal">
                         <div class="text-center">{{USDollar.format(item.price * item.quantity) }}</div>
                     </div>
                 </div>
@@ -147,12 +150,13 @@ function checkout() {
 .cart-item-photo {
     img {
         width: 6rem;
-        height: 6rem;
+        height: 8rem;
         object-fit: cover;
+        border-radius: .5rem;
     }
 }
 .item-subtotal {
-    margin: 0 .25rem 0 auto;
+    margin: 0 .5rem 0 auto;
 }
 .item-footer {
     display: flex;
@@ -195,6 +199,9 @@ function checkout() {
     }
     .item-info {
         margin: .5rem 1rem .5rem 2rem;
+    }
+    .item-subtotal {
+        margin: .5rem .5rem 0 auto;
     }
 }
 @media(min-width: 60rem) {
