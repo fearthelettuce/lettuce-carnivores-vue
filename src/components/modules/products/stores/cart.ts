@@ -4,9 +4,10 @@ import type{ CartItem, ShoppingCart } from '@/types/Orders'
 import { newShoppingCart } from '@/constants/OrderConstants'
 import { usePlantStore } from './plant'
 import { type PlantCategory } from '@/types/Plant'
+import { useLocalStorage } from '@vueuse/core'
 
 export const useOrderStore = defineStore('order', () => {
-    const cart:Ref<ShoppingCart> | undefined = ref({...newShoppingCart})
+    const cart:Ref<ShoppingCart> | undefined = ref(useLocalStorage('cart',{...newShoppingCart}))
     const cartItemCount = computed(() => {
         const cartCount = cart.value.cartItems.reduce(
             (accumulator, cartItem) => accumulator + cartItem.quantity,
