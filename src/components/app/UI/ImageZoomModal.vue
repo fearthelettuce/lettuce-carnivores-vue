@@ -18,7 +18,7 @@
                         aria-label="Close"
                         data-bs-dismiss="modal"
                         @click="$emit('closeModal')" />
-                    <img :src="getPhotoUrl(photo?.path?.toString())" :alt="imageAltText">
+                    <img :src="getPhotoUrl(photo?.path?.toString(), 1600)" :alt="imageAltText">
                 </div>
             </div>
         </div>

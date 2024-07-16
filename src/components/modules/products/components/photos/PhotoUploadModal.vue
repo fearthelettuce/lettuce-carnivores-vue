@@ -4,6 +4,7 @@
         <div class="photo-modal p-3">
             <header class="mb-2 border-0">
                 <h5 class="modal-title text-light">Manage Photos</h5>
+                <p>Photos will take ~30s to load after uploading</p>
                 <button 
                     type="button" 
                     class="btn-close btn-close-white" 
@@ -42,7 +43,7 @@
                         </div>
                         
                         <div class="col-7 d-flex  align-items-center justify-content-center">
-                            <img class="imagePreview" :src="photoSrc(photo)" />
+                            <img class="imagePreview" :src="photoSrc(photo)" onerror="this.onerror=null;this.src='';" />
                         </div>
                         <div class="col-1 d-flex align-items-center justify-content-center">
                             <div class="btn " @click="removePhoto(index, photo)">
@@ -90,7 +91,7 @@ import { uploadFile } from '@/apis/fileServices';
 import type {PhotoItem} from '@/types/Product'
 import { toast } from 'vue3-toastify'
 import BaseDialog from '@/components/app/UI/BaseDialog.vue';
-import {getPhotoUrl} from '@/composables/usePhotoUtils'
+import {getPhotoUrl, type AllowedSizes} from '@/composables/usePhotoUtils'
 
 const emit = defineEmits(['triggerSave'])
 const props = defineProps<{storageFolder: string}>()
@@ -108,7 +109,7 @@ function toggleModal() {
     resetSelectedFiles()
 }
 
-function photoSrc(photo: PhotoItem | SelectedFile, size = 256) {
+function photoSrc(photo: PhotoItem | SelectedFile, size: AllowedSizes = 256) {
     if(photo.hasOwnProperty('folder')) {
         return getPhotoUrl((photo as PhotoItem).path, size, 'jpg')
     } else {
@@ -143,7 +144,7 @@ type SelectedFile = {
     file?: File, 
     tempUrl: string, 
     name: string,
-    nameWithoutExtension: string,
+    originalName: string,
 }
 
 function resetSelectedFiles() {
