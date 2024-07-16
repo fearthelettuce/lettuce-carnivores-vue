@@ -4,11 +4,13 @@ import { deleteFile } from '@/apis/fileServices'
 
 export const placeholderUrl = 'https://cdn-icons-png.flaticon.com/512/1033/1033018.png'
 
-export function getPhotoUrl(fileName: string | null | undefined) {
+export function getPhotoUrl(fileName: string | null | undefined, size: 256 | 512 | 960 | 1600 | null = 512, extension: 'webp' | 'jpg' = 'webp') {
     if(fileName === null || fileName === undefined) {return placeholderUrl}
     const urlRoot = 'https://firebasestorage.googleapis.com/v0/b/lettuce-carnivores.appspot.com/o/'
-    const encodedFileName = encodeURIComponent(fileName)
+    const photoSize = `_${size}x${size}`
+    const encodedFileName = encodeURIComponent(`${fileName}${size === null ? '' : photoSize}`)
     const urlSuffix = '?alt=media'
+    
     return `${urlRoot}${encodedFileName}${urlSuffix}`
 }
 

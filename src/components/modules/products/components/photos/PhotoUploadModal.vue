@@ -42,7 +42,7 @@
                         </div>
                         
                         <div class="col-7 d-flex  align-items-center justify-content-center">
-                            <img class="imagePreview" :src="photoSrc(photo)"/>
+                            <img class="imagePreview" :src="photoSrc(photo)" />
                         </div>
                         <div class="col-1 d-flex align-items-center justify-content-center">
                             <div class="btn " @click="removePhoto(index, photo)">
@@ -108,9 +108,9 @@ function toggleModal() {
     resetSelectedFiles()
 }
 
-function photoSrc(photo: PhotoItem | SelectedFile) {
+function photoSrc(photo: PhotoItem | SelectedFile, size = 256) {
     if(photo.hasOwnProperty('folder')) {
-        return getPhotoUrl((photo as PhotoItem).path)
+        return getPhotoUrl((photo as PhotoItem).path, size, 'jpg')
     } else {
         return (photo as SelectedFile).tempUrl
     }
@@ -128,10 +128,10 @@ function arrayMove(arr: Array<any>, fromIndex: number, toIndex: number) {
 }
 
 function removePhoto(index: number, photo: SelectedFile| PhotoItem) {
-    const photoIndex = photos.value.findIndex((ele) => ele.originalFilename === photo.name)
-    if(photoIndex !== -1) {
-        console.log(photos.value[photoIndex])
-        photos.value.splice(photoIndex,1)
+    //const photoIndex = photos.value.findIndex((ele) => ele.originalFilename === photo.name)
+    if(index !== -1) {
+        console.log(photos.value[index])
+        photos.value.splice(index,1)
         emit('triggerSave')
     }
 }
@@ -143,6 +143,7 @@ type SelectedFile = {
     file?: File, 
     tempUrl: string, 
     name: string,
+    nameWithoutExtension: string,
 }
 
 function resetSelectedFiles() {
@@ -156,7 +157,8 @@ function onFileChanged($event: Event) {
             selectedFiles.value.push({
                 file: target.files[i],
                 tempUrl: URL.createObjectURL(target.files[i]),
-                name: target.files[i].name,
+                originalName: target.files[i].name,
+                name: target.files[i].name.replace(/\.[^/.]+$/, ""),
             })
         }
     }    
@@ -180,7 +182,7 @@ async function uploadFiles() {
                 name: photo.name,
                 folder: props.storageFolder,
                 path: res.filePath,
-                originalFilename: photo.name,
+                originalFilename: photo.originalName,
                 date: new Date(),
             })
             
@@ -240,7 +242,7 @@ footer {
     display: grid;
     grid-template-columns: 1fr 4fr 4fr 1fr;
     gap: 1rem 0;
-    max-height: 75dvh;
+    height: 75dvh;
     overflow-y:auto;
     min-height: 20rem;
 }
