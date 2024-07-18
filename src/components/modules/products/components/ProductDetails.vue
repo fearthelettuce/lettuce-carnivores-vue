@@ -68,10 +68,11 @@
 import { ref, onMounted, computed, type Ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { usePlantStore } from '../stores/plant'
-import { useOrderStore } from '../stores/cart'
+import { useOrderStore } from '@/store/order'
 import ProductDetailsPhotoList from './ProductDetailsPhotoList.vue'
 import { toast } from 'vue3-toastify'
 import type { PlantCategory, Plant} from '@/types/Plant'
+import type { PhotoItem } from '@/types/Product'
 
 const route = useRoute()
 const plantCategory: Ref<PlantCategory | undefined> = ref()
@@ -178,16 +179,24 @@ const availableForSale = computed(() => {
 })
 
 async function addToCart() {
+
     if(selectedPlant && selectedPlant.value && plantCategory && plantCategory.value) {
+        let cartPhoto: PhotoItem
+        if(selectedPlant.value.photos.length === 0) {
+            cartPhoto = selectedPlant.value.photos[0]
+        } else {
+            cartPhoto = plantCategory.value.photos[0]
+        }
         const res = await addItemToCart({
         sku: selectedPlant.value.sku,
+        plantCategoryId: selectedPlant.value.plantCategoryId,
         price: selectedPlant.value.price,
         quantity: 1,
         maxQuantity: selectedPlant.value.quantity,
         categoryId: plantCategory.value.id,
         name: plantCategory.value.name,
         clone: plantCategory.value.clone,
-        photo: selectedPlant.value.photos[0],
+        photo: cartPhoto,
         size: selectedPlant.value.size,
         isDiscounted: selectedPlant.value.isDiscounted,
         isRepresentative: selectedPlant.value.isRepresentative})

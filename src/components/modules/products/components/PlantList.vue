@@ -10,7 +10,6 @@
 </template>
 
 <script setup lang="ts">
-import {  watch } from 'vue';
 import ProductCard from './ProductCard.vue'
 import { usePlantStore } from '../stores/plant'
 import { onMounted } from 'vue';
@@ -23,11 +22,6 @@ onMounted(async () => {
     await fetchAllCategories();
     updateFilteredCategories()
 })
-
-watch(() => filteredCategories.value, () => {
-    console.log(filteredCategories.value)
-}, {deep: true})
-
 
 </script>
 

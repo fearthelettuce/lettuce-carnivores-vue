@@ -25,6 +25,7 @@ export type Plant = {
     isDiscounted: boolean,
     quantity: number,
     photos: PhotoItem[],
+    plantCategoryId: string | number,
 }
 
 export type Sizes = 

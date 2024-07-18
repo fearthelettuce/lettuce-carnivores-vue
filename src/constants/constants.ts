@@ -122,4 +122,5 @@ export const newPlant: Plant = {
     isDiscounted: false,
     quantity: 1,
     photos: [],
+    plantCategoryId: '',
 }

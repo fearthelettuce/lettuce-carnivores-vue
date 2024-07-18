@@ -8,6 +8,7 @@ export type ShoppingCart = {
 
 export type CartItem = {
     sku: string,
+    plantCategoryId: string | number,
     categoryId: string | number,
     quantity: number,
     maxQuantity: number,

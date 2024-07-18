@@ -13,7 +13,7 @@
                 <div v-for="item in cart.cartItems" :key="item.sku" class="cart-item">
                     <router-link :to="`/plants/${encodeURIComponent(item.categoryId)}/${item.sku}`" class="align-content-center">
                         <div class="cart-item-photo">
-                            <img :src="getImageUrl(item.photo?.path)" :class="getImageUrl(item.photo?.path) == placeholderUrl ? 'placeholderImage': 'cardImage'" :alt="`An image of ${item.name}`" />
+                            <img :src="getImageUrl(item)" :class="getImageUrl(item) == placeholderUrl ? 'placeholderImage': 'cardImage'" :alt="`An image of ${item.name}`" />
                         </div>
                     </router-link>
 
@@ -89,16 +89,19 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { useOrderStore } from '../products/stores/cart';
+import { useOrderStore } from '@/store/order';
 import { computed, onMounted } from 'vue'
 import type { CartItem } from '@/types/Orders'
 import {getPhotoUrl, placeholderUrl} from '@/composables/usePhotoUtils'
+import { toast } from 'vue3-toastify';
+import type { Plant } from '@/types/Plant'
 
 const { cart } = storeToRefs(useOrderStore())
-const { getCategoryBySku, addItemToCart, removeItemFromCart } = useOrderStore()
+const { getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession } = useOrderStore()
 
 onMounted(() => {
     cart.value.cartItems.forEach(item => getCategoryBySku(item))
+    //validated cart it still valid, display TCGPlayer style message "you're cart sucks"
 })
 
 const cartTotal = computed(() => {
@@ -131,12 +134,20 @@ function deleteItem(item: CartItem) {
     removeItemFromCart(item, true)
 }
 
-function getImageUrl(path: string) {
-    return getPhotoUrl(path ?? null)
+function getImageUrl(cartItem: CartItem) {
+    if(cartItem.photo && cartItem.photo.path) {
+        return getPhotoUrl(cartItem.photo.path, 256)
+    } else {
+        return getPhotoUrl(null)
+    }
 }
 
 function checkout() {
     console.log(cart.value.cartItems)
+    if(cart.value.cartItems.length > 0) {
+        const res = startCheckoutSession()
+        if(res && res.error === true) {toast.error(res.message)}
+    }
 }
 </script>
 

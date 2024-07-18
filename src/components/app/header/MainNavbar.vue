@@ -44,7 +44,7 @@
 import { computed } from 'vue';
 import { navData } from '@/router/index'
 import { useUserStore } from '@/components/modules/auth/stores/users';
-import { useOrderStore } from '@/components/modules/products/stores/cart';
+import { useOrderStore } from '@/store/order';
 import { storeToRefs } from 'pinia'
 
 const { cartItemCount } = storeToRefs(useOrderStore())

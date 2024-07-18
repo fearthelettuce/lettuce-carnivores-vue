@@ -2,9 +2,10 @@ import { defineStore } from 'pinia'
 import { computed, type Ref, ref } from 'vue'
 import type{ CartItem, ShoppingCart } from '@/types/Orders'
 import { newShoppingCart } from '@/constants/OrderConstants'
-import { usePlantStore } from './plant'
+import { usePlantStore } from '../components/modules/products/stores/plant'
 import { type PlantCategory } from '@/types/Plant'
 import { useLocalStorage } from '@vueuse/core'
+import {getActiveProducts} from '@/apis/stripe'
 
 export const useOrderStore = defineStore('order', () => {
     const cart:Ref<ShoppingCart> | undefined = ref(useLocalStorage('cart',{...newShoppingCart}))
@@ -66,5 +67,13 @@ export const useOrderStore = defineStore('order', () => {
             } 
         }
     }
-    return { cart, cartItemCount, getCategoryBySku, addItemToCart, removeItemFromCart }
+
+    function startCheckoutSession () {
+        try{
+            getActiveProducts()
+        } catch (e: any) {
+            return {success: false, error: true, message: `Unable to start checkout session, \n ${e.message}`}    
+        }
+    }
+    return { cart, cartItemCount, getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession}
 })
