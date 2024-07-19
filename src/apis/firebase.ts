@@ -13,13 +13,12 @@ const firebaseConfig = {
 
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-setPersistence(auth, browserLocalPersistence)
-const db = initializeFirestore(app, {
-  ignoreUndefinedProperties: true,
-})
-const storage = getStorage(app)
+const firebaseApp  = initializeApp(firebaseConfig);
+const auth = getAuth(firebaseApp);
+await setPersistence(auth, browserLocalPersistence)
+const db = getFirestore()
+
+const storage = getStorage(firebaseApp)
 
 
 export { auth, db, storage }
