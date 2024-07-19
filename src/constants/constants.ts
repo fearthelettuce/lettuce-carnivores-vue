@@ -55,7 +55,6 @@ export const defaultFilters = {
             {label: 'Hybrid', value: 'Hybrid', hidden: false},
             {label: 'Specimen', value: 'Specimen', hidden: false},
             {label: 'Representative', value: 'Representative', hidden: false},
-            {label: 'Only Sale Items', value: 'Only Sale Items', hidden: false},
         ]
     },
 
@@ -123,4 +122,5 @@ export const newPlant: Plant = {
     isDiscounted: false,
     quantity: 1,
     photos: [],
+    plantCategoryId: '',
 }

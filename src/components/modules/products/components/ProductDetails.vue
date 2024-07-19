@@ -33,10 +33,6 @@
                     >{{`Specimen ${plant.id} - ${plant.size}`}}</button>
                 </div>
                 
-
-                
-
-                
                 <div v-if="selectedPlant !== undefined" class="mt-4">
                     <h5 class="mb-3">{{plantTypeLabel}}</h5>
                     <small>{{ plantTypeDescription }}</small>
@@ -72,11 +68,15 @@
 import { ref, onMounted, computed, type Ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { usePlantStore } from '../stores/plant'
+import { useOrderStore } from '@/store/order'
 import ProductDetailsPhotoList from './ProductDetailsPhotoList.vue'
+import { toast } from 'vue3-toastify'
 import type { PlantCategory, Plant} from '@/types/Plant'
+import type { PhotoItem } from '@/types/Product'
 
 const route = useRoute()
 const plantCategory: Ref<PlantCategory | undefined> = ref()
+const { addItemToCart } = useOrderStore()
 
 const { findPlantCategoryById, getAvailablePlants} = usePlantStore()
 
@@ -86,7 +86,15 @@ onMounted(async () => {
     if(availablePlants.length === 1) {
         setSelectedPlant(availablePlants[0])
     }
+    if(route.params.sku !== undefined) {
+        const skuArr = plantCategory.value?.plants.map(plant => plant.sku)
+        if(skuArr && skuArr.includes(route.params.sku as string)) {
+            setSelectedPlant(plantCategory.value?.plants.find(plant => plant.sku === route.params.sku))
+        }
+    }
 })
+
+
 
 const hideDescription = ref(false)
 
@@ -170,8 +178,39 @@ const availableForSale = computed(() => {
     return specimenPlants.value.length > 0 || referencePlants.value.length > 0
 })
 
-function addToCart() {
-    alert('The shopping cart is still under construction.  Please message @dangerlettuce on Instagram, Facebook, or eBay to purchase any of the plants listed here.')
+async function addToCart() {
+
+    if(selectedPlant && selectedPlant.value && plantCategory && plantCategory.value) {
+        let cartPhoto: PhotoItem
+        if(selectedPlant.value.photos.length === 0) {
+            cartPhoto = selectedPlant.value.photos[0]
+        } else {
+            cartPhoto = plantCategory.value.photos[0]
+        }
+        const res = await addItemToCart({
+        sku: selectedPlant.value.sku,
+        plantCategoryId: selectedPlant.value.plantCategoryId,
+        price: selectedPlant.value.price,
+        quantity: 1,
+        maxQuantity: selectedPlant.value.quantity,
+        categoryId: plantCategory.value.id,
+        name: plantCategory.value.name,
+        clone: plantCategory.value.clone,
+        photo: cartPhoto,
+        size: selectedPlant.value.size,
+        isDiscounted: selectedPlant.value.isDiscounted,
+        isRepresentative: selectedPlant.value.isRepresentative})
+
+        if(res && res.success === true) {
+            toast.success('Added to cart!')
+        } else {
+            if(res && res.errorMessage) {
+                toast.error(res.errorMessage)
+            } else {
+                toast.error('Unable to add to cart')
+            }
+        }
+    }
 }
 </script>
 

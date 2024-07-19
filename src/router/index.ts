@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '@/components/modules/auth/stores/users'
 import HomeView from '@/views/HomeView.vue'
 import ProductsView from '@/views/ProductsView.vue'
+import ShoppingCart from '@/components/modules/orders/ShoppingCart.vue'
 const ProductDetailView = () => import( '@/views/ProductDetailView.vue')
 const ProductAdminView = () => import('@/components/modules/products/components/ProductAdmin.vue')
 const AboutView = () => import('@/views/AboutView.vue')
@@ -38,10 +39,21 @@ const routeData = [
       }
     },
     {
-      path: "/plants/:id",
+      path: "/plants/:id/:sku?",
       name: 'productDetails',
       label: 'Products Details',
       component: ProductDetailView,
+      meta: {
+        showInNav: false,
+        requiresLogin: false,
+        requiresAdmin: false,
+      }
+    },
+    {
+      path: "/cart",
+      name: 'shoppingCart',
+      label: 'Shopping Cart',
+      component: ShoppingCart,
       meta: {
         showInNav: false,
         requiresLogin: false,
@@ -76,7 +88,7 @@ const routeData = [
       label: 'About',
       component: AboutView,
       meta: {
-        showInNav: false,
+        showInNav: true,
         requiresLogin: false,
         requiresAdmin: false,
       }
@@ -128,7 +140,7 @@ const routeData = [
     },
     {
       path: "/resetpassword",
-      name: 'resetPassowrd',
+      name: 'resetPassword',
       label: 'Reset Password',
       component: ResetPasswordView,
       meta: {

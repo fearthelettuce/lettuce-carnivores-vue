@@ -46,10 +46,10 @@
                 placeholder="Sort"
                 class="filter-item" 
              /> -->
-             <button v-if="!isHidden" class="btn btn-sm-primary" @click="isHidden = !isHidden">Collapse Filters</button>
         </div>
-        <div v-else>
-            <button v-if="isHidden" class="btn btn-sm-primary" @click="isHidden = !isHidden">Expand Filters</button>
+
+        <div class="mt-3">
+            <button class="btn btn-outline-primary btn-sm" @click="isHidden = !isHidden">{{`${isHidden ? 'Show' : 'Hide'} Filters`}}</button>
         </div>
     </div>
 </template>
@@ -71,10 +71,20 @@ const sortMethod = ref({...defaultSort})
 const displayExperienceList = experienceList.filter(item => item !== '')
 onMounted(() => {
     productFilters.value.status.items = productFilters.value.status.items.filter(item => !item.hidden)
+    setFilterToggle()
 })
 
-function updateFilters() {
-
+function setFilterToggle() {
+const screenWidth = Math.max(
+    document.body.scrollWidth,
+    document.documentElement.scrollWidth,
+    document.body.offsetWidth,
+    document.documentElement.offsetWidth,
+    document.documentElement.clientWidth
+  );
+  if(screenWidth < 1350) {
+    isHidden.value = true;
+  }
 }
 
 //Size - 2.5, 3.0, 3.5, 3.5d, etc.
@@ -103,8 +113,9 @@ function updateFilters() {
 <style scoped>
 .filter-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content:center;
+    align-items: center;
 
 }
 .filter-item-container {

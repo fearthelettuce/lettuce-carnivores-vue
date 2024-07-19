@@ -61,6 +61,8 @@ const USDollar = new Intl.NumberFormat('en-US', {
     border-radius: 2em;
     overflow:hidden;
     margin: 0 1rem;
+    max-width: 45rem;
+    justify-content: space-between;
 }
 
 img {
@@ -75,10 +77,7 @@ img {
 .placeholderImage {
     box-sizing: border-box;
     padding-top: 1rem;
-    height: 25em;
     margin: auto;
-    width: 100%;
-    height: 100%;
     object-fit: cover;
     object-position: center;
     align-items: center;

@@ -31,7 +31,7 @@ const state = reactive({
 })
 
 const displayPhoto = computed(() => {
-    return getPhotoUrl(state.selectedPhoto.path)
+    return getPhotoUrl(state.selectedPhoto.path, 960)
 })
 
 const imageZoomModalRef = ref<InstanceType<typeof ImageZoomModal> | null>(null)

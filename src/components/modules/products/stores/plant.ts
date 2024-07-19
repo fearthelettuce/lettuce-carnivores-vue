@@ -127,6 +127,7 @@ export const usePlantStore = defineStore('plant', () => {
     const addPlant = (plantCategory: PlantCategory) => {
         if(plantCategory.plants.length === 0) {
             const defaultPlant = {...newPlant}
+            defaultPlant.plantCategoryId = plantCategory.id
             defaultPlant.status = 'Coming Soon'
             plantCategory?.plants.push({...defaultPlant})
         } else {
@@ -144,6 +145,7 @@ export const usePlantStore = defineStore('plant', () => {
                 isDiscounted: lastPlant.isDiscounted,
                 quantity: 1,
                 photos: [],
+                plantCategoryId: plantCategory.id
             })
         }
         
