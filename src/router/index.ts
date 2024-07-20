@@ -3,6 +3,7 @@ import { useUserStore } from '@/components/modules/auth/stores/users'
 import HomeView from '@/views/HomeView.vue'
 import ProductsView from '@/views/ProductsView.vue'
 import ShoppingCart from '@/components/modules/orders/ShoppingCart.vue'
+import CheckoutComplete from '@/views/CheckoutComplete.vue'
 const ProductDetailView = () => import( '@/views/ProductDetailView.vue')
 const ProductAdminView = () => import('@/components/modules/products/components/ProductAdmin.vue')
 const AboutView = () => import('@/views/AboutView.vue')
@@ -148,6 +149,18 @@ const routeData = [
         requiresLogin: false,
         requiresAdmin: false,
       }
+    },
+    {
+      path: "/checkoutComplete",
+      name: "checkoutComplete",
+      label: 'Checkout Complete',
+      component: CheckoutComplete,
+      meta: {
+        showInNav: false,
+        requiresLogin: true,
+        requiresAdmin: false,
+      }
+
     }
 ]
 

@@ -22,5 +22,35 @@ export type CartItem = {
     isRepresentative: boolean,
 
 }
+export type StripeCartItem = StripeProduct & {quantity: number}
 
-export type ProductWithPrices = {[field: string]: any, prices: DocumentData[]}
+export type StripeProduct = {
+    active: boolean,
+    description: string,
+    images: string[],
+    metadata: {sku: string | number},
+    name: string,
+    role: null,
+    stripe_metadata_sku: string | number,
+    tax_code: string,
+    price: StripePrice
+}
+export type StripePrice = {
+    active: boolean,
+    billing_scheme: string,
+    currency: "usd",
+    description: string | null,
+    interval: string | null,
+    interval_count: null,
+    metadata: {},
+    product: string,
+    recurring: null,
+    tax_behavior: string,
+    tiers: null,
+    tiers_mode: null,
+    transform_quantity: null,
+    trial_period_days: null,
+    type: string,
+    unit_amount: number,
+    id: string | number,
+}

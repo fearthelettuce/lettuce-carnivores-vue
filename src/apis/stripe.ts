@@ -1,6 +1,6 @@
 import { collection, getDocs, query, where, addDoc, onSnapshot, type DocumentData} from 'firebase/firestore';
 import { db, auth } from '@/apis/firebase'
-import type { ProductWithPrices } from '@/types/Orders';
+import type { StripeProduct, StripePrice, StripeCartItem} from '@/types/Orders';
 
 export async function getActiveProducts() {
     const q = query(collection(db, 'products'),
@@ -31,13 +31,14 @@ export async function getProductBySku2(sku: string) {
     )
 
     const querySnapshot = await getDocs(q)
-    querySnapshot.forEach((doc) => {
-        console.log('getItemBySku returning data')
-        return doc.data()
-    })
+    return querySnapshot.docs[0].data()
+    // querySnapshot.forEach((doc) => {
+    //     console.log('getItemBySku returning data')
+    //     return doc.data()
+    // })
 }
 
-export async function getProductBySku(sku: string) {
+export async function getProductBySku(sku: string): Promise<StripeProduct> {
     console.log('in getProductBySku')
     const collectionRef = collection(db, 'products')
     const q = query(collectionRef,
@@ -45,60 +46,81 @@ export async function getProductBySku(sku: string) {
     )
 
     const docRef = await getDocs(q)
-    
-    let res: ProductWithPrices = {prices: []}
-
     if(docRef.docs.length === 0) {
         throw new Error ('No products found')
     } else if (docRef.docs.length > 1) {
         throw new Error ('Multiple products found for that sku')
     }
-    // } else {
-    //     return querySnapshot.docs[0].data()
-    // }
-
     const doc = docRef.docs[0]
     const docData = await doc.data()
 
-    const price = await getProductPrice(doc)
-    const priceData = await price.data()
-    return {...docData, price: priceData}
-    //return {...doc.data(), price: price.data()}
+    const priceRef = collection(db, `products/${doc.id}/prices`)
+    const priceSnap = await getDocs(priceRef)
+
+    if(priceSnap.docs.length === 0) {
+        throw new Error ('Error with product pricing information')
+    } else if (priceSnap.docs.length > 1) {
+        throw new Error ('Multiple prices found for that sku')
+    }
+    const priceId = priceSnap.docs[0].id
+    const priceDoc = priceSnap.docs[0]
+    const priceData = priceDoc.data()
+    return {...doc.data(), price: {...priceData, id: priceId} as StripePrice} as StripeProduct
 }
 
-async function getProductPrice(docRef: DocumentData) {
-    const priceSnap = await getDocs(collection(docRef,'prices'))
-    return priceSnap.docs[0]
-    //console.log(({...doc.data(), prices: priceSnap.docs[0].data()}))
-    // return ({...doc.data(), prices: priceSnap.docs})
-    // priceSnap.docs.forEach((priceDoc) => {
-    //     res.prices.push({...priceDoc.data(), id: priceDoc.id})
-    //     //console.log(priceDoc.id, ' => ', priceDoc.data());
-    // });
+// async function getProductPrice(docRef: DocumentData) {
+//     const priceSnap = await getDocs(collection(docRef,'prices'))
+//     return priceSnap.docs[0]
+//     //console.log(({...doc.data(), prices: priceSnap.docs[0].data()}))
+//     // return ({...doc.data(), prices: priceSnap.docs})
+//     // priceSnap.docs.forEach((priceDoc) => {
+//     //     res.prices.push({...priceDoc.data(), id: priceDoc.id})
+//     //     //console.log(priceDoc.id, ' => ', priceDoc.data());
+//     // });
 
-    // })
-    // return res
-}
+//     // })
+//     // return res
+// }
 
-export async function createCheckoutSession(cart: ProductWithPrices[]) {
+export async function createCheckoutSession(cart: StripeCartItem[]) {
     if(!auth || !auth.currentUser) { return }
     const lineItems = cart.map((item) => {
-        return {
-            price: item.prices[0].id,
-            quantity: item.quantity,
-        }
+        return {price: item.price.id, quantity: item.quantity}
+        // return {price_data: {
+        //     currency: item.price.currency,
+        //     unit_amount: item.price.unit_amount,
+        //     product_data: {
+        //         name: item.name,
+        //         description: item.description,
+        //         images: item.images[0],
+        //         quantity: item.quantity,
+        //     },
+            
+        // }}
     })
+    console.log(lineItems)
     const collectionRef = await collection(db,'customers',auth.currentUser.uid, 'checkout_sessions')
     const docRef = await addDoc(collectionRef, {
         mode: 'payment',
-        automatic_tax: true, 
+        automatic_tax: true,
+        success_url: `${window.location.origin}/checkoutcomplete`,
+        cancel_url: `${window.location.origin}/cart`,
+        line_items: lineItems,
+        shipping_cost: 1000,
+        shipping_options: ['shr_1PeUj7HlHApXEku97UWnEMtk'],
         collect_shipping_address: true,
-        //https://www.youtube.com/watch?v=VnntkusKinM 9:40
-        success_url: window.location.origin,
-        cancel_url: window.location.origin,
-        line_Items: lineItems,
     })
-    onSnapshot(docRef, (snap) => {})
+    onSnapshot(docRef, (snap) => {
+        //@ts-ignore
+        const { error, url } = snap.data()
+        console.log(snap.data())
+        if(error) {
+            console.error(`An error occurred: ${error.message}`)
+        }
+        if(url) {
+            window.location.assign(url)
+        }
+    })
 }
 //     getDoc(collection(db, 'customers', ))
 //     const docRef = await db

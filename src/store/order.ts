@@ -5,14 +5,14 @@ import { newShoppingCart } from '@/constants/OrderConstants'
 import { usePlantStore } from '../components/modules/products/stores/plant'
 import { type PlantCategory } from '@/types/Plant'
 import { useLocalStorage } from '@vueuse/core'
-import {getActiveProducts, getProductBySku, createCheckoutSession, getProductBySku2} from '@/apis/stripe'
+import {getActiveProducts, getProductBySku, createCheckoutSession} from '@/apis/stripe'
 
-import type { ProductWithPrices } from '@/types/Orders';
+import type { StripeCartItem } from '@/types/Orders';
 
 export const useOrderStore = defineStore('order', () => {
     const isLoading = ref(false)
     const cart: Ref<ShoppingCart> | undefined = ref(useLocalStorage('cart',{...newShoppingCart}))
-    const stripeCart: Ref<ProductWithPrices[]> = ref([])
+    const stripeCart: Ref<StripeCartItem[]> = ref([])
     const cartItemCount = computed(() => {
         const cartCount = cart.value.cartItems.reduce(
             (accumulator, cartItem) => accumulator + cartItem.quantity,
@@ -43,6 +43,7 @@ export const useOrderStore = defineStore('order', () => {
         return {success: false, error: true, errorMessage: 'Unable to get cart'}
     }
 
+
     const getCategoryBySku = async (item: CartItem) => {
         try {
             const category: PlantCategory = await usePlantStore().findPlantCategoryById(item.categoryId)
@@ -71,6 +72,12 @@ export const useOrderStore = defineStore('order', () => {
             } 
         }
     }
+
+    function resetCart () {
+        if(cart && cart.value) {
+            cart.value.cartItems.length = 0
+        }
+    }
     async function startCheckoutSession () {
         await buildStripeCart()
         //if(stripeCart.value.length !== cart?.value.cartItems.length) {
@@ -85,18 +92,21 @@ export const useOrderStore = defineStore('order', () => {
 
     async function buildStripeCart () {
         isLoading.value = true
-        cart?.value.cartItems.forEach(async (item) => {
+        stripeCart.value.length = 0
+        if(!cart || !cart.value || cart.value.cartItems.length === 0) {
+            return
+        }
+        for(const item of cart?.value.cartItems) {
+        // cart?.value.cartItems.forEach(async (item) => {
             try {
-                console.log('for each item')
                 //const product = await getProductBySku(item.sku)
-                const product = await getProductBySku2(item.sku)
-                console.log('after getProductBySku')
+                const product = await getProductBySku(item.sku)
                 stripeCart.value.push({...product, quantity: item.quantity})
                 
             } catch (e: any) {
                 return {success: false, error: true, message: `Unable to create checkout session, \n ${e.message}`}
             }
-        })
+        }
         // if(cart && cart.value) {
         //     const product = await getProductBySku(cart?.value.cartItems[0].sku)
         //     console.log(product)
@@ -105,5 +115,7 @@ export const useOrderStore = defineStore('order', () => {
        isLoading.value = false
        
     }
-    return { cart, cartItemCount, getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession}
+
+
+    return { cart, cartItemCount, getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession, resetCart}
 })
