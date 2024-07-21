@@ -1,6 +1,10 @@
 <template>
     <div class="container border rounded p-4">
         <h2 class="text-center">Login</h2>
+        <div>
+            <button class="" @click="googleLogin">Sign in with Google</button>
+            
+        </div>
         <form>
             <div class="form-group">
                 <label for="loginEmail">Email</label>
@@ -27,9 +31,9 @@ import { ref } from 'vue';
 import { useUserStore } from '@/components/modules/auth/stores/users'
 import { router } from '@/router/index'
 import { toast } from 'vue3-toastify'
+import * as firebaseui from 'firebaseui'
 
-const userStore = useUserStore()
-
+const { loginWithGoogle, logInUser } = useUserStore()
 const loginEmail = ref("")
 const loginPassword = ref("")
 
@@ -39,12 +43,17 @@ async function login () {
         return
     }
     try {
-        await userStore.logInUser(loginEmail.value, loginPassword.value)
+        await logInUser(loginEmail.value, loginPassword.value)
         router.push('/products').then(()=>{toast.success('Welcome!')})
     } catch(error) {
         console.log(error)
         toast.error('Sorry, something went wrong')
     }
+}
+
+async function googleLogin() {
+    await loginWithGoogle()
+
 }
 
 function resetPassword(){
@@ -58,3 +67,8 @@ function areInputsValid() {
     return true
 }
 </script>
+
+
+<style scoped>
+
+</style>

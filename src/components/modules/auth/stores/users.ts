@@ -8,6 +8,8 @@ import {
   fbSignIn,
   fbSignOut,
   requestPasswordResetEmail,
+  fbSignInAnonymously,
+  fbSignInWithGoogle,
 } from "@/apis/firebaseAuth";
 import {findDocById} from '@/apis/dataServices'
 export interface User {
@@ -106,6 +108,24 @@ export const useUserStore = defineStore('user', {
         this.userRoles = null;
         this.error = e;
         return false;
+      }
+    },
+    async loginWithGoogle() {
+      try {
+        const res = await fbSignInWithGoogle()
+        return res
+      } catch (e: any) {
+        console.error(e)
+        return {success: false, error: true, message: 'Unable to sign in'}
+      }
+    },
+    async loginAnonymously(){
+      try {
+        const res = fbSignInAnonymously()
+        return res
+      } catch (e: any) {
+        console.error(e)
+        return {success: false, error: true, message: e.message}
       }
     },
 

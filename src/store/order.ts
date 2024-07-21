@@ -8,6 +8,7 @@ import { useLocalStorage } from '@vueuse/core'
 import {getActiveProducts, getProductBySku, createCheckoutSession} from '@/apis/stripe'
 
 import type { StripeCartItem } from '@/types/Orders';
+import { useUserStore } from '@/components/modules/auth/stores/users'
 
 export const useOrderStore = defineStore('order', () => {
     const isLoading = ref(false)
@@ -126,8 +127,15 @@ export const useOrderStore = defineStore('order', () => {
             console.table(cart?.value.cartItems)
             return {success: false, error: true, message: `Unable to create checkout session`}
         }
-        await createCheckoutSession(stripeCart.value)
-        setTimeout(() => {isLoading.value = false}, 4000)
+        try {
+            await createCheckoutSession(stripeCart.value)
+            return {success: true, error: false, message: ''}
+        } catch (e: any) {
+            console.error(e)
+            return {success: false, error: true, message: `Unable to create checkout session`}
+        } finally {
+            setTimeout(() => {isLoading.value = false}, 4000)
+        }
         
     }
 

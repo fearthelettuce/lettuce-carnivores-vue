@@ -98,6 +98,16 @@ app.use(PrimeVue, {
   }
 })
 
+import { VueFire, VueFireAuth } from 'vuefire'
+import { firebaseApp } from '@/apis/firebase.js'
+app.use(VueFire, {
+  firebaseApp: firebaseApp,
+  modules: [
+    // ... other modules
+    VueFireAuth(),
+  ],
+})
+
 import { useUserStore } from './components/modules/auth/stores/users';
 const userStore = useUserStore()
 

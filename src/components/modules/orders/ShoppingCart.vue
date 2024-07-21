@@ -96,10 +96,12 @@ import { toast } from 'vue3-toastify';
 import type { Plant } from '@/types/Plant'
 import Select from 'primevue/select';
 import { discountedShippingThreshold } from '@/constants/OrderConstants'
+import { useUserStore } from '../auth/stores/users'
 
 const { cart } = storeToRefs(useOrderStore())
 const { getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession, updateShipping } = useOrderStore()
 const { cartTotal, shippingOptions, isLoading } = storeToRefs(useOrderStore())
+const { loginAnonymously, logInUser } = useUserStore()
 
 const amountToQualifyForDiscountedShipping = computed(() => {
     if(cartTotal.value >= discountedShippingThreshold) { return USDollar.format(0)}
@@ -146,10 +148,17 @@ function getImageUrl(cartItem: CartItem) {
 }
 
 async function checkout() {
-    //console.log(cart.value.cartItems)
+    if(!useUserStore().isLoggedIn) {
+        loginAnonymously()
+            //show modal to log in / 
+
+            //login
+            //sign in anonomously
+    }
     if(cart.value.cartItems.length > 0) {
         const res = await startCheckoutSession()
-        if(res && res.error === true) {toast.error(res.message)}
+        console.log(res)
+        if(!res || res.error === true) {toast.error(res?.message || 'Unable to open checkout page')}
     }
 }
 </script>

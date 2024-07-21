@@ -14,6 +14,9 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   sendPasswordResetEmail,
+  signInAnonymously,
+  GoogleAuthProvider,
+  signInWithPopup
 } from "firebase/auth";
 
 export const fbCreateAccount = async (
@@ -45,7 +48,15 @@ export const fbSignIn = async (email: string, password: string) => {
   const response = await signInWithEmailAndPassword(auth, email, password);
   return response;
 };
-
+export async function fbSignInAnonymously() {
+  const response = await signInAnonymously(auth)
+  return response
+} 
+export async function fbSignInWithGoogle() {
+  const provider = new GoogleAuthProvider()
+  const response = await signInWithPopup(auth, provider)
+  return response
+}
 export const fbSignOut = async () => {
   await signOut(auth);
   return true;
