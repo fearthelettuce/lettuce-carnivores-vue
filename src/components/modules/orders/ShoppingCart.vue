@@ -74,7 +74,7 @@
                     </div>
                 </div>
                 <div class="d-flex flex-row justify-content-center">
-                    <button class="btn btn-primary" @click.prevent="checkout" :disabled="cart.cartItems.length === 0">Proceed to Checkout <span class="spinner-border" role="status" v-show="isLoading"></span></button>
+                    <button class="btn btn-primary" @click.prevent="checkout" :disabled="cart.cartItems.length === 0 || isLoading">Proceed to Checkout <span class="spinner-border" role="status" v-show="isLoading"></span></button>
                 </div>
             </footer>
         </div>
