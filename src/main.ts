@@ -69,7 +69,12 @@ const primeVuePreset = definePreset(Aura, {
               background: 'hsl(33, 7%, 25%)',
               focusBackground: '#e1dcbd',
               color: '#e1dcbd',
-              focusColor: '#e1dcbd'
+              focusColor: '{stone.800}'
+          },
+          list: {
+            option: {
+              focusColor:'#e1dcbd',
+            },
           },
           text: {
             color: '#e1dcbd'

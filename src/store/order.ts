@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, type Ref, ref } from 'vue'
 import type{ CartItem, ShoppingCart } from '@/types/Orders'
-import { newShoppingCart } from '@/constants/OrderConstants'
+import { discountedShippingThreshold, expeditedShipping, freeShipping, freeUpgraded, newShoppingCart, standardShipping } from '@/constants/OrderConstants'
 import { usePlantStore } from '../components/modules/products/stores/plant'
 import { type PlantCategory } from '@/types/Plant'
 import { useLocalStorage } from '@vueuse/core'
@@ -11,7 +11,7 @@ import type { StripeCartItem } from '@/types/Orders';
 
 export const useOrderStore = defineStore('order', () => {
     const isLoading = ref(false)
-    const cart: Ref<ShoppingCart> | undefined = ref(useLocalStorage('cart',{...newShoppingCart}))
+    const cart: Ref<ShoppingCart> = ref(useLocalStorage('cart',{...newShoppingCart}))
     const stripeCart: Ref<StripeCartItem[]> = ref([])
     const cartItemCount = computed(() => {
         const cartCount = cart.value.cartItems.reduce(
@@ -19,6 +19,10 @@ export const useOrderStore = defineStore('order', () => {
             0
           );
         return cartCount
+    })
+    const cartTotal = computed(() => {
+        return cart.value.cartItems.reduce(
+            (accumulator, cartItem) => accumulator + (cartItem.price * cartItem.quantity), 0)
     })
     const addItemToCart = async (item: CartItem) => {
         const cartIndex = cart?.value.cartItems.findIndex(cartItem => cartItem.sku === item.sku)
@@ -31,10 +35,12 @@ export const useOrderStore = defineStore('order', () => {
             }
             if(cartIndex === -1) {
                 cart.value.cartItems.push(item)
+                updateShipping()
                 return {success: true}
             } 
             if (cart?.value.cartItems[cartIndex].quantity < plant.quantity) {
                 cart.value.cartItems[cartIndex].quantity ++
+                updateShipping()
                 return {success: true}
             } else {
                 return {success: false, error: true, errorMessage: 'Unable to add to cart, quantity not available'}
@@ -60,14 +66,17 @@ export const useOrderStore = defineStore('order', () => {
         if(cart && cartIndex !== -1 && cartIndex !== undefined) {
             if(deleteItem) {
                 cart.value.cartItems.splice(cartIndex,1)
+                updateShipping()
                 return
             }
             if(cart.value.cartItems[cartIndex].quantity > 1) {
                 cart.value.cartItems[cartIndex].quantity --
+                updateShipping()
                 return
             } 
             if(cart.value.cartItems[cartIndex].quantity = 1) {
                 cart.value.cartItems.splice(cartIndex,1)
+                updateShipping()
                 return
             } 
         }
@@ -76,46 +85,67 @@ export const useOrderStore = defineStore('order', () => {
     function resetCart () {
         if(cart && cart.value) {
             cart.value.cartItems.length = 0
+            updateShipping()
         }
     }
+
+    function updateShipping() {
+        if(!cart.value.shipping || !cart.value.shipping.type) {
+            cart.value.shipping = standardShipping
+        }
+        const currentShippingType = cart?.value.shipping.type
+        if(cartTotal.value >= discountedShippingThreshold) {
+            if(currentShippingType === 'standard' || !currentShippingType) {
+                cart.value.shipping = freeShipping
+                
+            } else {
+                cart.value.shipping = freeUpgraded
+            }
+        } else {
+            if(currentShippingType === 'standard' || !currentShippingType) {
+                cart.value.shipping = standardShipping
+            } else {
+                cart.value.shipping = expeditedShipping
+            }
+        }
+    }
+
+    const shippingOptions = computed(() => {
+        if(cartTotal.value >= discountedShippingThreshold) {
+            return [freeShipping, freeUpgraded]
+        } else {
+            return [standardShipping, expeditedShipping]
+        }
+    })
+
     async function startCheckoutSession () {
+        isLoading.value = true
         await buildStripeCart()
-        //if(stripeCart.value.length !== cart?.value.cartItems.length) {
-        console.log({...stripeCart.value})
-        if(stripeCart.value.length !== cart?.value.cartItems.length) {
+        if(stripeCart.value.length !== cart.value.cartItems.length + 1) {
             console.table(stripeCart.value)
             console.table(cart?.value.cartItems)
             return {success: false, error: true, message: `Unable to create checkout session`}
         }
         await createCheckoutSession(stripeCart.value)
+        setTimeout(() => {isLoading.value = false}, 4000)
+        
     }
 
     async function buildStripeCart () {
-        isLoading.value = true
         stripeCart.value.length = 0
-        if(!cart || !cart.value || cart.value.cartItems.length === 0) {
+        if(cart.value.cartItems.length === 0) {
             return
         }
         for(const item of cart?.value.cartItems) {
-        // cart?.value.cartItems.forEach(async (item) => {
             try {
-                //const product = await getProductBySku(item.sku)
                 const product = await getProductBySku(item.sku)
-                stripeCart.value.push({...product, quantity: item.quantity})
+                stripeCart.value.push({priceId: product.price.id, quantity: item.quantity})
                 
             } catch (e: any) {
                 return {success: false, error: true, message: `Unable to create checkout session, \n ${e.message}`}
             }
         }
-        // if(cart && cart.value) {
-        //     const product = await getProductBySku(cart?.value.cartItems[0].sku)
-        //     console.log(product)
-        // }
-       console.log(stripeCart.value)
-       isLoading.value = false
-       
+        stripeCart.value.push({priceId: cart.value.shipping.stripePrice, quantity: 1})
     }
-
-
-    return { cart, cartItemCount, getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession, resetCart}
+    return { cart, cartItemCount, getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession, resetCart, cartTotal, shippingOptions, updateShipping, isLoading}
 })

@@ -1,6 +1,6 @@
 <template>
     <div class="mx-5 alert alert-warning mb-3">
-    The shopping cart is still under construction.  Please message @dangerlettuce on Instagram, Facebook, or eBay to purchase any of the plants listed here.
+    The shopping cart is in Test mode.  Use credit card number 4242 4242 4242 4242 with any future expiration date and any CVV to test checkout.
     </div>
     <div class="container mb-3">
         
@@ -44,38 +44,37 @@
             </div>
             <footer class="d-flex flex-column">
                 <div class="subtotal d-flex flex-column">
-                    <div class="d-flex flex-row justify-content-end gap-3 mx-2 my-2">
-                    <h3 class="m-0">Shipping</h3>
-                    <h3 class="m-0">
-                        Free!<!-- {{ USDollar.format(0)}} -->
-                    </h3>
+                    <div v-if="!cart.shipping.isDiscounted" class="qualify-for-free-shipping">{{ `Add ${amountToQualifyForDiscountedShipping} more to your cart to quality for free standard shipping.` }}</div>
+                    <div class="d-flex flex-row justify-content-end align-items-center gap-3 my-2">
+                        <Select 
+                            :options="shippingOptions" 
+                            v-model="cart.shipping"
+                            optionLabel="label"
+                            id="selectShipping" 
+                            label="Shipping Method"
+                            :pt="{ 
+                                dropdown: { style: 'width: 1.5rem; padding: 0 .5rem 0 0;'},
+                                label: { style: 'padding: .5rem;'},
+                                option: { 
+                                    selected: {style: 'color: red;'},
+                                    selectedBackground: {style: 'color: red'}
+                                },
+                            }"
+                        />
+                        <h3 class="m-0">
+                            {{ USDollar.format(cart.shipping.value)}}
+                        </h3>
                     
+                    </div>
+                    <div class="d-flex flex-row justify-content-end gap-2 mx-2 my-2">
+                        <h3 class="m-0">Subtotal</h3>
+                        <h3 class="m-0">
+                            {{ USDollar.format(cartTotal + cart.shipping.value)}}
+                        </h3>
+                    </div>
                 </div>
-                <div class="d-flex flex-row justify-content-end gap-3 mx-2 my-2">
-                    <h3 class="m-0">Subtotal</h3>
-                    <h3 class="m-0">
-                        {{ USDollar.format(cartTotal)}}
-                    </h3>
-                    
-                </div>
-                </div>
-                
-                <!-- <div class="d-flex flex-row justify-content-end gap-5 m-3">
-                    <h3>Shipping</h3>
-                    <h3>
-                        Free! {{ USDollar.format(0)}}
-                    </h3>
-                    
-                </div>
-                <div class="d-flex flex-row justify-content-end gap-5 m-3">
-                    <h3>Subtotal</h3>
-                    <h3>
-                        {{ USDollar.format(cartTotal)}}
-                    </h3>
-                    
-                </div> -->
                 <div class="d-flex flex-row justify-content-center">
-                    <button class="btn btn-primary" @click.prevent="checkout">Proceed to Checkout</button>
+                    <button class="btn btn-primary" @click.prevent="checkout" :disabled="cart.cartItems.length === 0">Proceed to Checkout <span class="spinner-border" role="status" v-show="isLoading"></span></button>
                 </div>
             </footer>
         </div>
@@ -95,20 +94,24 @@ import type { CartItem } from '@/types/Orders'
 import {getPhotoUrl, placeholderUrl} from '@/composables/usePhotoUtils'
 import { toast } from 'vue3-toastify';
 import type { Plant } from '@/types/Plant'
+import Select from 'primevue/select';
+import { discountedShippingThreshold } from '@/constants/OrderConstants'
 
 const { cart } = storeToRefs(useOrderStore())
-const { getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession } = useOrderStore()
+const { getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession, updateShipping } = useOrderStore()
+const { cartTotal, shippingOptions, isLoading } = storeToRefs(useOrderStore())
 
+const amountToQualifyForDiscountedShipping = computed(() => {
+    if(cartTotal.value >= discountedShippingThreshold) { return USDollar.format(0)}
+    else {
+        return USDollar.format(discountedShippingThreshold - cartTotal.value)
+    }
+})
 onMounted(() => {
     cart.value.cartItems.forEach(item => getCategoryBySku(item))
+    updateShipping()
     //validated cart it still valid, display TCGPlayer style message "you're cart sucks"
 })
-
-const cartTotal = computed(() => {
-    return cart.value.cartItems.reduce(
-        (accumulator, cartItem) => accumulator + (cartItem.price * cartItem.quantity), 0)
-})
-
 
 const USDollar = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -142,10 +145,10 @@ function getImageUrl(cartItem: CartItem) {
     }
 }
 
-function checkout() {
+async function checkout() {
     //console.log(cart.value.cartItems)
     if(cart.value.cartItems.length > 0) {
-        const res = startCheckoutSession()
+        const res = await startCheckoutSession()
         if(res && res.error === true) {toast.error(res.message)}
     }
 }
@@ -184,11 +187,18 @@ function checkout() {
     flex-direction: column;
     margin: 0 .8rem;
 }
-
+.qualify-for-free-shipping {
+    text-align: center;
+    margin: .5rem 0;
+}
 .quantity-input {
     width: 6rem;
 }
-
+.spinner-border {
+    height: 1rem;
+    width: 1rem;
+    margin-left: 1rem;
+}
 .cart-item-container {
     display: flex;
     flex-direction: column;

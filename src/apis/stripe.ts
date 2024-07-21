@@ -32,10 +32,6 @@ export async function getProductBySku2(sku: string) {
 
     const querySnapshot = await getDocs(q)
     return querySnapshot.docs[0].data()
-    // querySnapshot.forEach((doc) => {
-    //     console.log('getItemBySku returning data')
-    //     return doc.data()
-    // })
 }
 
 export async function getProductBySku(sku: string): Promise<StripeProduct> {
@@ -68,46 +64,27 @@ export async function getProductBySku(sku: string): Promise<StripeProduct> {
     return {...doc.data(), price: {...priceData, id: priceId} as StripePrice} as StripeProduct
 }
 
-// async function getProductPrice(docRef: DocumentData) {
-//     const priceSnap = await getDocs(collection(docRef,'prices'))
-//     return priceSnap.docs[0]
-//     //console.log(({...doc.data(), prices: priceSnap.docs[0].data()}))
-//     // return ({...doc.data(), prices: priceSnap.docs})
-//     // priceSnap.docs.forEach((priceDoc) => {
-//     //     res.prices.push({...priceDoc.data(), id: priceDoc.id})
-//     //     //console.log(priceDoc.id, ' => ', priceDoc.data());
-//     // });
-
-//     // })
-//     // return res
-// }
-
 export async function createCheckoutSession(cart: StripeCartItem[]) {
     if(!auth || !auth.currentUser) { return }
     const lineItems = cart.map((item) => {
-        return {price: item.price.id, quantity: item.quantity}
-        // return {price_data: {
-        //     currency: item.price.currency,
-        //     unit_amount: item.price.unit_amount,
-        //     product_data: {
-        //         name: item.name,
-        //         description: item.description,
-        //         images: item.images[0],
-        //         quantity: item.quantity,
-        //     },
-            
-        // }}
+        return {price: item.priceId, quantity: item.quantity}
     })
     console.log(lineItems)
     const collectionRef = await collection(db,'customers',auth.currentUser.uid, 'checkout_sessions')
     const docRef = await addDoc(collectionRef, {
         mode: 'payment',
         automatic_tax: true,
+        tax_id_collection: true,
         success_url: `${window.location.origin}/checkoutcomplete`,
         cancel_url: `${window.location.origin}/cart`,
         line_items: lineItems,
-        shipping_cost: 1000,
-        shipping_options: ['shr_1PeUj7HlHApXEku97UWnEMtk'],
+        //shipping_rates: ['shr_1PeUj7HlHApXEku97UWnEMtk', 'shr_1PeV9AHlHApXEku9nZGfZY3C'], //not working
+        // shipping_options: [{
+        //     id: 'basic',
+        //     label: 'Ground shipping',
+        //     detail: 'Ground shipping via UPS or USPS',
+        //     amount: 8.50,
+        // }],
         collect_shipping_address: true,
     })
     onSnapshot(docRef, (snap) => {
@@ -122,18 +99,6 @@ export async function createCheckoutSession(cart: StripeCartItem[]) {
         }
     })
 }
-//     getDoc(collection(db, 'customers', ))
-//     const docRef = await db
-//         .collection('customers')
-//         .doc(currentUser.uid)
-//         .collection("checkout_sessions")
-//         .add({
-//             mode: "payment",
-//             price: "price_1GqIC8HYgolSBA35zoTTN2Zl", // One-time price created in Stripe
-//             success_url: window.location.origin,
-//             cancel_url: window.location.origin,
-//         });
-// }
 
 export async function addProductToStripe(product: any) {
     //take in productCategory and product Sku

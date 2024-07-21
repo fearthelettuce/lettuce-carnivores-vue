@@ -36,7 +36,7 @@
                 :options="otherFiltersList"
                 filter
                 placeholder="Other filters"
-                class="filter-item" 
+                 
             />
 
             <!-- <Select 

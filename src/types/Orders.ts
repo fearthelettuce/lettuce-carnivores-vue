@@ -1,10 +1,19 @@
 import type { Sizes } from './Plant'
 import type { PhotoItem } from './Product'
-import type { DocumentData } from 'firebase/firestore'
 
 export type ShoppingCart = {
     id: number | undefined,
     cartItems: CartItem[],
+    shipping: ShippingDetails
+}
+
+export type ShippingDetails = {
+    type: 'standard' | 'expedited',
+    isDiscounted: boolean,
+    label: string,
+    stripeProduct: 'prod_QVt4jZz99DvKsl' | 'prod_QVtGzMGXT8HjtR' | 'prod_QW4gESRi0oD5P4' | null, //these are test products, need ot update with prod ids
+    stripePrice: 'price_1PerI3HlHApXEku9Yj3zT6ng' | 'price_1PerTsHlHApXEku9y85PNiVm' | 'price_1Pf2XBHlHApXEku9izGcR5XH' | 'price_1Pf3NKHlHApXEku98z5rdvcJ',
+    value: number,
 }
 
 export type CartItem = {
@@ -22,7 +31,7 @@ export type CartItem = {
     isRepresentative: boolean,
 
 }
-export type StripeCartItem = StripeProduct & {quantity: number}
+//export type StripeCartItem = StripeProduct & {quantity: number}
 
 export type StripeProduct = {
     active: boolean,
@@ -52,5 +61,10 @@ export type StripePrice = {
     trial_period_days: null,
     type: string,
     unit_amount: number,
-    id: string | number,
+    id: string,
+}
+
+export type StripeCartItem = {
+    priceId: string,
+    quantity: number
 }
