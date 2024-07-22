@@ -1,10 +1,6 @@
 <template>
     <div class="container border rounded p-4">
         <h2 class="text-center">Login</h2>
-        <div>
-            <button class="" @click="googleLogin">Sign in with Google</button>
-            
-        </div>
         <form>
             <div class="form-group">
                 <label for="loginEmail">Email</label>
@@ -18,11 +14,15 @@
             <div class="d-flex justify-content-around mt-4">
                 <div><button class="btn btn-primary px-4" @click.prevent="login">Login</button></div>
                 
-                <div class="">
+                <div>
                     <button class="btn btn-outline-link" @click.prevent="resetPassword">Trouble signing in?</button>
                 </div>
             </div>
         </form>
+        <hr class="my-4"/>
+        <div class="d-flex justify-content-center">
+            <FirebaseAuth />
+        </div>
     </div>
 </template>
 
@@ -31,6 +31,7 @@ import { ref } from 'vue';
 import { useUserStore } from '@/components/modules/auth/stores/users'
 import { router } from '@/router/index'
 import { toast } from 'vue3-toastify'
+import FirebaseAuth from './FirebaseAuth.vue';
 
 const { loginWithGoogle, logInUser } = useUserStore()
 const loginEmail = ref("")

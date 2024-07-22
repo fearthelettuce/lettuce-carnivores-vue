@@ -103,7 +103,6 @@ import { firebaseApp } from '@/apis/firebase.js'
 app.use(VueFire, {
   firebaseApp: firebaseApp,
   modules: [
-    // ... other modules
     VueFireAuth(),
   ],
 })
