@@ -44,7 +44,9 @@ async function login () {
     }
     try {
         await logInUser(loginEmail.value, loginPassword.value)
-        router.push('/products').then(()=>{toast.success('Welcome!')})
+        if(router.currentRoute.value.fullPath === '/login') {
+            router.push('/products').then(()=>{toast.success('Welcome!')})
+        }
     } catch(error) {
         console.log(error)
         toast.error('Sorry, something went wrong')
