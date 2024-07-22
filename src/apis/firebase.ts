@@ -4,12 +4,12 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyARDVZXueij6AKI4yQMitc8tqwradplqzc',
-  authDomain: 'lettuce-carnivores.firebaseapp.com',
-  projectId: 'lettuce-carnivores',
-  storageBucket: 'lettuce-carnivores.appspot.com',
-  messagingSenderId: '158930764146',
-  appId: '1:158930764146:web:e07c3db4987aa639ddddeb',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 
 };
 

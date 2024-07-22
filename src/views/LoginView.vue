@@ -13,5 +13,5 @@
 <script setup lang="ts">
 import SignIn from '@/components/modules/auth/components/SignIn.vue'
 import TheRegistration from '@/components/modules/auth/components/TheRegistration.vue';
-import FirebaseAuth from '@/components/modules/auth/components/FirebaseAuthOld.vue';
+import FirebaseAuth from '@/components/modules/auth/components/FirebaseAuth.vue';
 </script>

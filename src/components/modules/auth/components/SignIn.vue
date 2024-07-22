@@ -31,7 +31,6 @@ import { ref } from 'vue';
 import { useUserStore } from '@/components/modules/auth/stores/users'
 import { router } from '@/router/index'
 import { toast } from 'vue3-toastify'
-import * as firebaseui from 'firebaseui'
 
 const { loginWithGoogle, logInUser } = useUserStore()
 const loginEmail = ref("")

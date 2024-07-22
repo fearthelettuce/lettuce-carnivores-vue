@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import * as firebaseui from 'firebaseui' 
+// import * as firebaseui from 'firebaseui' 
 import { GoogleAuthProvider, FacebookAuthProvider, EmailAuthProvider, PhoneAuthProvider} from 'firebase/auth'
 import { toast } from 'vue3-toastify'
 import { router } from '@/router/index'
