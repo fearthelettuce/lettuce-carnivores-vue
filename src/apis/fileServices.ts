@@ -1,4 +1,4 @@
-import { ref, uploadBytes, deleteObject } from 'firebase/storage' 
+import { ref, uploadBytes, deleteObject, getDownloadURL } from 'firebase/storage' 
 import { storage } from '@/apis/firebase'
 import type { PhotoItem } from '@/types/Product'
 
@@ -28,8 +28,24 @@ export async function deleteFile(photo: PhotoItem) {
     try {
         await deleteObject(storageRef)
         return {success: true, error: false, message: 'Deleted'}
-    } catch (err) {
-        console.log(err);
-        return {success: false, error: true, message: 'Error deleting file from Firebase Storage', errorDetails: err}
+    } catch (e) {
+        console.log(e);
+        return {success: false, error: true, message: 'Error deleting file from Firebase Storage', errorDetails: e}
     }
+}
+
+export async function getPhotoDownloadUrl(photo: PhotoItem) {
+    //const photoUrl = `https://firebasestorage.googleapis.com/v0/b/lettuce-carnivores.appspot.com/o/${photo.path}_256x256`
+    const photoUrl = `https://firebasestorage.googleapis.com/v0/b/lettuce-carnivores.appspot.com/o/referencePhotos/IMG20240719094313.jpg`
+    const storageRef = ref(storage, photoUrl)
+    if(!storageRef) {return {success: false, error: false, message: `Photo path ${photo.path} does not exist in Firebase`}}
+    try {
+        const url = await getDownloadURL(storageRef)
+        return url
+    } catch (e: any) {
+        console.log(e);
+        return {success: false, error: true, message: 'Error getting download url from Firebase Storage', errorDetails: e}
+
+    }
+
 }

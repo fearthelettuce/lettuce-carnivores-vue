@@ -157,11 +157,10 @@ export const usePlantStore = defineStore('plant', () => {
         if(!category) {
             console.log(plant)
             console.log(category)
-            return
+            return {success: false, message: 'Unable to get category for that plant', error: true}
         }
         const res = await addProductToStripe(plant, category)
-        console.log(res)
-        return
+        return res
     }
 
     const removePlant = async(index: number) => {

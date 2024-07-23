@@ -1,10 +1,9 @@
-import { collection, getDocs, query, where, addDoc, onSnapshot, type DocumentData} from 'firebase/firestore';
-import { db, auth, firebaseApp } from '@/apis/firebase'
+import { collection, doc, getDoc, getDocs, query, where, addDoc, onSnapshot} from 'firebase/firestore';
+import { db, auth } from '@/apis/firebase'
 import { connectFunctionsEmulator, getFunctions, httpsCallable } from 'firebase/functions'
 import type { StripeProduct, StripePrice, StripeCartItem} from '@/types/Orders';
-import { usePlantStore } from '@/components/modules/products/stores/plant';
 import type { PlantCategory, Plant } from '@/types/Plant'
-import { getPhotoUrl } from '@/composables/usePhotoUtils';
+import { getPhotoDownloadUrl } from './fileServices';
 
 export async function getActiveProducts() {
     const q = query(collection(db, 'products'),
@@ -27,34 +26,37 @@ export async function getActiveProducts() {
 }
 
 
-export async function getProductBySku2(sku: string) {
-    console.log('in getProductBySku')
-    const collectionRef = collection(db, 'products')
-    const q = query(collectionRef,
-        where('stripe_metadata_sku', '==', sku)
-    )
+// export async function getProductBySku2(sku: string) {
+//     console.log('in getProductBySku')
+//     const collectionRef = collection(db, 'products')
+//     const q = query(collectionRef,
+//         where('stripe_metadata_sku', '==', sku)
+//     )
 
-    const querySnapshot = await getDocs(q)
-    return querySnapshot.docs[0].data()
-}
+//     const querySnapshot = await getDocs(q)
+//     return querySnapshot.docs[0].data()
+// }
 
 export async function getProductBySku(sku: string): Promise<StripeProduct> {
-    console.log('in getProductBySku')
-    const collectionRef = collection(db, 'products')
-    const q = query(collectionRef,
-        where('stripe_metadata_sku', '==', sku)
-    )
 
-    const docRef = await getDocs(q)
-    if(docRef.docs.length === 0) {
-        throw new Error ('No products found')
-    } else if (docRef.docs.length > 1) {
-        throw new Error ('Multiple products found for that sku')
-    }
-    const doc = docRef.docs[0]
-    const docData = await doc.data()
+    const docRef = doc(db, 'products', sku)
+    // const collectionRef = collection(db, 'products')
+    // const q = query(collectionRef,
+    //     where('stripe_metadata_sku', '==', sku)
+    // )
 
-    const priceRef = collection(db, `products/${doc.id}/prices`)
+    // const docRef = await getDocs(q)
+    // if(docRef.docs.length === 0) {
+    //     throw new Error ('No products found')
+    // } else if (docRef.docs.length > 1) {
+    //     throw new Error ('Multiple products found for that sku')
+    // }
+    // const doc = docRef.docs[0]
+    const docSnap = await getDoc(docRef)
+    if(doc === undefined) { return }
+    const docData = await docSnap.data()
+
+    const priceRef = collection(db, `products/${docSnap.id}/prices`)
     const priceSnap = await getDocs(priceRef)
 
     if(priceSnap.docs.length === 0) {
@@ -65,7 +67,7 @@ export async function getProductBySku(sku: string): Promise<StripeProduct> {
     const priceId = priceSnap.docs[0].id
     const priceDoc = priceSnap.docs[0]
     const priceData = priceDoc.data()
-    return {...doc.data(), price: {...priceData, id: priceId} as StripePrice} as StripeProduct
+    return {...docSnap.data(), price: {...priceData, id: priceId} as StripePrice} as StripeProduct
 }
 
 export async function createCheckoutSession(cart: StripeCartItem[]) {
@@ -109,23 +111,32 @@ export async function addProductToStripe(plant: Plant, plantCategory: PlantCateg
     connectFunctionsEmulator(functions,'127.0.0.1', 5001)
     const createProductInStripe = httpsCallable(functions, 'createProductInStripe')
 
-    const stripeProduct = createStripeProduct(plant, plantCategory)
+    const stripeProduct = await createStripeProduct(plant, plantCategory)
     //const res = await fetch('https://createproductinstripe-pdapqawq6q-uc.a.run.app', {
     //const res = await fetch('http://127.0.0.1:5001/lettuce-carnivores/us-central1/createProductInStripe', {
     //     method: "POST",
     //     body: JSON.stringify(stripeProduct)
     // })
-    const res = await createProductInStripe(stripeProduct).catch((e: any) => console.error(e))
 
-    console.log(res)
-    return res
+    try {
+        const res = await createProductInStripe(stripeProduct)
+        console.log(res)
+        return res.data
+    } catch (e: any) {
+        console.error(e)
+        return e
+    }
 }
 
-function createStripeProduct (plant: Plant, plantCategory: PlantCategory) {
+async function createStripeProduct (plant: Plant, plantCategory: PlantCategory) {
+    //const image = await getPhotoDownloadUrl(plant.photos[0])
     return {
         id: plant.sku,
         description: plant.size,
-        images: [getPhotoUrl(plant.photos[0].path.toString(),256)],
+        // images: [`${getPhotoUrl(plant.photos[0].path,256)}`],
+        //images: [image],
+        //images: ['https://picsum.photos/280/320?random=4'],
+        //images: ['https://firebasestorage.googleapis.com/v0/b/lettuce-carnivores.appspot.com/o/plants%2FIMG20231110094027_256x256?alt=media&token=342ee06c-b448-4bbb-88e9-14f15a7e5ef6'],
         metadata: {
             sku: plant.sku
         },

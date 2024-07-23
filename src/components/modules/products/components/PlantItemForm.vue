@@ -116,10 +116,13 @@ function setRepresentative() {
     plant.value.isRepresentative = plant.value.id === '';
 }
 
-function addToStripe(plant: Plant) {
-    const res = addPlantToStripe(plant)
-    toast.success('Added to Stripe')
-    //TODO error
+async function addToStripe(plant: Plant) {
+    const res = await addPlantToStripe(plant)
+    if(res.error || !res.success) {
+        toast.error(res.message)
+    } else {
+        toast.success('Added to Stripe')
+    }
 }
 watch(() => plant.value.id, () => {
     if(plant.value.sku === '' && plant.value.id.toString().length === 4) {
