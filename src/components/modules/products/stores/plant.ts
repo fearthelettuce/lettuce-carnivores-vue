@@ -1,12 +1,13 @@
 import { ref, watch, type Ref } from "vue"
 import { defineStore } from "pinia"
-import { type PlantCategory} from "@/types/Plant"
+import type { PlantCategory, Plant} from "@/types/Plant"
 import { type PhotoItem } from "../../../../types/Product"
 import { saveItem, findAll, findDocById } from '@/apis/dataServices'
 import {deleteById} from '@/composables/useProductUtils'
 import {appendPhotoDataUtil, removePhotoUtil} from '@/composables/usePhotoUtils'
 import { newPlantCategory, newPlant, defaultFilters } from "@/constants/constants"
 import { toast } from 'vue3-toastify'
+import { addProductToStripe } from '@/apis/stripe'
 export const usePlantStore = defineStore('plant', () => {
 
     const isLoading = ref(false)
@@ -151,6 +152,18 @@ export const usePlantStore = defineStore('plant', () => {
         
     }
 
+    async function addPlantToStripe (plant: Plant) {
+        const category = await getCategoryByPlant(plant)
+        if(!category) {
+            console.log(plant)
+            console.log(category)
+            return
+        }
+        const res = await addProductToStripe(plant, category)
+        console.log(res)
+        return
+    }
+
     const removePlant = async(index: number) => {
         plantCategoryToEdit.value.plants.splice(index,1)
         await saveCategory(plantCategoryToEdit.value)
@@ -167,7 +180,12 @@ export const usePlantStore = defineStore('plant', () => {
         if(plantCategory.id) {saveCategory(plantCategory)}
         return res
     }
-
+    async function getCategoryByPlant(plant: Plant) {
+        if(plantCategories.value.length === 0) {
+            fetchAllCategories()
+        }
+        return plantCategories.value.find(category => category.id === plant.plantCategoryId)
+    }
     return { 
         isLoading,
         isSaving,
@@ -186,6 +204,7 @@ export const usePlantStore = defineStore('plant', () => {
         getAvailableCategories,
         productFilters,
         updateFilteredCategories,
-        filteredCategories
+        filteredCategories,
+        addPlantToStripe
     }
 })

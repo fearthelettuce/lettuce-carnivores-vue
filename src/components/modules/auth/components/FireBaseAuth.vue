@@ -4,21 +4,26 @@
             v-for="provider of signInOptions" 
             @click="loginPopup(provider.value)"
             class=" sign-in-button"
-        ><span v-if="provider.icon !== undefined">
-            <img :src="provider.icon" class="provider-icon" />
-        </span>{{ provider.buttonLabel }}
-    </button>
+            :class="provider.class"
+        >
+            <span class="provider-icon-span" >
+                <GoogleIcon v-if="provider.icon !== undefined" class="provider-icon" />
+            </span><span style="margin-left: .7rem">{{ provider.buttonLabel }}</span>
+        </button>
     </div>
+
 </template>
 
 <script lang="ts">
-import { GoogleAuthProvider, FacebookAuthProvider, EmailAuthProvider, PhoneAuthProvider} from 'firebase/auth'
+import { useFirebaseAuth } from 'vuefire';
+import { GoogleAuthProvider, EmailAuthProvider, PhoneAuthProvider} from 'firebase/auth'
 import { toast } from 'vue3-toastify'
+import GoogleIcon from '@/assets/icons/GoogleIcon.vue';
 export const googleAuthProvider = new GoogleAuthProvider()
-const facebookAuthProvider = new FacebookAuthProvider()
-facebookAuthProvider.addScope('public_profile')
-facebookAuthProvider.addScope('email')
-export {facebookAuthProvider}
+// const facebookAuthProvider = new FacebookAuthProvider()
+// facebookAuthProvider.addScope('public_profile')
+// facebookAuthProvider.addScope('email')
+// export {facebookAuthProvider}
 export const emailAuthProvider = new EmailAuthProvider()
 export const phoneAuthProvider = new PhoneAuthProvider(auth)
 
@@ -26,38 +31,36 @@ export const phoneAuthProvider = new PhoneAuthProvider(auth)
 
 <script setup lang="ts">
 import { ref, onMounted, type Ref} from 'vue';
-import { VueFire, VueFireAuth } from 'vuefire'
-import { auth, db } from '@/apis/firebase';
+
+import { auth } from '@/apis/firebase';
 import { useUserStore} from '@/components/modules/auth/stores/users'
+import { router } from '@/router/index'
+
 import {
   signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
-  signOut,
   
 } from 'firebase/auth'
 
-import { useCurrentUser, useFirebaseAuth } from 'vuefire'
-
 const signInOptions = [
-    {value: 'Google', buttonLabel: 'Sign in with Google', icon: 'src/assets/icons/google.svg'},
-    {value: 'Facebook', buttonLabel: 'Sign in with Facebook', icon: 'src/assets/icons/facebook.svg'},
-    {value: 'Email', buttonLabel: 'Sign in with Email'},
-    {value: 'Phone', buttonLabel: 'Sign in with Phone'},
-    {value: 'Guest', buttonLabel: 'Continue as Guest'}
+    {value: 'Google', buttonLabel: 'Sign in with Google',icon: true, class: 'google-button'},
+    // {value: 'Facebook', buttonLabel: 'Sign in with Facebook', icon: 'src/assets/icons/facebook.svg'},
+    // {value: 'Email', buttonLabel: 'Sign in with Email', class: 'email-button'},
+    // {value: 'Phone', buttonLabel: 'Sign in with Phone', class: 'phone-button'},
+    // {value: 'Guest', buttonLabel: 'Continue as Guest', class: 'guest-button'}
 ]
 
-function loginPopup(provider: string) {
-  error.value = null
+async function loginPopup(provider: string) {
   let authProvider
   let authOptions = undefined
   switch(provider) {
     case 'Google':
         authProvider = googleAuthProvider
         break;
-    case 'Facebook':
-        authProvider = facebookAuthProvider
-        break;
+    // case 'Facebook':
+    //     authProvider = facebookAuthProvider
+    //     break;
     case 'Email': 
         authProvider = emailAuthProvider
         authOptions = {recaptchaParameters: {size: 'invisible'}}
@@ -72,39 +75,21 @@ function loginPopup(provider: string) {
 
   
     if(authProvider !== undefined) {
-        signInWithPopup(auth, authProvider).catch((reason) => {
+        await signInWithPopup(auth, authProvider).catch((reason) => {
             console.error('Failed sign', reason)
-            error.value = reason
             toast.error('Unable to sign in'); 
             return 
         })
+        if(router.currentRoute.value.path === '/login') {
+            router.push('/products').then(()=>{toast.success('Welcome!')})
+        }
     }
 
     if(authProvider === undefined) { 
-
-        const res = useUserStore().loginAnonymously()
+        useUserStore().loginAnonymously()
     }   
 
 }
-
-
-
-// display errors if any
-const error: Ref<string | null> = ref(null)
-function signinRedirect() {
-  signInWithRedirect(auth, googleAuthProvider).catch((reason: string) => {
-    console.error('Failed signinRedirect', reason)
-    error.value = reason
-  })
-}
-
-// only on client side
-onMounted(() => {
-  getRedirectResult(auth).catch((reason) => {
-    console.error('Failed redirect result', reason)
-    error.value = reason
-  })
-})
 
 </script>
 
@@ -112,21 +97,57 @@ onMounted(() => {
 .sign-in-options {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    width:15rem;
+    gap: .5rem;
+    width: 12.5rem;
+    font-weight: 1.5;
+}
+.sign-in-button:active {
+    box-shadow: 0 3px #666;
+    transform: translateY(4px);
 }
 
 .sign-in-button {
     border-radius: .5rem;
+    color: black;
+    background-color: white;
+    padding: .25rem 0;
+    text-align: start;
 }
-
+.provider-icon-span {
+    display: inline-block;
+    width: 1.5rem;
+    margin-left: 0.4rem;
+}
 .provider-icon {
     width: 1.5rem;
     height: 1.5rem;
     display: inline-flex;
     align-self: center;
-    margin: 0;
+    margin: 0 .25rem 0.08rem;
     
+}
+.google-button {
+
+    border: 1px solid hsl(353, 76%, 4%);
+}
+.email-button {
+    background-color: hsl(12, 86%, 53%);
+    border: 1px solid hsl(353, 76%, 4%);
+    color: white;
+    font-weight: 1.5; 
+}
+.phone-button {
+    background-color: hsl(160, 86%, 53%);
+    border: 1px solid hsl(353, 76%, 4%);
+    color: rgb(14, 67, 52);
+
+}
+
+.guest-button {
+    background-color: hsl(50, 96%, 55%);
+    border: 1px solid hsl(353, 76%, 4%);
+    color: rgb(14, 67, 52);
+    font-weight: 1.5;
 }
 
 </style>

@@ -42,7 +42,9 @@ export type StripeProduct = {
     role: null,
     stripe_metadata_sku: string | number,
     tax_code: string,
-    price: StripePrice
+    price: StripePrice,
+    shippable?: boolean,
+    id?: string,
 }
 export type StripePrice = {
     active: boolean,

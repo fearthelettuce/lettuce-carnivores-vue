@@ -76,6 +76,7 @@
         <div class="center-content">
             <button class="btn btn-info m-1" @click.prevent="addPhotos">Photos <span>({{ plant.photos.length }})</span></button>
             <button class="btn btn-danger m-1" @click.prevent="$emit('deletePlant')">Delete</button>
+            <button class="btn btn-warning m-1" @click.prevent="addToStripe(plant)">Add to Stripe</button>
         </div>
         
     </form>
@@ -85,11 +86,13 @@
 import { inject, watch, type PropType } from 'vue'
 import { type Plant } from '@/types/Plant';
 import { statusList, sizeList, statusListArr} from '@/constants/constants';
+import { usePlantStore } from '@/components/modules/products/stores/plant'
+import { toast } from 'vue3-toastify'
 
 defineEmits(['triggerSave', 'deletePlant'])
 
 const plant = defineModel('plant', {type: Object as PropType<Plant>, required: true})
-
+const { addPlantToStripe } = usePlantStore()
 watch(
     () => plant.value,
     () =>{
@@ -111,6 +114,12 @@ function addPhotos() {
 
 function setRepresentative() {
     plant.value.isRepresentative = plant.value.id === '';
+}
+
+function addToStripe(plant: Plant) {
+    const res = addPlantToStripe(plant)
+    toast.success('Added to Stripe')
+    //TODO error
 }
 watch(() => plant.value.id, () => {
     if(plant.value.sku === '' && plant.value.id.toString().length === 4) {

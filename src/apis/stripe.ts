@@ -1,6 +1,10 @@
 import { collection, getDocs, query, where, addDoc, onSnapshot, type DocumentData} from 'firebase/firestore';
-import { db, auth } from '@/apis/firebase'
+import { db, auth, firebaseApp } from '@/apis/firebase'
+import { connectFunctionsEmulator, getFunctions, httpsCallable } from 'firebase/functions'
 import type { StripeProduct, StripePrice, StripeCartItem} from '@/types/Orders';
+import { usePlantStore } from '@/components/modules/products/stores/plant';
+import type { PlantCategory, Plant } from '@/types/Plant'
+import { getPhotoUrl } from '@/composables/usePhotoUtils';
 
 export async function getActiveProducts() {
     const q = query(collection(db, 'products'),
@@ -100,12 +104,41 @@ export async function createCheckoutSession(cart: StripeCartItem[]) {
     })
 }
 
-export async function addProductToStripe(product: any) {
-    //take in productCategory and product Sku
-    //push product to products collection
-    //push price to product sub collection
+export async function addProductToStripe(plant: Plant, plantCategory: PlantCategory) {
+    const functions = getFunctions()
+    connectFunctionsEmulator(functions,'127.0.0.1', 5001)
+    const createProductInStripe = httpsCallable(functions, 'createProductInStripe')
+
+    const stripeProduct = createStripeProduct(plant, plantCategory)
+    //const res = await fetch('https://createproductinstripe-pdapqawq6q-uc.a.run.app', {
+    //const res = await fetch('http://127.0.0.1:5001/lettuce-carnivores/us-central1/createProductInStripe', {
+    //     method: "POST",
+    //     body: JSON.stringify(stripeProduct)
+    // })
+    const res = await createProductInStripe(stripeProduct).catch((e: any) => console.error(e))
+
+    console.log(res)
+    return res
 }
 
+function createStripeProduct (plant: Plant, plantCategory: PlantCategory) {
+    return {
+        id: plant.sku,
+        description: plant.size,
+        images: [getPhotoUrl(plant.photos[0].path.toString(),256)],
+        metadata: {
+            sku: plant.sku
+        },
+        name: plantCategory.name,
+        active: true,
+        shippable: true,
+        tax_code: 'txcd_99999999',
+        default_price_data: {
+            currency: 'usd',
+            unit_amount: plant.price * 100,
+        }
+    }
+}
 //TODO:
 //  Set checkout sessions to expire so that inventory goes back into 'stock'
 //  https://docs.stripe.com/payments/checkout/managing-limited-inventory
