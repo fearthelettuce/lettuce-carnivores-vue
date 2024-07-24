@@ -85,11 +85,11 @@ async function buildCheckoutSession (cartItems: CartItem[], uid: string, returnU
         mode: 'payment',
         client_reference_id: uid,
         // customer: uid,
-        customer: 'cus_QVIvtyYoNcHKr7',
-        customer_update: {
-            name: 'auto',
-            shipping: 'auto',
-        },
+        // customer: 'cus_QVIvtyYoNcHKr7',
+        // customer_update: {
+        //     name: 'auto',
+        //     shipping: 'auto',
+        // },
         tax_id_collection: {enabled: true},
         success_url: returnUrl,  //not allowed when we switch to embedded
         // return_url: returnUrl,
