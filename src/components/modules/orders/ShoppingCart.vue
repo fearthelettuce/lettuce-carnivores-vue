@@ -42,37 +42,16 @@
                     </div>
                 </div>
             </div>
-            <footer class="d-flex flex-column">
-                <div class="subtotal d-flex flex-column">
-                    <!-- <div v-if="!cart.shipping.isDiscounted" class="qualify-for-free-shipping">{{ `Add ${amountToQualifyForDiscountedShipping} more to your cart to quality for free standard shipping.` }}</div>
-                    <div class="d-flex flex-row justify-content-end align-items-center gap-3 my-2">
-                        <Select 
-                            :options="shippingOptions" 
-                            v-model="cart.shipping"
-                            optionLabel="label"
-                            id="selectShipping" 
-                            label="Shipping Method"
-                            :pt="{ 
-                                dropdown: { style: 'width: 1.5rem; padding: 0 .5rem 0 0;'},
-                                label: { style: 'padding: .5rem;'},
-                                option: { 
-                                    selected: {style: 'color: red;'},
-                                    selectedBackground: {style: 'color: red'}
-                                },
-                            }"
-                        />
-                        <h3 class="m-0">
-                            {{ USDollar.format(cart.shipping.value)}}
-                        </h3>
+            <div class="subtotal-container">
+                <div class="subtotal">
                     
-                    </div> -->
-                    <div class="d-flex flex-row justify-content-end gap-2 mx-2 my-2">
+                    <div class="subtotal-line">
                         <h3 class="m-0">Subtotal</h3>
                         <h3 class="m-0">
                             {{ USDollar.format(cartTotal)}}
                         </h3>
                     </div>
-                    <div class="d-flex flex-row justify-content-end gap-2 mx-2 mb-4">
+                    <div class="d-flex flex-row justify-content-center gap-2 mx-4 mb-4">
                         <h5 class="shipping-message">
                             {{ cartTotal >= discountedShippingThreshold ?
                              `Free standard shipping on orders over $75!` :
@@ -82,9 +61,12 @@
                         
                     </div>
                 </div>
+            </div>
+            <footer class="footer fixed-bottom">
                 <div class="checkout-actions">
-                    <button v-if="!isLoggedIn" class="btn btn-info" @click="router.push('/login')">Click here to Login</button>
-                    <button class="btn btn-primary" 
+                    <button v-if="!isLoggedIn" class="btn btn-info btn-lg text-white" @click="router.push('/login')">Login</button>
+
+                    <button class="checkout-button" 
                         @click.prevent="checkout" 
                         :disabled="cart.cartItems.length === 0 || isCheckoutLoading"
                     >
@@ -92,6 +74,7 @@
                     </button>
                 </div>
             </footer>
+
         </div>
     </div>
 
@@ -179,7 +162,7 @@ async function checkout() {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 .cart-item {
     display: flex;
@@ -214,6 +197,7 @@ async function checkout() {
 }
 .shipping-message {
     margin: .5rem 0;
+    text-align: center;
 }
 .quantity-input {
     width: 6rem;
@@ -233,12 +217,48 @@ async function checkout() {
     border-radius: .6rem;
     
 }
-
+.subtotal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 1rem;
+    margin-right: 1rem;
+}
+.subtotal-line {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+.subtotal-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 4rem;
+}
+.checkout-button {
+    border-radius: .5rem;
+    background: linear-gradient(0.25turn, #9fdb50, #c8f191);
+    padding: .5rem 1.25rem;
+    border: none;
+    color: black;
+    font-size: 1.25rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 2px 2px #9c9c9c;
+}
+.checkout-button:hover {
+    filter: brightness(105%);
+}
+.checkout-button:active {
+    box-shadow: 2px 3px #666;
+    transform: translateY(4px);
+}
 .checkout-actions {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-evenly;
+    background: linear-gradient(0.4turn, #9fdb50, #ebf8e1, #3f87a6);
+    padding: .6rem 0;
 
 }
 
@@ -268,5 +288,6 @@ async function checkout() {
     .cart-item-container {
         padding: 1rem 1rem;
     }
+
 }
 </style>

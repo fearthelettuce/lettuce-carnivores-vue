@@ -4,6 +4,13 @@ import { defineSecret } from 'firebase-functions/params'
 import Stripe from 'stripe'
 const stripeSecretKey = defineSecret("STRIPE_RESTRICTED_KEY")
 //const stripeWebhookSecretKey = defineSecret("STRIPE_WEBHOOK_SECRET_KEY")
+import admin from 'firebase-admin'
+import { Plant, PlantCategory } from './types/Plants'
+import { FunctionResponse } from './types/Functions'
+import { CartItem } from './types/Orders'
+
+admin.initializeApp()
+
 interface CheckoutSessionRequest extends CallableRequest {
     data: {
         cart: CartItem[],
@@ -61,7 +68,8 @@ async function buildCheckoutSession (cartItems: CartItem[], uid: string, returnU
                     name: item.name,
                     description: item.size,
                     metadata: {
-                        sku: item.sku
+                        sku: item.sku,
+                        categoryId: item.categoryId,
                     },
                     tax_code: 'txcd_99999999',
                 }
@@ -131,11 +139,7 @@ async function buildCheckoutSession (cartItems: CartItem[], uid: string, returnU
 
 
 
-import admin from 'firebase-admin'
-import { Plant, PlantCategory } from './types/Plants'
-import { FunctionResponse } from './types/Functions'
-import { CartItem } from './types/Orders'
-admin.initializeApp()
+
 
 async function buildStripeCart (cartItems: CartItem[]): Promise<FunctionResponse> {
     
@@ -162,7 +166,7 @@ async function buildStripeCart (cartItems: CartItem[]): Promise<FunctionResponse
 
 type PlantDetailsFromFirestoreRequest = {
     collection: string,
-    items: CartItem[]
+    items: CartItem[] | {categoryId: string}[]
 }
 
 async function getPlantDetailsFromFirestore (request: PlantDetailsFromFirestoreRequest): Promise<Plant[]> {
@@ -177,4 +181,14 @@ async function getPlantDetailsFromFirestore (request: PlantDetailsFromFirestoreR
         }
     }
     return plants
+}
+
+export async function updateInventory() {
+    //get request with checkout item list of skus and quantities
+        // need to add sku and categoryId to checkout session metadata or something
+    //call getPlantDetailsFromFirestore to get a list of all those plants
+    //loop through each checkout item and update doc for that plant
+        //reduce quantity by checkout quantity
+        //if quantity = 0, update status to sold
+    
 }

@@ -181,12 +181,7 @@ const availableForSale = computed(() => {
 async function addToCart() {
 
     if(selectedPlant && selectedPlant.value && plantCategory && plantCategory.value) {
-        let cartPhoto: PhotoItem
-        if(selectedPlant.value.photos.length === 0) {
-            cartPhoto = selectedPlant.value.photos[0]
-        } else {
-            cartPhoto = plantCategory.value.photos[0]
-        }
+
         const res = await addItemToCart({
         sku: selectedPlant.value.sku,
         plantCategoryId: selectedPlant.value.plantCategoryId,
@@ -196,7 +191,7 @@ async function addToCart() {
         categoryId: plantCategory.value.id,
         name: plantCategory.value.name,
         clone: plantCategory.value.clone,
-        photo: cartPhoto,
+        photo: selectedPlant.value.photos[0],
         size: selectedPlant.value.size,
         isDiscounted: selectedPlant.value.isDiscounted,
         isRepresentative: selectedPlant.value.isRepresentative})

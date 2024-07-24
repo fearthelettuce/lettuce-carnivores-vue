@@ -28,9 +28,8 @@ export const useOrderStore = defineStore('order', () => {
     const addItemToCart = async (item: CartItem) => {
         const cartIndex = cart?.value.cartItems.findIndex(cartItem => cartItem.sku === item.sku)
         if(cart && cartIndex !== undefined) {
-            const {category, plant} = await getCategoryBySku(item)
+            const {plant} = await getCategoryBySku(item)
             console.log(plant)
-            const cartItem = cart.value.cartItems[cartIndex]
             if(!plant|| plant.quantity === 0) {
                 return {success: false, error: true, errorMessage: 'Unable to add to cart, quantity not available'}
             }
