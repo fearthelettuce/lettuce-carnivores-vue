@@ -38,38 +38,38 @@ export async function getActiveProducts() {
 //     return querySnapshot.docs[0].data()
 // }
 
-export async function getProductBySku(sku: string): Promise<StripeProduct> {
+// export async function getProductBySku(sku: string): Promise<StripeProduct> {
 
-    const docRef = doc(db, 'products', sku)
-    // const collectionRef = collection(db, 'products')
-    // const q = query(collectionRef,
-    //     where('stripe_metadata_sku', '==', sku)
-    // )
+//     const docRef = doc(db, 'products', sku)
+//     // const collectionRef = collection(db, 'products')
+//     // const q = query(collectionRef,
+//     //     where('stripe_metadata_sku', '==', sku)
+//     // )
 
-    // const docRef = await getDocs(q)
-    // if(docRef.docs.length === 0) {
-    //     throw new Error ('No products found')
-    // } else if (docRef.docs.length > 1) {
-    //     throw new Error ('Multiple products found for that sku')
-    // }
-    // const doc = docRef.docs[0]
-    const docSnap = await getDoc(docRef)
-    if(doc === undefined) { return }
-    const docData = await docSnap.data()
+//     // const docRef = await getDocs(q)
+//     // if(docRef.docs.length === 0) {
+//     //     throw new Error ('No products found')
+//     // } else if (docRef.docs.length > 1) {
+//     //     throw new Error ('Multiple products found for that sku')
+//     // }
+//     // const doc = docRef.docs[0]
+//     const docSnap = await getDoc(docRef)
+//     if(doc === undefined) { return }
+//     const docData = await docSnap.data()
 
-    const priceRef = collection(db, `products/${docSnap.id}/prices`)
-    const priceSnap = await getDocs(priceRef)
+//     const priceRef = collection(db, `products/${docSnap.id}/prices`)
+//     const priceSnap = await getDocs(priceRef)
 
-    if(priceSnap.docs.length === 0) {
-        throw new Error ('Error with product pricing information')
-    } else if (priceSnap.docs.length > 1) {
-        throw new Error ('Multiple prices found for that sku')
-    }
-    const priceId = priceSnap.docs[0].id
-    const priceDoc = priceSnap.docs[0]
-    const priceData = priceDoc.data()
-    return {...docSnap.data(), price: {...priceData, id: priceId} as StripePrice} as StripeProduct
-}
+//     if(priceSnap.docs.length === 0) {
+//         throw new Error ('Error with product pricing information')
+//     } else if (priceSnap.docs.length > 1) {
+//         throw new Error ('Multiple prices found for that sku')
+//     }
+//     const priceId = priceSnap.docs[0].id
+//     const priceDoc = priceSnap.docs[0]
+//     const priceData = priceDoc.data()
+//     return {...docSnap.data(), price: {...priceData, id: priceId} as StripePrice} as StripeProduct
+// }
 
 // export async function createCheckoutSession(cart: StripeCartItem[]) {
 //     if(!auth || !auth.currentUser) { return }
@@ -141,7 +141,7 @@ export async function getProductDetails() {
         collection: 'plantCategories',
     }
     const functions = getFunctions()
-    connectFunctionsEmulator(functions,'127.0.0.1', 5001)
+    // connectFunctionsEmulator(functions,'127.0.0.1', 5001)
     const getPlantDetailsFromFirestore = httpsCallable(functions, 'getPlantDetailsFromFirestore')
 
     const res = await getPlantDetailsFromFirestore(mockData)

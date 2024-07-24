@@ -5,7 +5,7 @@ import { discountedShippingThreshold, expeditedShipping, freeShipping, freeUpgra
 import { usePlantStore } from '../components/modules/products/stores/plant'
 import { type PlantCategory } from '@/types/Plant'
 import { useLocalStorage } from '@vueuse/core'
-import {createStripeCheckoutSession, getActiveProducts, getProductBySku} from '@/apis/stripe'
+import {createStripeCheckoutSession} from '@/apis/stripe'
 
 import type { StripeCartItem } from '@/types/Orders';
 import { useUserStore } from '@/components/modules/auth/stores/users'
@@ -119,25 +119,6 @@ export const useOrderStore = defineStore('order', () => {
         }
     })
 
-    // async function startCheckoutSession () {
-    //     isLoading.value = true
-    //     await buildStripeCart()
-    //     if(stripeCart.value.length !== cart.value.cartItems.length + 1) {
-    //         console.table(stripeCart.value)
-    //         console.table(cart?.value.cartItems)
-    //         return {success: false, error: true, message: `Unable to create checkout session`}
-    //     }
-    //     try {
-    //         await createCheckoutSession(stripeCart.value)
-    //         return {success: true, error: false, message: ''}
-    //     } catch (e: any) {
-    //         console.error(e)
-    //         return {success: false, error: true, message: `Unable to create checkout session`}
-    //     } finally {
-    //         setTimeout(() => {isLoading.value = false}, 4000)
-    //     }
-        
-    // }
 
     async function startCheckoutSession() {
         isLoading.value = true
@@ -155,21 +136,6 @@ export const useOrderStore = defineStore('order', () => {
         }
     }
 
-    async function buildStripeCart () {
-        stripeCart.value.length = 0
-        if(cart.value.cartItems.length === 0) {
-            return
-        }
-        for(const item of cart?.value.cartItems) {
-            try {
-                const product = await getProductBySku(item.sku)
-                stripeCart.value.push({priceId: product.price.id, quantity: item.quantity})
-                
-            } catch (e: any) {
-                return {success: false, error: true, message: `Unable to create checkout session, \n ${e.message}`}
-            }
-        }
-        stripeCart.value.push({priceId: cart.value.shipping.stripePrice, quantity: 1})
-    }
+
     return { cart, cartItemCount, getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession, resetCart, cartTotal, shippingOptions, updateShipping, isLoading}
 })

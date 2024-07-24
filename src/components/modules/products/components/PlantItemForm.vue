@@ -76,7 +76,6 @@
         <div class="center-content">
             <button class="btn btn-info m-1" @click.prevent="addPhotos">Photos <span>({{ plant.photos.length }})</span></button>
             <button class="btn btn-danger m-1" @click.prevent="$emit('deletePlant')">Delete</button>
-            <button class="btn btn-warning m-1" @click.prevent="addToStripe(plant)">Add to Stripe</button>
         </div>
         
     </form>
@@ -116,14 +115,6 @@ function setRepresentative() {
     plant.value.isRepresentative = plant.value.id === '';
 }
 
-async function addToStripe(plant: Plant) {
-    const res = await addPlantToStripe(plant)
-    if(res.error || !res.success) {
-        toast.error(res.message)
-    } else {
-        toast.success('Added to Stripe')
-    }
-}
 watch(() => plant.value.id, () => {
     if(plant.value.sku === '' && plant.value.id.toString().length === 4) {
         plant.value.sku = plant.value.id.toString()

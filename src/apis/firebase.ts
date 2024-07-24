@@ -21,7 +21,7 @@ const appCheck = initializeAppCheck(firebaseApp, {
   isTokenAutoRefreshEnabled: true
 })
 const auth = getAuth(firebaseApp);
-await setPersistence(auth, browserLocalPersistence)
+setPersistence(auth, browserLocalPersistence)
 const db = getFirestore()
 
 const storage = getStorage(firebaseApp)
