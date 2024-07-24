@@ -23,6 +23,7 @@ interface State {
   userRoles: any;
   profile: Profile | null;
   error: null;
+  isUserLoading: boolean;
 }
 
 type Profile = {
@@ -50,6 +51,7 @@ export const useUserStore = defineStore('user', {
     userRoles: null,
     profile: null,
     error: null,
+    isUserLoading: false,
   }),
   getters: {
     isLoggedIn: (state) => state.user !== null,
@@ -97,6 +99,7 @@ export const useUserStore = defineStore('user', {
     } 
     },
     async logInUser(email: string, password: string) {
+      this.isUserLoading = true
       try {
         const response = await fbSignIn(email, password);
         this.user = response.user ? response.user : null;
@@ -108,24 +111,32 @@ export const useUserStore = defineStore('user', {
         this.userRoles = null;
         this.error = e;
         return false;
+      } finally {
+        this.isUserLoading = false
       }
     },
     async loginWithGoogle() {
+      this.isUserLoading = true
       try {
         const res = await fbSignInWithGoogle()
         return res
       } catch (e: any) {
         console.error(e)
         return {success: false, error: true, message: 'Unable to sign in'}
+      } finally {
+        this.isUserLoading = false
       }
     },
     async loginAnonymously(){
+      this.isUserLoading = true
       try {
         const res = fbSignInAnonymously()
         return res
       } catch (e: any) {
         console.error(e)
         return {success: false, error: true, message: e.message}
+      } finally {
+        this.isUserLoading = false
       }
     },
 

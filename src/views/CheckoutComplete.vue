@@ -1,5 +1,7 @@
 <template>
-    <CheckoutSuccess />
+    <div class="container-fluid">
+        <CheckoutSuccess />
+    </div>
 </template>
 
 <script setup lang="ts">

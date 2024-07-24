@@ -44,7 +44,7 @@
             </div>
             <footer class="d-flex flex-column">
                 <div class="subtotal d-flex flex-column">
-                    <div v-if="!cart.shipping.isDiscounted" class="qualify-for-free-shipping">{{ `Add ${amountToQualifyForDiscountedShipping} more to your cart to quality for free standard shipping.` }}</div>
+                    <!-- <div v-if="!cart.shipping.isDiscounted" class="qualify-for-free-shipping">{{ `Add ${amountToQualifyForDiscountedShipping} more to your cart to quality for free standard shipping.` }}</div>
                     <div class="d-flex flex-row justify-content-end align-items-center gap-3 my-2">
                         <Select 
                             :options="shippingOptions" 
@@ -65,16 +65,31 @@
                             {{ USDollar.format(cart.shipping.value)}}
                         </h3>
                     
-                    </div>
+                    </div> -->
                     <div class="d-flex flex-row justify-content-end gap-2 mx-2 my-2">
                         <h3 class="m-0">Subtotal</h3>
                         <h3 class="m-0">
-                            {{ USDollar.format(cartTotal + cart.shipping.value)}}
+                            {{ USDollar.format(cartTotal)}}
                         </h3>
                     </div>
+                    <div class="d-flex flex-row justify-content-end gap-2 mx-2 mb-4">
+                        <h5 class="shipping-message">
+                            {{ cartTotal >= discountedShippingThreshold ?
+                             `Free standard shipping on orders over $75!` :
+                              `Add ${amountToQualifyForDiscountedShipping} to quality for free standard shipping.` 
+                              }}
+                        </h5>
+                        
+                    </div>
                 </div>
-                <div class="d-flex flex-row justify-content-center">
-                    <button class="btn btn-primary" @click.prevent="checkout" :disabled="cart.cartItems.length === 0 || isLoading">Proceed to Checkout <span class="spinner-border" role="status" v-show="isLoading"></span></button>
+                <div class="checkout-actions">
+                    <button v-if="!isLoggedIn" class="btn btn-info" @click="router.push('/login')">Click here to Login</button>
+                    <button class="btn btn-primary" 
+                        @click.prevent="checkout" 
+                        :disabled="cart.cartItems.length === 0 || isCheckoutLoading"
+                    >
+                        {{isLoggedIn ? `Checkout` : `Checkout as Guest`}} <span class="spinner-border" role="status" v-show="isCheckoutLoading"></span>
+                    </button>
                 </div>
             </footer>
         </div>
@@ -93,15 +108,14 @@ import { computed, onMounted } from 'vue'
 import type { CartItem } from '@/types/Orders'
 import {getPhotoUrl, placeholderUrl} from '@/composables/usePhotoUtils'
 import { toast } from 'vue3-toastify';
-import type { Plant } from '@/types/Plant'
-import Select from 'primevue/select';
 import { discountedShippingThreshold } from '@/constants/OrderConstants'
 import { useUserStore } from '../auth/stores/users'
+import { router } from '@/router'
 
 const { cart } = storeToRefs(useOrderStore())
 const { getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession, updateShipping } = useOrderStore()
-const { cartTotal, shippingOptions, isLoading } = storeToRefs(useOrderStore())
-const { loginAnonymously, logInUser } = useUserStore()
+const { cartTotal, isLoading } = storeToRefs(useOrderStore())
+const { loginAnonymously, isLoggedIn, isUserLoading } = useUserStore()
 
 const amountToQualifyForDiscountedShipping = computed(() => {
     if(cartTotal.value >= discountedShippingThreshold) { return USDollar.format(0)}
@@ -113,6 +127,10 @@ onMounted(() => {
     cart.value.cartItems.forEach(item => getCategoryBySku(item))
     updateShipping()
     //validated cart it still valid, display TCGPlayer style message "you're cart sucks"
+})
+
+const isCheckoutLoading = computed(() => {
+    return isLoading.value || isUserLoading
 })
 
 const USDollar = new Intl.NumberFormat('en-US', {
@@ -149,11 +167,7 @@ function getImageUrl(cartItem: CartItem) {
 
 async function checkout() {
     if(!useUserStore().isLoggedIn) {
-        loginAnonymously()
-            //show modal to log in / 
-
-            //login
-            //sign in anonomously
+        await loginAnonymously()
     }
     if(cart.value.cartItems.length > 0) {
         const res = await startCheckoutSession()
@@ -198,8 +212,7 @@ async function checkout() {
     flex-direction: column;
     margin: 0 .8rem;
 }
-.qualify-for-free-shipping {
-    text-align: center;
+.shipping-message {
     margin: .5rem 0;
 }
 .quantity-input {
@@ -219,6 +232,14 @@ async function checkout() {
     padding: .5rem .5rem;
     border-radius: .6rem;
     
+}
+
+.checkout-actions {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
 }
 
 @media(min-width: 27rem) {

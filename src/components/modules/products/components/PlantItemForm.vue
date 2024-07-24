@@ -85,13 +85,14 @@
 import { inject, watch, type PropType } from 'vue'
 import { type Plant } from '@/types/Plant';
 import { statusList, sizeList, statusListArr} from '@/constants/constants';
+import { newPlant } from '@/constants/constants';
 import { usePlantStore } from '@/components/modules/products/stores/plant'
 import { toast } from 'vue3-toastify'
 
 defineEmits(['triggerSave', 'deletePlant'])
 
 const plant = defineModel('plant', {type: Object as PropType<Plant>, required: true})
-const { addPlantToStripe } = usePlantStore()
+
 watch(
     () => plant.value,
     () =>{

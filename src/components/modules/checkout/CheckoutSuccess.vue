@@ -1,12 +1,16 @@
 <template> 
-    <div>
-        <h2>Thank you for your purchase!</h2>
-    </div>
-    <div>
-        <h2>What's next?</h2>
-        <p>Most orders are shipped within 1 business day</p>
-        <a href="https://www.instagram.com/dangerlettuce/" target="_blank">Follow us on Instagram</a>
-        <router-link to="care">Click here to learn about care for your new plants</router-link>
+    <div class="container-fluid text-center mt-4">
+        <div>
+            <h2>Thank you for your purchase!</h2>
+        </div>
+        <div class="my-3">
+            <h3>What's next?</h3>
+            <p>Most orders are shipped within 1 business day</p>
+            <div class="mb-2">
+                <a href="https://www.instagram.com/dangerlettuce/" target="_blank">Follow us on Instagram</a>
+            </div>
+            <router-link to="care">Click here to learn about care for your new plants</router-link>
+        </div>
     </div>
 </template>
 

@@ -115,7 +115,7 @@ export const newPlant: Plant = {
     sku: '',
     isRepresentative: false,
     size: '',
-    propagationDate: new Date(),
+    propagationDate: new Date().toString(),
     status: 'In Stock',
     price: 0,
     discountedPrice: 0,

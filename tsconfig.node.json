@@ -15,5 +15,6 @@
     "moduleResolution": "Bundler",
     "types": ["node"],
     "allowImportingTsExtensions": true,
+    "noErrorTruncation": true,
   }
 }
