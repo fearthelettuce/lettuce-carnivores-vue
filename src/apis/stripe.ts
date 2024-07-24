@@ -4,6 +4,7 @@ import { connectFunctionsEmulator, getFunctions, httpsCallable } from 'firebase/
 import type { StripeProduct, StripePrice, StripeCartItem} from '@/types/Orders';
 import type { PlantCategory, Plant } from '@/types/Plant'
 import { getPhotoDownloadUrl } from './fileServices';
+import { type CartItem } from '@/types/Orders';
 
 export async function getActiveProducts() {
     const q = query(collection(db, 'products'),
@@ -70,62 +71,82 @@ export async function getProductBySku(sku: string): Promise<StripeProduct> {
     return {...docSnap.data(), price: {...priceData, id: priceId} as StripePrice} as StripeProduct
 }
 
-export async function createCheckoutSession(cart: StripeCartItem[]) {
-    if(!auth || !auth.currentUser) { return }
-    const lineItems = cart.map((item) => {
-        return {price: item.priceId, quantity: item.quantity}
-    })
-    console.log(lineItems)
-    const collectionRef = await collection(db,'customers',auth.currentUser.uid, 'checkout_sessions')
-    const docRef = await addDoc(collectionRef, {
-        mode: 'payment',
-        automatic_tax: true,
-        tax_id_collection: true,
-        success_url: `${window.location.origin}/checkoutcomplete`,
-        cancel_url: `${window.location.origin}/cart`,
-        line_items: lineItems,
-        //shipping_rates: ['shr_1PeUj7HlHApXEku97UWnEMtk', 'shr_1PeV9AHlHApXEku9nZGfZY3C'], //not working
-        // shipping_options: [{
-        //     id: 'basic',
-        //     label: 'Ground shipping',
-        //     detail: 'Ground shipping via UPS or USPS',
-        //     amount: 8.50,
-        // }],
-        collect_shipping_address: true,
-    })
-    onSnapshot(docRef, (snap) => {
-        //@ts-ignore
-        const { error, url } = snap.data()
-        console.log(snap.data())
-        if(error) {
-            console.error(`An error occurred: ${error.message}`)
-        }
-        if(url) {
-            window.location.assign(url)
-        }
-    })
-}
+// export async function createCheckoutSession(cart: StripeCartItem[]) {
+//     if(!auth || !auth.currentUser) { return }
+//     const lineItems = cart.map((item) => {
+//         return {price: item.priceId, quantity: item.quantity}
+//     })
+//     console.log(lineItems)
+//     const collectionRef = await collection(db,'customers',auth.currentUser.uid, 'checkout_sessions')
+//     const docRef = await addDoc(collectionRef, {
+//         mode: 'payment',
+//         automatic_tax: true,
+//         tax_id_collection: true,
+//         success_url: `${window.location.origin}/checkoutcomplete`,
+//         cancel_url: `${window.location.origin}/cart`,
+//         line_items: lineItems,
+//         //shipping_rates: ['shr_1PeUj7HlHApXEku97UWnEMtk', 'shr_1PeV9AHlHApXEku9nZGfZY3C'], //not working
+//         // shipping_options: [{
+//         //     id: 'basic',
+//         //     label: 'Ground shipping',
+//         //     detail: 'Ground shipping via UPS or USPS',
+//         //     amount: 8.50,
+//         // }],
+//         collect_shipping_address: true,
+//     })
+//     onSnapshot(docRef, (snap) => {
+//         //@ts-ignore
+//         const { error, url } = snap.data()
+//         console.log(snap.data())
+//         if(error) {
+//             console.error(`An error occurred: ${error.message}`)
+//         }
+//         if(url) {
+//             window.location.assign(url)
+//         }
+//     })
+// }
 
 export async function addProductToStripe(plant: Plant, plantCategory: PlantCategory) {
+    const res = await getProductDetails()
+    console.log(res)
+    // const functions = getFunctions()
+    // connectFunctionsEmulator(functions,'127.0.0.1', 5001)
+    // const createProductInStripe = httpsCallable(functions, 'createProductInStripe')
+
+    // const stripeProduct = await createStripeProduct(plant, plantCategory)
+    // //const res = await fetch('https://createproductinstripe-pdapqawq6q-uc.a.run.app', {
+    // //const res = await fetch('http://127.0.0.1:5001/lettuce-carnivores/us-central1/createProductInStripe', {
+    // //     method: "POST",
+    // //     body: JSON.stringify(stripeProduct)
+    // // })
+
+    // try {
+    //     const res = await createProductInStripe(stripeProduct)
+    //     //as {success: boolean, error: boolean, message: string | null, errorDetails: any | null, data: Object | null})
+    //     console.log(res)
+    //     return res.data
+    // } catch (e: any) {
+    //     console.error(e)
+    //     return e
+    // }
+}
+
+export async function getProductDetails() {
+    const mockData = {
+        categories: [
+            {id: 12},
+            {id: 19}
+        ],
+        collection: 'plantCategories',
+    }
     const functions = getFunctions()
     connectFunctionsEmulator(functions,'127.0.0.1', 5001)
-    const createProductInStripe = httpsCallable(functions, 'createProductInStripe')
+    const getPlantDetailsFromFirestore = httpsCallable(functions, 'getPlantDetailsFromFirestore')
 
-    const stripeProduct = await createStripeProduct(plant, plantCategory)
-    //const res = await fetch('https://createproductinstripe-pdapqawq6q-uc.a.run.app', {
-    //const res = await fetch('http://127.0.0.1:5001/lettuce-carnivores/us-central1/createProductInStripe', {
-    //     method: "POST",
-    //     body: JSON.stringify(stripeProduct)
-    // })
-
-    try {
-        const res = await createProductInStripe(stripeProduct)
-        console.log(res)
-        return res.data
-    } catch (e: any) {
-        console.error(e)
-        return e
-    }
+    const res = await getPlantDetailsFromFirestore(mockData)
+    console.log(res)
+    return res
 }
 
 async function createStripeProduct (plant: Plant, plantCategory: PlantCategory) {
@@ -149,6 +170,20 @@ async function createStripeProduct (plant: Plant, plantCategory: PlantCategory) 
             unit_amount: plant.price * 100,
         }
     }
+}
+
+export async function createStripeCheckoutSession(cart: CartItem[]){
+    const functions = getFunctions()
+    connectFunctionsEmulator(functions,'127.0.0.1', 5001)
+    const createCheckoutSession: Function = httpsCallable(functions, 'createCheckoutSession')
+    const res = await createCheckoutSession({
+        cart: cart, 
+        customerEmail: 'test@gmail.com',
+        returnUrl: `${window.location.origin}/checkoutcomplete`,
+        cancelUrl:`${window.location.origin}/cart`
+    })
+    console.log(res)
+    return res
 }
 //TODO:
 //  Set checkout sessions to expire so that inventory goes back into 'stock'

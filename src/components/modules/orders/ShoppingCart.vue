@@ -157,7 +157,9 @@ async function checkout() {
     }
     if(cart.value.cartItems.length > 0) {
         const res = await startCheckoutSession()
-        console.log(res)
+        
+        console.log(res.data.url)
+        window.location.replace(res.data.url)
         if(!res || res.error === true) {toast.error(res?.message || 'Unable to open checkout page')}
     }
 }

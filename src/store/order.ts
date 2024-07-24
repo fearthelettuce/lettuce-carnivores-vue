@@ -5,7 +5,7 @@ import { discountedShippingThreshold, expeditedShipping, freeShipping, freeUpgra
 import { usePlantStore } from '../components/modules/products/stores/plant'
 import { type PlantCategory } from '@/types/Plant'
 import { useLocalStorage } from '@vueuse/core'
-import {getActiveProducts, getProductBySku, createCheckoutSession} from '@/apis/stripe'
+import {createStripeCheckoutSession, getActiveProducts, getProductBySku} from '@/apis/stripe'
 
 import type { StripeCartItem } from '@/types/Orders';
 import { useUserStore } from '@/components/modules/auth/stores/users'
@@ -119,24 +119,40 @@ export const useOrderStore = defineStore('order', () => {
         }
     })
 
-    async function startCheckoutSession () {
+    // async function startCheckoutSession () {
+    //     isLoading.value = true
+    //     await buildStripeCart()
+    //     if(stripeCart.value.length !== cart.value.cartItems.length + 1) {
+    //         console.table(stripeCart.value)
+    //         console.table(cart?.value.cartItems)
+    //         return {success: false, error: true, message: `Unable to create checkout session`}
+    //     }
+    //     try {
+    //         await createCheckoutSession(stripeCart.value)
+    //         return {success: true, error: false, message: ''}
+    //     } catch (e: any) {
+    //         console.error(e)
+    //         return {success: false, error: true, message: `Unable to create checkout session`}
+    //     } finally {
+    //         setTimeout(() => {isLoading.value = false}, 4000)
+    //     }
+        
+    // }
+
+    async function startCheckoutSession() {
         isLoading.value = true
-        await buildStripeCart()
-        if(stripeCart.value.length !== cart.value.cartItems.length + 1) {
-            console.table(stripeCart.value)
-            console.table(cart?.value.cartItems)
-            return {success: false, error: true, message: `Unable to create checkout session`}
-        }
-        try {
-            await createCheckoutSession(stripeCart.value)
-            return {success: true, error: false, message: ''}
+        try{
+            const session = await createStripeCheckoutSession(cart.value.cartItems)
+            console.log(session.data.data)
+            console.log(session.data.data.url)
+            return {success: true, error: false, message: `Success`, data: session.data.data}
         } catch (e: any) {
             console.error(e)
             return {success: false, error: true, message: `Unable to create checkout session`}
         } finally {
-            setTimeout(() => {isLoading.value = false}, 4000)
+            //setTimeout(() => {isLoading.value = false}, 4000)
+            isLoading.value = false
         }
-        
     }
 
     async function buildStripeCart () {
