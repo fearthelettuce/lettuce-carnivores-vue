@@ -135,11 +135,11 @@ export const usePlantStore = defineStore('plant', () => {
             const lastPlant = plantCategory.plants[plantCategory.plants.length - 1]
             const nextId = lastPlant.id !== '' ? parseInt(lastPlant.id.toString()) + 1 : ''
             plantCategory?.plants.push({
-                id: nextId,
+                id: nextId.toString(),
                 sku: nextId.toString(),
                 isRepresentative: lastPlant.isRepresentative,
                 size: '',
-                propagationDate: new Date(),
+                propagationDate: new Date().toString(),
                 status: 'In Stock',
                 price: lastPlant.price,
                 discountedPrice: lastPlant.discountedPrice,

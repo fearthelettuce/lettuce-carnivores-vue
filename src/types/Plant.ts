@@ -5,7 +5,7 @@ export type PlantCategory = {
     speciesHybrid: '' | 'Species' | 'Hybrid',
     experience: '' | 'Beginner Friendly' | 'Intermediate' | 'Advanced',
     description: string,
-    id: string | number,
+    id: string,
     plants: Plant[],
     status: 'In Stock' | 'Coming Soon' | 'Sold' | 'Archived' | 'Hidden',
     photos: PhotoItem[],
