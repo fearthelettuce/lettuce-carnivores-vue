@@ -1,22 +1,9 @@
 import {onCall} from 'firebase-functions/v2/https'
-import type { CallableRequest } from 'firebase-functions/v2/https';
-const { defineSecret } = require('firebase-functions/params');
+import type { CallableRequest } from 'firebase-functions/v2/https'
+import { defineSecret } from 'firebase-functions/params'
 import Stripe from 'stripe'
-
-export const createProductInStripe = onCall(async(request): Promise<FunctionResponse> => {
-    const stripeSecretKey = defineSecret("STRIPE_RESTRICTED_KEY");
-    const stripe = new Stripe(stripeSecretKey.value())
-    const stripeProduct = request.data
-    try {
-        const product = await stripe.products.create(stripeProduct)
-        return {success: true, error: false, message: 'Product created successfully', errorDetails: null, data: product}
-    } catch (e: any) {
-        console.log(e)
-        return {success: false, error: true, message: 'Error creating product', errorDetails: e, data: null}
-    }
-
-})
-
+const stripeSecretKey = defineSecret("STRIPE_RESTRICTED_KEY")
+//const stripeWebhookSecretKey = defineSecret("STRIPE_WEBHOOK_SECRET_KEY")
 interface CheckoutSessionRequest extends CallableRequest {
     data: {
         cart: CartItem[],
@@ -24,8 +11,10 @@ interface CheckoutSessionRequest extends CallableRequest {
         cancelUrl: string,
     },
 }
-export const createCheckoutSession = onCall(async(request: CheckoutSessionRequest): Promise<FunctionResponse> => {
-    const stripeSecretKey = defineSecret("STRIPE_RESTRICTED_KEY");
+export const createCheckoutSession = onCall({secrets: [stripeSecretKey]},async(request: CheckoutSessionRequest): Promise<FunctionResponse> => {
+    if(!stripeSecretKey.value() || stripeSecretKey.value().length === 0) {
+        return {success: false, error: true, message: 'Unable to get stripe API key', errorDetails: null, data: null}
+    }
     const stripe = new Stripe(stripeSecretKey.value())
     const uid = request.auth?.uid
     if(!uid || !request.auth || request.data.cart.length === 0) {
