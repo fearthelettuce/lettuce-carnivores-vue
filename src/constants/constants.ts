@@ -13,8 +13,7 @@ export const sizeList = [
 
 export const genusList = ['Heliamphora', 'Nepenthes', 'Cephalotus', 'Other']
 
-export const statusListArr = [
-    'In Stock', 'Coming Soon', 'Sold', 'Archived', 'Hidden']
+export const statusListArr = ['', 'In Stock', 'Coming Soon', 'Archived', 'Hidden', 'Sold']
 export const experienceList = ['', 'Beginner Friendly', 'Intermediate', 'Advanced']
 export const speciesHybridArr = ['', 'Species', 'Hybrid']
 export const otherFiltersList = [
@@ -29,7 +28,8 @@ export const statusList = [
     {label:'In Stock', value: 'In Stock', hidden: false}, 
     {label:'Coming Soon', value: false, hidden: false},
     {label:'Archived', value: false, hidden: true}, 
-    {label:'Hidden', value: false, hidden: true}
+    {label:'Hidden', value: false, hidden: true},
+    {label:'Sold', value: false, hidden: true}
 ]
 export const defaultFilters = {
     genus: {

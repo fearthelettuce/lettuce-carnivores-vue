@@ -15,8 +15,8 @@ export type ShippingDetails = {
 
 export type CartItem = {
     sku: string,
-    plantCategoryId: string | number,
-    categoryId: string | number,
+    plantCategoryId: string,
+    categoryId: string,
     quantity: number,
     maxQuantity: number,
     price: number,

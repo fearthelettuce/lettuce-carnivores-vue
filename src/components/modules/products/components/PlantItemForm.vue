@@ -48,7 +48,7 @@
             type="select"
             label="Status"
             class="grid-col-1"
-            :options="statusList"
+            :options="statusListArr"
             v-model="plant.status"
         />
         <FormKit 

@@ -1,13 +1,16 @@
-import {onCall} from 'firebase-functions/v2/https'
+import {onCall, onRequest} from 'firebase-functions/v2/https'
+import { log } from 'firebase-functions/logger'
 import type { CallableRequest } from 'firebase-functions/v2/https'
 import { defineSecret } from 'firebase-functions/params'
 import Stripe from 'stripe'
 const stripeSecretKey = defineSecret("STRIPE_RESTRICTED_KEY")
-//const stripeWebhookSecretKey = defineSecret("STRIPE_WEBHOOK_SECRET_KEY")
+const stripeWebhookSecretKey = defineSecret("STRIPE_WEBHOOK_SECRET_KEY")
 import admin from 'firebase-admin'
 import { Plant, PlantCategory } from './types/Plants'
 import { FunctionResponse } from './types/Functions'
 import { CartItem } from './types/Orders'
+import { discountedShippingThreshold, discountedStandardShippingId, discountedExpeditedShippingId, standardShippingId, expeditedShippingId} from './constants/stripeConstants'
+import { StripeLineItem } from './types/Stripe'
 
 admin.initializeApp()
 
@@ -39,6 +42,9 @@ export const createCheckoutSession = onCall({secrets: [stripeSecretKey]},async(r
     //create checkout_session doc in customers
     //@ts-ignore
     const stripeCheckoutSession = await stripe.checkout.sessions.create(checkoutSession)
+    await admin.firestore().collection(`customers/${uid}/checkout_sessions`).doc().set(stripeCheckoutSession)
+
+    await admin.firestore().collection(`checkoutSessions`).doc(stripeCheckoutSession.id).set({sessionResponse: stripeCheckoutSession, lineItems: checkoutSession.line_items})
     return {success: true, error: false, message: 'Success', errorDetails: null, data: stripeCheckoutSession}
 
 })
@@ -50,16 +56,15 @@ async function buildCheckoutSession (cartItems: CartItem[], uid: string, returnU
     }
     const cartTotal = (stripeCart.data as CartItem[]).reduce(
         (accumulator, cartItem) => accumulator + (cartItem.price * cartItem.quantity), 0)
-    const shippingRates = {
-        standard: 800,
-        expedited: 1200
-    }
 
-    if(cartTotal >= 7500) {
-        shippingRates.standard = 0
-        shippingRates.expedited = 400
+    let shippingOptions
+    
+    if(cartTotal >= discountedShippingThreshold) {
+        shippingOptions = [{shipping_rate: discountedStandardShippingId}, {shipping_rate: discountedExpeditedShippingId}]
+    } else {
+        shippingOptions = [{shipping_rate: standardShippingId}, {shipping_rate: expeditedShippingId}]
     }
-    const lineItems = (stripeCart.data as CartItem[]).map((item: CartItem) => {
+    const lineItems: StripeLineItem[] = (stripeCart.data as CartItem[]).map((item: CartItem) => {
         return {
             price_data: {
                 currency: 'usd',
@@ -94,35 +99,43 @@ async function buildCheckoutSession (cartItems: CartItem[], uid: string, returnU
         shipping_address_collection: {
             allowed_countries: ['US']
         },
-        shipping_options: [
-            {
-                shipping_rate_data: {
-                    display_name: 'Standard Shipping',
-                    fixed_amount: {
-                        amount: shippingRates.standard,
-                        currency: 'usd',
-                    },
-                    tax_behavior: 'exclusive',
-                    tax_code: 'txcd_92010001',
-                    type: 'fixed_amount'
-                },
-            },
-            {
-                shipping_rate_data: {
-                    display_name: 'Expedited Shipping',
-                    fixed_amount: {
-                        amount: shippingRates.expedited,
-                        currency: 'usd',
-                    },
-                    tax_behavior: 'exclusive',
-                    tax_code: 'txcd_92010001',
-                    type: 'fixed_amount'
-                },
+        shipping_options: shippingOptions,
+        // shipping_options: [
+        //     {
+        //         shipping_rate_data: {
+        //             display_name: 'Standard Shipping',
+        //             fixed_amount: {
+        //                 amount: shippingRates.standard,
+        //                 currency: 'usd',
+        //             },
+        //             tax_behavior: 'exclusive',
+        //             tax_code: 'txcd_92010001',
+        //             type: 'fixed_amount',
+        //             metadata: {
+        //                 type: 'standard',
+        //             }
+        //         },
+        //     },
+        //     {
+        //         shipping_rate_data: {
+        //             display_name: 'Expedited Shipping',
+        //             fixed_amount: {
+        //                 amount: shippingRates.expedited,
+        //                 currency: 'usd',
+        //             },
+        //             tax_behavior: 'exclusive',
+        //             tax_code: 'txcd_92010001',
+        //             type: 'fixed_amount',
+        //             metadata: {
+        //                 type: 'expedited',
+        //             }
+        //         },
                 
-            },
-        ],
+        //     },
+        // ],
         automatic_tax: {enabled: true},
         discounts: [],
+        locale: 'auto',
         ui_mode: 'hosted',
         line_items: lineItems,
     }
@@ -137,7 +150,10 @@ async function buildCheckoutSession (cartItems: CartItem[], uid: string, returnU
 
 
 
+// async function getStripeCustomerByUid(uid: string) {
 
+
+// }
 
 
 
@@ -182,13 +198,91 @@ async function getPlantDetailsFromFirestore (request: PlantDetailsFromFirestoreR
     }
     return plants
 }
+export const stripeWebhookController = onRequest({secrets: [stripeSecretKey, stripeWebhookSecretKey]}, async(req, res): Promise<any> => {
+    if(!stripeWebhookSecretKey.value() || stripeWebhookSecretKey.value().length === 0) {
+        //return {success: false, error: true, message: 'Unable to get stripe webhook key', errorDetails: null, data: null}
+    }
+    const stripe = new Stripe(stripeSecretKey.value())
+    console.log(req)
+    console.log(res)
+    if(!req || !req.headers || !req.headers['stripe-signature']) {
+        log('Request missing stripe webhook headers')
+        return res.status(400).send('Request missing stripe webhook headers')
+    }
+    let signature = req.headers["stripe-signature"]
+    let event
+    try {
+        event = stripe.webhooks.constructEvent(
+            req.rawBody,
+            signature,
+            stripeWebhookSecretKey.value()
+        )
+    } catch (e: any) {
+        log('Webhook signature failed')
+        return res.status(400).send()
+    }
 
-export async function updateInventory() {
-    //get request with checkout item list of skus and quantities
-        // need to add sku and categoryId to checkout session metadata or something
-    //call getPlantDetailsFromFirestore to get a list of all those plants
-    //loop through each checkout item and update doc for that plant
-        //reduce quantity by checkout quantity
-        //if quantity = 0, update status to sold
-    
+    if (event.type === 'checkout.session.completed' || event.type === 'checkout.session.async_payment_succeeded') {
+        await fulfillCheckout(event.data.object, stripe)
+        log(event.data.object)
+    }
+    res.status(200).send()
+})
+
+async function fulfillCheckout (checkoutWebhookData: any, stripe: Stripe) {
+    const checkoutSession = await admin.firestore().collection(`checkoutSessions`).doc(checkoutWebhookData.id).get()
+    if(!checkoutSession || checkoutSession === undefined || checkoutSession.data() === undefined) {
+        return
+    }
+    const lineItems = checkoutSession.data()!.lineItems as StripeLineItem[]
+    const selectedShipping = checkoutWebhookData.shipping_cost.shipping_rate
+    let shippingType
+    if(selectedShipping === standardShippingId || selectedShipping === discountedStandardShippingId) {
+        shippingType = 'Standard'
+    } else {
+        shippingType = 'Expedited'
+    }
+
+    await admin.firestore().collection('orders').doc().set({
+        checkoutSessionId: checkoutWebhookData.id,
+        paymentStatus: checkoutWebhookData.payment_status,
+        shippingInfo: checkoutWebhookData.shipping_details,
+        shippingType: shippingType,
+        lineItems: lineItems,
+        amountTotal: checkoutWebhookData.amount_total,
+        fullResponse: checkoutWebhookData,
+    }).catch((e: any) => {log(e)})
+
+    await updateInventory(lineItems).catch((e: any) => {log(e)})
+    return
+}
+
+async function updateInventory(items: StripeLineItem[]) {
+    for (const item of items) {
+        const quantity = item.quantity
+        const docRef = admin.firestore().doc(`plantCategories/${item.price_data.product_data.metadata.categoryId}`)
+        const doc = await docRef.get().catch((e: any) => log(e))
+
+        if(!doc || !doc.data()){
+            log(`Error getting doc ${docRef.toString()}`)
+            log(`${item}`)
+            return
+        }
+        const plantCategory = doc.data()!
+        const plantIndex = plantCategory.plants.findIndex((plant: Plant) => plant.sku === item.price_data.product_data.metadata.sku)
+
+        if(plantCategory.plants[plantIndex].quantity === 1) {
+            plantCategory.plants[plantIndex].status = 'Sold'
+            plantCategory.plants[plantIndex].quantity = 0
+        } else {
+            if(quantity > plantCategory.plants[plantIndex].quantity) {
+                plantCategory.plants[plantIndex].quantity = 0
+                log(`Plant ${plantCategory.plants[plantIndex].sku} quantity less than cart quantity ${quantity}`)
+            } else {
+                plantCategory.plants[plantIndex].quantity = plantCategory.plants[plantIndex].quantity - quantity
+            }
+        }
+        await docRef.update({plants: plantCategory.plants})
+    }
+    return
 }

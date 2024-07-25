@@ -101,7 +101,7 @@ export const usePlantStore = defineStore('plant', () => {
         return plantCategories.value.filter(category => {
             const plants = getAvailablePlants(category)
             return plants.length > 0 && 
-            !['Hidden', 'Archived'].includes(category.status) &&
+            !['Hidden', 'Archived', 'Sold'].includes(category.status) &&
             productFilters.value.genus.items.includes(category.genus) &&
             selectedOther.includes(category.speciesHybrid) &&
             productFilters.value.experience.items.includes(category.experience)
@@ -115,6 +115,7 @@ export const usePlantStore = defineStore('plant', () => {
             plant.quantity > 0 &&
             plant.status !== 'Hidden' &&
             plant.status !== 'Archived' &&
+            plant.status !== 'Sold' &&
             plant.price > 0
         )
 

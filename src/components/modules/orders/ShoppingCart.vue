@@ -62,7 +62,7 @@
                     </div>
                 </div>
             </div>
-            <footer class="footer fixed-bottom">
+            <footer class="footer sticky-bottom">
                 <div class="checkout-actions">
                     <button v-if="!isLoggedIn" class="btn btn-info btn-lg text-white" @click="router.push('/login')">Login</button>
 
@@ -259,7 +259,7 @@ async function checkout() {
     justify-content: space-evenly;
     background: linear-gradient(0.4turn, #9fdb50, #ebf8e1, #3f87a6);
     padding: .6rem 0;
-
+    border-radius: 1rem;
 }
 
 @media(min-width: 27rem) {
@@ -276,6 +276,7 @@ async function checkout() {
     .item-subtotal {
         margin: .5rem .5rem 0 auto;
     }
+
 }
 @media(min-width: 60rem) {
     .cart-item-photo {
@@ -288,6 +289,8 @@ async function checkout() {
     .cart-item-container {
         padding: 1rem 1rem;
     }
-
+    .checkout-actions {
+        
+    }
 }
 </style>

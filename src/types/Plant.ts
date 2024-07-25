@@ -7,7 +7,7 @@ export type PlantCategory = {
     description: string,
     id: string,
     plants: Plant[],
-    status: 'In Stock' | 'Coming Soon' | 'Sold' | 'Archived' | 'Hidden',
+    status: 'In Stock' | 'Coming Soon' | 'Archived' | 'Hidden' | 'Sold',
     photos: PhotoItem[],
 }
 
@@ -17,7 +17,7 @@ export type Plant = {
     isRepresentative: boolean,
     size: Sizes,
     propagationDate?: string ,
-    status:  'In Stock' | 'Coming Soon' | 'Sold' | 'Archived' | 'Hidden',
+    status:  'In Stock' | 'Coming Soon' | 'Archived' | 'Hidden' | 'Sold',
     price: number,
     discountedPrice?: number,
     isDiscounted: boolean,
