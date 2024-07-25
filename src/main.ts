@@ -83,10 +83,19 @@ const primeVuePreset = definePreset(Aura, {
             color: '#e1dcbd',
             background: '{stone.600}',
           },
+          header: {
+            color: 'red',
+            background: '{stone.100'
+          }
           
       },
       chip: {
         background: '{stone.200}',
+      },
+      accordion: {
+        header: {
+          background: 'red',
+        }
       }
     }
   }

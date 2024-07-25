@@ -47,14 +47,20 @@ const register = async () => {
     }
     try {
         const userResponse = await userStore.createAccount(registrationForm.email, registrationForm.password)
+        if(!userResponse) {
+            toast.error('Error during registration, please make sure your password is at least 8 characters')
+            return
+        }
         const profileResponse = await userStore.setUserProfile(
             {
                 name: {firstName: registrationForm.firstName, lastName: registrationForm.lastName},
                 contactInformation: {email: registrationForm.email},
             }
         )
-        console.log(profileResponse)
-
+        if(!profileResponse) {
+            toast.error('Error during registration, please review inputs')
+            return
+        }
         router.push('/products').then(()=>{toast.success('Welcome!')})
         return
     } catch(error) {

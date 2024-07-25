@@ -9,6 +9,7 @@ import admin from 'firebase-admin'
 import { Plant, PlantCategory } from './types/Plants'
 import { FunctionResponse } from './types/Functions'
 import { CartItem } from './types/Orders'
+import { type CustomerRecord } from './types/Users'
 import { discountedShippingThreshold, discountedStandardShippingId, discountedExpeditedShippingId, standardShippingId, expeditedShippingId} from './constants/stripeConstants'
 import { StripeLineItem } from './types/Stripe'
 
@@ -19,7 +20,7 @@ interface CheckoutSessionRequest extends CallableRequest {
         cart: CartItem[],
         returnUrl: string,
         cancelUrl: string,
-        stripeCustomer: {email: string, stripeId: string, stripeLink: string} | undefined
+        stripeCustomer: CustomerRecord | undefined
     },
 }
 export const createCheckoutSession = onCall({secrets: [stripeSecretKey]},async(request: CheckoutSessionRequest): Promise<FunctionResponse> => {
@@ -51,7 +52,7 @@ export const createCheckoutSession = onCall({secrets: [stripeSecretKey]},async(r
 
 })
 
-async function buildCheckoutSession (cartItems: CartItem[], uid: string, returnUrl: string, cancelUrl: string, stripeCustomer) {
+async function buildCheckoutSession (cartItems: CartItem[], uid: string, returnUrl: string, cancelUrl: string, stripeCustomer: CustomerRecord | undefined) {
     const stripeCart = await buildStripeCart(cartItems)
     if(!stripeCart || !stripeCart.data) {
         return null
@@ -88,12 +89,6 @@ async function buildCheckoutSession (cartItems: CartItem[], uid: string, returnU
     const session: Stripe.Checkout.SessionCreateParams = {
         mode: 'payment',
         client_reference_id: uid,
-        // customer: uid,
-        // customer: 'cus_QVIvtyYoNcHKr7',
-        // customer_update: {
-        //     name: 'auto',
-        //     shipping: 'auto',
-        // },
         tax_id_collection: {enabled: true},
         success_url: returnUrl,  //not allowed when we switch to embedded
         // return_url: returnUrl,
@@ -102,39 +97,6 @@ async function buildCheckoutSession (cartItems: CartItem[], uid: string, returnU
             allowed_countries: ['US']
         },
         shipping_options: shippingOptions,
-        // shipping_options: [
-        //     {
-        //         shipping_rate_data: {
-        //             display_name: 'Standard Shipping',
-        //             fixed_amount: {
-        //                 amount: shippingRates.standard,
-        //                 currency: 'usd',
-        //             },
-        //             tax_behavior: 'exclusive',
-        //             tax_code: 'txcd_92010001',
-        //             type: 'fixed_amount',
-        //             metadata: {
-        //                 type: 'standard',
-        //             }
-        //         },
-        //     },
-        //     {
-        //         shipping_rate_data: {
-        //             display_name: 'Expedited Shipping',
-        //             fixed_amount: {
-        //                 amount: shippingRates.expedited,
-        //                 currency: 'usd',
-        //             },
-        //             tax_behavior: 'exclusive',
-        //             tax_code: 'txcd_92010001',
-        //             type: 'fixed_amount',
-        //             metadata: {
-        //                 type: 'expedited',
-        //             }
-        //         },
-                
-        //     },
-        // ],
         automatic_tax: {enabled: true},
         discounts: [],
         locale: 'auto',
@@ -142,7 +104,12 @@ async function buildCheckoutSession (cartItems: CartItem[], uid: string, returnU
         line_items: lineItems,
     }
     if(stripeCustomer && stripeCustomer.stripeId !== '') {
-        session.customer = stripeCustomer.stripeId
+        session.customer = stripeCustomer.stripeId,
+        session.customer_update = {
+            shipping: 'auto',
+            address: 'auto',
+            name: 'auto',
+        }
     }
     return session
 
@@ -238,8 +205,7 @@ async function fulfillCheckout (checkoutWebhookData: any) {
         id: checkoutWebhookData.id,
         checkoutSessionId: checkoutWebhookData.id,
         paymentStatus: checkoutWebhookData.payment_status,
-        shippingInfo: checkoutWebhookData.shipping_details,
-        shippingType: shippingType,
+        shippingInfo: {address: checkoutWebhookData.shipping_details.address, name: checkoutWebhookData.shipping_details.name, shippingType: shippingType},
         lineItems: lineItems,
         amountTotal: checkoutWebhookData.amount_total,
         fullResponse: checkoutWebhookData,
