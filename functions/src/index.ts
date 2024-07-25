@@ -19,6 +19,7 @@ interface CheckoutSessionRequest extends CallableRequest {
         cart: CartItem[],
         returnUrl: string,
         cancelUrl: string,
+        stripeCustomer: {email: string, stripeId: string, stripeLink: string} | undefined
     },
 }
 export const createCheckoutSession = onCall({secrets: [stripeSecretKey]},async(request: CheckoutSessionRequest): Promise<FunctionResponse> => {
@@ -34,7 +35,8 @@ export const createCheckoutSession = onCall({secrets: [stripeSecretKey]},async(r
         request.data.cart, 
         uid, 
         request.data.returnUrl, 
-        request.data.cancelUrl
+        request.data.cancelUrl,
+        request.data.stripeCustomer,
     )
     if(checkoutSession === null) {
        return {success: false, error: true, message: 'Error creating checkout session', errorDetails: null, data: null}
@@ -49,7 +51,7 @@ export const createCheckoutSession = onCall({secrets: [stripeSecretKey]},async(r
 
 })
 
-async function buildCheckoutSession (cartItems: CartItem[], uid: string, returnUrl: string, cancelUrl: string,) {
+async function buildCheckoutSession (cartItems: CartItem[], uid: string, returnUrl: string, cancelUrl: string, stripeCustomer) {
     const stripeCart = await buildStripeCart(cartItems)
     if(!stripeCart || !stripeCart.data) {
         return null
@@ -83,7 +85,7 @@ async function buildCheckoutSession (cartItems: CartItem[], uid: string, returnU
         }
     })
 
-    const session = {
+    const session: Stripe.Checkout.SessionCreateParams = {
         mode: 'payment',
         client_reference_id: uid,
         // customer: uid,
@@ -138,6 +140,9 @@ async function buildCheckoutSession (cartItems: CartItem[], uid: string, returnU
         locale: 'auto',
         ui_mode: 'hosted',
         line_items: lineItems,
+    }
+    if(stripeCustomer && stripeCustomer.stripeId !== '') {
+        session.customer = stripeCustomer.stripeId
     }
     return session
 

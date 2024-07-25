@@ -43,7 +43,11 @@ async function login () {
         return
     }
     try {
-        await logInUser(loginEmail.value, loginPassword.value)
+        const loginSuccess = await logInUser(loginEmail.value, loginPassword.value)
+        if(!loginSuccess) {
+            toast.error('Login unsuccessful, please try again')
+            return
+        }
         if(router.currentRoute.value.fullPath === '/login') {
             router.push('/products').then(()=>{toast.success('Welcome!')})
         }

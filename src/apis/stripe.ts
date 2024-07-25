@@ -1,10 +1,10 @@
-import { collection, doc, getDoc, getDocs, query, where, addDoc, onSnapshot} from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, where} from 'firebase/firestore';
 import { db, auth } from '@/apis/firebase'
 import { connectFunctionsEmulator, getFunctions, httpsCallable } from 'firebase/functions'
-import type { StripeProduct, StripePrice, StripeCartItem} from '@/types/Orders';
-import type { PlantCategory, Plant } from '@/types/Plant'
-import { getPhotoDownloadUrl } from './fileServices';
+
 import { type CartItem } from '@/types/Orders';
+import { findDocById } from './dataServices'
+import { useUserStore } from '@/components/modules/auth/stores/users'
 
 export async function getActiveProducts() {
     const q = query(collection(db, 'products'),
@@ -26,31 +26,13 @@ export async function getActiveProducts() {
     return docs
 }
 
-export async function addProductToStripe(plant: Plant, plantCategory: PlantCategory) {
-    const res = await getProductDetails()
-    console.log(res)
-
-}
-
-export async function getProductDetails() {
-    const mockData = {
-        categories: [
-            {id: 12},
-            {id: 19}
-        ],
-        collection: 'plantCategories',
-    }
-    const functions = getFunctions()
-    // connectFunctionsEmulator(functions,'127.0.0.1', 5001)
-    const getPlantDetailsFromFirestore = httpsCallable(functions, 'getPlantDetailsFromFirestore')
-
-    const res = await getPlantDetailsFromFirestore(mockData)
-    console.log(res)
-    return res
-}
-
 
 export async function createStripeCheckoutSession(cart: CartItem[]){
+    const { user } = useUserStore()
+    let stripeCustomer = undefined
+    if(user && user.uid) {
+        stripeCustomer = await findDocById('customers', user.uid)
+    }
     const functions = getFunctions()
     //connectFunctionsEmulator(functions,'127.0.0.1', 5001)
     const createCheckoutSession: Function = httpsCallable(functions, 'createCheckoutSession')
@@ -58,7 +40,8 @@ export async function createStripeCheckoutSession(cart: CartItem[]){
         cart: cart, 
         customerEmail: 'test@gmail.com',
         returnUrl: `${window.location.origin}/checkoutcomplete`,
-        cancelUrl:`${window.location.origin}/cart`
+        cancelUrl:`${window.location.origin}/cart`,
+        stripeCustomer: stripeCustomer,
     })
     console.log(res)
     return res

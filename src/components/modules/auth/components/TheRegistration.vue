@@ -18,7 +18,7 @@
                 <label for="registerLastName">Last Name</label>
                 <input type="text" class="form-control" id="registerLastName" v-model="registrationForm.lastName" required/>
             </div>
-            <div class="mt-4">
+            <div class="d-flex justify-content-center mt-4">
                 <button class="btn btn-primary px-3" @click.prevent="register">Register</button>
             </div>
         </form>
@@ -47,7 +47,6 @@ const register = async () => {
     }
     try {
         const userResponse = await userStore.createAccount(registrationForm.email, registrationForm.password)
-        console.log(userResponse)
         const profileResponse = await userStore.setUserProfile(
             {
                 name: {firstName: registrationForm.firstName, lastName: registrationForm.lastName},
@@ -55,11 +54,13 @@ const register = async () => {
             }
         )
         console.log(profileResponse)
-        toast.success('Welcome!')
+
+        router.push('/products').then(()=>{toast.success('Welcome!')})
+        return
     } catch(error) {
         console.log(error)
     }
-    router.push('/products')
+    toast.error('Error during registration')
 }
 
 </script>

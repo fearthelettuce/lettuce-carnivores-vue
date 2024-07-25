@@ -7,7 +7,6 @@ import {deleteById} from '@/composables/useProductUtils'
 import {appendPhotoDataUtil, removePhotoUtil} from '@/composables/usePhotoUtils'
 import { newPlantCategory, newPlant, defaultFilters } from "@/constants/constants"
 import { toast } from 'vue3-toastify'
-import { addProductToStripe } from '@/apis/stripe'
 export const usePlantStore = defineStore('plant', () => {
 
     const isLoading = ref(false)
@@ -153,17 +152,6 @@ export const usePlantStore = defineStore('plant', () => {
         
     }
 
-    async function addPlantToStripe (plant: Plant) {
-        const category = await getCategoryByPlant(plant)
-        if(!category) {
-            console.log(plant)
-            console.log(category)
-            return {success: false, message: 'Unable to get category for that plant', error: true}
-        }
-        const res = await addProductToStripe(plant, category)
-        return res
-    }
-
     const removePlant = async(index: number) => {
         plantCategoryToEdit.value.plants.splice(index,1)
         await saveCategory(plantCategoryToEdit.value)
@@ -205,6 +193,5 @@ export const usePlantStore = defineStore('plant', () => {
         productFilters,
         updateFilteredCategories,
         filteredCategories,
-        addPlantToStripe
     }
 })
