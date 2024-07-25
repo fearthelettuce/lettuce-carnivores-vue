@@ -142,23 +142,8 @@ async function buildCheckoutSession (cartItems: CartItem[], uid: string, returnU
     return session
 
 }
-// export const buildStripeCart = onCall(async(request: {data: {cart: [{plantCategory: PlantCategory, plant: Plant }}) => {
-//     const plant = request.data.plant
-//     const plantCategory = request.data.plantCategory
-//     console.log('hi')
-// })
-
-
-
-// async function getStripeCustomerByUid(uid: string) {
-
-
-// }
-
-
 
 async function buildStripeCart (cartItems: CartItem[]): Promise<FunctionResponse> {
-    
     if(cartItems.length === 0) {
         return {success: false, error: true, message: 'Cart is empty', errorDetails: null, data: cartItems}
     }
@@ -198,13 +183,12 @@ async function getPlantDetailsFromFirestore (request: PlantDetailsFromFirestoreR
     }
     return plants
 }
+
 export const stripeWebhookController = onRequest({secrets: [stripeSecretKey, stripeWebhookSecretKey]}, async(req, res): Promise<any> => {
     if(!stripeWebhookSecretKey.value() || stripeWebhookSecretKey.value().length === 0) {
-        //return {success: false, error: true, message: 'Unable to get stripe webhook key', errorDetails: null, data: null}
+        return res.status(400).send('Unable to get stripe secret key')
     }
     const stripe = new Stripe(stripeSecretKey.value())
-    console.log(req)
-    console.log(res)
     if(!req || !req.headers || !req.headers['stripe-signature']) {
         log('Request missing stripe webhook headers')
         return res.status(400).send('Request missing stripe webhook headers')
@@ -219,17 +203,17 @@ export const stripeWebhookController = onRequest({secrets: [stripeSecretKey, str
         )
     } catch (e: any) {
         log('Webhook signature failed')
-        return res.status(400).send()
+        return res.status(400).send('Webhook signature failed')
     }
 
     if (event.type === 'checkout.session.completed' || event.type === 'checkout.session.async_payment_succeeded') {
-        await fulfillCheckout(event.data.object, stripe)
+        await fulfillCheckout(event.data.object)
         log(event.data.object)
     }
     res.status(200).send()
 })
 
-async function fulfillCheckout (checkoutWebhookData: any, stripe: Stripe) {
+async function fulfillCheckout (checkoutWebhookData: any) {
     const checkoutSession = await admin.firestore().collection(`checkoutSessions`).doc(checkoutWebhookData.id).get()
     if(!checkoutSession || checkoutSession === undefined || checkoutSession.data() === undefined) {
         return
@@ -242,8 +226,11 @@ async function fulfillCheckout (checkoutWebhookData: any, stripe: Stripe) {
     } else {
         shippingType = 'Expedited'
     }
-
-    await admin.firestore().collection('orders').doc().set({
+    //const res = await setDoc(doc(db, collectionName, obj.id.toString()), { ...obj })
+    //await admin.firestore().collection(`customers/${checkoutWebhookData.client_reference_id}/orders`).doc().set({
+    const docRef = admin.firestore().collection(`customers/${checkoutWebhookData.client_reference_id}/orders`).doc()
+    await docRef.set({
+        id: checkoutWebhookData.id,
         checkoutSessionId: checkoutWebhookData.id,
         paymentStatus: checkoutWebhookData.payment_status,
         shippingInfo: checkoutWebhookData.shipping_details,
@@ -277,7 +264,7 @@ async function updateInventory(items: StripeLineItem[]) {
         } else {
             if(quantity > plantCategory.plants[plantIndex].quantity) {
                 plantCategory.plants[plantIndex].quantity = 0
-                log(`Plant ${plantCategory.plants[plantIndex].sku} quantity less than cart quantity ${quantity}`)
+                log(`Plant ${plantCategory.plants[plantIndex].sku} quantity ${plantCategory.plants[plantIndex].quantity} less than cart quantity ${quantity}`)
             } else {
                 plantCategory.plants[plantIndex].quantity = plantCategory.plants[plantIndex].quantity - quantity
             }

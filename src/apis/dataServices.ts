@@ -92,4 +92,23 @@ export async function findAll(collectionName: string) {
         return
     }
 }
-    
+
+
+import type { CartItem } from '@/types/Orders';
+import type { PlantCategory, Plant } from '@/types/Plant';
+export async function getPlantsFromFirestore (cartItems: CartItem[]): Promise<Plant[]> {
+
+    let plants: Plant[] = []
+    // const q = query(collection(db, 'plantCategories'), where(''))
+    for (const category of cartItems) {
+        const docRef = doc(db, 'plantCategories', category.categoryId.toString())
+        //get(db, `plantCategory/${category.categoryId}`)
+        const snap = await getDoc(docRef).catch((e: any) => console.error(e))
+        if(snap && snap.data()) {
+            const data = snap.data() as PlantCategory
+            plants = plants.concat(data.plants)
+        }
+    }
+    return plants
+}
+

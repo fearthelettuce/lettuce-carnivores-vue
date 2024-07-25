@@ -110,7 +110,7 @@ const plantTypeLabel = computed(() => {
 const plantTypeDescription = computed(() => {
     if (selectedPlant.value === undefined) { return '' }
     return selectedPlant.value.isRepresentative ? 'The photos for this plant show a plant that is similar to the plant that you will receive. Representative plants are generally less expensive due to streamlined inventory management..'
-     : 'The photos for this plant show the exact plant for sale. Note that old/dying pitchers may be trimmed before shipping to ensure safe packaging.'
+     : 'The photos for this plant show the exact plant for sale. Note that old pitchers may be trimmed before shipping to ensure safe packaging.'
 })
 
 

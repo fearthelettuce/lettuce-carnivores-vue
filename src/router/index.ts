@@ -20,14 +20,26 @@ const routeData = [
       path: "/",
       name: 'home',
       label: 'Home',
-      component: HomeView,
+      component: ProductsView,
       meta: {
         showInNav: false,
         requiresLogin: false,
         requiresAdmin: false,
-        hideHeader: true,
+        hideHeader: false,
       }
     },
+    // {
+    //   path: "/",
+    //   name: 'home',
+    //   label: 'Home',
+    //   component: HomeView,
+    //   meta: {
+    //     showInNav: false,
+    //     requiresLogin: false,
+    //     requiresAdmin: false,
+    //     hideHeader: true,
+    //   }
+    // },
     {
       path: "/products",
       name: 'products',

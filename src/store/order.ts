@@ -6,9 +6,9 @@ import { usePlantStore } from '../components/modules/products/stores/plant'
 import { type PlantCategory } from '@/types/Plant'
 import { useLocalStorage } from '@vueuse/core'
 import {createStripeCheckoutSession} from '@/apis/stripe'
-
+import { getPlantsFromFirestore } from '@/apis/dataServices'
 import type { StripeCartItem } from '@/types/Orders';
-import { useUserStore } from '@/components/modules/auth/stores/users'
+
 
 export const useOrderStore = defineStore('order', () => {
     const isLoading = ref(false)
@@ -136,5 +136,37 @@ export const useOrderStore = defineStore('order', () => {
     }
 
 
-    return { cart, cartItemCount, getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession, resetCart, cartTotal, shippingOptions, updateShipping, isLoading}
+
+    async function validateCart() {
+        const plantData = await getPlantsFromFirestore(cart.value.cartItems)
+        let errors = ''
+        cart.value.cartItems.forEach((item, index) => {
+            const dbPlant = plantData.find((plant) => plant.sku === item.sku)
+            if(!dbPlant || dbPlant.status !== 'In Stock' || dbPlant.quantity === 0) {
+                cart.value.cartItems.splice(index, 1)
+                errors = errors + `${item.name} - ${item.sku}: this item is no longer available and has been removed from your cart.\n`
+                return
+            }
+            if(item.quantity > dbPlant.quantity) {
+                cart.value.cartItems[index].quantity = dbPlant.quantity
+                errors = errors + `${item.name} - ${item.sku}: The requested quantity is no longer available, your cart has been adjusted.\n`
+            }
+        })
+        return errors
+    }
+
+    return { 
+        cart, 
+        cartItemCount, 
+        getCategoryBySku, 
+        addItemToCart, 
+        removeItemFromCart,
+        validateCart,
+        resetCart,
+        startCheckoutSession, 
+        cartTotal, 
+        shippingOptions, 
+        updateShipping, 
+        isLoading
+    }
 })

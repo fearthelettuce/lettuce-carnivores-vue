@@ -2,6 +2,9 @@
     <div class="mx-5 alert alert-warning mb-3">
     The shopping cart is in Test mode.  Use credit card number 4242 4242 4242 4242 with any future expiration date and any CVV to test checkout.
     </div>
+    <div v-if="cartErrors !== null" class="mx-5 alert alert-warning mb-3">
+    {{ cartErrors }}
+    </div>
     <div class="container mb-3">
         
         <div class="d-flex justify-content-center" v-if="cart.cartItems.length === 0">
@@ -87,7 +90,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { useOrderStore } from '@/store/order';
-import { computed, onMounted } from 'vue'
+import { ref, type Ref, computed, onMounted } from 'vue'
 import type { CartItem } from '@/types/Orders'
 import {getPhotoUrl, placeholderUrl} from '@/composables/usePhotoUtils'
 import { toast } from 'vue3-toastify';
@@ -96,7 +99,7 @@ import { useUserStore } from '../auth/stores/users'
 import { router } from '@/router'
 
 const { cart } = storeToRefs(useOrderStore())
-const { getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession, updateShipping } = useOrderStore()
+const { getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession, updateShipping, validateCart} = useOrderStore()
 const { cartTotal, isLoading } = storeToRefs(useOrderStore())
 const { loginAnonymously, isLoggedIn, isUserLoading } = useUserStore()
 
@@ -107,6 +110,7 @@ const amountToQualifyForDiscountedShipping = computed(() => {
     }
 })
 onMounted(() => {
+    getCartErrors()
     cart.value.cartItems.forEach(item => getCategoryBySku(item))
     updateShipping()
     //validated cart it still valid, display TCGPlayer style message "you're cart sucks"
@@ -149,15 +153,26 @@ function getImageUrl(cartItem: CartItem) {
 }
 
 async function checkout() {
+    await getCartErrors()
+    if(cartErrors.value !== null) {
+        toast.error('Some items are no longer available, please review cart and try again')
+        return
+    }
     if(!useUserStore().isLoggedIn) {
         await loginAnonymously()
     }
     if(cart.value.cartItems.length > 0) {
         const res = await startCheckoutSession()
-        
-        console.log(res.data.url)
         window.location.replace(res.data.url)
         if(!res || res.error === true) {toast.error(res?.message || 'Unable to open checkout page')}
+    }
+}
+const cartErrors: Ref<string | null> = ref(null)
+async function getCartErrors() {
+    cartErrors.value = null
+    const errors = await validateCart()
+    if(errors !== '') {
+        cartErrors.value = errors
     }
 }
 </script>
@@ -236,20 +251,20 @@ async function checkout() {
 }
 .checkout-button {
     border-radius: .5rem;
-    background: linear-gradient(0.25turn, #9fdb50, #c8f191);
+    background: linear-gradient(0.15turn,#FFBF46, #fccb72, #FFBF46);
     padding: .5rem 1.25rem;
     border: none;
     color: black;
     font-size: 1.25rem;
     font-weight: 500;
     cursor: pointer;
-    box-shadow: 2px 2px #9c9c9c;
+    box-shadow: 0 0 2px darkslategray;
 }
 .checkout-button:hover {
     filter: brightness(105%);
 }
 .checkout-button:active {
-    box-shadow: 2px 3px #666;
+    box-shadow: 2px 3px darkslategray;
     transform: translateY(4px);
 }
 .checkout-actions {
@@ -257,7 +272,8 @@ async function checkout() {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    background: linear-gradient(0.4turn, #9fdb50, #ebf8e1, #3f87a6);
+    background: linear-gradient(0.4turn, #9fdb50, #A1C181, #9fdb50);
+    //background: linear-gradient(0.4turn, #9fdb50, #ebf8e1, #3f87a6);
     padding: .6rem 0;
     border-radius: 1rem;
 }

@@ -52,7 +52,7 @@ const careData = {
                 light: "Heliamphora will take as much light as you can give them. When given enough light, most species will have beautiful red coloration.",
                 fertilization: "I usually fertilize every 3-6 weeks, alternating between Osmocote (one pellet per pitcher, in about half the open pitchers) and Maxsea (200-300ppm solution, fill most pitchers and spray a bit on the leaves).  I'll also drop random bugs I have found in pitchers.",
                 referencePhotoFilename: 'Heliamphora.jpg',
-                referencePhotoPath: 'referencePhotos/Heliamphora-minor-side-view.jpg',
+                referencePhotoPath: 'referencePhotos/IMG_20240403_071908 (1).jpg',
             },
             cephalotus: {
                 label: "Cephalotus",

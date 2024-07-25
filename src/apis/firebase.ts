@@ -15,7 +15,7 @@ const firebaseConfig = {
 };
 
 const firebaseApp  = initializeApp(firebaseConfig);
-// (self as any).FIREBASE_APPCHECK_DEBUG_TOKEN = import.meta.env.VITE_RECAPCHA_DEBUG_TOKEN;
+(self as any).FIREBASE_APPCHECK_DEBUG_TOKEN = import.meta.env.VITE_RECAPCHA_DEBUG_TOKEN;
 const appCheck = initializeAppCheck(firebaseApp, {
   provider: new ReCaptchaV3Provider(import.meta.env.VITE_RECAPTCHA_SITE_KEY),
   isTokenAutoRefreshEnabled: true

@@ -19,7 +19,7 @@
                 </li>
             </ul>
         </section>
-        <section class="image-section">
+        <section class="image-section" :class="altStyle ? 'order-two' : ''">
             <img :src="sectionImageUrl" :alt="'an image of ' + careData.label" />
         </section>
     </article>
@@ -32,7 +32,7 @@ function getIconUrl(iconFileName : string) {
     return new URL(`../../../assets/icons/${iconFileName}`, import.meta.url).toString()
 }
 const sectionImageUrl = computed(() => {
-    return getPhotoUrl(props.careData.referencePhotoPath)
+    return getPhotoUrl(props.careData.referencePhotoPath, null)
 })
 const careItems = [
     {
@@ -98,7 +98,7 @@ ul {
 
 .guide-card {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     /* flex-wrap: nowrap; */
     background-color: rgb(46, 46, 46);
     border-radius: 1.5rem;
@@ -153,13 +153,13 @@ ul {
 
 
 .image-section {
-    display: none;
-    flex-shrink: 2;
+    display: block;
     justify-content: center;
 }
 
 .image-section img {
-    width: 35em;
+    width: 100%;
+    max-height: 30rem;
     padding: 0;
     object-fit: cover;
     justify-content: flex-end;
@@ -170,6 +170,7 @@ ul {
     flex-direction: column;
     padding: .5em .5em;
     line-height: 1.4;
+    order: 1;
 }
 
 .care-guide {
@@ -202,8 +203,14 @@ ul {
 
 
 @media (min-width: 1150px) {
-    .container-alt .text-section {
+    .order-one {
+        order: 1;
+    }
+    .order-two {
         order: 2;
+    }
+    .container-alt .text-section {
+        order: 2 important!;
     }
 
     .text-section {
@@ -221,10 +228,15 @@ ul {
         margin: 0;
         padding: 0;
         flex-basis: 15em;
+        width: 35rem;
+        max-height: 100%;
     }
 
     .icon {
         width: 3em;
         height: 3em;
+    }
+    .guide-card {
+        flex-direction: row;
     }
 }</style>
