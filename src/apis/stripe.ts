@@ -1,5 +1,5 @@
-import { collection, doc, getDoc, getDocs, query, where} from 'firebase/firestore';
-import { db, auth } from '@/apis/firebase'
+import { collection, getDocs, query, where} from 'firebase/firestore';
+import { db } from '@/apis/firebase'
 import { connectFunctionsEmulator, getFunctions, httpsCallable } from 'firebase/functions'
 
 import { type CartItem } from '@/types/Orders';
@@ -46,8 +46,3 @@ export async function createStripeCheckoutSession(cart: CartItem[]){
     console.log(res)
     return res
 }
-//TODO:
-//  Set checkout sessions to expire so that inventory goes back into 'stock'
-//  https://docs.stripe.com/payments/checkout/managing-limited-inventory
-//  Shipping
-// Sign in with google popup

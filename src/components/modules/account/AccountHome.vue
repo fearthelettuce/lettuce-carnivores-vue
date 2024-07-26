@@ -1,12 +1,10 @@
 <template>
-    <section class="container-fluid d-flex flex-row justify-content-center">
-        <main class="d-flex flex-column mx-5">
-            <p>{{ profile?.name.firstName + ' ' + profile?.name.lastName }}</p>
-            <!-- <p>{{ profile?.shippingAddress }}</p> -->
-            <p>{{ profile?.contactInformation.email }}</p>
+    <section class="container-fluid d-grid">
+        <main class="d-flex flex-row justify-content-around">
+            <p v-if="profile">{{ profile?.name.firstName + ' ' + profile?.name.lastName }}</p>
+            <p v-if="profile">{{ profile?.contactInformation.email }}</p>
         </main>
         <OrdersList />
-
     </section>
 </template>
 
@@ -22,7 +20,7 @@ const {profile} = storeToRefs(userStore)
 
 <style scoped>
     section {
-        padding: 0 clamp(.1em, 6vw, 20rem);
+        padding: 0 clamp(.05rem, 6vw, 20rem);
         margin: 2em 0;
     }
     ul {

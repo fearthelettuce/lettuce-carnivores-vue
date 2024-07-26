@@ -198,19 +198,28 @@ async function fulfillCheckout (checkoutWebhookData: any) {
     } else {
         shippingType = 'Expedited'
     }
-    //const res = await setDoc(doc(db, collectionName, obj.id.toString()), { ...obj })
-    //await admin.firestore().collection(`customers/${checkoutWebhookData.client_reference_id}/orders`).doc().set({
-    const docRef = admin.firestore().collection(`customers/${checkoutWebhookData.client_reference_id}/orders`).doc()
-    await docRef.set({
-        id: checkoutWebhookData.id,
+    const orderNumber = await getNextSequentialId('orders')
+    const orderDetails = {
+        id: orderNumber,
+        customer: checkoutWebhookData.client_reference_id,
+        orderDate: new Date(),
         checkoutSessionId: checkoutWebhookData.id,
         paymentStatus: checkoutWebhookData.payment_status,
         shippingInfo: {address: checkoutWebhookData.shipping_details.address, name: checkoutWebhookData.shipping_details.name, shippingType: shippingType},
+        orderStatus: {
+            status: 'Processing',
+            trackingNumber: '',
+            carrier: '',
+        },
         lineItems: lineItems,
-        amountTotal: checkoutWebhookData.amount_total,
+        cartTotal: {
+            amountTotal: checkoutWebhookData.amount_total,
+            ...checkoutWebhookData.total_details,
+        },
         fullResponse: checkoutWebhookData,
-    }).catch((e: any) => {log(e)})
-
+    }
+    await admin.firestore().collection(`orders`).doc(orderNumber.toString()).set(orderDetails).catch((e: any) => {log(e)})
+    await admin.firestore().collection(`customers/${checkoutWebhookData.client_reference_id}/orders`).doc(orderNumber.toString()).set(orderDetails).catch((e: any) => {log(e)})
     await updateInventory(lineItems).catch((e: any) => {log(e)})
     return
 }
@@ -243,4 +252,27 @@ async function updateInventory(items: StripeLineItem[]) {
         await docRef.update({plants: plantCategory.plants})
     }
     return
+}
+
+async function getNextSequentialId(collectionName: string, idFieldName: string = 'id') {
+    const startingValue = 1000
+    let docs: Array<unknown> | undefined = []
+    try {
+        docs = await getAllDocs(collectionName)
+    } catch (err) {
+        console.log(err)
+    }
+    let nextSequentialId: number
+    if (docs.length > 0) {
+        nextSequentialId = await docs.reduce((acc: number, doc: any) => acc = acc > parseInt(doc[idFieldName]) ? acc : parseInt(doc[idFieldName]), startingValue).valueOf()
+        nextSequentialId++ 
+    } else {
+        return startingValue + 1
+    }
+    return nextSequentialId
+}
+
+async function getAllDocs(collectionName: string) {
+    const snapshot = await admin.firestore().collection(collectionName).get()
+    return snapshot.docs.map(doc => doc.data())
 }
