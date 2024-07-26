@@ -42,7 +42,7 @@ import {
 
 const signInOptions = [
     {value: 'Google', buttonLabel: 'Sign in with Google',icon: true, class: 'google-button'},
-    // {value: 'Facebook', buttonLabel: 'Sign in with Facebook', icon: 'src/assets/icons/facebook.svg'},
+    {value: 'Facebook', buttonLabel: 'Sign in with Facebook', icon: 'src/assets/icons/facebook.svg'},
     // {value: 'Email', buttonLabel: 'Sign in with Email', class: 'email-button'},
     // {value: 'Phone', buttonLabel: 'Sign in with Phone', class: 'phone-button'},
     // {value: 'Guest', buttonLabel: 'Continue as Guest', class: 'guest-button'}

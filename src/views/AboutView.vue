@@ -24,5 +24,9 @@
             <h4>Exports</h4>
             <p>Live plants are sold in the US only and cannot be exported.  Orders placed with a shipping address outside the US will be cancelled.</p>
         </div>
+        <div>
+            <h4>Private Policy and Data Security</h4>
+            <p>Data is collection for the sole purpose of processing purchases, such as mailing orders and providing order status updates.  Marketing emails and inventory notifications are optional and can be disabled at any time. We use Stripe for payment processing and Google Firebase for data storage. Your data will never be sold or made available to third parties besides these two providers.</p>
+        </div>
     </div>
 </template>

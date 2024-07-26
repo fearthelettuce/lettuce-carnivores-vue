@@ -101,7 +101,7 @@ import { router } from '@/router'
 const { cart } = storeToRefs(useOrderStore())
 const { getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession, updateShipping, validateCart} = useOrderStore()
 const { cartTotal, isLoading } = storeToRefs(useOrderStore())
-const { loginAnonymously, isLoggedIn, isUserLoading } = useUserStore()
+const { loginAnonymously, isLoggedIn, isUserLoading, user } = useUserStore()
 
 const amountToQualifyForDiscountedShipping = computed(() => {
     if(cartTotal.value >= discountedShippingThreshold) { return USDollar.format(0)}
@@ -158,7 +158,7 @@ async function checkout() {
         toast.error('Some items are no longer available, please review cart and try again')
         return
     }
-    if(!useUserStore().isLoggedIn) {
+    if(!user || user === null) {
         await loginAnonymously()
     }
     if(cart.value.cartItems.length > 0) {

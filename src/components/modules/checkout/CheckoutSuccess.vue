@@ -10,6 +10,9 @@
                 <a href="https://www.instagram.com/dangerlettuce/" target="_blank">Follow us on Instagram</a>
             </div>
             <router-link to="care">Click here to learn about care for your new plants</router-link>
+            <div v-if="user!.isAnonymous">
+                <router-link to="/login">Create an account to track your orders</router-link>
+            </div>
         </div>
     </div>
 </template>
@@ -17,7 +20,10 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useOrderStore } from '@/store/order';
+import { useUserStore } from '../auth/stores/users';
+import { storeToRefs } from 'pinia'
 
+const {user} = storeToRefs(useUserStore())
 const { resetCart } = useOrderStore()
 
 

@@ -54,7 +54,8 @@ export const useUserStore = defineStore('user', {
     isUserLoading: false,
   }),
   getters: {
-    isLoggedIn: (state) => state.user !== null,
+    isLoggedIn: (state) => state.user !== null && !state.user.isAnonymous,
+    isLoggedInOrAnonymous: (state) => state.user !== null,
     isAdmin: (state) => state.userRoles?.admin,
     isFamily: (state) => state.userRoles?.family,
     userError: (state) => state.error,
@@ -174,23 +175,5 @@ export const useUserStore = defineStore('user', {
       }
       
     },
-    // async getUserRoles(userId: string) {
-    //   if(!userId) return
-    //     const res = await findDocById('users',userId)
-    //     if(res) {
-    //         if( res.roles ) {
-    //             this.userRoles = res.roles
-    //         }
-    //     }
-    // },
-    // async getUserProfile(userId: string) {
-    //   if(!userId) return
-    //     const res = await findDocById('users',userId)
-    //     if(res) {
-    //         if( res.profile ) {
-    //             this.profile = res.profile
-    //         }
-    //     }
-    // },
   },
 });

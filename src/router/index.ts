@@ -5,7 +5,7 @@ import ProductsView from '@/views/ProductsView.vue'
 import ShoppingCart from '@/components/modules/orders/ShoppingCart.vue'
 import CheckoutComplete from '@/views/CheckoutComplete.vue'
 const ProductDetailView = () => import( '@/views/ProductDetailView.vue')
-const ProductAdminView = () => import('@/components/modules/products/components/ProductAdmin.vue')
+
 const AboutView = () => import('@/views/AboutView.vue')
 const CareGuideView = () => import('@/views/CareGuideView.vue')
 const RecommendationView = () => import( '@/views/RecommendationView.vue')
@@ -121,7 +121,7 @@ const routeData = [
     {
       path: "/account",
       name: 'account',
-      label: 'Account',
+      label: 'Orders',
       component: AccountView,
       meta: {
         showInNav: true,
@@ -169,7 +169,8 @@ const routeData = [
       component: CheckoutComplete,
       meta: {
         showInNav: false,
-        requiresLogin: true,
+        requiresLogin: false,
+        requiresLoginOrAnon: true,
         requiresAdmin: false,
       }
 
@@ -190,6 +191,9 @@ router.beforeEach((to) => {
   }
 
   if(to.meta.requiresLogin && !userStore.isLoggedIn && to.name !== 'home' && to.name !== 'login') {
+    return {name: 'home'}
+  }
+  if(to.meta.requiresLoginOrAnon && !userStore.isLoggedInOrAnonymous && to.name !== 'home' && to.name !== 'login') {
     return {name: 'home'}
   }
 })

@@ -87,27 +87,6 @@ const screenWidth = Math.max(
   }
 }
 
-//Size - 2.5, 3.0, 3.5, 3.5d, etc.
-
-//Sort:
-//Popular?
-//Size Big - Small Small - Big
-
-// import { reactive } from 'vue';
-// import { useProductStore } from '../stores/product'
-
-// const productStore = useProductStore()
-// const filters = reactive({
-//     genus: []
-// })
-
-
-//Design:
-// Product Store
-// Set fitler - takes in a filter type and filter criteria
-// loop through products and apply filter
-// Need an array/obj of filters and criteria
-
 </script>
 
 <style scoped>
