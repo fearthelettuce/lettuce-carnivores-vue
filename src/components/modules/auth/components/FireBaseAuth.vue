@@ -15,7 +15,6 @@
 </template>
 
 <script lang="ts">
-import { useFirebaseAuth } from 'vuefire';
 import { GoogleAuthProvider, EmailAuthProvider, PhoneAuthProvider} from 'firebase/auth'
 import { toast } from 'vue3-toastify'
 import GoogleIcon from '@/assets/icons/GoogleIcon.vue';
