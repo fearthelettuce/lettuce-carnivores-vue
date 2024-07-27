@@ -72,7 +72,7 @@ export const usePlantStore = defineStore('plant', () => {
             if(categories !== undefined && categories.length !== 0) {
                 plantCategories.value = categories as PlantCategory[]
             }
-            sortCategoriesById()
+            sortAlphabetically(plantCategories.value, 'name')
         } catch (e: any) {
             throw new Error(e.toString())
         } finally {
@@ -80,8 +80,12 @@ export const usePlantStore = defineStore('plant', () => {
         }
     }
 
-    function sortCategoriesById(prop: keyof PlantCategory = 'id') {
-        plantCategories.value.sort((a, b) => { return parseInt(a.id) - parseInt(b.id) })
+    function sortNumerically(arr: {id: string}[], prop = 'id') {
+        //@ts-ignore
+        arr.sort((a, b) => { return parseInt(a[prop]) - parseInt(b[prop]) })
+    }
+    function sortAlphabetically(arr: {(key: string): string}[], prop: keyof typeof arr) {
+       arr.sort((a: any, b: any) => a[prop].localeCompare(b[prop]))
     }
 
     const filteredCategories: Ref<PlantCategory[]> = ref([])
@@ -101,14 +105,18 @@ export const usePlantStore = defineStore('plant', () => {
     const getAvailableCategories = () => {
         const selectedOther = productFilters.value.other.items.map(item => item.value)
         const selectedExperience = productFilters.value.experience.items
-        return plantCategories.value.filter(category => {
+        const availableCategories = plantCategories.value.filter(category => {
             const plants = getAvailablePlants(category)
+            
             return plants.length > 0 && 
             !['Hidden', 'Archived', 'Sold'].includes(category.status) &&
             productFilters.value.genus.items.includes(category.genus) &&
             selectedOther.includes(category.speciesHybrid) &&
             productFilters.value.experience.items.includes(category.experience)
         })
+        //@ts-ignore
+        sortAlphabetically(availableCategories, 'name')
+        return availableCategories
     }
     const getAvailablePlants = (category: PlantCategory | undefined) => {
         if(category === undefined) {return []}
@@ -122,8 +130,8 @@ export const usePlantStore = defineStore('plant', () => {
             plant.price > 0
         )
 
-        let filteredPlants
-        filteredPlants = visiblePlants.filter(plant => selectedStatuses.includes(plant.status))
+        let filteredPlants = visiblePlants
+        filteredPlants = filteredPlants.filter(plant => selectedStatuses.includes(plant.status))
         filteredPlants = filteredPlants.filter(plant => selectedOther.includes('Specimen') ? true : plant.isRepresentative )
         filteredPlants = filteredPlants.filter(plant => selectedOther.includes('Representative') ? true : !plant.isRepresentative)
         return filteredPlants

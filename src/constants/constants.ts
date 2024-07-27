@@ -11,7 +11,7 @@ export const sizeList = [
     {label: 'Bare Root', value: 'Bare Root'}
 ]
 
-export const genusList = ['Heliamphora', 'Nepenthes', 'Cephalotus', 'Other']
+export const genusList = ['', 'Heliamphora', 'Nepenthes', 'Cephalotus', 'Other']
 
 export const statusListArr = ['', 'In Stock', 'Coming Soon', 'Archived', 'Hidden', 'Sold']
 export const experienceList = ['', 'Beginner Friendly', 'Intermediate', 'Advanced']
