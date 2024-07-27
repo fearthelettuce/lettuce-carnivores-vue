@@ -72,12 +72,16 @@ export const usePlantStore = defineStore('plant', () => {
             if(categories !== undefined && categories.length !== 0) {
                 plantCategories.value = categories as PlantCategory[]
             }
-            
+            sortCategoriesById()
         } catch (e: any) {
             throw new Error(e.toString())
         } finally {
             isLoading.value = false
         }
+    }
+
+    function sortCategoriesById(prop: keyof PlantCategory = 'id') {
+        plantCategories.value.sort((a, b) => { return parseInt(a.id) - parseInt(b.id) })
     }
 
     const filteredCategories: Ref<PlantCategory[]> = ref([])
