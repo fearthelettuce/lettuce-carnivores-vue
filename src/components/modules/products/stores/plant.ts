@@ -72,6 +72,7 @@ export const usePlantStore = defineStore('plant', () => {
             if(categories !== undefined && categories.length !== 0) {
                 plantCategories.value = categories as PlantCategory[]
             }
+            //@ts-ignore
             sortAlphabetically(plantCategories.value, 'name')
         } catch (e: any) {
             throw new Error(e.toString())
