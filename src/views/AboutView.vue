@@ -28,5 +28,10 @@
             <h4>Private Policy and Data Security</h4>
             <p>Data is collection for the sole purpose of processing purchases, such as mailing orders and providing order status updates.  Marketing emails and inventory notifications are optional and can be disabled at any time. We use Stripe for payment processing and Google Firebase for data storage. Your data will never be sold or made available to third parties besides these two providers.</p>
         </div>
+        <div>
+            <h4>Terms of Service</h4>
+            <p>Links to content on this site are welcome for educational or discussion purposes. Content requires prior permission to be copied to external systems.  Content may not be used for commercial uses without express written consent. Copyright Danger Lettuce Carnivores, LP 2024</p>
+        </div>
+
     </div>
 </template>
