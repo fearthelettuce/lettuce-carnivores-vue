@@ -1,4 +1,4 @@
-import type { PlantCategory, Plant, Sizes } from "@/types/Plant"
+import type { PlantCategory, Plant } from "@/types/Plant"
 import type { PhotoItem } from "@/types/Product"
 
 export const sizeList = [

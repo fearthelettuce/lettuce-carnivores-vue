@@ -39,10 +39,10 @@ export async function createStripeCheckoutSession(cart: CartItem[]){
     const res = await createCheckoutSession({
         cart: cart, 
         customerEmail: 'test@gmail.com',
-        returnUrl: `${window.location.origin}/checkoutcomplete`,
+        returnUrl: `${window.location.origin}/checkoutComplete`,
         cancelUrl:`${window.location.origin}/cart`,
         stripeCustomer: stripeCustomer,
-    })
+    }).catch((e: any) => {console.error(e); return {success: false, error: true, errorDetails: e, message: 'Error when trying to create Strip checkout session'}})
     console.log(res)
     return res
 }

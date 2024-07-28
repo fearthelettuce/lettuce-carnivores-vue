@@ -120,6 +120,7 @@ export const useUserStore = defineStore('user', {
       this.isUserLoading = true
       try {
         const res = await fbSignInWithGoogle()
+        this.user = res.user ? res.user : null;
         return res
       } catch (e: any) {
         console.error(e)
@@ -131,7 +132,8 @@ export const useUserStore = defineStore('user', {
     async loginAnonymously(){
       this.isUserLoading = true
       try {
-        const res = fbSignInAnonymously()
+        const res = await fbSignInAnonymously()
+        this.user = res.user ? res.user : null;
         return res
       } catch (e: any) {
         console.error(e)
