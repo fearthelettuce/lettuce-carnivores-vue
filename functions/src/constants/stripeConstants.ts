@@ -1,7 +1,8 @@
 const discountedShippingThreshold = 7500
-const discountedStandardShippingId = 'shr_1PgHNPHlHApXEku9AAuNQ4t5'
-const discountedExpeditedShippingId = 'shr_1PgHO1HlHApXEku9bwyfqnaS'
-const standardShippingId = 'shr_1PeV9AHlHApXEku9nZGfZY3C'
-const expeditedShippingId = 'shr_1PeUiCHlHApXEku9eAUhvFMz'
+
+const standardShippingId = 'shr_1PhcE1HlHApXEku9jEjOnRY5'
+const expeditedShippingId = 'shr_1PhcIRHlHApXEku9VDJcMwh1'
+const discountedStandardShippingId = 'shr_1PhcE6HlHApXEku9pLjd8otH'
+const discountedExpeditedShippingId = 'shr_1PhcDxHlHApXEku9w5lwzzhi'
 
 export {discountedShippingThreshold, discountedStandardShippingId, discountedExpeditedShippingId, standardShippingId, expeditedShippingId}

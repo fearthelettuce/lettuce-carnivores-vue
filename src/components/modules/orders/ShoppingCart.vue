@@ -1,7 +1,4 @@
 <template>
-    <div class="mx-5 alert alert-warning mb-3">
-    The shopping cart is in Test mode.  Use credit card number 4242 4242 4242 4242 with any future expiration date and any CVV to test checkout.
-    </div>
     <div v-if="cartErrors !== null" class="mx-5 alert alert-warning mb-3">
     {{ cartErrors }}
     </div>
@@ -99,7 +96,7 @@ import { useUserStore } from '../auth/stores/users'
 import { router } from '@/router'
 
 const { cart } = storeToRefs(useOrderStore())
-const { getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession, updateShipping, validateCart} = useOrderStore()
+const { getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession, validateCart} = useOrderStore()
 const { cartTotal, isLoading } = storeToRefs(useOrderStore())
 const { loginAnonymously, isLoggedIn, isUserLoading, user } = useUserStore()
 
@@ -112,8 +109,6 @@ const amountToQualifyForDiscountedShipping = computed(() => {
 onMounted(() => {
     getCartErrors()
     cart.value.cartItems.forEach(item => getCategoryBySku(item))
-    updateShipping()
-    //validated cart it still valid, display TCGPlayer style message "you're cart sucks"
 })
 
 const isCheckoutLoading = computed(() => {
@@ -163,8 +158,8 @@ async function checkout() {
     }
     if(cart.value.cartItems.length > 0) {
         const res = await startCheckoutSession()
+        if(!res || res.error === true || !res.data.url) {console.error(res); toast.error(res?.message || 'Unable to open checkout page'); return}
         window.location.replace(res.data.url)
-        if(!res || res.error === true) {toast.error(res?.message || 'Unable to open checkout page')}
     }
 }
 const cartErrors: Ref<string | null> = ref(null)
@@ -304,9 +299,6 @@ async function getCartErrors() {
     }
     .cart-item-container {
         padding: 1rem 1rem;
-    }
-    .checkout-actions {
-        
     }
 }
 </style>
