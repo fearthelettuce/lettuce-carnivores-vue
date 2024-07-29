@@ -20,9 +20,9 @@
             </div>
         </form>
         <hr class="my-4"/>
-        <div class="d-flex justify-content-center">
+        <!-- <div class="d-flex justify-content-center">
             <ProviderLogin />
-        </div>
+        </div> -->
     </div>
 </template>
 
