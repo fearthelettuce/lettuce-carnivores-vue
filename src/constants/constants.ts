@@ -3,7 +3,7 @@ import type { PhotoItem } from "@/types/Product"
 
 export const sizeList = [
     {label: '', value: '',},
-    {label: '2.5"', value: '2,5"'},
+    {label: '2.5"', value: '2.5"'},
     {label: '3" deep', value: '3" deep'},
     {label: '3.5"', value: '3,5"'},
     {label: '3.5" deep', value:'3.5" deep'},
