@@ -8,10 +8,11 @@ export const sizeList = [
     {label: '3.5"', value: '3,5"'},
     {label: '3.5" deep', value:'3.5" deep'},
     {label: '4" deep', value: '4" deep'},
+    {label: '4.5" deep', value: '4.5" deep'},
     {label: 'Bare Root', value: 'Bare Root'}
 ]
 
-export const genusList = ['', 'Heliamphora', 'Nepenthes', 'Cephalotus', 'Other']
+export const genusListArr = ['', 'Heliamphora', 'Nepenthes', 'Cephalotus', 'Other']
 
 export const statusListArr = ['', 'In Stock', 'Coming Soon', 'Archived', 'Hidden', 'Sold']
 export const experienceList = ['', 'Beginner Friendly', 'Intermediate', 'Advanced']
@@ -22,6 +23,13 @@ export const otherFiltersList = [
     {label: 'Specimen', value: 'Specimen', hidden: false},
     {label: 'Representative', value: 'Representative', hidden: false},
     {label: 'Only Sale Items', value: 'Only Sale Items', hidden: false},
+]
+export const genusList = [
+    {label:'', value: false, hidden: true}, 
+    {label:'Heliamphora', value: 'Heliamphora', hidden: false}, 
+    {label:'Nepenthes', value: 'Nepenthes', hidden: false},
+    {label:'Cephalotus', value: 'Cephalotus', hidden: false}, 
+    {label:'Other', value: 'Other', hidden: true},
 ]
 export const statusList = [
     {label:'', value: false, hidden: true}, 
@@ -35,7 +43,7 @@ export const defaultFilters = {
     genus: {
         label: 'Genus',
         filterKey: 'genus',
-        items: genusList
+        items: genusList.filter(item => !item.hidden)
     },
     status: {
         label: 'Availability',

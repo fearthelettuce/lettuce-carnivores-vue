@@ -33,6 +33,7 @@ export type Sizes =
     '3.5"' | 
     '3.5" deep' | 
     '4" deep' | 
+    '4.5" deep' |
     'Bare Root'
 
 

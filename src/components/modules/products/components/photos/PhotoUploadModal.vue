@@ -43,7 +43,7 @@
                         </div>
                         
                         <div class="col-7 d-flex  align-items-center justify-content-center">
-                            <img class="imagePreview" :src="photoSrc(photo)" onerror="this.onerror=null;this.src='';" />
+                            <img class="imagePreview" :src="photoSrc(photo, 256)" onerror="this.onerror=null;this.src='';" />
                         </div>
                         <div class="col-1 d-flex align-items-center justify-content-center">
                             <div class="btn " @click="removePhoto(index, photo)">
@@ -72,7 +72,7 @@
                             <div v-if="selectedFiles.length !== 0" class="d-inline-block mx-3 text-light">{{ selectedFiles.length }} files selected</div>
                         </div>
                     <div>
-                        <button type="button" class="btn btn-secondary me-4" @click="toggleModal" data-bs-dismiss="modal":disabled="selectedFiles.length !== 0 || isSaving">Close</button>    
+                        <button type="button" class="btn btn-secondary me-4" @click="toggleModal" data-bs-dismiss="modal":disabled="selectedFiles.length !== 0">Close</button>    
                         <button type="button" class="btn btn-primary" @click="uploadFiles" :disabled="selectedFiles.length === 0 || isSaving">Upload <span v-if="isSaving" class="spinner-border"></span></button>
                     </div>
 
@@ -110,15 +110,10 @@ function toggleModal() {
 }
 
 function photoSrc(photo: PhotoItem | SelectedFile, size: AllowedSizes = 256) {
-    if(photo.hasOwnProperty('folder')) {
-        return getPhotoUrl((photo as PhotoItem).path, size, 'jpg')
-    } else {
-        return (photo as SelectedFile).tempUrl
-    }
+    return getPhotoUrl((photo as PhotoItem).path, size)
 }
 
 const photos = defineModel('photos',{type: Object as PropType<PhotoItem[]>, required: true})
-
 
 function arrayMove(arr: Array<any>, fromIndex: number, toIndex: number) {
     if(toIndex > arr.length-1) {console.log('Unable to move in array, toIndex greater than arr.length. toIndex:' + toIndex + 'arr.length: ' + arr.length)}

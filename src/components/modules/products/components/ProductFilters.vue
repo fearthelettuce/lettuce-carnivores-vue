@@ -14,7 +14,8 @@
             <MultiSelect 
                 v-model="productFilters.genus.items" 
                 display="chip"
-                :options="genusList"
+                :options="genusList.filter(item => !item.hidden)"
+                optionLabel="label"
                 :showToggleAll="false"
                 placeholder="Genus"
                 class="filter-item" 
@@ -31,11 +32,12 @@
 
             <MultiSelect 
                 v-model="productFilters.other.items" 
-                display="chip"
                 optionLabel="label"
+                display="chip"
                 :options="otherFiltersList"
                 filter
                 placeholder="Other filters"
+                class="filter-item"
                  
             />
 
@@ -62,12 +64,9 @@ import MultiSelect from 'primevue/multiselect'
 import Select from 'primevue/select';
 import { storeToRefs } from 'pinia'
 
-//TODO: make this responsive
 const isHidden = ref(false)
-const selectedGenus = ref()
-const selectedOtherFilters = ref()
 const {productFilters} = storeToRefs(usePlantStore())
-const sortMethod = ref({...defaultSort})
+// const sortMethod = ref({...defaultSort})
 const displayExperienceList = experienceList.filter(item => item !== '')
 onMounted(() => {
     productFilters.value.status.items = productFilters.value.status.items.filter(item => !item.hidden)
@@ -117,8 +116,6 @@ const screenWidth = Math.max(
         gap: 1rem;
         flex-direction: row;
     }
-    
-
 }
 
 </style>

@@ -18,7 +18,7 @@
         <FormKit 
             type="select"
             label="Genus"
-            :options="genusList"
+            :options="genusListArr"
             class="grid-col-1"
             v-model="plantCategoryToEdit.genus" 
         />
@@ -94,7 +94,7 @@ import { ref, inject, watch } from 'vue';
 import { toast } from 'vue3-toastify'
 import { usePlantStore } from '../stores/plant';
 import { storeToRefs } from 'pinia';
-import { genusList, statusListArr, speciesHybridArr, experienceList } from '@/constants/constants';
+import { genusListArr, statusListArr, speciesHybridArr, experienceList } from '@/constants/constants';
 import BaseModal from '@/components/app/UI/BaseModal.vue'
 
 const {saveCategory, setCategoryToEdit, deleteCategoryById } = usePlantStore()

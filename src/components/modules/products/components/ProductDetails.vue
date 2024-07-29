@@ -96,7 +96,7 @@ onMounted(async () => {
 
 
 
-const hideDescription = ref(false)
+const hideDescription = ref(true)
 
 function toggleHideDescription () {
     hideDescription.value = !hideDescription.value

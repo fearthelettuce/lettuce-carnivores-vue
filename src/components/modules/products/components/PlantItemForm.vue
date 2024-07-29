@@ -5,6 +5,7 @@
             type="text"
             label="ID"
             class="grid-col-1"
+            validation="required"
             v-model="plant.id"
             @change="setRepresentative"
         />
@@ -19,6 +20,7 @@
         <FormKit 
             type="select"
             label="Size"
+            validation="required"
             class="grid-col-1"
             :options="sizeList"
             v-model="plant.size"
@@ -27,6 +29,7 @@
             type="text"
             number
             label="Price"
+            validation="required|number|min:0"
             class="grid-col-1"
             v-model="plant.price"
         />
@@ -41,12 +44,14 @@
             type="text"
             number
             label="Quantity"
+            validation="required|number|min:0"
             class="grid-col-1"
             v-model="plant.quantity"
         />
         <FormKit 
             type="select"
             label="Status"
+            validation="required"
             class="grid-col-1"
             :options="statusListArr"
             v-model="plant.status"
