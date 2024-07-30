@@ -153,7 +153,7 @@ export const usePlantStore = defineStore('plant', () => {
                 sku: nextId.toString(),
                 isRepresentative: lastPlant.isRepresentative,
                 size: '',
-                propagationDate: new Date().toString(),
+                propagationDate: new Date().toLocaleDateString('en-CA'),
                 status: 'In Stock',
                 price: lastPlant.price,
                 discountedPrice: lastPlant.discountedPrice,

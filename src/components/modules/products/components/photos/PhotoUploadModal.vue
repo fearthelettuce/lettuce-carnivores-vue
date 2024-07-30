@@ -43,7 +43,7 @@
                         </div>
                         
                         <div class="col-7 d-flex  align-items-center justify-content-center">
-                            <img class="imagePreview" :src="photoSrc(photo, 256)" onerror="this.onerror=null;this.src='';" />
+                            <img class="imagePreview" :src="photoSrc(photo, 256)" />
                         </div>
                         <div class="col-1 d-flex align-items-center justify-content-center">
                             <div class="btn " @click="removePhoto(index, photo)">
@@ -71,9 +71,10 @@
                             :disabled="isSaving">
                             <div v-if="selectedFiles.length !== 0" class="d-inline-block mx-3 text-light">{{ selectedFiles.length }} files selected</div>
                         </div>
-                    <div>
-                        <button type="button" class="btn btn-secondary me-4" @click="toggleModal" data-bs-dismiss="modal":disabled="selectedFiles.length !== 0">Close</button>    
+                    <div class="d-flex flex-row gap-2">
                         <button type="button" class="btn btn-primary" @click="uploadFiles" :disabled="selectedFiles.length === 0 || isSaving">Upload <span v-if="isSaving" class="spinner-border"></span></button>
+                        <button type="button" class="btn btn-info" @click="reloadImages" data-bs-dismiss="modal":disabled="isSaving">Reload Images</button>     
+                        <button type="button" class="btn btn-secondary" @click="toggleModal" data-bs-dismiss="modal":disabled="selectedFiles.length !== 0">Close</button>
                     </div>
 
                 </footer>
@@ -107,6 +108,16 @@ const open = ref(false)
 function toggleModal() {
     open.value = !open.value;
     resetSelectedFiles()
+}
+
+function reloadImages() {
+    const imageDomElements = document.querySelectorAll('.imagePreview') as unknown as HTMLImageElement[]
+
+    imageDomElements.forEach((ele)=>{
+        const currentSource = ele.src
+        ele.src = ''
+        setTimeout(()=>{ele.src = currentSource},20)
+    })
 }
 
 function photoSrc(photo: PhotoItem | SelectedFile, size: AllowedSizes = 256) {
@@ -218,6 +229,9 @@ footer {
     height: 16em;
 }
 
+.hide {
+    display: none;
+}
 .photo-modal {
     min-width: 40rem;
     overflow: none;

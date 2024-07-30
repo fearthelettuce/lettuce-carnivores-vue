@@ -18,7 +18,32 @@
                 
             </div>
             <div class="plant-list mt-5">
-                <PlantItemForm v-for="(plant, index) in plantCategoryToEdit.plants" :key="index" :plant @triggerSave="saveCategory(plantCategoryToEdit)" @deletePlant="removePlant(index)"/>
+                <div v-for="(plant, index) in plantCategoryToEdit.plants" :key="plant.sku" >
+                    <hr />
+                    <div class="d-flex flex-row gap-2">
+                        <div class="grid-col-1 align-content-center text-center">
+                            <button 
+                                class="btn px-1 py-0"
+                                v-if="index !== 0"
+                                @click="arrayMove(plantCategoryToEdit.plants,index,index-1)">
+                                <FontAwesome 
+                                class="move-arrow" 
+                                icon="caret-up" />
+                            </button>
+                            <button
+                                v-if="index !== plantCategoryToEdit.plants.length -1"
+                                class="btn px-1 py-0"
+                                @click="arrayMove(plantCategoryToEdit.plants,index,index+1)" >
+                                <FontAwesome  
+                                class="move-arrow" 
+                                icon="caret-down" />
+                            </button>
+                        </div>
+
+                        <PlantItemForm :plant @triggerSave="saveCategory(plantCategoryToEdit)" @deletePlant="removePlant(index)"/>
+
+                    </div>
+                </div>
                 <div class="mt-5">
                     <button class="btn btn-primary" @click.prevent="addPlant(plantCategoryToEdit)">Add Plant Item</button>
                     <button class="btn btn-primary ms-4" @click.prevent="save">Save <span class="spinner-border" role="status" v-show="isSaving"></span></button>
@@ -29,7 +54,7 @@
             <ProductCard
                 :name="getCardName(plantCategoryToEdit)"
                 :price="getDisplayPrice(plantCategoryToEdit, getAvailablePlants(plantCategoryToEdit))"
-                :link="`/plants/${encodeURIComponent(plantCategoryToEdit.id)}`"
+                :link="`/plants/${encodeURIComponent(plantCategoryToEdit.id !== '' ? plantCategoryToEdit.id : 0)}`"
                 :photoUrl="getCardPhoto(plantCategoryToEdit)"
                 class="product-card"
             />
@@ -88,8 +113,17 @@ function toggleExpand () {
     isExpanded.value = !isExpanded.value
 }
 
+function arrayMove(arr: Array<any>, fromIndex: number, toIndex: number) {
+    if(toIndex > arr.length-1) {console.log('Unable to move in array, toIndex greater than arr.length. toIndex:' + toIndex + 'arr.length: ' + arr.length)}
+    const ele = arr[fromIndex]
+    arr.splice(fromIndex,1)
+    arr.splice(toIndex, 0, ele)
+    save()
+}
+
+
 const photoModal = ref()
-const photoModalFolder = ref()
+const photoModalFolder = ref('')
 const photoModalArr: Ref<PhotoItem[]> = ref([])
 function managePhotos(folder: string, arr: PhotoItem[]) {
     photoModalFolder.value = folder

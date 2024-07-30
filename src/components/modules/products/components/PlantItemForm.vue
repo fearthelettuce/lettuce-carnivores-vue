@@ -51,7 +51,8 @@
         <FormKit 
             type="select"
             label="Status"
-            validation="required"
+            validation="not:'Coming Soon'"
+            validation-visibility="live"
             class="grid-col-1"
             :options="statusListArr"
             v-model="plant.status"
