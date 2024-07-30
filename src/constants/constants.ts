@@ -34,7 +34,7 @@ export const genusList = [
 export const statusList = [
     {label:'', value: false, hidden: true}, 
     {label:'In Stock', value: 'In Stock', hidden: false}, 
-    {label:'Coming Soon', value: false, hidden: false},
+    {label:'Coming Soon', value: 'Coming Soon', hidden: false},
     {label:'Archived', value: false, hidden: true}, 
     {label:'Hidden', value: false, hidden: true},
     {label:'Sold', value: false, hidden: true}

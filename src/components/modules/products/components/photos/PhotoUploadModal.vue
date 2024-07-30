@@ -73,7 +73,7 @@
                         </div>
                     <div class="d-flex flex-row gap-2">
                         <button type="button" class="btn btn-primary" @click="uploadFiles" :disabled="selectedFiles.length === 0 || isSaving">Upload <span v-if="isSaving" class="spinner-border"></span></button>
-                        <button type="button" class="btn btn-info" @click="reloadImages" data-bs-dismiss="modal":disabled="isSaving">Reload Images</button>     
+                        <button type="button" class="btn btn-info" @click="reloadImages" data-bs-dismiss="modal":disabled="isSaving || photos.length === 0">Reload Images</button>     
                         <button type="button" class="btn btn-secondary" @click="toggleModal" data-bs-dismiss="modal":disabled="selectedFiles.length !== 0">Close</button>
                     </div>
 

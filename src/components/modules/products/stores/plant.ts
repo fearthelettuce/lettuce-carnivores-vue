@@ -142,7 +142,6 @@ export const usePlantStore = defineStore('plant', () => {
         if(plantCategory.plants.length === 0) {
             const defaultPlant = {...newPlant}
             defaultPlant.plantCategoryId = plantCategory.id
-            defaultPlant.status = 'Coming Soon'
             plantCategory?.plants.push({...defaultPlant})
         } else {
             const lastPlant = plantCategory.plants[plantCategory.plants.length - 1]

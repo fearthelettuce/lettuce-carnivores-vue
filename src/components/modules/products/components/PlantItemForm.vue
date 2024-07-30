@@ -11,8 +11,7 @@
         <FormKit 
             type="text"
             label="SKU"
-            validation="required"
-            validation-visibility="blur"
+
             class="flex-1"
             v-model="plant.sku"
         />
@@ -50,7 +49,6 @@
         <FormKit 
             type="select"
             label="Status"
-            validation="not:'Coming Soon'"
             validation-visibility="live"
             class="flex-2"
             :options="statusListArr"

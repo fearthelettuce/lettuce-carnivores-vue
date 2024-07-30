@@ -19,10 +19,10 @@
                 
             </div>
             <div class="plant-list mt-5">
-                <div v-for="(plant, index) in plantCategoryToEdit.plants" :key="plant.sku" >
+                <div v-for="(plant, index) in plantCategoryToEdit.plants" :key="index" >
                     <hr />
                     <div class="d-flex flex-row gap-2">
-                        <div class="grid-col-1 align-content-center text-center">
+                        <div class="up-down-arrows align-content-center text-center">
                             <button 
                                 class="btn px-1 py-0"
                                 v-if="index !== 0"
@@ -151,6 +151,9 @@ provide('managePhotos', managePhotos)
     }
     .product-card {
         max-height: 40rem;
+    }
+    .up-down-arrows {
+        min-width: 2.5rem;
     }
     @media(min-width: 82rem) {
         .product-list {
