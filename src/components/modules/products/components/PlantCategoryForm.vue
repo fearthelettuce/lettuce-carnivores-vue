@@ -143,7 +143,7 @@ function addPhotos() {
     .plant-admin-form {
         margin: 2rem 0;
         display: grid;
-        grid-template-columns: repeat(auto-fit, 10rem);
+        max-width: 95dvw;
         gap: .5rem;
     }
     .form-action {

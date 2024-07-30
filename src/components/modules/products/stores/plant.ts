@@ -30,7 +30,6 @@ export const usePlantStore = defineStore('plant', () => {
     const saveCategory = async (plantCategory: PlantCategory) => {
         if(plantCategoryToEdit === null) { return false}
         isSaving.value = true
-        console.log(isSaving.value)
         try {
             await saveItem(collectionName,plantCategory)
             toast.success('Saved')

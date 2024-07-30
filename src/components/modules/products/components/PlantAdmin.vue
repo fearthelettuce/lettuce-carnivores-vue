@@ -3,9 +3,10 @@
         <div>
             <ItemSelect 
                 :options="plantCategories" 
-                v-model="plantCategoryToEdit" 
+                v-model="plantCategoryToEdit"
+                class="item-select"
                 id="selectProduct" 
-                label="Select a product to edit" 
+                label="Select a product to edit"
                 :includeCreate="true"
             />
             <div class="mt-4">
@@ -145,7 +146,12 @@ provide('managePhotos', managePhotos)
         grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
         margin: 2rem .5rem;
     }
-
+    .item-select {
+        max-width: 95dvw;
+    }
+    .product-card {
+        max-height: 40rem;
+    }
     @media(min-width: 82rem) {
         .product-list {
             grid-template-columns: repeat(auto-fit, minmax(26rem, 1fr));

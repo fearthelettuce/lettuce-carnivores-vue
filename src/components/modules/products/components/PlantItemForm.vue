@@ -1,10 +1,9 @@
 <template>
-    <hr />
     <form class="plant-item-form">
         <FormKit 
             type="text"
             label="ID"
-            class="grid-col-1"
+            class="flex-1"
             validation="required"
             v-model="plant.id"
             @change="setRepresentative"
@@ -14,14 +13,14 @@
             label="SKU"
             validation="required"
             validation-visibility="blur"
-            class="grid-col-1"
+            class="flex-1"
             v-model="plant.sku"
         />
         <FormKit 
             type="select"
             label="Size"
             validation="required"
-            class="grid-col-1"
+            class="flex-1"
             :options="sizeList"
             v-model="plant.size"
         />
@@ -30,14 +29,14 @@
             number
             label="Price"
             validation="required|number|min:0"
-            class="grid-col-1"
+            class="flex-1"
             v-model="plant.price"
         />
         <FormKit 
             type="text"
             number
             label="Discount Price"
-            class="grid-col-1"
+            class="flex-1"
             v-model="plant.discountedPrice"
         />
         <FormKit 
@@ -45,7 +44,7 @@
             number
             label="Quantity"
             validation="required|number|min:0"
-            class="grid-col-1"
+            class="flex-1"
             v-model="plant.quantity"
         />
         <FormKit 
@@ -53,28 +52,28 @@
             label="Status"
             validation="not:'Coming Soon'"
             validation-visibility="live"
-            class="grid-col-1"
+            class="flex-2"
             :options="statusListArr"
             v-model="plant.status"
         />
         <FormKit 
             type="date"
             label="Propagation Date"
-            class="grid-col-1"
+            class="flex-2"
             v-model="plant.propagationDate"
         />
         <div>
             <FormKit
                 type="checkbox"
                 label="Discounted?"
-                class="grid-col-1"
+                class="flex-2"
                 outer-class="align-content-center"
                 v-model="plant.isDiscounted"
             />
             <FormKit
                 type="checkbox"
                 label="Representative?"
-                class="grid-col-1"
+                class="flex-2"
                 outer-class="align-content-center"
                 v-model="plant.isRepresentative"
             />
@@ -90,10 +89,7 @@
 <script setup lang="ts">
 import { inject, watch, type PropType } from 'vue'
 import { type Plant } from '@/types/Plant';
-import { statusList, sizeList, statusListArr} from '@/constants/constants';
-import { newPlant } from '@/constants/constants';
-import { usePlantStore } from '@/components/modules/products/stores/plant'
-import { toast } from 'vue3-toastify'
+import { sizeList, statusListArr} from '@/constants/constants';
 
 defineEmits(['triggerSave', 'deletePlant'])
 
@@ -111,6 +107,7 @@ watch(
     },
     { immediate: true }
 )
+
 const managePhotos = inject<Function>('managePhotos')
 
 function addPhotos() {
@@ -128,33 +125,31 @@ watch(() => plant.value.id, () => {
     }
 })
 
-
-
 </script>
 
 <style scoped>
 
     .plant-item-form {
-        margin: 2rem 0;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        margin: 1rem 0;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        /* display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr)); */
         gap: .5rem;
     }
     .center-content {
         justify-self: center;
         align-content: center;
     }
+    .flex-1 {
+        display: flex;
+        flex: 1;
+    }
+    .flex-2 {
+        display: flex;
+        flex: 2;
+    }
 
-    
-    @media(min-width: 45rem) {
-        .plant-item-form {
-            grid-template-columns: repeat(6, 1fr);
-        }
-    }
-    @media(min-width: 120rem) {
-        .plant-item-form {
-            grid-template-columns: repeat(10, 1fr);
-        }
-    }
 
 </style>
