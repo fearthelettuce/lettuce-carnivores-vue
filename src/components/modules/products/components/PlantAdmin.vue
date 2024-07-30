@@ -153,6 +153,7 @@ provide('managePhotos', managePhotos)
         max-height: 40rem;
     }
     .up-down-arrows {
+        display: grid;
         min-width: 2.5rem;
     }
     @media(min-width: 82rem) {

@@ -20,22 +20,26 @@
                         :key="index"
                     >
                         <div class="grid-col-1 align-content-center text-center">
-                            <button 
-                            class="btn px-1 py-0"
-                            v-if="index !== 0"
-                            @click="arrayMove(photos,index,index-1)">
-                                <FontAwesome 
-                                class="move-arrow" 
-                                icon="caret-up" />
-                            </button>
-                            <button
-                            v-if="index !== photos.length -1"
-                            class="btn px-1 py-0"
-                            @click="arrayMove(photos,index,index+1)" >
-                                <FontAwesome  
-                                class="move-arrow" 
-                                icon="caret-down" />
-                            </button>
+                            <div class="arrow-button">
+                                <button
+                                class="btn px-1 py-0"
+                                v-if="index !== 0"
+                                @click="arrayMove(photos,index,index-1)">
+                                    <FontAwesome
+                                    class="move-arrow"
+                                    icon="caret-up" />
+                                </button>
+                            </div>
+                            <div class="arrow-button">
+                                <button
+                                v-if="index !== photos.length -1"
+                                class="btn px-1 py-0"
+                                @click="arrayMove(photos,index,index+1)" >
+                                    <FontAwesome
+                                    class="move-arrow"
+                                    icon="caret-down" />
+                                </button>
+                            </div>
 
                         </div>
                         <div class="grid-col-1 align-content-center text-light">
@@ -263,6 +267,9 @@ footer {
 }
 .move-arrow {
     --fa-li-margin: 0
+}
+.arrow-button {
+    min-width: 1rem;
 }
 
 .list-move {

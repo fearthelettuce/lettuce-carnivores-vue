@@ -23,7 +23,7 @@
                         @click="setSelectedPlant(plant)"
                     >{{plant.size}}</button>
                 </div>
-                <div class="d-flex justify-content-evenly mt-3 flex-wrap">
+                <div class="specimen-button-container">
                     <button 
                         v-for="plant in specimenPlants" 
                         :key="plant.id"
@@ -218,7 +218,11 @@ async function addToCart() {
     .product-information {
         margin: 0 1rem;
     }
-
+    .specimen-button-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+        gap: .5rem;
+    }
     .specimen-button {
         flex-basis: 100%;
     }

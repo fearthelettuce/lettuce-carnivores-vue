@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, query, where, deleteDoc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, where, deleteDoc, setDoc, type WhereFilterOp } from 'firebase/firestore';
 import { db } from '@/apis/firebase'
 
 export function parseJSON(jsonData: JSON) {
@@ -69,12 +69,12 @@ export async function findDocById(collectionName: string, id: number | string) {
     }
 }
 
-export async function findByProperty(collectionName: string, property: string, value: any) {
+export async function findByProperty(collectionName: string, property: string, comparison: WhereFilterOp = "==", value: any) {
     const returnArr: Array<any> = []
-    const q = query(collection(db, collectionName), where(property, "==", value))
+    const q = query(collection(db, collectionName), where(property, comparison, value))
     const querySnapshot = await getDocs(q)
     querySnapshot.forEach((doc) => {
-        returnArr.push(doc.data())
+        returnArr.push({...doc.data()})
     })
     return returnArr
 }

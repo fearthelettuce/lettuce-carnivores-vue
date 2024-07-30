@@ -4,18 +4,37 @@
             <p v-if="profile">{{ profile?.name.firstName + ' ' + profile?.name.lastName }}</p>
             <p v-if="profile">{{ profile?.contactInformation.email }}</p>
         </main>
-        <OrdersList />
+        <OrdersList v-if="orders.length > 0" :orders :isAdmin="false"/>
+        <div v-else>No orders to display</div>
     </section>
 </template>
 
 <script setup lang="ts">
+import { onMounted, type Ref, ref} from 'vue';
 import { useUserStore } from '@/components/modules/auth/stores/users'
 import { storeToRefs } from 'pinia';
-import OrdersList from './OrdersList.vue'
+import OrdersList from '@/components/modules/account/OrdersList.vue'
+import { toast } from 'vue3-toastify'
+import { findAll } from '@/apis/dataServices';
+import type { Order } from '@/types/Orders';
 
-const userStore = useUserStore()
-const {profile} = storeToRefs(userStore)
+    const {profile} = storeToRefs(useUserStore())
+    const { user } = useUserStore()
 
+    const orders: Ref<Order[]> = ref([])
+
+    async function findOrders () {
+        if(!user || !user.uid) {
+            toast.error('Unable to get orders')
+            return
+        }
+        const res = await findAll(`customers/${user.uid}/orders`)
+        orders.value = res as Order[]
+    }
+
+    onMounted(() => {
+        findOrders()
+    })
 </script>
 
 <style scoped>

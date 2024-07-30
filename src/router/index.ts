@@ -1,11 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '@/components/modules/auth/stores/users'
-import HomeView from '@/views/HomeView.vue'
 import ProductsView from '@/views/ProductsView.vue'
 import ShoppingCart from '@/components/modules/orders/ShoppingCart.vue'
 import CheckoutComplete from '@/views/CheckoutComplete.vue'
 const ProductDetailView = () => import( '@/views/ProductDetailView.vue')
-
 const AboutView = () => import('@/views/AboutView.vue')
 const CareGuideView = () => import('@/views/CareGuideView.vue')
 const RecommendationView = () => import( '@/views/RecommendationView.vue')
@@ -14,6 +12,7 @@ const ResetPasswordView  = () => import('@/views/ResetPasswordView.vue')
 const EasterEggView  = () => import('@/views/EasterEggView.vue')
 const AccountView = () => import('@/views/AccountView.vue')
 const PlantAdminView = () => import('@/views/PlantAdmin.vue')
+const AdminView = () => import('@/views/AdminView.vue')
 
 const routeData = [
     {
@@ -133,6 +132,17 @@ const routeData = [
       path: "/admin",
       name: 'Admin',
       label: 'Admin',
+      component: AdminView,
+      meta: {
+        showInNav: true,
+        requiresLogin: true,
+        requiresAdmin: true,
+      }
+    },
+    {
+      path: "/plantAdmin",
+      name: 'Plant Admin',
+      label: 'Plant Admin',
       component: PlantAdminView,
       meta: {
         showInNav: true,

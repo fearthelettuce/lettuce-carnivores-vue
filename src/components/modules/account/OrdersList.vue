@@ -1,7 +1,7 @@
 <template>
     <div class="">
         <Accordion value="0">
-            <AccordionPanel v-for="order of orders" :key="order.id" :value="order.id">
+            <AccordionPanel v-for="order of props.orders" :key="order.id" :value="order.id.toString()">
                 <AccordionHeader class="accordion-header" :pt="{toggleicon: {style:{ 'margin-left': 'auto', 'margin-right':'.6rem'}}}">
                     <div class="order-number">Order {{ order.id }}</div>
                     <div class="">{{ formatDate(order.orderDate) }}</div>
@@ -11,7 +11,7 @@
                         <div class="shipping-info my-3">
                             <h5>Shipping</h5>
                             
-                            <div class="d-flex flex-row justify-content-around">
+                            <div class="d-flex flex-row flex-wrap justify-content-around gap-2">
 
                                 <div class="ms-3">
                                     <div>{{ order.shippingInfo.name }}</div>
@@ -23,6 +23,9 @@
                                     <div>{{order.shippingInfo.shippingType}} Shipping</div>
                                     <div>{{  order.orderStatus.trackingNumber !== '' ? order.orderStatus.trackingNumber : 'Tracking number not yet assigned' }}</div>
                                 </div>
+                                <div>
+                                    <button v-if="isAdmin" @click="updateOrderStatus(order.id)" class="btn btn-info">Update Status</button>
+                                </div>
                             </div>
                         </div>
                         <hr />
@@ -33,7 +36,7 @@
                                 <div>Size</div>
                                 <div>Quantity</div>
                                 <div>Price</div>
-                                <template v-for="item of order.lineItems" :key="item.sku" class="grid-item">
+                                <template v-for="item of order.lineItems" :key="item.price_data.product_data.metadata.sku" class="grid-item">
                                     <div class="item-name">{{` ${item.price_data.product_data.name} ${item.price_data.product_data.metadata.sku} `}}</div>
                                     <div>{{ item.price_data.product_data.description }}</div>
                                     <div>{{ item.quantity }}</div>
@@ -57,58 +60,17 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, type Ref, ref} from 'vue';
-import { findAll } from '@/apis/dataServices';
-import { useUserStore } from '../auth/stores/users';
-import { toast } from 'vue3-toastify'
 import Accordion from 'primevue/accordion';
 import AccordionHeader from 'primevue/accordionheader';
 import AccordionPanel from 'primevue/accordionpanel';
 import AccordionContent from 'primevue/accordioncontent';
+import type { Order } from '@/types/Orders';
 
+const props = defineProps<{orders: Order[], isAdmin: boolean}>();
 
-const { user } = useUserStore()
-type Order = {
-    id: string, 
-    amountTotal: number,
-    shippingInfo: {
-        address: {
-            line1: string,
-            line2: string | null,
-            city: string,
-            state: string,
-            postal_code: string,
-
-        },
-        name: string,
-        shippingType: string,
-    },
-    lineItems: any[],
-    cartTotal: any,
-    orderDate: Date,
-    orderStatus: {
-        trackingNumber: string,
-        carrier: string,
-        status: string,
-    }
+function updateOrderStatus(orderId: number) {
+    console.log(orderId)
 }
-let orders: Ref<Order[]> = ref([])
-onMounted(() => {
-    findOrders()
-})
-
-
-async function findOrders () {
-    if(!user || !user.uid) {
-        toast.error('Unable to get orders')
-        return
-    }
-    const res = await findAll(`customers/${user.uid}/orders`)
-    console.log(res)
-    orders.value = res as Order[]
-
-}
-
 const USDollar = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',

@@ -59,3 +59,51 @@ export type StripeCartItem = {
     priceId: string,
     quantity: number
 }
+
+export type Order = {
+    id: number,
+    cartTotal: {
+        amountTotal: number,
+        amount_shipping: number,
+        amount_discount: number,
+        amount_tax: number,
+    },
+    checkoutSessionId: string,
+    customer: string,
+    lineItems: {
+        quantity: number,
+        price_data: {
+            unit_amount: number,
+            product_data: {
+                description: string,
+                name: string,
+                metadata: {
+                    categoryId: number,
+                    sku: string,
+                    clone: string,
+                    size: string,
+                    isRepresentative: boolean,
+                },
+            },
+        },
+    }[],
+    orderDate: string,
+    orderStatus: {
+        carrier: 'UPS' | 'USPS' | 'FedEx' | 'LocalPickup',
+        status: 'Pending' | 'Shipped' | 'Shipping Scheduled' | 'Complete',
+        trackingNumber: string
+    },
+    shippingInfo: {
+        address: {
+            line1: string,
+            line2: string | null, 
+            city: string,
+            state: string,
+            postal_code: string
+        },
+        name: string,
+        email: string,
+        shippingType: 'Standard' | 'Expedited'
+    },
+    fullResponse: any,
+}

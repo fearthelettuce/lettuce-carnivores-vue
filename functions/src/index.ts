@@ -78,6 +78,9 @@ async function buildCheckoutSession (cartItems: CartItem[], uid: string, returnU
                     metadata: {
                         sku: item.sku,
                         categoryId: item.categoryId,
+                        clone: item.clone,
+                        size: item.size,
+                        isRepresentative: item.isRepresentative,
                     },
                     tax_code: 'txcd_99999999',
                 }
@@ -205,7 +208,13 @@ async function fulfillCheckout (checkoutWebhookData: any) {
         orderDate: new Date(),
         checkoutSessionId: checkoutWebhookData.id,
         paymentStatus: checkoutWebhookData.payment_status,
-        shippingInfo: {address: checkoutWebhookData.shipping_details.address, name: checkoutWebhookData.shipping_details.name, shippingType: shippingType},
+        shippingInfo: {
+            address: checkoutWebhookData.shipping_details.address, 
+            name: checkoutWebhookData.shipping_details.name,
+            email: checkoutWebhookData.shipping_details.email,
+            phone: checkoutWebhookData.shipping_details.phone,
+            shippingType: shippingType
+        },
         orderStatus: {
             status: 'Processing',
             trackingNumber: '',

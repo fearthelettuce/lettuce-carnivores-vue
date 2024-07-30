@@ -1,7 +1,7 @@
 import type { Plant } from "@/types/Plant"
 import type { Product } from "@/types/Product"
 import { deleteAllPhotosUtil } from '@/composables/usePhotoUtils'
-import { saveItem, findAll, findByProperty, deleteItem, findDocById } from '@/apis/dataServices'
+import { saveItem, findAll, deleteItem, findDocById } from '@/apis/dataServices'
 
 export async function findProductById(id: number | string, collectionName: string) {
     const res = await findDocById(collectionName, id).catch(err => console.log(err))

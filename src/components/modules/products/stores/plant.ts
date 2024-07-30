@@ -7,6 +7,7 @@ import {deleteById} from '@/composables/useProductUtils'
 import {appendPhotoDataUtil, removePhotoUtil} from '@/composables/usePhotoUtils'
 import { newPlantCategory, newPlant, defaultFilters } from "@/constants/constants"
 import { toast } from 'vue3-toastify'
+import { sortAlphabetically } from '@/utils/utils'
 export const usePlantStore = defineStore('plant', () => {
 
     const isLoading = ref(false)
@@ -71,21 +72,12 @@ export const usePlantStore = defineStore('plant', () => {
             if(categories !== undefined && categories.length !== 0) {
                 plantCategories.value = categories as PlantCategory[]
             }
-            //@ts-ignore
-            sortAlphabetically(plantCategories.value, 'name')
+            sortAlphabetically(plantCategories.value, 'name' as keyof any[])
         } catch (e: any) {
             throw new Error(e.toString())
         } finally {
             isLoading.value = false
         }
-    }
-
-    function sortNumerically(arr: {id: string}[], prop = 'id') {
-        //@ts-ignore
-        arr.sort((a, b) => { return parseInt(a[prop]) - parseInt(b[prop]) })
-    }
-    function sortAlphabetically(arr: {(key: string): string}[], prop: keyof typeof arr) {
-       arr.sort((a: any, b: any) => a[prop].localeCompare(b[prop]))
     }
 
     const filteredCategories: Ref<PlantCategory[]> = ref([])
