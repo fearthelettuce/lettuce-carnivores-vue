@@ -32,7 +32,7 @@
                         @click="setSelectedPlant(plant)"
                     >{{`Specimen ${plant.id} - ${plant.size}`}}</button>
                 </div>
-                <div v-if="freshDivision?.isFreshDivision" class="mt-4">
+                <div v-if="daysSinceDivision && freshDivision?.isFreshDivision" class="mt-4">
                     <p class="text-warning text-center">{{ freshDivision.message }}</p>
                 </div>
                 <div v-if="selectedPlant !== undefined" class="mt-4">
@@ -74,7 +74,7 @@ import { useOrderStore } from '@/store/order'
 import ProductDetailsPhotoList from './ProductDetailsPhotoList.vue'
 import { toast } from 'vue3-toastify'
 import type { PlantCategory, Plant} from '@/types/Plant'
-import type { PhotoItem } from '@/types/Product'
+import { formattedDate } from '@/utils/utils'
 
 const route = useRoute()
 const plantCategory: Ref<PlantCategory | undefined> = ref()
@@ -216,17 +216,11 @@ const daysSinceDivision = computed(() => {
 })
 const freshDivision = computed (() => {
     if(daysSinceDivision.value === undefined || !plantCategory.value || !selectedPlant.value?.propagationDate) {return {isFreshDivision: false, message: ''}}
-    // const daysSinceDivision = Math.floor((Date.parse(new Date().toDateString()) - Date.parse(selectedPlant.value.propagationDate)) / 86400000);
-    // console.log(daysSinceDivision)
-    // console.log(daysSinceDivision < 45)
-    const formattedPropagationDate =  new Intl.DateTimeFormat("en-US", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit"
-        }).format(new Date(selectedPlant.value.propagationDate));
+    const formattedPropagationDate = formattedDate(selectedPlant.value.propagationDate)
+    console.log(formattedPropagationDate)
     if(plantCategory.value.genus === 'Heliamphora') {
         return {
-            isFreshDivision: daysSinceDivision.value < 45, 
+            isFreshDivision: daysSinceDivision.value < 35, 
             message: `This is division was taken on ${formattedPropagationDate} and may not yet be rooted or established. 
         We've had good success in shipping fresh divisions and our live arrival guarantee does apply. However, un-rooted divisions need extra attention 
         and therefore are not recommended for beginners. \nFresh divisions may be shipped bare-root, depending on the plant, to ensure the plant arrives safely.`
