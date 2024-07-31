@@ -1,5 +1,7 @@
 <template>
+    <div class="my-2">Current Inventory: {{ currentAvailablePlants }}</div>
     <div class="container-fluid layout"> 
+        
         <div>
             <ItemSelect 
                 :options="plantCategories" 
@@ -85,6 +87,7 @@ import { useRoute } from 'vue-router'
 import PhotoUploadModal from './photos/PhotoUploadModal.vue';
 import { type PhotoItem } from '../../../../types/Product';
 import { getCardName, getDisplayPrice, getCardPhoto } from '@/composables/useCardUtils';
+import { getAllPlants } from '@/apis/dataServices'
 
 const {fetchAllCategories, findPlantCategoryById, setCategoryToEdit, saveCategory, addPlant, getAvailablePlants, removePlant} = usePlantStore()
 const {plantCategories, plantCategoryToEdit, isSaving} = storeToRefs(usePlantStore())
@@ -92,7 +95,7 @@ const route = useRoute()
 
 onMounted(async () => {
     await fetchAllCategories()
-
+    currentAvailablePlants.value = await fetchCurrentAvailablePlants()
     //TODO: find a way to change nav to exclude :id without messy custom lgoic, and then change this to === undefined or null
     if(route.params.id !== ":id" && route.params.id !== undefined) {
         const plantCategory = await findPlantCategoryById(route.params.id as string)
@@ -122,6 +125,19 @@ function arrayMove(arr: Array<any>, fromIndex: number, toIndex: number) {
     save()
 }
 
+const currentAvailablePlants = ref(0)
+async function fetchCurrentAvailablePlants() {
+    const allPlants = await getAllPlants()
+    console.log(allPlants)
+    const availablePlants = allPlants.filter((plant) => !['Hidden', 'Archived', 'Sold'].includes(plant.status) && plant.quantity !== 0)
+    const heliCount = availablePlants.filter((plant) => plant.genus === 'Heliamphora').reduce((acc, obj) => {return acc + obj.quantity}, 0)
+    const nepCount = availablePlants.filter((plant) => plant.genus === 'Nepenthes').reduce((acc, obj) => {return acc + obj.quantity}, 0)
+    const cephCount = availablePlants.filter((plant) => plant.genus === 'Cephalotus').reduce((acc, obj) => {return acc + obj.quantity}, 0)
+    console.log('Heli: ' + heliCount)
+    console.log('Nep: ' + nepCount)
+    console.log('Ceph: ' + cephCount)
+    return availablePlants.length
+}
 
 const photoModal = ref()
 const photoModalFolder = ref('')

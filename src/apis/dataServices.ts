@@ -1,4 +1,5 @@
 import { collection, doc, getDoc, getDocs, query, where, deleteDoc, setDoc, type WhereFilterOp } from 'firebase/firestore';
+import { type PlantWithCategoryDetails } from '@/types/Plant';
 import { db } from '@/apis/firebase'
 
 export function parseJSON(jsonData: JSON) {
@@ -112,3 +113,16 @@ export async function getPlantsFromFirestore (cartItems: CartItem[]): Promise<Pl
     return plants
 }
 
+
+export async function getAllPlants() {
+    const plants: PlantWithCategoryDetails[] = []
+    const res = await findAll('plantCategories')
+    if(res) {
+        for (const category of res as PlantCategory[]) {
+            for(const plant of category.plants) {
+                plants.push({...plant, name: category.name, genus: category.genus, clone: category.clone})
+            }
+        }
+    }
+    return plants
+}

@@ -25,7 +25,11 @@ export type Plant = {
     photos: PhotoItem[],
     plantCategoryId: string,
 }
-
+export interface PlantWithCategoryDetails extends Plant {
+    name: string, 
+    genus: string, 
+    clone: string,
+}
 export type Sizes = 
     '' |
     '2.5"' | 

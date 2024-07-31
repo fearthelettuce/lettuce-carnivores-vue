@@ -7,13 +7,10 @@ import { type PlantCategory } from '@/types/Plant'
 import { useLocalStorage } from '@vueuse/core'
 import {createStripeCheckoutSession} from '@/apis/stripe'
 import { getPlantsFromFirestore } from '@/apis/dataServices'
-import type { StripeCartItem } from '@/types/Orders';
-
 
 export const useOrderStore = defineStore('order', () => {
     const isLoading = ref(false)
     const cart: Ref<ShoppingCart> = ref(useLocalStorage('cart',{...newShoppingCart}))
-    const stripeCart: Ref<StripeCartItem[]> = ref([])
     const cartItemCount = computed(() => {
         const cartCount = cart.value.cartItems.reduce(
             (accumulator, cartItem) => accumulator + cartItem.quantity,
