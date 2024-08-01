@@ -27,3 +27,19 @@ export function formattedDate (someDate: string | Date, format: 'mm/dd/yy' | 'yy
     }
     return new Intl.DateTimeFormat("en-US", formatOptions).format(date);
 }
+
+export function formatFirebaseDate(firebaseDate: any) {
+    const date =  new Date(firebaseDate.seconds * 1000)
+    return new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+        }).format(date);
+}
+
+
+export const USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2, 
+});

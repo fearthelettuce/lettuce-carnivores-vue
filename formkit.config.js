@@ -13,9 +13,7 @@ const config = {
         label: 'form-label',
         help: 'form-text'
       },
-      form: {
-        form: "col-md-4 col-lg-3 mt-5 mx-auto p-5 border rounded"
-      },
+
       checkbox: {
         outer: 'form-check',
         label: 'form-check-label',

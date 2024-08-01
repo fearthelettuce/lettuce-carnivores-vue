@@ -4,7 +4,7 @@
             <AccordionPanel v-for="order of props.orders" :key="order.id" :value="order.id.toString()">
                 <AccordionHeader class="accordion-header" :pt="{toggleicon: {style:{ 'margin-left': 'auto', 'margin-right':'.6rem'}}}">
                     <div class="order-number">Order {{ order.id }}</div>
-                    <div class="">{{ formatDate(order.orderDate) }}</div>
+                    <div class="">{{ formatFirebaseDate(order.orderDate) }}</div>
                     <div>{{ order.orderStatus.status }}</div>
                 </AccordionHeader>
                 <AccordionContent class="my-1">
@@ -21,10 +21,14 @@
                                 </div>
                                 <div>
                                     <div>{{order.shippingInfo.shippingType}} Shipping</div>
-                                    <div>{{  order.orderStatus.trackingNumber !== '' ? order.orderStatus.trackingNumber : 'Tracking number not yet assigned' }}</div>
+                                    <div>{{  order.orderStatus.trackingNumber !== '' ? 
+                                        order.orderStatus.trackingNumber : 
+                                        'Tracking number not yet assigned' }}
+                                    </div>
                                 </div>
                                 <div>
-                                    <button v-if="isAdmin" @click="updateOrderStatus(order.id)" class="btn btn-info">Update Status</button>
+                                    <button v-if="isAdmin" @click="openOrderStatusModal(order)" :key="order.id" class="btn btn-info">Update Status</button>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -57,33 +61,29 @@
             </AccordionPanel>
         </Accordion>
     </div>
+    <OrderStatusModal v-if="selectedOrder !== undefined" :order="selectedOrder" ref="orderStatusModal" />
 </template>
 
 <script setup lang="ts">
+import { nextTick, onMounted, type Ref, ref } from 'vue';
 import Accordion from 'primevue/accordion';
 import AccordionHeader from 'primevue/accordionheader';
 import AccordionPanel from 'primevue/accordionpanel';
 import AccordionContent from 'primevue/accordioncontent';
+import OrderStatusModal from '../products/components/OrderStatusModal.vue';
 import type { Order } from '@/types/Orders';
-
+import { USDollar, formatFirebaseDate } from '@/utils/utils';
 const props = defineProps<{orders: Order[], isAdmin: boolean}>();
 
+const orderStatusModal = ref()
+const selectedOrder: Ref<Order | undefined> = ref(undefined)
+async function openOrderStatusModal(order: Order) {
+    selectedOrder.value = order
+    await nextTick()
+    orderStatusModal.value.toggleModal()
+}
 function updateOrderStatus(orderId: number) {
     console.log(orderId)
-}
-const USDollar = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2, 
-});
-
-function formatDate(firebaseDate: any) {
-    const date =  new Date(firebaseDate.seconds * 1000)
-    return new Intl.DateTimeFormat("en-US", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit"
-        }).format(date);
 }
 
 </script>

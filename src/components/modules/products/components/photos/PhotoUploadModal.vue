@@ -4,7 +4,7 @@
         <div class="photo-modal p-3">
             <header class="mb-2 border-0">
                 <h5 class="modal-title text-light">Manage Photos</h5>
-                <p>Photos will take ~30s to load after uploading</p>
+                <div class="text-info align-content-center">Photos will take ~30s to load after uploading</div>
                 <button 
                     type="button" 
                     class="btn-close btn-close-white" 

@@ -96,7 +96,7 @@ const route = useRoute()
 onMounted(async () => {
     await fetchAllCategories()
     currentAvailablePlants.value = await fetchCurrentAvailablePlants()
-    //TODO: find a way to change nav to exclude :id without messy custom lgoic, and then change this to === undefined or null
+    //TODO: find a way to change nav to exclude :id without messy custom logic, and then change this to === undefined or null
     if(route.params.id !== ":id" && route.params.id !== undefined) {
         const plantCategory = await findPlantCategoryById(route.params.id as string)
         console.log(plantCategory)

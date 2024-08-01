@@ -129,9 +129,9 @@ const routeData = [
       }
     },
     {
-      path: "/admin",
-      name: 'Admin',
-      label: 'Admin',
+      path: "/orderAdmin",
+      name: 'Order Admin',
+      label: 'Order Admin',
       component: AdminView,
       meta: {
         showInNav: true,

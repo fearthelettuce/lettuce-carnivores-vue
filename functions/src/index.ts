@@ -211,8 +211,8 @@ async function fulfillCheckout (checkoutWebhookData: any) {
         shippingInfo: {
             address: checkoutWebhookData.shipping_details.address, 
             name: checkoutWebhookData.shipping_details.name,
-            email: checkoutWebhookData.shipping_details.email,
-            phone: checkoutWebhookData.shipping_details.phone,
+            email: checkoutWebhookData.customer_details.email,
+            phone: checkoutWebhookData.customer_details.phone,
             shippingType: shippingType
         },
         orderStatus: {

@@ -42,6 +42,9 @@ onMounted(() => {
 
 <style scoped>
 
+dialog {
+  color: inherit;
+}
 dialog::backdrop {
   background-color: rgba(0,0,0,.5);
 }

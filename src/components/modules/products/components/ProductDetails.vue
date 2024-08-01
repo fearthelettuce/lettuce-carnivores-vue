@@ -44,20 +44,25 @@
                     <div class="align-content-center">
                         <h5 class="m-0">{{ formattedPrice }}</h5>
                     </div>
-                    <button 
-                        v-if="availableForSale" 
-                        class="btn btn-primary"
-                        @click="addToCart"
-                        :disabled="selectedPlant === undefined">
-                        Add to Cart
-                    </button>
+                    <div v-if="availableForSale" class="d-flex flex-column justify-contents-center">
+                        <button 
+                            class="btn btn-primary mx-auto"
+                            @click="addToCart"
+                            
+                            :disabled="selectedPlant === undefined">
+                            Add to Cart
+                        </button>
+                        
+                    </div>
+                    
                     <button 
                         v-else
                         class="btn btn-secondary"
                         disabled>
                         Out of Stock
                     </button>
-                </div>       
+                </div>
+                <div v-show="selectedPlant === undefined" class="text-center text-warning mt-2">Please select a plant to add to cart</div>
             </article>
         </section>
         <section v-else>
