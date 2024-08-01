@@ -31,7 +31,7 @@ export function formattedDate (someDate: string | Date, format: 'mm/dd/yy' | 'yy
 export function formatFirebaseDate(firebaseDate: any) {
     const date =  new Date(firebaseDate.seconds * 1000)
     return new Intl.DateTimeFormat("en-US", {
-        year: "numeric",
+        year: "2-digit",
         month: "2-digit",
         day: "2-digit"
         }).format(date);

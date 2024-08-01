@@ -3,9 +3,9 @@
         <Accordion value="0">
             <AccordionPanel v-for="order of props.orders" :key="order.id" :value="order.id.toString()">
                 <AccordionHeader class="accordion-header" :pt="{toggleicon: {style:{ 'margin-left': 'auto', 'margin-right':'.6rem'}}}">
-                    <div class="order-number">Order {{ order.id }}</div>
-                    <div class="">{{ formatFirebaseDate(order.orderDate) }}</div>
-                    <div>{{ order.orderStatus.status }}</div>
+                    <div class="grid-span-2 order-number">Order {{ order.id }}</div>
+                    <div class="grid-span-2">{{ formatFirebaseDate(order.orderDate) }}</div>
+                    <div class="grid-span-3 text-center">{{ order.orderStatus.status }}</div>
                 </AccordionHeader>
                 <AccordionContent class="my-1">
                         <div class="shipping-info my-3">
@@ -94,6 +94,15 @@ function updateOrderStatus(orderId: number) {
     grid-template-columns: repeat(5, minmax(2.8rem, 1fr));
     gap: 0.5rem 1rem;
 }
+.grid-span-1 { 
+    grid-column: span 1
+}
+.grid-span-2 {
+    grid-column: span 2;
+}
+.grid-span-3 { 
+    grid-column: span 3
+}
 .item-name {
     text-wrap: balance;
     word-wrap:break-word;
@@ -102,13 +111,10 @@ function updateOrderStatus(orderId: number) {
 }
 .order-number {
     text-wrap: balance;
-    word-wrap:break-word;
-    word-break: break-all;
 }
 .accordion-header {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-
+    grid-template-columns: repeat(auto-fit, minmax(2rem, 1fr));
 }
 p-accordionheader-toggle-icon {
         margin-left: auto;
