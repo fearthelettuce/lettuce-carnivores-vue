@@ -4,7 +4,7 @@ import { connectFunctionsEmulator, getFunctions, httpsCallable } from 'firebase/
 
 import { type CartItem } from '@/types/Orders';
 import { findDocById } from './dataServices'
-import { useUserStore } from '@/components/modules/auth/stores/users'
+import { useUserStore } from '@/store/users'
 
 export async function getActiveProducts() {
     const q = query(collection(db, 'products'),
@@ -43,6 +43,5 @@ export async function createStripeCheckoutSession(cart: CartItem[]){
         cancelUrl:`${window.location.origin}/cart`,
         stripeCustomer: stripeCustomer,
     }).catch((e: any) => {console.error(e); return {success: false, error: true, errorDetails: e, message: 'Error when trying to create Strip checkout session'}})
-    console.log(res)
     return res
 }

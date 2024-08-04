@@ -56,3 +56,17 @@ export type StripeCartItem = {
     priceId: string,
     quantity: number
 }
+
+export type Discount = {
+    id: string,
+    amount_off: number,
+    percent_off: number,
+    valid: boolean,
+    parameters: {
+        minimumQuantity: number,
+    },
+    validThrough: Date,
+    type: string,
+    duration: string,
+    message: string,
+}

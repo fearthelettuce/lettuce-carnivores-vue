@@ -1,12 +1,13 @@
 import { defineStore } from 'pinia'
 import { computed, type Ref, ref } from 'vue'
-import type{ CartItem, ShoppingCart } from '@/types/Orders'
+import type{ CartItem, Discount, ShoppingCart } from '@/types/Orders'
 import { newShoppingCart } from '@/constants/OrderConstants'
 import { usePlantStore } from '../components/modules/products/stores/plant'
 import { type PlantCategory } from '@/types/Plant'
 import { useLocalStorage } from '@vueuse/core'
 import {createStripeCheckoutSession} from '@/apis/stripe'
-import { getPlantsFromFirestore } from '@/apis/dataServices'
+import { findAll, getPlantsFromFirestore } from '@/apis/dataServices'
+import { Timestamp } from 'firebase/firestore'
 
 export const useOrderStore = defineStore('order', () => {
     const isLoading = ref(false)
@@ -22,6 +23,7 @@ export const useOrderStore = defineStore('order', () => {
         return cart.value.cartItems.reduce(
             (accumulator, cartItem) => accumulator + (cartItem.price * cartItem.quantity), 0)
     })
+
     const addItemToCart = async (item: CartItem) => {
         const cartIndex = cart?.value.cartItems.findIndex(cartItem => cartItem.sku === item.sku)
         if(cart && cartIndex !== undefined) {
@@ -113,6 +115,50 @@ export const useOrderStore = defineStore('order', () => {
         return errors
     }
 
+    async function getCartDiscounts () {
+        const discounts = await getDiscounts(cart.value)
+        if(!discounts || !discounts.discountValues) {
+            return 0
+        }
+        const totalPercentageOff = discounts.discountValues.reduce(function (acc, obj) { return acc + obj.percent_off; }, 0);
+        const percentageOffAmount = Math.round((cartTotal.value * totalPercentageOff / 100) *100)/100
+        const totalAmountOff = discounts.discountValues.reduce(function (acc, obj) { return acc + obj.amount_off; }, 0);
+        return percentageOffAmount + totalAmountOff
+    }
+
+    const discountDocs: Ref<Discount[] | undefined> = ref()
+    async function getActiveDiscounts() {
+        if(discountDocs.value === undefined ) {
+            discountDocs.value = await findAll('discounts') as Discount[]
+        }
+        if(!discountDocs.value || discountDocs.value.length === 0) { return undefined}
+        return discountDocs.value.filter(item => item.valid && item.validThrough.toMillis() >= Timestamp.now().toMillis())
+    }
+    async function getDiscounts(cart: ShoppingCart){
+        const activeDiscounts = await getActiveDiscounts()
+        if(!activeDiscounts || !cart.cartItems || cart.cartItems.length === 0) {
+            return null
+        }
+        
+        const stripeDiscounts: {coupon: string}[] = []
+        const discountValues: Discount[] = []
+    
+        const multiPlantDiscount = activeDiscounts.find(item => item.type === 'multiplePlants')
+        if(multiPlantDiscount && cartItemCount.value >= multiPlantDiscount.parameters.minimumQuantity) {
+            stripeDiscounts.push({coupon: multiPlantDiscount.id})
+            discountValues.push(multiPlantDiscount)
+        }
+    
+        const siteWideDiscount = activeDiscounts.find(item => item.type === 'siteWide')
+        if(siteWideDiscount && siteWideDiscount.id !== null) {
+            stripeDiscounts.push({coupon: siteWideDiscount.id})
+            discountValues.push(siteWideDiscount)
+        }
+        return {
+            stripeDiscounts: stripeDiscounts,
+            discountValues: discountValues
+        }
+    }
     return { 
         cart, 
         cartItemCount, 
@@ -123,6 +169,8 @@ export const useOrderStore = defineStore('order', () => {
         resetCart,
         startCheckoutSession, 
         cartTotal, 
-        isLoading
+        isLoading, 
+        getCartDiscounts,
+        getActiveDiscounts
     }
 })

@@ -44,14 +44,28 @@
             </div>
             <div class="subtotal-container">
                 <div class="subtotal">
-                    
+                    <div v-if="discounts > 0" class="subtotal-line">
+                        <h3 class="m-0">Discount</h3>
+                        <h3 class="m-0">
+                            {{ USDollar.format(-discounts)}}
+                        </h3>
+                    </div>
                     <div class="subtotal-line">
                         <h3 class="m-0">Subtotal</h3>
                         <h3 class="m-0">
-                            {{ USDollar.format(cartTotal)}}
+                            {{ USDollar.format(cartSubtotal)}}
                         </h3>
                     </div>
-                    <div class="d-flex flex-row justify-content-center gap-2 mx-4 mb-4">
+
+
+                    <div v-if="discounts === 0 && multiPlantDiscount !== undefined" class="d-flex flex-row justify-content-center gap-2 mx-4 my-2">
+                        <h5 class="shipping-message">
+                            {{ multiPlantDiscount.message }}
+                        </h5>
+                        
+                    </div>
+
+                    <div class="d-flex flex-row justify-content-center gap-2 mx-4 mb-2">
                         <h5 class="shipping-message">
                             {{ cartTotal >= discountedShippingThreshold ?
                              `Free standard shipping on orders over $75!` :
@@ -88,15 +102,15 @@
 import { storeToRefs } from 'pinia';
 import { useOrderStore } from '@/store/order';
 import { ref, type Ref, computed, onMounted } from 'vue'
-import type { CartItem } from '@/types/Orders'
+import type { CartItem, Discount } from '@/types/Orders'
 import {getPhotoUrl, placeholderUrl} from '@/composables/usePhotoUtils'
 import { toast } from 'vue3-toastify';
 import { discountedShippingThreshold } from '@/constants/OrderConstants'
-import { useUserStore } from '../auth/stores/users'
+import { useUserStore } from '../../../store/users'
 import { router } from '@/router'
 
 const { cart } = storeToRefs(useOrderStore())
-const { getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession, validateCart} = useOrderStore()
+const { getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession, validateCart, getCartDiscounts, getActiveDiscounts} = useOrderStore()
 const { cartTotal, isLoading } = storeToRefs(useOrderStore())
 const { loginAnonymously, isLoggedIn, isUserLoading, user } = useUserStore()
 
@@ -106,8 +120,19 @@ const amountToQualifyForDiscountedShipping = computed(() => {
         return USDollar.format(discountedShippingThreshold - cartTotal.value)
     }
 })
-onMounted(() => {
+const cartSubtotal = computed(() => {
+    return cartTotal.value - discounts.value
+})
+const discounts = ref(0)
+const availableDiscounts: Ref<Discount[] | undefined> = ref(undefined)
+const multiPlantDiscount = computed(() => {
+    return availableDiscounts.value?.find(item => item.type === 'multiplePlants')
+})
+
+onMounted(async() => {
     getCartErrors()
+    discounts.value = await getCartDiscounts()
+    availableDiscounts.value = await getActiveDiscounts()
     cart.value.cartItems.forEach(item => getCategoryBySku(item))
 })
 
@@ -121,22 +146,23 @@ const USDollar = new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 2, 
 });
 
-function increaseQuantity(item: CartItem) {
-    addItemToCart(item)
+async function increaseQuantity(item: CartItem) {
+    await addItemToCart(item)
+    discounts.value = await getCartDiscounts()
 }
 
-function decreaseQuantity(item: CartItem) {
+async function decreaseQuantity(item: CartItem) {
     if(item.quantity <= 1) {
-        deleteItem(item)
-        return
+        await deleteItem(item)
     } else {
         removeItemFromCart(item, false)
-        return
     }
+    discounts.value = await getCartDiscounts()
 }
 
-function deleteItem(item: CartItem) {
+async function deleteItem(item: CartItem) {
     removeItemFromCart(item, true)
+    discounts.value = await getCartDiscounts()
 }
 
 function getImageUrl(cartItem: CartItem) {

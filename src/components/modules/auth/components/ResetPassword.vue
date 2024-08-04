@@ -12,8 +12,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-// import { useUserStore } from '@/components/modules/auth/stores/users'
-// const userStore = useUserStore()
 
 const loginPassword = ref("")
 

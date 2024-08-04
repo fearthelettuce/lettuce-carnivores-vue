@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useUserStore } from '@/components/modules/auth/stores/users'
+import { useUserStore } from '@/store/users'
 import { toast } from 'vue3-toastify';
 
 const userStore = useUserStore()

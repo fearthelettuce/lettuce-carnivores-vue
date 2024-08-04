@@ -25,7 +25,6 @@ const fetchOpenOrders = async () => {
     try{
         const res = await findByProperty('orders', 'orderStatus.status', '!=', 'Complete')
         if(res !== undefined && res.length !== 0) {
-            console.log(res)
             sortNumerically(res)
             orders.value = res as Order[]
         } 
@@ -41,7 +40,6 @@ async function findAllOrders() {
     const res = await findAll(`orders`)
     if(res) {
         sortNumerically(res)
-        console.log(res)
         orders.value = res as Order[]
     }
 }

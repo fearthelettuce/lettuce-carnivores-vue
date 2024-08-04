@@ -116,7 +116,7 @@ app.use(PrimeVue, {
 //   ],
 // })
 
-import { useUserStore } from './components/modules/auth/stores/users';
+import { useUserStore } from './store/users.js';
 const userStore = useUserStore()
 
 import { router } from './router'

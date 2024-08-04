@@ -43,7 +43,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { navData } from '@/router/index'
-import { useUserStore } from '@/components/modules/auth/stores/users';
+import { useUserStore } from '@/store/users';
 import { useOrderStore } from '@/store/order';
 import { storeToRefs } from 'pinia'
 

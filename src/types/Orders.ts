@@ -1,3 +1,4 @@
+import type { Timestamp } from 'firebase/firestore'
 import type { Sizes } from './Plant'
 import type { PhotoItem } from './Product'
 
@@ -87,7 +88,7 @@ export type Order = {
             },
         },
     }[],
-    orderDate: string,
+    orderDate: Timestamp,
     orderStatus: {
         carrier: 'UPS' | 'USPS' | 'FedEx' | 'LocalPickup',
         status: 'Pending' | 'Shipped' | 'Shipping Scheduled' | 'Complete',
@@ -106,4 +107,18 @@ export type Order = {
         shippingType: 'Standard' | 'Expedited'
     },
     fullResponse: any,
+}
+
+export type Discount = {
+    id: string,
+    amount_off: number,
+    percent_off: number,
+    valid: boolean,
+    parameters: {
+        minimumQuantity: number,
+    },
+    validThrough: Timestamp,
+    type: string,
+    duration: string,
+    message: string,
 }

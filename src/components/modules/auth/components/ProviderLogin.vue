@@ -29,7 +29,7 @@ export const phoneAuthProvider = new PhoneAuthProvider(auth)
 
 <script setup lang="ts">
 import { auth } from '@/apis/firebase';
-import { useUserStore} from '@/components/modules/auth/stores/users'
+import { useUserStore} from '@/store/users'
 import { router } from '@/router/index'
 import {
   signInWithPopup,

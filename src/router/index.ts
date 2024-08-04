@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useUserStore } from '@/components/modules/auth/stores/users'
+import { useUserStore } from '@/store/users'
 import ProductsView from '@/views/ProductsView.vue'
 import ShoppingCart from '@/components/modules/orders/ShoppingCart.vue'
 import CheckoutComplete from '@/views/CheckoutComplete.vue'

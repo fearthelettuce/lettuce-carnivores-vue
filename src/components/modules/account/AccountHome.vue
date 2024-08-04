@@ -1,17 +1,17 @@
 <template>
-    <section class="container-fluid d-grid">
-        <main class="d-flex flex-row justify-content-around">
-            <p v-if="profile">{{ profile?.name.firstName + ' ' + profile?.name.lastName }}</p>
-            <p v-if="profile">{{ profile?.contactInformation.email }}</p>
-        </main>
-        <OrdersList v-if="orders.length > 0" :orders :isAdmin="false"/>
-        <div v-else>No orders to display</div>
+
+    <section class="d-flex flex-row justify-content-around">
+        <p v-if="profile">{{ profile?.name.firstName + ' ' + profile?.name.lastName }}</p>
+        <p v-if="profile">{{ profile?.contactInformation.email }}</p>
     </section>
+    <OrdersList v-if="orders.length > 0" :orders :isAdmin="false"/>
+    <div v-else>No orders to display</div>
+
 </template>
 
 <script setup lang="ts">
 import { onMounted, type Ref, ref} from 'vue';
-import { useUserStore } from '@/components/modules/auth/stores/users'
+import { useUserStore } from '@/store/users'
 import { storeToRefs } from 'pinia';
 import OrdersList from '@/components/modules/account/OrdersList.vue'
 import { toast } from 'vue3-toastify'

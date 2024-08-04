@@ -20,7 +20,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useOrderStore } from '@/store/order';
-import { useUserStore } from '../auth/stores/users';
+import { useUserStore } from '../../../store/users';
 import { storeToRefs } from 'pinia'
 
 const {user} = storeToRefs(useUserStore())

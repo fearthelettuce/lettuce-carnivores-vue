@@ -4,7 +4,6 @@ import {
   fbAuthStateListener,
   fbCreateAccount,
   fbSetUserProfile,
-//   fbGetUserProfile,
   fbSignIn,
   fbSignOut,
   requestPasswordResetEmail,
@@ -12,11 +11,7 @@ import {
   fbSignInWithGoogle,
 } from "@/apis/firebaseAuth";
 import {findDocById} from '@/apis/dataServices'
-export interface User {
-  user: any;
-  profile: any;
-  userError: any;
-}
+import type { Profile } from '@/types/Users';
 
 interface State {
   user: fbUser | null;
@@ -24,25 +19,6 @@ interface State {
   profile: Profile | null;
   error: null;
   isUserLoading: boolean;
-}
-
-type Profile = {
-  name: {
-    firstName: string,
-    lastName: string,
-  },
-  contactInformation: {
-    email: string,
-  }
-  shippingAddress?: {
-    firstName: string,
-    lastName: string,
-    address1: string,
-    address2: string,
-    city: string,
-    state: string,
-    postal: string,
-  }
 }
 
 export const useUserStore = defineStore('user', {

@@ -1,4 +1,4 @@
-import {onCall, onRequest} from 'firebase-functions/v2/https'
+import {onCall, onRequest } from 'firebase-functions/v2/https'
 import { log } from 'firebase-functions/logger'
 import type { CallableRequest } from 'firebase-functions/v2/https'
 import { defineSecret } from 'firebase-functions/params'
@@ -8,7 +8,7 @@ const stripeWebhookSecretKey = defineSecret("STRIPE_WEBHOOK_SECRET_KEY")
 import admin from 'firebase-admin'
 import { Plant, PlantCategory } from './types/Plants'
 import { FunctionResponse } from './types/Functions'
-import { CartItem } from './types/Orders'
+import { CartItem, Discount } from './types/Orders'
 import { type CustomerRecord } from './types/Users'
 import { discountedShippingThreshold, discountedStandardShippingId, discountedExpeditedShippingId, standardShippingId, expeditedShippingId} from './constants/stripeConstants'
 import { StripeLineItem } from './types/Stripe'
@@ -42,8 +42,7 @@ export const createCheckoutSession = onCall({secrets: [stripeSecretKey]},async(r
     if(checkoutSession === null) {
        return {success: false, error: true, message: 'Error creating checkout session', errorDetails: null, data: null}
     }
-    //create checkout_session doc in customers
-    //@ts-ignore
+
     const stripeCheckoutSession = await stripe.checkout.sessions.create(checkoutSession)
     await admin.firestore().collection(`customers/${uid}/checkout_sessions`).doc().set(stripeCheckoutSession)
 
@@ -114,8 +113,11 @@ async function buildCheckoutSession (cartItems: CartItem[], uid: string, returnU
             name: 'auto',
         }
     }
+    const discounts = await getDiscounts(session)
+    if(discounts !== null && discounts && discounts.stripeDiscounts.length !== 0){
+        session.discounts = discounts.stripeDiscounts
+    }
     return session
-
 }
 
 async function buildStripeCart (cartItems: CartItem[]): Promise<FunctionResponse> {
@@ -139,6 +141,37 @@ async function buildStripeCart (cartItems: CartItem[]): Promise<FunctionResponse
     }
     return {success: true, error: false, message: 'Success', errorDetails: null, data: stripeCart}
 }
+
+async function getDiscounts(cartSession: Stripe.Checkout.SessionCreateParams){
+    const discountDocs = await getAllDocs('discounts')
+    if(!discountDocs || discountDocs.length === 0 || !cartSession.line_items || cartSession.line_items.length === 0) {
+        return null
+    }
+    const activeDiscounts: Discount[] = discountDocs.filter(item => item.valid && item.validThrough.toMillis() >= admin.firestore.Timestamp.now().toMillis()) as Discount[]
+    const stripeDiscounts: {coupon: string}[] = []
+    const discountValues: Discount[] = []
+
+    const multiPlantDiscount = activeDiscounts.find(item => item.type === 'multiplePlants')
+    const cartQuantity = cartSession.line_items.reduce(
+        (accumulator, item) => accumulator + item.quantity!,
+        0
+      );
+    if(multiPlantDiscount && cartQuantity >= multiPlantDiscount.parameters.minimumQuantity) {
+        stripeDiscounts.push({coupon: multiPlantDiscount.id})
+        discountValues.push(multiPlantDiscount)
+    }
+
+    const siteWideDiscount = activeDiscounts.find(item => item.type === 'siteWide')
+    if(siteWideDiscount && siteWideDiscount.id !== null) {
+        stripeDiscounts.push({coupon: siteWideDiscount.id})
+        discountValues.push(siteWideDiscount)
+    }
+    return {
+        stripeDiscounts: stripeDiscounts,
+        discountValues: discountValues
+    }
+}
+
 
 type PlantDetailsFromFirestoreRequest = {
     collection: string,

@@ -1,5 +1,5 @@
 <template>
-    <div class="">
+    <div class="order-container">
         <Accordion value="0">
             <AccordionPanel v-for="order of props.orders" :key="order.id" :value="order.id.toString()">
                 <AccordionHeader class="accordion-header" :pt="{toggleicon: {style:{ 'margin-left': 'auto', 'margin-right':'.6rem'}}}">
@@ -18,6 +18,7 @@
                                     <div>{{ order.shippingInfo.address.line1 }}</div>
                                     <div v-if="order.shippingInfo.address.line2">{{ order.shippingInfo.address.line2 }}</div>
                                     <div>{{`${order.shippingInfo.address.city} ${order.shippingInfo.address.state} ${order.shippingInfo.address.postal_code}` }}</div>
+                                    <div>{{ order.shippingInfo.email }}</div>
                                 </div>
                                 <div>
                                     <div>{{order.shippingInfo.shippingType}} Shipping</div>
@@ -37,11 +38,13 @@
                             <h5>Products</h5>
                             <div class="item-grid">
                                 <div class="item-name">Item</div>
+                                <div>Item #</div>
                                 <div>Size</div>
                                 <div>Quantity</div>
                                 <div>Price</div>
                                 <template v-for="item of order.lineItems" :key="item.price_data.product_data.metadata.sku" class="grid-item">
-                                    <div class="item-name">{{` ${item.price_data.product_data.name} ${item.price_data.product_data.metadata.sku} `}}</div>
+                                    <div class="item-name">{{` ${item.price_data.product_data.name} ${item.price_data.product_data.metadata.clone || ''} `}}</div>
+                                    <div>{{ item.price_data.product_data.metadata.sku }}</div>
                                     <div>{{ item.price_data.product_data.description }}</div>
                                     <div>{{ item.quantity }}</div>
                                     <div>{{ USDollar.format(item.price_data.unit_amount / 100) }}</div>
@@ -51,10 +54,17 @@
                         </div>
                         <div class="my-5 ">
                             <h5>Total</h5>
-                            <div class="d-flex flex-row gap-5">
-                                <div class="">Shipping {{  USDollar.format(order.cartTotal.amount_shipping / 100) }}</div>
-                                <div class="">Tax {{  USDollar.format(order.cartTotal.amount_tax / 100) }}</div>
-                                <div class="">Order Total {{  USDollar.format(order.cartTotal.amountTotal / 100) }}</div>
+                            <div class="total">
+                                <template v-if="order.cartTotal.amount_discount && order.cartTotal.amount_discount !== 0">
+                                    <div>Discount</div>
+                                    <div class="justify-right">-{{ USDollar.format(order.cartTotal.amount_discount / 100) }}</div>
+                                </template>
+                                <div>Shipping</div>
+                                <div class="justify-right">{{ USDollar.format(order.cartTotal.amount_shipping / 100) }}</div>
+                                <div>Tax</div>
+                                <div class="justify-right">{{ USDollar.format(order.cartTotal.amount_tax / 100) }}</div>
+                                <div>Order Total</div>
+                                <div class="justify-right">{{ USDollar.format(order.cartTotal.amountTotal / 100) }}</div>
                             </div>
                         </div>
                 </AccordionContent>
@@ -65,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, type Ref, ref } from 'vue';
+import { nextTick, type Ref, ref } from 'vue';
 import Accordion from 'primevue/accordion';
 import AccordionHeader from 'primevue/accordionheader';
 import AccordionPanel from 'primevue/accordionpanel';
@@ -82,16 +92,17 @@ async function openOrderStatusModal(order: Order) {
     await nextTick()
     orderStatusModal.value.toggleModal()
 }
-function updateOrderStatus(orderId: number) {
-    console.log(orderId)
-}
 
 </script>
 
 <style scoped>
+.order-container {
+    max-width: 100rem;
+    margin: auto;
+}
 .item-grid {
     display: grid;
-    grid-template-columns: repeat(5, minmax(2.8rem, 1fr));
+    grid-template-columns: repeat(6, minmax(2.8rem, 1fr));
     gap: 0.5rem 1rem;
 }
 .grid-span-1 { 
@@ -115,6 +126,14 @@ function updateOrderStatus(orderId: number) {
 .accordion-header {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(2rem, 1fr));
+}
+.total {
+    display: grid;
+    grid-template-columns: 12ch 12ch;
+    max-width: 16rem;
+}
+.justify-right{
+    text-align: end;    
 }
 p-accordionheader-toggle-icon {
         margin-left: auto;

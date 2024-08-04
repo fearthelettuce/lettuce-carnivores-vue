@@ -1,5 +1,7 @@
 <template>
-    <AccountHome />
+    <div class="container-fluid mt-4">
+        <AccountHome />
+    </div>
     
 </template>
 
