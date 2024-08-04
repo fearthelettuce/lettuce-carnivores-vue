@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import PlantAdmin from '@/components/modules/products/components/PlantAdmin.vue';
+import PlantAdmin from '@/components/products/PlantAdmin.vue';
 </script>
 
 <style>

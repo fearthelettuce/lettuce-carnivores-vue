@@ -8,6 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import SignIn from '@/components/modules/auth/components/SignIn.vue'
-import TheRegistration from '@/components/modules/auth/components/TheRegistration.vue';
+import SignIn from '@/components/auth/SignIn.vue'
+import TheRegistration from '@/components/auth/TheRegistration.vue';
 </script>

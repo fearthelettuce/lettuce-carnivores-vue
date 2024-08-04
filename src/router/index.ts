@@ -1,12 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useUserStore } from '@/store/users'
+import { useUserStore } from '@/stores/users'
 import ProductsView from '@/views/ProductsView.vue'
-import ShoppingCart from '@/components/modules/orders/ShoppingCart.vue'
+import ShoppingCart from '@/components/ShoppingCart.vue'
 import CheckoutComplete from '@/views/CheckoutComplete.vue'
 const ProductDetailView = () => import( '@/views/ProductDetailView.vue')
 const AboutView = () => import('@/views/AboutView.vue')
 const CareGuideView = () => import('@/views/CareGuideView.vue')
-const RecommendationView = () => import( '@/views/RecommendationView.vue')
 const LoginView  = () => import('@/views/LoginView.vue')
 const ResetPasswordView  = () => import('@/views/ResetPasswordView.vue')
 const EasterEggView  = () => import('@/views/EasterEggView.vue')
@@ -79,17 +78,6 @@ const routeData = [
       component: CareGuideView,
       meta: {
         showInNav: true,
-        requiresLogin: false,
-        requiresAdmin: false,
-      }
-    },
-    {
-      path: "/recommendations",
-      name: 'recommendations',
-      label: 'Recommendations',
-      component: RecommendationView,
-      meta: {
-        showInNav: false,
         requiresLogin: false,
         requiresAdmin: false,
       }

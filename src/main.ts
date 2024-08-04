@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import App from './App.vue'
+import App from '@/App.vue'
 const app = createApp(App)
 
 import { createPinia } from 'pinia'
@@ -23,9 +23,9 @@ app.use(Vue3Toastify, {
     theme: 'colored',
   } as ToastContainerOptions)
 
-import BaseModal from '@/components/app/UI/BaseModal.vue'
-import BaseSpinner from '@/components/app/UI/BaseSpinner.vue'
-import BaseContainer from './components/app/UI/BaseContainer.vue'
+import BaseModal from '@/components/UI/BaseModal.vue'
+import BaseSpinner from '@/components/UI/BaseSpinner.vue'
+import BaseContainer from '@/components/UI/BaseContainer.vue'
 app.component('BaseModal', BaseModal)
 app.component('BaseSpinner',BaseSpinner)
 app.component('BaseContainer', BaseContainer)
@@ -116,10 +116,10 @@ app.use(PrimeVue, {
 //   ],
 // })
 
-import { useUserStore } from './store/users.js';
+import { useUserStore } from '@/stores/users.js'
 const userStore = useUserStore()
 
-import { router } from './router'
+import { router } from '@/router'
 userStore.initializeAuthListener().then(() => {
     app.use(router).mount('#app')
 })

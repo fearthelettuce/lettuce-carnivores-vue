@@ -5,5 +5,5 @@
 </template>
 
 <script setup lang="ts">
-import CheckoutSuccess from '@/components/modules/checkout/CheckoutSuccess.vue';
+import CheckoutSuccess from '@/components/CheckoutSuccess.vue';
 </script>

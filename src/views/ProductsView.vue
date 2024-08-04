@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 
-import PlantList from '@/components/modules/products/components/PlantList.vue';
-import ProductFilters from '@/components/modules/products/components/ProductFilters.vue';
+import PlantList from '@/components/products//PlantList.vue';
+import ProductFilters from '@/components/products/ProductFilters.vue';
 
 </script>

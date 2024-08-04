@@ -4,7 +4,7 @@ import { connectFunctionsEmulator, getFunctions, httpsCallable } from 'firebase/
 
 import { type CartItem } from '@/types/Orders';
 import { findDocById } from './dataServices'
-import { useUserStore } from '@/store/users'
+import { useUserStore } from '@/stores/users'
 
 export async function getActiveProducts() {
     const q = query(collection(db, 'products'),

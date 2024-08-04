@@ -3,5 +3,5 @@
 </template>
 
 <script setup lang="ts">
-import GuideList from '@/components/modules/careGuide/GuideList.vue';
+import GuideList from '@/components/GuideList.vue';
 </script>

@@ -6,7 +6,7 @@ import Stripe from 'stripe'
 const stripeSecretKey = defineSecret("STRIPE_RESTRICTED_KEY")
 const stripeWebhookSecretKey = defineSecret("STRIPE_WEBHOOK_SECRET_KEY")
 import admin from 'firebase-admin'
-import { Plant, PlantCategory } from './types/Plants'
+import type { Plant, PlantCategory } from './types/Plants'
 import { FunctionResponse } from './types/Functions'
 import { CartItem, Discount } from './types/Orders'
 import { type CustomerRecord } from './types/Users'

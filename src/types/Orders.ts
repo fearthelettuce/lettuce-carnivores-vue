@@ -1,6 +1,6 @@
 import type { Timestamp } from 'firebase/firestore'
-import type { Sizes } from './Plant'
-import type { PhotoItem } from './Product'
+import type { Sizes } from '@/types/Plant'
+import type { PhotoItem } from '@/types/Product'
 
 export type ShoppingCart = {
     cartItems: CartItem[],
