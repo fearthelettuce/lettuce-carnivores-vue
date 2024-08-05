@@ -90,9 +90,7 @@ const { findPlantCategoryById, getAvailablePlants} = usePlantStore()
 onMounted(async () => {
     await fetchData()
     const availablePlants = getAvailablePlants(plantCategory.value)
-    if(availablePlants.length === 1) {
-        setSelectedPlant(availablePlants[0])
-    }
+    setSelectedPlant(availablePlants[0])
     if(route.params.sku !== undefined) {
         const skuArr = plantCategory.value?.plants.map(plant => plant.sku)
         if(skuArr && skuArr.includes(route.params.sku as string)) {
@@ -100,8 +98,6 @@ onMounted(async () => {
         }
     }
 })
-
-
 
 const hideDescription = ref(true)
 
@@ -222,7 +218,6 @@ const daysSinceDivision = computed(() => {
 const freshDivision = computed (() => {
     if(daysSinceDivision.value === undefined || !plantCategory.value || !selectedPlant.value?.propagationDate) {return {isFreshDivision: false, message: ''}}
     const formattedPropagationDate = formattedDate(selectedPlant.value.propagationDate)
-    console.log(formattedPropagationDate)
     if(plantCategory.value.genus === 'Heliamphora') {
         return {
             isFreshDivision: daysSinceDivision.value < 35, 

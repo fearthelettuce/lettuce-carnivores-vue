@@ -58,16 +58,16 @@
                     </div>
 
 
-                    <div v-if="discounts === 0 && multiPlantDiscount !== undefined" class="d-flex flex-row justify-content-center gap-2 mx-4 my-2">
+                    <div v-if="discounts === 0 && multiPlantDiscount !== undefined" class="d-flex flex-row justify-content-center gap-2 mx-4">
                         <h5 class="shipping-message">
                             {{ multiPlantDiscount.message }}
                         </h5>
                         
                     </div>
 
-                    <div class="d-flex flex-row justify-content-center gap-2 mx-4 mb-2">
+                    <div class="d-flex flex-row justify-content-center gap-2 mx-4">
                         <h5 class="shipping-message">
-                            {{ cartTotal >= discountedShippingThreshold ?
+                            {{ cartTotal - discounts >= discountedShippingThreshold ?
                              `Free standard shipping on orders over $75!` :
                               `Add ${amountToQualifyForDiscountedShipping} to quality for free standard shipping.` 
                               }}
@@ -91,11 +91,6 @@
 
         </div>
     </div>
-
-
-
-
-
 </template>
 
 <script setup lang="ts">
@@ -115,9 +110,9 @@ const { cartTotal, isLoading } = storeToRefs(useOrderStore())
 const { loginAnonymously, isLoggedIn, isUserLoading, user } = useUserStore()
 
 const amountToQualifyForDiscountedShipping = computed(() => {
-    if(cartTotal.value >= discountedShippingThreshold) { return USDollar.format(0)}
+    if(cartTotal.value - discounts.value >= discountedShippingThreshold) { return USDollar.format(0)}
     else {
-        return USDollar.format(discountedShippingThreshold - cartTotal.value)
+        return USDollar.format(discountedShippingThreshold - cartTotal.value + discounts.value)
     }
 })
 const cartSubtotal = computed(() => {
@@ -268,7 +263,7 @@ async function getCartErrors() {
 .subtotal-container {
     display: flex;
     flex-direction: column;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
 }
 .checkout-button {
     border-radius: .5rem;

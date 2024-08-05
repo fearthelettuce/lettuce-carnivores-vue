@@ -35,12 +35,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {getPhotoUrl} from '@/composables/usePhotoUtils'
-
+//@ts-ignore
 import SvgIcon from '@/components/UI/SvgIcon.vue';
 const props = defineProps(['careData', 'altStyle'])
-function getIconUrl(iconFileName : string) {
-    return new URL(`./assets/icons/${iconFileName}`, import.meta.url).toString()
-}
+
 const sectionImageUrl = computed(() => {
     return getPhotoUrl(props.careData.referencePhotoPath, null)
 })

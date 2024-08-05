@@ -13,6 +13,6 @@
   });
 
   const icon = defineAsyncComponent(() =>
-    import(`/src/assets/icons/${props.name}.svg`)
+    import(`./src/assets/icons/${props.name}.svg`)
   );
 </script>

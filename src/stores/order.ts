@@ -28,7 +28,6 @@ export const useOrderStore = defineStore('order', () => {
         const cartIndex = cart?.value.cartItems.findIndex(cartItem => cartItem.sku === item.sku)
         if(cart && cartIndex !== undefined) {
             const {plant} = await getCategoryBySku(item)
-            console.log(plant)
             if(!plant|| plant.quantity === 0) {
                 return {success: false, error: true, errorMessage: 'Unable to add to cart, quantity not available'}
             }
@@ -127,6 +126,7 @@ export const useOrderStore = defineStore('order', () => {
     }
 
     const discountDocs: Ref<Discount[] | undefined> = ref()
+
     async function getActiveDiscounts() {
         if(discountDocs.value === undefined ) {
             discountDocs.value = await findAll('discounts') as Discount[]
@@ -134,6 +134,7 @@ export const useOrderStore = defineStore('order', () => {
         if(!discountDocs.value || discountDocs.value.length === 0) { return undefined}
         return discountDocs.value.filter(item => item.valid && item.validThrough.toMillis() >= Timestamp.now().toMillis())
     }
+
     async function getDiscounts(cart: ShoppingCart){
         const activeDiscounts = await getActiveDiscounts()
         if(!activeDiscounts || !cart.cartItems || cart.cartItems.length === 0) {

@@ -1,5 +1,6 @@
 import { collection, doc, getDoc, getDocs, query, where, deleteDoc, setDoc, type WhereFilterOp } from 'firebase/firestore';
-import { type PlantWithCategoryDetails } from '@/types/Plant';
+import type { PlantCategory, Plant, PlantWithCategoryDetails } from '@/types/Plant';
+import type { CartItem } from '@/types/Orders';
 import { db } from '@/apis/firebase'
 
 export function parseJSON(jsonData: JSON) {
@@ -62,8 +63,8 @@ export async function deleteItem(collectionName: string, id: number | string) {0
 
 export async function findDocById(collectionName: string, id: number | string) {
     const docRef = doc(db, collectionName, id.toString())
-    const docSnap = await getDoc(docRef)
-    if (docSnap.exists()) {
+    const docSnap = await getDoc(docRef).catch(e => console.error(e))
+    if (docSnap && docSnap.exists()) {
         return docSnap.data()
     } else {
         return null
@@ -95,15 +96,11 @@ export async function findAll(collectionName: string) {
 }
 
 
-import type { CartItem } from '@/types/Orders';
-import type { PlantCategory, Plant } from '@/types/Plant';
 export async function getPlantsFromFirestore (cartItems: CartItem[]): Promise<Plant[]> {
 
     let plants: Plant[] = []
-    // const q = query(collection(db, 'plantCategories'), where(''))
     for (const category of cartItems) {
         const docRef = doc(db, 'plantCategories', category.categoryId.toString())
-        //get(db, `plantCategory/${category.categoryId}`)
         const snap = await getDoc(docRef).catch((e: any) => console.error(e))
         if(snap && snap.data()) {
             const data = snap.data() as PlantCategory
