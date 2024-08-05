@@ -12,8 +12,8 @@
                     :class="altStyle ? 'justify-content-between' : ''"
                 >
                     <div class="icon-with-label" :class="altStyle ? 'alt-style' : ''">
-                        <SvgIcon 
-                            :name="item.iconUrl"
+                        <img 
+                            :src="item.iconUrl"
                             :alt="item.iconAltText"
                             class="icon" 
                             :class="item.class" 
@@ -35,59 +35,64 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {getPhotoUrl} from '@/composables/usePhotoUtils'
-//@ts-ignore
-import SvgIcon from '@/components/UI/SvgIcon.vue';
 const props = defineProps(['careData', 'altStyle'])
 
 const sectionImageUrl = computed(() => {
     return getPhotoUrl(props.careData.referencePhotoPath, null)
 })
+import globeIcon from '@/assets/icons/globe-icon.svg?url'
+import waterIcon from '@/assets/icons/water-icon.svg?url'
+import humidityIcon from '@/assets/icons/humidity-icon.svg?url'
+import lightIcon from '@/assets/icons/sun-icon.svg?url'
+import mediaIcon from '@/assets/icons/media-icon.svg?url'
+import tempIcon from '@/assets/icons/temperature-icon.svg?url'
+import foodIcon from '@/assets/icons/insect-icon.svg?url'
 const careItems = [
     {
         label: 'Locale',
-        iconUrl: 'globe-icon',
+        iconUrl: globeIcon,
         iconAltText: 'globe icon',
         textContent: props.careData.locale,
         class: 'globe-icon',
     },
     {
         label: 'Water',
-        iconUrl: 'water-icon',
+        iconUrl: waterIcon,
         iconAltText: 'water icon',
         textContent: props.careData.water,
         class: 'water-icon',
     },
     {
         label: 'Humidity',
-        iconUrl: 'humidity-icon',
+        iconUrl: humidityIcon,
         iconAltText: 'humidity icon',
         textContent: props.careData.humidity,
         class: 'humidity-icon',
     },
     {
         label: 'Light',
-        iconUrl: 'sun-icon',
+        iconUrl: lightIcon,
         iconAltText: 'light icon',
         textContent: props.careData.light,
         class: 'light-icon',
     },
     {
         label: 'Media',
-        iconUrl: 'media-icon',
+        iconUrl: mediaIcon,
         iconAltText: 'media icon',
         textContent: props.careData. media,
         class: 'media-icon',
     },
     {
         label: 'Temp',
-        iconUrl: 'temperature-icon',
+        iconUrl: tempIcon,
         iconAltText: 'temperature icon',
         textContent: props.careData.temperature,
         class: 'temperature-icon',
     },
     {
         label: 'Food',
-        iconUrl: 'insect-icon',
+        iconUrl: foodIcon,
         iconAltText: 'insect icon',
         textContent: props.careData.fertilization,
         class: 'fertilization-icon',
