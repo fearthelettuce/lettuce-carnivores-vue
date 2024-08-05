@@ -2,23 +2,23 @@
     <BaseContainer>
         <section v-if="plantCategory" class="d-flex product-detail-section" >
         <ProductDetailsPhotoList :photos="photosToDisplay" />
-            <article class="product-information d-flex align-content-center flex-column">
-                <div class="d-flex justify-content-center">
-                    <h1 class="text-center">{{ plantCategory.name }}</h1>   
+            <article class="product-information dflex aligncontentcenter flexcolumn">
+                <div class="dflex justifycontentcenter">
+                    <h1 class="textcenter">{{ plantCategory.name }}</h1>   
                 </div>
                 <div v-if="plantCategory.clone !== ''" class="d-flex flex-row justify-content-around">
                     <h3>Clone {{ plantCategory.clone }}</h3>  
                 </div>
 
                 <div>
-                    <p class="text-center my-4" :class="hideDescription ? '' : 'description-one-line'" @click="toggleHideDescription">{{ plantCategory.description }}</p>   
+                    <p class="textcenter my-4" :class="hideDescription ? '' : 'description-one-line'" @click="toggleHideDescription">{{ plantCategory.description }}</p>   
                 </div>
 
                 <div class="d-flex justify-content-evenly">
                     <BaseButton 
                         v-for="plant in referencePlants"
                         :key="plant.size" 
-                        class="btn px-4"
+                        class="px-4"
                         :theme="selectedPlant?.sku == plant.sku ? 'primary' : 'secondary-outline'"
                         @click="setSelectedPlant(plant)"
                     >{{plant.size}}</BaseButton>
@@ -27,21 +27,21 @@
                     <BaseButton 
                         v-for="plant in specimenPlants" 
                         :key="plant.id"
-                        class="btn px-4 specimen-button"
+                        class="px-4 specimen-button"
                         :theme="selectedPlant?.sku === plant.sku ? 'primary' : 'secondary-outline'"
                         @click="setSelectedPlant(plant)"
                     >{{`Specimen ${plant.id} - ${plant.size}`}}</BaseButton>
                 </div>
                 <div v-if="daysSinceDivision && freshDivision?.isFreshDivision" class="mt-4">
-                    <p class="text-warning text-center">{{ freshDivision.message }}</p>
+                    <p class="textwarning textcenter">{{ freshDivision.message }}</p>
                 </div>
                 <div v-if="selectedPlant !== undefined" class="mt-4">
                     <h5 class="mb-3">{{plantTypeLabel}}</h5>
                     <small>{{ plantTypeDescription }}</small>
                 </div>
                 <hr class="my-4" />
-                <div class="d-flex flex-row justify-content-evenly">
-                    <div class="align-content-center">
+                <div class="dflex flexrow justifycontentevenly">
+                    <div class="aligncontentcenter">
                         <h5 class="m-0">{{ formattedPrice }}</h5>
                     </div>
 
@@ -62,7 +62,7 @@
                     </BaseButton>
                 </div>
 
-                <div v-show="selectedPlant === undefined" class="text-center text-warning mt-2">Please select a plant to add to cart</div>
+                <div v-show="selectedPlant === undefined" class="textcenter textwarning mt-2">Please select a plant to add to cart</div>
             </article>
         </section>
         <section v-else>

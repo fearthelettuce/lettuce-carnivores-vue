@@ -24,7 +24,7 @@
                 <div v-for="(plant, index) in plantCategoryToEdit.plants" :key="index" >
                     <hr />
                     <div class="d-flex flex-row gap-2">
-                        <div class="up-down-arrows align-content-center text-center">
+                        <div class="up-down-arrows aligncontentcenter textcenter">
                             <button 
                                 class="btn px-1 py-0"
                                 v-if="index !== 0"

@@ -1,7 +1,7 @@
 <template>
     <article class="guide-card">
         <section class="text-section" :class="altStyle ? 'alt-style' : ''">
-            <header class="article-header p- d-flex justify-content-center">
+            <header class="article-header dflex justifycontentcenter">
                 <h2 class="m-0">{{ careData.label }} Care</h2>
             </header>
             <ul class="care-guide">

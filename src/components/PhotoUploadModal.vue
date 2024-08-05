@@ -2,9 +2,9 @@
 
     <BaseDialog :open="open" class="bg-dark border-0 rounded p-0">
         <div class="photo-modal p-3">
-            <header class="mb-2 border-0">
-                <h5 class="modal-title text-light">Manage Photos</h5>
-                <div class="text-info align-content-center">Photos will take ~30s to load after uploading</div>
+            <header class="mb-2">
+                <h5 class="modal-title textlight">Manage Photos</h5>
+                <div class="textinfo aligncontentcenter">Photos will take ~30s to load after uploading</div>
                 <CloseButton 
                     data-bs-dismiss="modal"
                     @click="toggleModal"
@@ -16,7 +16,7 @@
                         v-for="(photo, index) of photos"
                         :key="index"
                     >
-                        <div class="grid-col-1 align-content-center text-center">
+                        <div class="grid-col-1 aligncontentcenter textcenter">
                             <div class="arrow-button">
                                 <button
                                 class="btn px-1 py-0"
@@ -39,14 +39,14 @@
                             </div>
 
                         </div>
-                        <div class="grid-col-1 align-content-center text-light">
+                        <div class="grid-col-1 aligncontentcenter">
                             <div>{{ photo.name }}</div>                                
                         </div>
                         
-                        <div class="col-7 d-flex  align-items-center justify-content-center">
+                        <div class="col-7 dflex alignitemscenter justifycontentcenter">
                             <img class="imagePreview" :src="photoSrc(photo, 256)" />
                         </div>
-                        <div class="col-1 d-flex align-items-center justify-content-center">
+                        <div class="col-1 dflex alignitemscenter justifycontentcenter">
                             <div class="btn " @click="removePhoto(index, photo)">
                             <FontAwesome icon="dumpster-fire" size="lg" style="color: #f29c07;" />
                         </div>
@@ -56,23 +56,22 @@
                 </TransitionGroup>
             </div>
             
-                <footer class="bg-dark">
+                <footer class="">
                         <div class="">
                             <BaseButton for="formFile" theme="primary" :disabled="isSaving">
                                 Select Files
                             </BaseButton>
                             <input 
                             ref="fileSelectElement"
-                            class="form-control" 
                             type="file" 
                             id="formFile" 
                             @change="onFileChanged($event)" 
                             accept="capture=camera,image/*" 
                             multiple
                             :disabled="isSaving">
-                            <div v-if="selectedFiles.length !== 0" class="d-inline-block mx-3 text-light">{{ selectedFiles.length }} files selected</div>
+                            <div v-if="selectedFiles.length !== 0" class="dinlineblock mx-3 textlight">{{ selectedFiles.length }} files selected</div>
                         </div>
-                    <div class="d-flex flex-row gap-2">
+                    <div class="dflex flexrow gap-2">
                         <BaseButton theme="primary" @click="uploadFiles" :disabled="selectedFiles.length === 0 || isSaving">Upload <span v-if="isSaving" class="spinner-border"></span></BaseButton>
                         <BaseButton theme="info" @click="reloadImages" data-bs-dismiss="modal":disabled="isSaving || photos.length === 0">Reload Images</BaseButton>     
                         <BaseButton theme="secondary" @click="toggleModal" data-bs-dismiss="modal":disabled="selectedFiles.length !== 0">Close</BaseButton>
@@ -219,6 +218,7 @@ header {
     justify-content: space-between;
     margin: 0 1.5rem 0;
     box-sizing: border-box;
+    border: none;
 }
 footer {
     display: flex;

@@ -5,11 +5,11 @@
             <img :src="cardImageUrl" :class="cardImageUrl == placeholderUrl ? 'placeholderImage': 'cardImage'" :alt="`An image of ${name}`" />
         </router-link>
         </figure>
-        <header class="card-title my-0 justify-content-center align-items-center">
-            <h5 class="text-primary text-center align-content-center card-name m-0">{{ name }}</h5>
+        <header class="card-title ">
+            <h5 class="textprimary aligncontentcenter card-name m-0">{{ name }}</h5>
         </header>
         <footer class="card-footer d-flex flex-row">
-            <div class="d-flex align-items-center text-primary">
+            <div class="dflex alignitemscenter textprimary">
                 {{ formattedPrice }}
             </div>
             <BaseButton theme="primary" @click="$router.push(link)">View Details</BaseButton>
@@ -86,8 +86,8 @@ img {
 .card-title {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    margin: .5rem;
+    justify-content: center;
+    margin: 0 .5rem;
 }
 
 .card-name {

@@ -11,7 +11,7 @@
         <div class="cart-grid" v-else>
             <div class="cart-item-container ">
                 <div v-for="item in cart.cartItems" :key="item.sku" class="cart-item">
-                    <router-link :to="`/plants/${encodeURIComponent(item.categoryId)}/${item.sku}`" class="align-content-center">
+                    <router-link :to="`/plants/${encodeURIComponent(item.categoryId)}/${item.sku}`" class="aligncontentcenter">
                         <div class="cart-item-photo">
                             <img :src="getImageUrl(item)" :class="getImageUrl(item) == placeholderUrl ? 'placeholderImage': 'cardImage'" :alt="`An image of ${item.name}`" />
                         </div>
@@ -24,13 +24,13 @@
                                 <div class="quantity-input mt-2 input-group input-group-sm">
                                     <span class="input-group-prepend">
                                         <button type="button" class="btn btn-outline-light btn-number btn-sm" @click="decreaseQuantity(item)">
-                                            <FontAwesome class="text-light" icon="fa fa-minus"></FontAwesome>
+                                            <FontAwesome class="textlight" icon="fa fa-minus"></FontAwesome>
                                         </button>
                                     </span>
-                                    <input type="text" class="form-control input-number text-center btn-sm" :value="item.quantity">
+                                    <input type="text" class="form-control input-number textcenter btn-sm" :value="item.quantity">
                                     <span class="input-group-append">
                                         <button type="button" class="btn btn-outline-light btn-number btn-sm" :disabled="item.quantity >= item.maxQuantity" @click="increaseQuantity(item)">
-                                            <FontAwesome class="text-light" icon="fa fa-plus"></FontAwesome>
+                                            <FontAwesome class="textlight" icon="fa fa-plus"></FontAwesome>
                                         </button>
                                     </span>
                                 </div>
@@ -38,7 +38,7 @@
                         </div>
 
                     <div class="item-subtotal">
-                        <div class="text-center">{{USDollar.format(item.price * item.quantity) }}</div>
+                        <div class="textcenter">{{USDollar.format(item.price * item.quantity) }}</div>
                     </div>
                 </div>
             </div>
@@ -73,7 +73,7 @@
                               }}
                         </h5>
                         
-                    </div>
+              </div>
                 </div>
             </div>
             <footer class="footer sticky-bottom">
@@ -87,7 +87,6 @@
                     >
                         {{isLoggedIn ? `Checkout` : `Checkout as Guest`}} <span class="spinner-border" role="status" v-show="isCheckoutLoading"></span>
                     </BaseButton>
-                    <BaseButton></BaseButton>
                 </div>
             </footer>
 

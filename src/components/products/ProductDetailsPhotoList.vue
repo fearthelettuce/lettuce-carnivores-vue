@@ -1,6 +1,6 @@
 <template>
-    <section class="align-content-center">
-        <div v-if="props.photos.length === 0" class="text-center text-warning"> <h3>No photos to display :(</h3></div>
+    <section class="aligncontentcenter">
+        <div v-if="props.photos.length === 0" class="textcenter textwarning"> <h3>No photos to display :(</h3></div>
         <div v-else class="photo-grid">
             <figure
                 v-for="photo of props.photos"

@@ -1,6 +1,6 @@
 <template>
     <div class="container border rounded p-4">
-        <h2 class="text-center">Login</h2>
+        <h2 class="textcenter">Login</h2>
         <form>
             <div class="form-group">
                 <label for="loginEmail">Email</label>

@@ -65,14 +65,14 @@
                 type="checkbox"
                 label="Discounted?"
                 class="flex-2"
-                outer-class="align-content-center"
+                outer-class="aligncontentcenter"
                 v-model="plant.isDiscounted"
             />
             <FormKit
                 type="checkbox"
                 label="Representative?"
                 class="flex-2"
-                outer-class="align-content-center"
+                outer-class="aligncontentcenter"
                 v-model="plant.isRepresentative"
             />
         </div>

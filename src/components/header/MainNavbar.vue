@@ -3,7 +3,7 @@
         <li class="nav-item" v-for="item of allowedNavLinks" :key="item.name">
             <router-link
                 :to="item.path"
-                class="nav-link text-light"
+                class="nav-link textlight"
                 @click="$emit('collapseNavbar')"
             >{{ item.label }}</router-link>
         </li>
@@ -11,14 +11,14 @@
             <router-link
                 v-if="!userStore.isLoggedIn"
                 to="/login"
-                class="nav-link text-light"
+                class="nav-link textlight"
                 @click="$emit('collapseNavbar')"
             >Login</router-link>
-            <div v-else class="nav-link text-light p-0">
+            <div v-else class="nav-link textlight p-0">
                 <button
                     to="/login"
                     type="button"
-                    class="nav-link text-light"
+                    class="nav-link textlight"
                     @click="handleLogout"
                 >Logout</button>
             </div>

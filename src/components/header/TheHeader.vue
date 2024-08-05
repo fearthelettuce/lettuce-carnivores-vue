@@ -15,7 +15,7 @@
                 aria-expanded="false"
                 aria-label="Toggle navigation"
             >
-                <span class="text-light">
+                <span class="textlight">
                     <FontAwesome icon="fa-bars" />
                 </span>
             </button>

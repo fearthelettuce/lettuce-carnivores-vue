@@ -19,7 +19,7 @@
                     <slot name="close-action"></slot>
                 </div>
                 
-                <div class="modal-body text-center">
+                <div class="modal-body textcenter">
                     <slot name="body"></slot>
                 </div>
                 <div class="modal-footer border-0">

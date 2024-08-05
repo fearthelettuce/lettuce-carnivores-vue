@@ -2,7 +2,7 @@
     <li class="nav-item">
             <router-link
                 :to="props.to"
-                class="nav-link text-light"
+                class="nav-link textlight"
                 @click="$emit('collapseNavbar')"
             >{{ props.label }}</router-link>
         </li>
