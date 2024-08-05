@@ -12,7 +12,7 @@
             <div class="d-flex align-items-center text-primary">
                 {{ formattedPrice }}
             </div>
-            <BaseButton type="primary-outline" size="normal" @click="$router.push(link)">View Details</BaseButton>
+            <BaseButton type="primary" size="normal" @click="$router.push(link)">View Details</BaseButton>
         </footer>
         
     </article>

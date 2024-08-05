@@ -22,7 +22,7 @@ const props = defineProps({
 
 <style scoped>
 .base-button {
-    border-radius: .5rem;
+    
     font-weight: 500;
     cursor: pointer;
     box-shadow: 0 0 2px darkslategray;
@@ -74,13 +74,15 @@ const props = defineProps({
 }
 
 .small {
-    font-size: .75rem;
-    padding: .125rem .5rem;
+    font-size: .875rem;
+    padding: .25rem .5rem;
+    border-radius: .2rem;
 }
 
 .normal {
     font-size: 1rem;
     padding: .25rem .75rem;
+    border-radius: .5rem;
 }
 
 .large {
