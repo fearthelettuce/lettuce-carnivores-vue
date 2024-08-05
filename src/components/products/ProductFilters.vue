@@ -51,7 +51,7 @@
         </div>
 
         <div class="mt-3">
-            <BaseButton type="primary-outline" size="small" @click="isHidden = !isHidden">{{`${isHidden ? 'Show' : 'Hide'} Filters`}}</BaseButton>
+            <BaseButton theme="primary-outline" size="small" @click="isHidden = !isHidden">{{`${isHidden ? 'Show' : 'Hide'} Filters`}}</BaseButton>
 
         </div>
     </div>

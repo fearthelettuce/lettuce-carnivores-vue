@@ -57,18 +57,18 @@
         />
     </form>
     <section class="form-actions">
-        <button class="btn btn-danger form-action" @click.prevent="confirmDelete" :disabled="!plantCategoryToEdit.id">
-            Delete Plant<span class="spinner-border" role="status" v-if="isSaving"></span>
-        </button>
-        <button class="btn btn-secondary form-action" @click.prevent="setCategoryToEdit(null)">
+        <BaseButton theme="danger" class="form-action" :isLoading="isSaving" @click.prevent="confirmDelete" :disabled="!plantCategoryToEdit.id">
+            Delete Plant
+        </BaseButton>
+        <BaseButton theme="secondary" class="form-action" @click.prevent="setCategoryToEdit(null)">
             Reset Form
-        </button>
-        <button class="btn btn-info form-action" @click.prevent="addPhotos">
+        </BaseButton>
+        <BaseButton theme="info" class="form-action" @click.prevent="addPhotos">
             Photos <span>({{ plantCategoryToEdit.photos.length }})</span>
-        </button>
-        <button class="btn btn-primary form-action" @click.prevent="saveCategory(plantCategoryToEdit)" :disabled="isSaving">
-            Save<span class="spinner-border" role="status" v-if="isSaving"></span>
-        </button>
+        </BaseButton>
+        <BaseButton theme="primary" class="form-action" :isLoading="isSaving" @click.prevent="saveCategory(plantCategoryToEdit)" :disabled="isSaving">
+            Save
+        </BaseButton>
     </section>
 
     <BaseModal ref="confirmDeleteModalRef">
@@ -77,13 +77,12 @@
                 <div>Are you sure you want to delete this product?<br><br> {{ plantCategoryToEdit.name }}({{ plantCategoryToEdit.id }})</div>
             </template>
             <template #modalAction>
-                <button 
-                type="button" 
-                class="btn btn-danger"
+                <BaseButton 
+                theme="danger"
                 @click="deleteProduct"
                 >
                 Delete
-                </button>
+                </BaseButton>
             </template>
     </BaseModal>
     

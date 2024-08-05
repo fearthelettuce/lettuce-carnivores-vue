@@ -13,19 +13,17 @@
             <div class="modal-content">
                 <div class="modal-header border-0">
                     <h5 class="modal-title"><slot name="title"></slot></h5>
-                    <button 
-                    type="button" 
-                    class="btn-close" 
-                    aria-label="Close"
-                    @click="hideModal"
-                    ></button>
+                    <CloseButton
+                        @click="hideModal"
+                    />
                     <slot name="close-action"></slot>
                 </div>
+                
                 <div class="modal-body text-center">
                     <slot name="body"></slot>
                 </div>
                 <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-secondary" @click="hideModal">Close</button>
+                    <BaseButton theme="secondary" @click="hideModal">Close</BaseButton>
                     <slot name="modalAction"></slot>
 
                 </div>
@@ -37,6 +35,7 @@
 <script setup lang="ts">
 import { reactive, onMounted } from 'vue';
 import { Modal } from 'bootstrap'
+import CloseButton from './CloseButton.vue'
 
 
 const state = reactive({
@@ -67,17 +66,3 @@ function hideModal() {
     state.modal.hide()
 }
 </script>
-
-<style scoped>
-   
-    .btn-close{
-        position: absolute;
-        top: 0;
-        right: 0;
-        padding: 1em 2em;
-        cursor: pointer;
-    }
-    .btn-close:hover{
-        cursor: pointer;
-    }
-</style>

@@ -7,7 +7,7 @@
                 <input type="email" class="form-control" placeholder="email" id="loginEmail" v-model="loginEmail" />
             </div>
             <div class="my-4">
-                <button class="btn btn-primary" @click.prevent="resetPassword">Reset Password</button>
+                <BaseButton theme="primary" @click.prevent="resetPassword">Reset Password</BaseButton>
             </div>
         </div>
         <div v-else>

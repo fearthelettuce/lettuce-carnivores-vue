@@ -77,8 +77,8 @@
             />
         </div>
         <div class="center-content">
-            <button class="btn btn-info m-1" @click.prevent="addPhotos">Photos <span>({{ plant.photos.length }})</span></button>
-            <button class="btn btn-danger m-1" @click.prevent="$emit('deletePlant')">Delete</button>
+            <BaseButton theme="info" class="m-1" @click.prevent="addPhotos">Photos <span>({{ plant.photos.length }})</span></BaseButton>
+            <BaseButton theme="danger" class="m-1" @click.prevent="$emit('deletePlant')">Delete</BaseButton>
         </div>
         
     </form>

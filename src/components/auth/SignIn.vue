@@ -12,10 +12,10 @@
                 <input type="password" class="form-control" placeholder="password" id="loginPassword" v-model="loginPassword" />             
             </div>
             <div class="d-flex justify-content-around mt-4">
-                <div><button class="btn btn-primary px-4" @click.prevent="login">Login</button></div>
+                <div><BaseButton theme="primary" class="px-4" @click.prevent="login">Login</BaseButton></div>
                 
                 <div>
-                    <button class="btn btn-outline-link" @click.prevent="resetPassword">Trouble signing in?</button>
+                    <BaseButton theme="link-outline" @click.prevent="resetPassword">Trouble signing in?</BaseButton>
                 </div>
             </div>
         </form>

@@ -17,7 +17,7 @@
                         <PlantCategoryForm />
                     </div>
                 </Transition>
-                <button class="btn btn-secondary" @click="toggleExpand"> {{isExpanded ? 'Hide Form' : `Edit ${plantCategoryToEdit.name !== '' ? plantCategoryToEdit.name : 'Category'}`  }}</button>
+                <BaseButton theme="secondary" @click="toggleExpand"> {{isExpanded ? 'Hide Form' : `Edit ${plantCategoryToEdit.name !== '' ? plantCategoryToEdit.name : 'Category'}`  }}</BaseButton>
                 
             </div>
             <div class="plant-list mt-5">
@@ -48,8 +48,8 @@
                     </div>
                 </div>
                 <div class="mt-5">
-                    <button class="btn btn-primary" @click.prevent="addPlant(plantCategoryToEdit)">Add Plant Item</button>
-                    <button class="btn btn-primary ms-4" @click.prevent="save">Save <span class="spinner-border" role="status" v-show="isSaving"></span></button>
+                    <BaseButton theme="primary" @click.prevent="addPlant(plantCategoryToEdit)">Add Plant Item</BaseButton>
+                    <BaseButton theme="primary" class=" ms-4" :isLoading="isSaving" @click.prevent="save">Save</BaseButton>
                 </div>
             </div>
         </div>

@@ -3,13 +3,10 @@
         <div class="order-modal p-3">
             <header class="mb-2 border-0">
                 <h4 class="modal-title">Order {{ order.id }}</h4>
-                <button 
-                    type="button" 
-                    class="btn-close btn-close-white" 
-                    aria-label="Close"
+                <CloseButton
                     data-bs-dismiss="modal"
                     @click="toggleModal"
-                ></button>
+                />
             </header>
             <main class="modal-container">
                 <div class="shipping-address">
@@ -55,6 +52,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import BaseDialog from '@/components/UI/BaseDialog.vue';
+import CloseButton from './UI/CloseButton.vue';
 import type { Order } from '@/types/Orders'
 import { saveItem } from '@/apis/dataServices'
 import { toast } from 'vue3-toastify';

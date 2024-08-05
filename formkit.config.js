@@ -21,7 +21,7 @@ const config = {
       },
       submit: {
         outer: '$reset mt-3',
-        input: '$reset btn btn-primary'
+
       },
     })
   },

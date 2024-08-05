@@ -2,8 +2,8 @@
     <OrdersList v-if="orders.length > 0" :orders :isAdmin="true" />
     <div v-else>No orders to display</div>
     <div class="d-flex flex-row gap-2 mt-4 justify-content-around">
-        <button class="btn btn-primary" @click="fetchOpenOrders">View Open Orders</button>
-        <button class="btn btn-secondary" @click="findAllOrders">View All Orders</button>
+        <BaseButton theme="primary" @click="fetchOpenOrders">View Open Orders</BaseButton>
+        <BaseButton theme="secondary" @click="findAllOrders">View All Orders</BaseButton>
     </div>
 </template>
 

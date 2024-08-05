@@ -28,7 +28,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <button v-if="isAdmin" @click="openOrderStatusModal(order)" :key="order.id" class="btn btn-info">Update Status</button>
+                                    <BaseButton v-if="isAdmin" theme="info" @click="openOrderStatusModal(order)" :key="order.id">Update Status</BaseButton>
                                     
                                 </div>
                             </div>

@@ -5,7 +5,7 @@
             <input type="password" class="form-control" id="loginpassword" v-model="loginPassword" />
         </div>
         <div class="my-4">
-            <button class="btn btn-primary" @click.prevent="changePassword">Change Password</button>
+            <BaseButton theme="primary" @click.prevent="changePassword">Change Password</BaseButton>
         </div>
     </div>
 </template>

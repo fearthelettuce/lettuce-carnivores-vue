@@ -12,12 +12,10 @@
         >
             <div class="image-container">
                 <div class="image-hover-container">
-                    <button 
-                        type="button" 
-                        class="btn-close btn btn-lg" 
-                        aria-label="Close"
+                    <CloseButton 
                         data-bs-dismiss="modal"
-                        @click="$emit('closeModal')" />
+                        @click="$emit('closeModal')"
+                    />
                     <img :src="getPhotoUrl(photo?.path?.toString(), 1600)" :alt="imageAltText">
                 </div>
             </div>
@@ -31,6 +29,7 @@ import type { PropType } from 'vue';
 import { Modal } from 'bootstrap'
 import type { PhotoItem } from '@/types/Product';
 import {getPhotoUrl} from '@/composables/usePhotoUtils'
+import CloseButton from './CloseButton.vue'
 
 const state = reactive({
     expandImage: Modal || null,
@@ -75,16 +74,5 @@ function expandImage() {
         max-height: 100%;
         object-fit: cover;
         width: 100%;
-    }
-    .btn-close{
-        position: absolute;
-        top: 0;
-        right: 0;
-        margin: 0.5em 0.5em;
-        cursor: pointer;
-    }
-    .btn-close:hover{
-        cursor: pointer;
-
     }
 </style>

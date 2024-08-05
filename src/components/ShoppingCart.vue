@@ -78,14 +78,16 @@
             </div>
             <footer class="footer sticky-bottom">
                 <div class="checkout-actions">
-                    <button v-if="!isLoggedIn" class="btn btn-info btn-lg text-white" @click="router.push('/login')">Login</button>
-
-                    <button class="checkout-button" 
+                    <BaseButton v-if="!isLoggedIn" theme="info" size="large" @click="router.push('/login')">Login</BaseButton>
+                    <BaseButton 
+                        theme="checkout" 
+                        size="large"
                         @click.prevent="checkout" 
                         :disabled="cart.cartItems.length === 0 || isCheckoutLoading"
                     >
                         {{isLoggedIn ? `Checkout` : `Checkout as Guest`}} <span class="spinner-border" role="status" v-show="isCheckoutLoading"></span>
-                    </button>
+                    </BaseButton>
+                    <BaseButton></BaseButton>
                 </div>
             </footer>
 

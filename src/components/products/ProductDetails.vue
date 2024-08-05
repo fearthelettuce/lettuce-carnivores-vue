@@ -15,22 +15,22 @@
                 </div>
 
                 <div class="d-flex justify-content-evenly">
-                    <button 
+                    <BaseButton 
                         v-for="plant in referencePlants"
                         :key="plant.size" 
                         class="btn px-4"
-                        :class="selectedPlant?.sku == plant.sku ? 'btn-primary' : 'btn-outline-secondary text-body'"
+                        :theme="selectedPlant?.sku == plant.sku ? 'primary' : 'secondary-outline'"
                         @click="setSelectedPlant(plant)"
-                    >{{plant.size}}</button>
+                    >{{plant.size}}</BaseButton>
                 </div>
                 <div class="specimen-button-container">
-                    <button 
+                    <BaseButton 
                         v-for="plant in specimenPlants" 
                         :key="plant.id"
                         class="btn px-4 specimen-button"
-                        :class="selectedPlant?.sku === plant.sku ? 'btn-primary' : 'btn-outline-secondary text-body'"
+                        :theme="selectedPlant?.sku === plant.sku ? 'primary' : 'secondary-outline'"
                         @click="setSelectedPlant(plant)"
-                    >{{`Specimen ${plant.id} - ${plant.size}`}}</button>
+                    >{{`Specimen ${plant.id} - ${plant.size}`}}</BaseButton>
                 </div>
                 <div v-if="daysSinceDivision && freshDivision?.isFreshDivision" class="mt-4">
                     <p class="text-warning text-center">{{ freshDivision.message }}</p>
@@ -44,24 +44,24 @@
                     <div class="align-content-center">
                         <h5 class="m-0">{{ formattedPrice }}</h5>
                     </div>
-                    <div v-if="availableForSale" class="d-flex flex-column justify-contents-center">
-                        <button 
-                            class="btn btn-primary mx-auto"
-                            @click="addToCart"
-                            
-                            :disabled="selectedPlant === undefined">
-                            Add to Cart
-                        </button>
-                        
-                    </div>
-                    
-                    <button 
+
+                    <BaseButton 
+                        v-if="availableForSale"
+                        theme="primary" 
+                        @click="addToCart"
+                        :disabled="selectedPlant === undefined"
+                    >
+                        Add to Cart
+                    </BaseButton>
+                    <BaseButton 
                         v-else
-                        class="btn btn-secondary"
-                        disabled>
+                        theme="secondary"
+                        disabled
+                    >
                         Out of Stock
-                    </button>
+                    </BaseButton>
                 </div>
+
                 <div v-show="selectedPlant === undefined" class="text-center text-warning mt-2">Please select a plant to add to cart</div>
             </article>
         </section>

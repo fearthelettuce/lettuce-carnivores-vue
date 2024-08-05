@@ -5,13 +5,10 @@
             <header class="mb-2 border-0">
                 <h5 class="modal-title text-light">Manage Photos</h5>
                 <div class="text-info align-content-center">Photos will take ~30s to load after uploading</div>
-                <button 
-                    type="button" 
-                    class="btn-close btn-close-white" 
-                    aria-label="Close"
+                <CloseButton 
                     data-bs-dismiss="modal"
                     @click="toggleModal"
-                ></button>
+                />
             </header>
             <div class="modal-body photo-items-grid">
                 <TransitionGroup name="list">
@@ -61,9 +58,9 @@
             
                 <footer class="bg-dark">
                         <div class="">
-                            <label for="formFile" class="btn btn-primary" :disabled="isSaving">
+                            <BaseButton for="formFile" theme="primary" :disabled="isSaving">
                                 Select Files
-                            </label>
+                            </BaseButton>
                             <input 
                             ref="fileSelectElement"
                             class="form-control" 
@@ -76,9 +73,9 @@
                             <div v-if="selectedFiles.length !== 0" class="d-inline-block mx-3 text-light">{{ selectedFiles.length }} files selected</div>
                         </div>
                     <div class="d-flex flex-row gap-2">
-                        <button type="button" class="btn btn-primary" @click="uploadFiles" :disabled="selectedFiles.length === 0 || isSaving">Upload <span v-if="isSaving" class="spinner-border"></span></button>
-                        <button type="button" class="btn btn-info" @click="reloadImages" data-bs-dismiss="modal":disabled="isSaving || photos.length === 0">Reload Images</button>     
-                        <button type="button" class="btn btn-secondary" @click="toggleModal" data-bs-dismiss="modal":disabled="selectedFiles.length !== 0">Close</button>
+                        <BaseButton theme="primary" @click="uploadFiles" :disabled="selectedFiles.length === 0 || isSaving">Upload <span v-if="isSaving" class="spinner-border"></span></BaseButton>
+                        <BaseButton theme="info" @click="reloadImages" data-bs-dismiss="modal":disabled="isSaving || photos.length === 0">Reload Images</BaseButton>     
+                        <BaseButton theme="secondary" @click="toggleModal" data-bs-dismiss="modal":disabled="selectedFiles.length !== 0">Close</BaseButton>
                     </div>
 
                 </footer>
@@ -97,6 +94,7 @@ import type {PhotoItem} from '@/types/Product'
 import { toast } from 'vue3-toastify'
 import BaseDialog from '@/components/UI/BaseDialog.vue';
 import {getPhotoUrl, type AllowedSizes} from '@/composables/usePhotoUtils'
+import CloseButton from './UI/CloseButton.vue'
 
 const emit = defineEmits(['triggerSave'])
 const props = defineProps<{storageFolder: string}>()

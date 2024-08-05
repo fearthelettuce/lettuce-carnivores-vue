@@ -19,7 +19,7 @@
                 <input type="text" class="form-control" id="registerLastName" v-model="registrationForm.lastName" required/>
             </div>
             <div class="d-flex justify-content-center mt-4">
-                <button class="btn btn-primary px-3" @click.prevent="register">Register</button>
+                <BaseButton theme="primary" class="px-3" @click.prevent="register">Register</BaseButton>
             </div>
         </form>
     </div>
