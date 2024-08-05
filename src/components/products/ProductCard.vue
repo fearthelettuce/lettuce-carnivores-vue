@@ -12,10 +12,7 @@
             <div class="d-flex align-items-center text-primary">
                 {{ formattedPrice }}
             </div>
-            <router-link 
-                class="btn btn-primary"
-                :to="link">View Details
-            </router-link>
+            <BaseButton type="primary-outline" size="normal" @click="$router.push(link)">View Details</BaseButton>
         </footer>
         
     </article>
@@ -23,7 +20,6 @@
 
 <script setup lang="ts">
 
-//TODO look at cards for inspiration on this website: https://jamesbigleyranches.com/
 import { computed } from 'vue'
 import {getPhotoUrl, placeholderUrl} from '@/composables/usePhotoUtils'
 const props = defineProps<{
