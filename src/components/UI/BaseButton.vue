@@ -27,7 +27,6 @@ defineProps({
 
 <style scoped>
 .base-button {
-    
     font-weight: 500;
     cursor: pointer;
     box-shadow: 0 0 2px darkslategray;
@@ -38,6 +37,10 @@ defineProps({
 .base-button:active {
     box-shadow: 2px 3px darkslategray;
     transform: translateY(2px);
+}
+.base-button:disabled {
+    filter: brightness(60%);
+    cursor: not-allowed;
 }
 .spinner-border {
     height: 1rem;
@@ -64,6 +67,17 @@ defineProps({
     background-color: #FFBF46;
     color: black;
     border: none;
+}
+.light {
+    background-color: #f8f9fa;
+    color: black;
+    border: none;
+}
+.light-outline {
+    color: #f8f9fa;
+    background-color: transparent;
+    border: 1px solid #f8f9fa;
+    color: black;
 }
 
 .link-outline {

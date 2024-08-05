@@ -49,4 +49,14 @@ dialog::backdrop {
   background-color: rgba(0,0,0,.5);
 }
 
+.base-dialog {
+  background-color: #44403b;
+  border: none;
+  border-radius: .5rem;
+  padding: 1.5rem;
+}
+.base-dialog:active {
+  border: none;
+}
+
 </style>

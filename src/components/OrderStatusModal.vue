@@ -1,10 +1,9 @@
 <template>
-    <BaseDialog :open="open" class="bg-dark border-0 rounded p-0">
-        <div class="order-modal p-3">
-            <header class="mb-2 border-0">
+    <BaseDialog :open class="">
+        <div class="order-modal">
+            <header class="modal-header">
                 <h4 class="modal-title">Order {{ order.id }}</h4>
                 <CloseButton
-                    data-bs-dismiss="modal"
                     @click="toggleModal"
                 />
             </header>
@@ -94,6 +93,9 @@ function toggleModal() {
     max-width: 90dvw;
     overflow: none;
     
+}
+.modal-header {
+    margin: 0;
 }
 .shipping-address {
     justify-content: center;

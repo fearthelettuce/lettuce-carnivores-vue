@@ -4,7 +4,7 @@
     </div>
     <div class="container mb-3">
         
-        <div class="d-flex justify-content-center" v-if="cart.cartItems.length === 0">
+        <div class="dflex justifycontentcenter" v-if="cart.cartItems.length === 0">
            <p>Cart is empty</p> 
         </div>
 
@@ -23,15 +23,11 @@
                                 <div class="my-1" v-if="!item.isRepresentative">Specimen {{ item.sku }}</div>
                                 <div class="quantity-input mt-2 input-group input-group-sm">
                                     <span class="input-group-prepend">
-                                        <button type="button" class="btn btn-outline-light btn-number btn-sm" @click="decreaseQuantity(item)">
-                                            <FontAwesome class="textlight" icon="fa fa-minus"></FontAwesome>
-                                        </button>
+                                        <BaseButton theme="light-outline" size="small" @click="decreaseQuantity(item)"><FontAwesome class="textlight" icon="fa fa-minus"></FontAwesome></BaseButton>
                                     </span>
                                     <input type="text" class="form-control input-number textcenter btn-sm" :value="item.quantity">
                                     <span class="input-group-append">
-                                        <button type="button" class="btn btn-outline-light btn-number btn-sm" :disabled="item.quantity >= item.maxQuantity" @click="increaseQuantity(item)">
-                                            <FontAwesome class="textlight" icon="fa fa-plus"></FontAwesome>
-                                        </button>
+                                        <BaseButton theme="light-outline" size="small":disabled="item.quantity >= item.maxQuantity" @click="increaseQuantity(item)"><FontAwesome class="textlight" icon="fa fa-plus"></FontAwesome></BaseButton>
                                     </span>
                                 </div>
                             

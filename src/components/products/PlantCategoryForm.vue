@@ -71,20 +71,17 @@
         </BaseButton>
     </section>
 
-    <BaseModal ref="confirmDeleteModalRef">
-        <template #title>Are you sure?</template>
-            <template #body>
-                <div>Are you sure you want to delete this product?<br><br> {{ plantCategoryToEdit.name }}({{ plantCategoryToEdit.id }})</div>
-            </template>
-            <template #modalAction>
-                <BaseButton 
-                theme="danger"
-                @click="deleteProduct"
-                >
-                Delete
-                </BaseButton>
-            </template>
-    </BaseModal>
+    <BaseDialog ref="confirmDeleteDialogRef" :open="showConfirmDeleteDialog">
+        <header>
+            <h5>Are you sure?</h5>
+            <CloseButton @click="showConfirmDeleteDialog = false"/>
+        </header>
+            <div>Are you sure you want to delete this product?<br><br> {{ plantCategoryToEdit.name }}({{ plantCategoryToEdit.id }})</div>
+
+            <body>
+                <BaseButton theme="danger" @click="deleteProduct">Delete</BaseButton>
+            </body>
+    </BaseDialog>
     
 </template>
 
@@ -94,7 +91,8 @@ import { toast } from 'vue3-toastify'
 import { usePlantStore } from '@/stores/plant';
 import { storeToRefs } from 'pinia';
 import { genusListArr, statusListArr, speciesHybridArr, experienceList } from '@/constants/constants';
-import BaseModal from '@/components/UI/BaseModal.vue'
+import BaseDialog from '@/components/UI/BaseDialog.vue'
+import CloseButton from '../UI/CloseButton.vue'
 
 const {saveCategory, setCategoryToEdit, deleteCategoryById } = usePlantStore()
 const {plantCategoryToEdit, isSaving} = storeToRefs(usePlantStore())
@@ -105,11 +103,11 @@ watch(() => plantCategoryToEdit.value,() =>{
     }
 })
 
-const confirmDeleteModalRef = ref<InstanceType<typeof BaseModal> | null>(null)
-
+const confirmDeleteDialogRef = ref<InstanceType<typeof BaseDialog> | null>(null)
+const showConfirmDeleteDialog = ref(false)
 function confirmDelete() {
     //TODO add logic to check if any active plants, show in modal?
-    confirmDeleteModalRef.value?.showModal()
+    showConfirmDeleteDialog.value = true
 }
 
 async function deleteProduct() {
@@ -117,7 +115,7 @@ async function deleteProduct() {
         const res = await deleteCategoryById(plantCategoryToEdit.value.id).catch(err => console.error(err))
         if (res && res.success) {
             toast.success(res.message)
-            confirmDeleteModalRef.value?.hideModal()
+            showConfirmDeleteDialog.value = false
         } else {
             if(res && res.message) {
                 toast.error(res.message)

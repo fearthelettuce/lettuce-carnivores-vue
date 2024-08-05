@@ -6,7 +6,6 @@
                 <h5 class="modal-title textlight">Manage Photos</h5>
                 <div class="textinfo aligncontentcenter">Photos will take ~30s to load after uploading</div>
                 <CloseButton 
-                    data-bs-dismiss="modal"
                     @click="toggleModal"
                 />
             </header>
@@ -73,8 +72,8 @@
                         </div>
                     <div class="dflex flexrow gap-2">
                         <BaseButton theme="primary" @click="uploadFiles" :disabled="selectedFiles.length === 0 || isSaving">Upload <span v-if="isSaving" class="spinner-border"></span></BaseButton>
-                        <BaseButton theme="info" @click="reloadImages" data-bs-dismiss="modal":disabled="isSaving || photos.length === 0">Reload Images</BaseButton>     
-                        <BaseButton theme="secondary" @click="toggleModal" data-bs-dismiss="modal":disabled="selectedFiles.length !== 0">Close</BaseButton>
+                        <BaseButton theme="info" @click="reloadImages" :disabled="isSaving || photos.length === 0">Reload Images</BaseButton>     
+                        <BaseButton theme="secondary" @click="toggleModal" :disabled="selectedFiles.length !== 0">Close</BaseButton>
                     </div>
 
                 </footer>

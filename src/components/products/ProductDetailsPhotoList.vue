@@ -13,11 +13,11 @@
             <figure class="selected-image" @click="showImageZoomModal"><img :src="displayPhoto"></figure>
         </div>
     </section>
-    <ImageZoomModal v-if="props.photos.length !== 0" ref="imageZoomModalRef" :photo="state.selectedPhoto"/>
+    <ImageZoomModal v-if="props.photos.length !== 0 && selectedPhoto" ref="imageZoomModal" :photo="selectedPhoto"/>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watch } from 'vue';
+import { ref, type Ref, computed, onMounted, watch } from 'vue';
 import ImageZoomModal from '@/components/UI/ImageZoomModal.vue';
 import type { PhotoItem,  } from '@/types/Product';
 import {getPhotoUrl} from '@/composables/usePhotoUtils'
@@ -25,34 +25,31 @@ import {getPhotoUrl} from '@/composables/usePhotoUtils'
 const props = defineProps<{
     photos: Array<PhotoItem>,
 }>()
-
-const state = reactive({
-    selectedPhoto: {} as PhotoItem,
-})
+const selectedPhoto: Ref<PhotoItem | undefined> = ref(undefined)
 
 const displayPhoto = computed(() => {
-    return getPhotoUrl(state.selectedPhoto.path, 960)
+    return getPhotoUrl(selectedPhoto.value?.path, 960)
 })
 
-const imageZoomModalRef = ref<InstanceType<typeof ImageZoomModal> | null>(null)
+const imageZoomModal = ref()
 watch(() => props.photos,() => {
     if(props.photos) {
-        state.selectedPhoto = props.photos[0]
+        selectedPhoto.value = props.photos[0]
     }
 })
 onMounted(() => {
     if(props.photos) {
-        state.selectedPhoto = props.photos[0]
+        selectedPhoto.value = props.photos[0]
     }
 })
 
 function setSelectedPhoto(photo: PhotoItem) {
-    state.selectedPhoto = photo
+    selectedPhoto.value = photo
     //TODO: add transitions when setSelectedPhoto is called https://vuejs.org/guide/built-ins/transition
 }
 
 function showImageZoomModal() {
-    imageZoomModalRef.value?.expandImage()
+    imageZoomModal.value?.toggleModal()
 }
 
 </script>
