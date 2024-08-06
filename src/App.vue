@@ -10,6 +10,10 @@
 
 <style lang="scss">
 @import '@/assets/scss/main';
+html {
+  background-color: #44403b;
+  color: #e1dcbd;
+}
 a {
     text-decoration: none;
 }
@@ -49,6 +53,9 @@ li {
 .flexcolumn {
   flex-direction: column;
 }
+.flexwrap {
+  flex-wrap: wrap;
+}
 .aligncontentcenter {
   align-content: center;
 }
@@ -60,6 +67,9 @@ li {
 }
 .justifycontentevenly {
   justify-content: space-evenly;
+}
+.justifycontentaround {
+  justify-content: space-around;
 }
 .dgrid {
   display: grid;
@@ -80,6 +90,20 @@ li {
 .grid-col-10 {
     grid-column: span 10;
 }
+
+.bscontainer,
+.bscontainer-fluid {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+
+
 
 .gap-0 {
   gap: 0 !important;

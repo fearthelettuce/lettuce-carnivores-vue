@@ -11,7 +11,7 @@
                         <div class="shipping-info my-3">
                             <h5>Shipping</h5>
                             
-                            <div class="d-flex flex-row flex-wrap justify-content-around gap-2">
+                            <div class="dflex flexrow flexwrap justifycontentaround gap-2">
 
                                 <div class="ms-3">
                                     <div>{{ order.shippingInfo.name }}</div>

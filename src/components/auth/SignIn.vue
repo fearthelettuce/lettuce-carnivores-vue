@@ -1,5 +1,5 @@
 <template>
-    <div class="container border rounded p-4">
+    <div class="bscontainer border rounded p-4">
         <h2 class="textcenter">Login</h2>
         <form>
             <div class="form-group">
@@ -11,7 +11,7 @@
                 <label for="loginPassword">Password</label>
                 <input type="password" class="form-control" placeholder="password" id="loginPassword" v-model="loginPassword" />             
             </div>
-            <div class="d-flex justify-content-around mt-4">
+            <div class="dflex justifycontentaround mt-4">
                 <div><BaseButton theme="primary" class="px-4" @click.prevent="login">Login</BaseButton></div>
                 
                 <div>
@@ -20,7 +20,7 @@
             </div>
         </form>
         <hr class="my-4"/>
-        <!-- <div class="d-flex justify-content-center">
+        <!-- <div class="dflex justifycontentcenter">
             <ProviderLogin />
         </div> -->
     </div>

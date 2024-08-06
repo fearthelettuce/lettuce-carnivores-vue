@@ -1,6 +1,6 @@
 <template>
     <main>
-        <div class="container-fluid">
+        <div class="bscontainer-fluid">
             <slot></slot>
         </div>
     </main>
@@ -11,7 +11,7 @@
         padding: 0 clamp(.1dvw,2.5dvw, 10dvw);
         margin-top: 1.5rem;
     }
-    .container-fluid {
+    .bscontainer-fluid {
         padding: 0;
     }
 </style>

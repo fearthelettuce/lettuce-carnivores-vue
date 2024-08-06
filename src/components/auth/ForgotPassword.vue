@@ -1,5 +1,5 @@
 <template>
-    <div class="container d-flex flex-column">
+    <div class="bscontainer dflex flexcolumn">
         <div v-if="!hasEmailBeenSent">
             <h4 class="my-4">Enter your email</h4>
             <p>If the email matches a registered account, you will receive an email in a minute or two.</p>

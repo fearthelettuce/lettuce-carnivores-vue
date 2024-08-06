@@ -1,5 +1,5 @@
 <template>
-  <ProductDetails class="container-fluid"/>
+  <ProductDetails class="bscontainer-fluid"/>
 </template>
 
 <script setup lang="ts">

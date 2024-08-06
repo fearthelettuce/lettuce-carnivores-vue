@@ -1,6 +1,6 @@
 <template>
-        <div class="d-flex flex-column">
-            <div class="d-flex flex-row">
+        <div class="dflex flexcolumn">
+            <div class="dflex flexrow">
                 <div class="dflex justifycontentcenter"><figure class="rainbow bands"></figure></div>
     
                 <div class="dflex justifycontentcenter"><figure class="rainbow bands"></figure></div>
@@ -16,7 +16,7 @@
                 <div class="dflex justifycontentcenter"><figure class="rainbow bands"></figure></div>
 
             </div>
-            <div class="d-flex flex-row">
+            <div class="dflex flexrow">
                 <div class="dflex justifycontentcenter"><figure class="rainbow bands"></figure></div>
     
                 <div class="dflex justifycontentcenter"><figure class="rainbow bands"></figure></div>
@@ -65,7 +65,7 @@
 
             </div>
             <div class="dflex justifycontentcenter"><figure class="rainbow bands"></figure></div>
-            <div class="d-flex flex-row">
+            <div class="dflex flexrow">
                 <div class="dflex justifycontentcenter"><figure class="rainbow bands"></figure></div>
     
                 <div class="dflex justifycontentcenter"><figure class="rainbow bands"></figure></div>

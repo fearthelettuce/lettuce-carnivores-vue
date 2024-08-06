@@ -1,5 +1,5 @@
 <template>
-<div class="container d-flex flex-column">
+<div class="bscontainer dflex flexcolumn">
         <h4 class="my-4">Enter your new password</h4>
         <div class="form-group">
             <input type="password" class="form-control" id="loginpassword" v-model="loginPassword" />

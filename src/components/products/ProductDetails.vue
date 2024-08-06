@@ -1,12 +1,12 @@
 <template>
     <BaseContainer>
-        <section v-if="plantCategory" class="d-flex product-detail-section" >
+        <section v-if="plantCategory" class="dflex product-detail-section" >
         <ProductDetailsPhotoList :photos="photosToDisplay" />
             <article class="product-information dflex aligncontentcenter flexcolumn">
                 <div class="dflex justifycontentcenter">
                     <h1 class="textcenter">{{ plantCategory.name }}</h1>   
                 </div>
-                <div v-if="plantCategory.clone !== ''" class="d-flex flex-row justify-content-around">
+                <div v-if="plantCategory.clone !== ''" class="dflex flexrow justifycontentaround">
                     <h3>Clone {{ plantCategory.clone }}</h3>  
                 </div>
 
@@ -14,7 +14,7 @@
                     <p class="textcenter my-4" :class="hideDescription ? '' : 'description-one-line'" @click="toggleHideDescription">{{ plantCategory.description }}</p>   
                 </div>
 
-                <div class="d-flex justify-content-evenly">
+                <div class="dflex justifycontentevenly">
                     <BaseButton 
                         v-for="plant in referencePlants"
                         :key="plant.size" 

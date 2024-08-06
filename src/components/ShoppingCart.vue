@@ -54,14 +54,14 @@
                     </div>
 
 
-                    <div v-if="discounts === 0 && multiPlantDiscount !== undefined" class="d-flex flex-row justify-content-center gap-2 mx-4">
+                    <div v-if="discounts === 0 && multiPlantDiscount !== undefined" class="dflex flexrow justifycontentcenter gap-2 mx-4">
                         <h5 class="shipping-message">
                             {{ multiPlantDiscount.message }}
                         </h5>
                         
                     </div>
 
-                    <div class="d-flex flex-row justify-content-center gap-2 mx-4">
+                    <div class="dflex flexrow justifycontentcenter gap-2 mx-4">
                         <h5 class="shipping-message">
                             {{ cartTotal - discounts >= discountedShippingThreshold ?
                              `Free standard shipping on orders over $75!` :

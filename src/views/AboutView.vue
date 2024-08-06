@@ -1,5 +1,5 @@
 <template>
-        <div class="container mb-5">
+        <div class="bscontainer mb-5">
         <h4>Plants</h4>
         <p>We specialize in making mature Heliamphora widely available in the US market. Unlike imported tissue culture plants, the plants you will buy from me are generally established, actively growing, divisions that won't take years to grow to a decent size.</p>   
         <h4>Contact</h4>

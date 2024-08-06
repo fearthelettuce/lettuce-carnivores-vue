@@ -1,5 +1,5 @@
 <template>
-    <div class="container border rounded p-4">
+    <div class="bscontainer border rounded p-4">
         <h2 class="textcenter">Create Account</h2>
         <form>
             <div class="form-group">
@@ -18,7 +18,7 @@
                 <label for="registerLastName">Last Name</label>
                 <input type="text" class="form-control" id="registerLastName" v-model="registrationForm.lastName" required/>
             </div>
-            <div class="d-flex justify-content-center mt-4">
+            <div class="dflex justifycontentcenter mt-4">
                 <BaseButton theme="primary" class="px-3" @click.prevent="register">Register</BaseButton>
             </div>
         </form>

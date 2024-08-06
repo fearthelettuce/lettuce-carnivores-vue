@@ -1,5 +1,5 @@
 <template> 
-    <div class="container-fluid textcenter mt-4">
+    <div class="bscontainer-fluid textcenter mt-4">
         <div>
             <h2>Thank you for your purchase!</h2>
         </div>

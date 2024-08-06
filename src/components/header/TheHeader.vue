@@ -1,6 +1,6 @@
 <template>
     <nav v-if="!route.meta.hideHeader" class="navbar navbar-expand-lg my-1 sticky-top">
-        <div class="container-fluid">
+        <div class="bscontainer-fluid">
             <div class="navbar-brand">
                 <router-link to="/" class="logo-link">
                     <div class="logo">Danger Lettuce</div>

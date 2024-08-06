@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid mt-4">
+    <div class="bscontainer-fluid mt-4">
         <OrderAdmin />
     </div>
     

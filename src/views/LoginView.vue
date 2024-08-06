@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-4">
+    <div class="bscontainer mt-4">
         <div class="row gx-2">
             <SignIn class="col-lg-5 col-md-12 mb-5"/>
             <TheRegistration class="col-lg-5 col-md-12 mb-5"/>

@@ -8,7 +8,7 @@
         <header class="card-title ">
             <h5 class="textprimary aligncontentcenter card-name m-0">{{ name }}</h5>
         </header>
-        <footer class="card-footer d-flex flex-row">
+        <footer class="card-footer dflex flexrow">
             <div class="dflex alignitemscenter textprimary">
                 {{ formattedPrice }}
             </div>

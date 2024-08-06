@@ -1,6 +1,6 @@
 <template>
     <div class="my-2">Current Inventory: {{ currentAvailablePlants }}</div>
-    <div class="container-fluid layout"> 
+    <div class="bscontainer-fluid layout"> 
         
         <div>
             <ItemSelect 
@@ -23,7 +23,7 @@
             <div class="plant-list mt-5">
                 <div v-for="(plant, index) in plantCategoryToEdit.plants" :key="index" >
                     <hr />
-                    <div class="d-flex flex-row gap-2">
+                    <div class="dflex flexrow gap-2">
                         <div class="up-down-arrows aligncontentcenter textcenter">
                             <button 
                                 class="btn px-1 py-0"

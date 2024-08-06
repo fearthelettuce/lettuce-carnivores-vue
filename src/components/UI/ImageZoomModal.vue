@@ -1,10 +1,7 @@
 <template>
-    <BaseDialog :open
-        class="image-zoom-modal"
-    >
+    <BaseDialog :open class="image-zoom-modal">
         <div class="image-container">
             <div class="image-hover-container">
-                
                 <img :src="getPhotoUrl(photo?.path?.toString(), 1600)" @click="toggleModal" :alt="imageAltText">
             </div>
         </div>
@@ -39,14 +36,9 @@ const imageAltText = computed(()=>{
 </script>
 
 <style scoped>
-    .image-zoom-modal {
-
-    }
-
-
     img {
         object-fit: cover;
         width: 100%;
-        height: 90dvh;
+        max-height: 90dvh;
     }
 </style>

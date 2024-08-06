@@ -5,7 +5,7 @@ const app = createApp(App)
 import { createPinia } from 'pinia'
 app.use(createPinia())
 
-import 'bootstrap'
+// import 'bootstrap'
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
