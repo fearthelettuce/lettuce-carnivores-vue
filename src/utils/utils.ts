@@ -10,10 +10,11 @@ export function sortAlphabetically(arr: any[], prop: keyof typeof arr) {
 export function formattedDate (someDate: string | Date, format: 'mm/dd/yy' | 'yyyy-mm-dd' =  'mm/dd/yy') {
     let date
     if(typeof someDate === 'string') {
-        date = new Date(someDate)
+        date = new Date(`${someDate}T00:00`)
     } else {
         date = someDate
     }
+    console.log(date)
     let formatOptions: Intl.DateTimeFormatOptions
     switch (format) {
         case 'yyyy-mm-dd':
