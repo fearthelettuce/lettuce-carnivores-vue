@@ -14,7 +14,6 @@ export function formattedDate (someDate: string | Date, format: 'mm/dd/yy' | 'yy
     } else {
         date = someDate
     }
-    console.log(date)
     let formatOptions: Intl.DateTimeFormatOptions
     switch (format) {
         case 'yyyy-mm-dd':
