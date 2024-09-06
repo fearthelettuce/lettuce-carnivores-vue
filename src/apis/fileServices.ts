@@ -27,6 +27,18 @@ export async function deleteFile(photo: PhotoItem) {
     }
 }
 
+export async function deletePhoto(photoPath: string) {
+    const storageRef = ref(storage, photoPath)
+    if(!storageRef) {return {success: false, error: false, message: `Photo path ${photoPath} does not exist in Firebase`}}
+    try {
+        await deleteObject(storageRef)
+        return {success: true, error: false, message: 'Deleted'}
+    } catch (e) {
+        console.log(e);
+        return {success: false, error: true, message: 'Error deleting file from Firebase Storage', errorDetails: e}
+    }
+}
+
 // not used - this was an attempt to get photos to work in Stripe but did not succeed.  Leaving this here in case a use case comes up. Have fun deleting in 3 years. 7/26/24
 // export async function getPhotoDownloadUrl(photo: PhotoItem) {
 

@@ -97,7 +97,7 @@ import type {PhotoItem} from '@/types/Product'
 import { toast } from 'vue3-toastify'
 import BaseDialog from '@/components/UI/BaseDialog.vue';
 import {getPhotoUrl, type AllowedSizes} from '@/composables/usePhotoUtils'
-
+import { deletePhoto } from '@/apis/fileServices'
 const emit = defineEmits(['triggerSave'])
 const props = defineProps<{storageFolder: string}>()
 
@@ -143,8 +143,19 @@ function removePhoto(index: number, photo: SelectedFile| PhotoItem) {
     if(index !== -1) {
         console.log(photos.value[index])
         photos.value.splice(index,1)
+        if(photo.hasOwnProperty('folder')) {
+            deleteAllPhotos(photo as PhotoItem)
+        }
         emit('triggerSave')
     }
+}
+
+async function deleteAllPhotos(photo: PhotoItem) {
+    console.log(photo)
+    const resolutions = ['256x256', '512x512', '960x960', '1600x1600']
+    resolutions.forEach(resolution => {
+        deletePhoto(`plants/${photo.name}_${resolution}`)
+    })
 }
 
 //Selected Files
