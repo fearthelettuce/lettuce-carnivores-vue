@@ -11,7 +11,6 @@
         <FormKit 
             type="text"
             label="SKU"
-
             class="flex-1"
             v-model="plant.sku"
         />
@@ -30,13 +29,6 @@
             validation="required|number|min:0"
             class="flex-1"
             v-model="plant.price"
-        />
-        <FormKit 
-            type="text"
-            number
-            label="Discount Price"
-            class="flex-1"
-            v-model="plant.discountedPrice"
         />
         <FormKit 
             type="text"
@@ -60,6 +52,12 @@
             class="flex-2"
             v-model="plant.propagationDate"
         />
+        <FormKit 
+            type="text"
+            label="Shelf"
+            class="flex-1"
+            v-model="plant.shelfLocation"
+        />
         <div>
             <FormKit
                 type="checkbox"
@@ -78,7 +76,8 @@
         </div>
         <div class="center-content">
             <button class="btn btn-info m-1" @click.prevent="addPhotos">Photos <span>({{ plant.photos.length }})</span></button>
-            <button class="btn btn-danger m-1" @click.prevent="$emit('deletePlant')">Delete</button>
+            <button class="btn btn-danger m-1" @click.prevent="$emit('deletePlant')" :disabled="plant.status !== 'Archived'">Delete</button>
+            
         </div>
         
     </form>

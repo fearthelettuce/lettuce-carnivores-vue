@@ -19,6 +19,7 @@ export type CartItem = {
     size: Sizes,
     isDiscounted: boolean,
     isRepresentative: boolean,
+    shelfLocation?: string,
 
 }
 //export type StripeCartItem = StripeProduct & {quantity: number}
@@ -84,6 +85,7 @@ export type Order = {
                     clone: string,
                     size: string,
                     isRepresentative: boolean,
+                    shelfLocation?: string,
                 },
             },
         },

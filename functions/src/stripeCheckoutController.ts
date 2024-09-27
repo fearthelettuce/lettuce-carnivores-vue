@@ -69,6 +69,7 @@ async function buildCheckoutSession (cartItems: CartItem[], uid: string, returnU
                         clone: item.clone,
                         size: item.size,
                         isRepresentative: item.isRepresentative,
+                        shelfLocation: item.shelfLocation ?? '',
                     },
                     tax_code: 'txcd_99999999',
                 }

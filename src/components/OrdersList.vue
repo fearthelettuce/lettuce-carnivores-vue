@@ -40,12 +40,14 @@
                                 <div class="item-name">Item</div>
                                 <div>Item #</div>
                                 <div>Size</div>
+                                <div v-if="isAdmin">Location</div>
                                 <div>Quantity</div>
                                 <div>Price</div>
                                 <template v-for="item of order.lineItems" :key="item.price_data.product_data.metadata.sku" class="grid-item">
                                     <div class="item-name">{{` ${item.price_data.product_data.name} ${item.price_data.product_data.metadata.clone || ''} `}}</div>
                                     <div>{{ item.price_data.product_data.metadata.sku }}</div>
                                     <div>{{ item.price_data.product_data.description }}</div>
+                                    <div v-if="isAdmin">{{ item.price_data.product_data.metadata?.shelfLocation }}</div>
                                     <div>{{ item.quantity }}</div>
                                     <div>{{ USDollar.format(item.price_data.unit_amount / 100) }}</div>
                                 </template>
@@ -93,6 +95,8 @@ async function openOrderStatusModal(order: Order) {
     orderStatusModal.value.toggleModal()
 }
 
+const columnCount = props.isAdmin ? 7 : 6
+
 </script>
 
 <style scoped>
@@ -102,7 +106,7 @@ async function openOrderStatusModal(order: Order) {
 }
 .item-grid {
     display: grid;
-    grid-template-columns: repeat(6, minmax(2.8rem, 1fr));
+    grid-template-columns: repeat(v-bind(columnCount), minmax(2.8rem, 1fr));
     gap: 0.5rem 1rem;
 }
 .grid-span-1 { 

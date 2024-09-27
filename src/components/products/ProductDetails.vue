@@ -97,6 +97,10 @@ onMounted(async () => {
             setSelectedPlant(plantCategory.value?.plants.find(plant => plant.sku === route.params.sku))
         }
     }
+    const pageDescription = plantCategory.value?.description
+    const pageTitle = `${plantCategory.value?.name}`
+    document.title = pageTitle
+    document.querySelector('meta[name="description"]')!.setAttribute("content", pageDescription ?? `Mature ${pageTitle} divisions available for sale`);
 })
 
 const hideDescription = ref(true)
@@ -197,7 +201,9 @@ async function addToCart() {
         photo: selectedPlant.value.photos[0],
         size: selectedPlant.value.size,
         isDiscounted: selectedPlant.value.isDiscounted,
-        isRepresentative: selectedPlant.value.isRepresentative})
+        isRepresentative: selectedPlant.value.isRepresentative,
+        shelfLocation: selectedPlant.value?.shelfLocation
+    })
 
         if(res && res.success === true) {
             toast.success('Added to cart!')

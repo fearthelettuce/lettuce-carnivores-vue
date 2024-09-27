@@ -1,5 +1,8 @@
 <template>
-    <div class="my-2">Current Inventory: {{ currentAvailablePlants }}</div>
+    <div class="my-2 ms-5">{{`Total Inv: ${currentAvailablePlants.totalAvailable} --- 
+    Heli Count : ${currentAvailablePlants.heliCount} ---
+    Heli Varieties: ${currentAvailablePlants.heliVarieties}
+    `}}</div>
     <div class="container-fluid layout"> 
         
         <div>
@@ -124,18 +127,26 @@ function arrayMove(arr: Array<any>, fromIndex: number, toIndex: number) {
     save()
 }
 
-const currentAvailablePlants = ref(0)
+const currentAvailablePlants = ref({totalAvailable: -1, heliCount: -1, heliVarieties: -1, nepCount: -1, cephCount: -1})
 async function fetchCurrentAvailablePlants() {
     const allPlants = await getAllPlants()
     console.log(allPlants)
     const availablePlants = allPlants.filter((plant) => !['Hidden', 'Archived', 'Sold'].includes(plant.status) && plant.quantity !== 0)
     const heliCount = availablePlants.filter((plant) => plant.genus === 'Heliamphora').reduce((acc, obj) => {return acc + obj.quantity}, 0)
+    const heliVarieties = [... new Set(availablePlants.filter((plant) => plant.genus === 'Heliamphora').map(heli => heli.plantCategoryId))]
+    console.log(heliVarieties)
     const nepCount = availablePlants.filter((plant) => plant.genus === 'Nepenthes').reduce((acc, obj) => {return acc + obj.quantity}, 0)
     const cephCount = availablePlants.filter((plant) => plant.genus === 'Cephalotus').reduce((acc, obj) => {return acc + obj.quantity}, 0)
     console.log('Heli: ' + heliCount)
     console.log('Nep: ' + nepCount)
     console.log('Ceph: ' + cephCount)
-    return availablePlants.length
+    return {
+        totalAvailable: availablePlants.length,
+        heliCount: heliCount,
+        heliVarieties: heliVarieties.length,
+        nepCount: nepCount,
+        cephCount: cephCount
+    }
 }
 
 const photoModal = ref()

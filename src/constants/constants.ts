@@ -9,6 +9,7 @@ export const sizeList = [
     {label: '3.5" deep', value:'3.5" deep'},
     {label: '4" deep', value: '4" deep'},
     {label: '4.5" deep', value: '4.5" deep'},
+    {label: '5" deep', value: '5" deep'},
     {label: 'Bare Root', value: 'Bare Root'}
 ]
 

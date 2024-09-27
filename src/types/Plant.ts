@@ -24,6 +24,7 @@ export type Plant = {
     quantity: number,
     photos: PhotoItem[],
     plantCategoryId: string,
+    shelfLocation?: string,
 }
 export interface PlantWithCategoryDetails extends Plant {
     name: string, 
@@ -38,6 +39,7 @@ export type Sizes =
     '3.5" deep' | 
     '4" deep' | 
     '4.5" deep' |
+    '5" deep' |
     'Bare Root'
 
 

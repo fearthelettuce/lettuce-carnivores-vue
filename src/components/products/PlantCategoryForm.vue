@@ -57,7 +57,7 @@
         />
     </form>
     <section class="form-actions">
-        <button class="btn btn-danger form-action" @click.prevent="confirmDelete" :disabled="!plantCategoryToEdit.id">
+        <button class="btn btn-danger form-action" @click.prevent="confirmDelete" :disabled="!plantCategoryToEdit.id || plantCategoryToEdit.status !== 'Archived'">
             Delete Plant<span class="spinner-border" role="status" v-if="isSaving"></span>
         </button>
         <button class="btn btn-secondary form-action" @click.prevent="setCategoryToEdit(null)">

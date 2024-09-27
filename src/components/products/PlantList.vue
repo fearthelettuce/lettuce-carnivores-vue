@@ -21,6 +21,9 @@ const { filteredCategories } = storeToRefs(usePlantStore())
 onMounted(async () => {
     await fetchAllCategories();
     updateFilteredCategories()
+    const pageTitle = 'Danger Lettuce Carnivores'
+    document.title = pageTitle
+    document.querySelector('meta[name="description"]')!.setAttribute("content", `Danger Lettuce Carnivores specializes in offering mature Heliamphora divisions at great prices.`);
 })
 
 </script>

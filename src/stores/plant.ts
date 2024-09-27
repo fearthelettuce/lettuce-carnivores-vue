@@ -151,7 +151,8 @@ export const usePlantStore = defineStore('plant', () => {
                 isDiscounted: lastPlant.isDiscounted,
                 quantity: 1,
                 photos: [],
-                plantCategoryId: plantCategory.id
+                plantCategoryId: plantCategory.id,
+                shelfLocation: '',
             })
         }
         

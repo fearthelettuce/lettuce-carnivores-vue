@@ -15,6 +15,7 @@ export type CartItem = {
     size: string,
     isDiscounted: boolean,
     isRepresentative: boolean,
+    shelfLocation?: string,
 
 }
 //export type StripeCartItem = StripeProduct & {quantity: number}
