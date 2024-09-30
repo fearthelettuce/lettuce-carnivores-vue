@@ -11,19 +11,25 @@
     </div>
 
 
-
-    <Transition>
-        <div v-show="showGhost" @click="showGhost = !showGhost">
-            <div class="ghost-card">
+    <Teleport to="body">
+        <Transition>
+            <div v-show="showGhost" @click="showGhost = !showGhost">
+                <div class="ghost-card">
                     <div class="ghost-icon-container">
                         <GhostIcon class="ghost-icon"/>
                     </div>
                     
                     <div  class="message-container"><h4>{{ ghostMessage }}</h4></div>
-
+                    
+                </div>
             </div>
-        </div>
-    </Transition>
+        </Transition>
+    </Teleport>
+    <Teleport to="body">
+        <Transition>
+            <div v-show="showBlackout" class="blackout"></div>
+        </Transition>
+    </Teleport>
 
 </template>
 
@@ -85,12 +91,19 @@ import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
     const showGhost = shallowRef(false)
     const ghostTimer = ref()
     const ghostMessage = ref('')
-    const treatButton = ref()
-
+    const receivedTreat = ref(false)
     function treat() {
+        if(receivedTreat.value === true) {
+            ghostMessage.value = `I already gave you a treat!  Save some for the other kids!  Here's a trick instead!`
+            appendGhost(1500)
+            setTimeout(()=>{trick()},1700)
+            return
+        }
         reset()
         appendGhost(6000)
-        ghostMessage.value = `One of the letters is G`
+        const nextLetter = 'G' //Get next letter from contest store
+        ghostMessage.value = `I added a '${nextLetter}' to your trick-or-treat bag.`
+        receivedTreat.value = true
     }
     function reset() {
         clearTimeout(ghostTimer.value)
@@ -100,23 +113,17 @@ import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
     function trick() {
         reset()
         let randomTrick = Math.random()
-        console.log(randomTrick)
-        if(randomTrick < .2) {
+        if(randomTrick < .25) {
             blackout()
-        } else if(randomTrick < .4) {
+        } else if(randomTrick < .5) {
             upsideDownScreen()
-        } else if (randomTrick < .6) {
+        } else if (randomTrick < .75) {
             rickRoll()
-        } else if (randomTrick < .8) {
+        } else if (randomTrick < .9) {
             hideTreat()
         } else {
             doAFlip()
         }
-        //hide treat button
-        //swap buttons around
-        //two trick buttons
-        //load in with two treat buttons, and one is really the trick
-        //need trick and treat button labels as variables
     }
     function appendElement(elementId: string, timeout = 3000) {
         const div = document.createElement('div')
@@ -136,27 +143,21 @@ import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
         showGhost.value = true
         nextTick()
         ghostTimer.value = setTimeout(() => {showGhost.value = false}, ghostDuration)
-
     }
+
+    const showBlackout = ref(false)
     function blackout() {
         ghostMessage.value = 'Oops, who turned off the lights???'
-        
-        appendGhost(4000)
-        appendElement('blackout', 2000)
-        appendClassToBody('hide-overflow', 2000)
+        setTimeout(()=>{appendGhost(3000)}, 300)
+        showBlackout.value = true
+        setTimeout(() => {showBlackout.value = false}, 2500)
+        appendClassToBody('hide-overflow', 2500)
     }
 
     function upsideDownScreen() {
-        ghostMessage.value = 'Uh oh, what happened?'
-        appendGhost()
-        function flip() {    
-            Array.prototype.slice.call(  document.querySelectorAll(    'div,p,span,img,a,body,button')).map(function(tag){tag.style['transform'] = 'rotate(' + 180 +'deg)';});
-        }
-        function unflip() {    
-            Array.prototype.slice.call(  document.querySelectorAll(    'div,p,span,img,a,body,button')).map(function(tag){tag.style['transform'] = 'rotate(' + 0 +'deg)';});
-        }
-        flip()
-        setTimeout(() => {unflip()}, 3000)
+        ghostMessage.value = `I'm so dizzy!`
+        appendGhost(6000)
+        appendClassToBody('flip-upside-down', 4000)
     }
 
     function doAFlip() {
@@ -168,7 +169,7 @@ import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
 
     function rickRoll() {
         ghostMessage.value = 'Never gonna GIVE YOU UP.....'
-        appendGhost()
+        appendGhost(7000)
         setTimeout(()=>{
             window.open('https://www.youtube.com/watch?v=2qBlE2-WL60','_blank')?.focus()
         }, 400)
@@ -177,6 +178,7 @@ import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
     function hideTreat() {
         ghostMessage.value = `You didn't need that anyway, did you?`
         appendGhost(5000)
+        appendClassToBody('hide-overflow', 5000)
         hideTreatButton.value = true
         setTimeout(()=>{hideTreatButton.value = false}, 5000)
     }
@@ -185,19 +187,25 @@ import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
 
 <style>
     .contest-card {
-        width: 16rem;
+        width: 20rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
     .action-container {
-        margin-top: .5rem;
+        margin-top: 1rem;
         display: flex;
         flex-direction: row;
         justify-content: space-around;
+        width: 100%
     }
     .hide-overflow {
         overflow: hidden;
     }
-    #blackout {
-        position:absolute;
+
+    .blackout {
+        position:fixed;
         top: 0;
         left: 0;
         opacity: 1;
@@ -205,16 +213,17 @@ import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
         height: 100dvh;
         z-index: 9990;
         background-color: black;
+
     }
 
     .ghost-card {
         z-index: 9995;
-        position: absolute; 
-        left: 0; 
-        right: 0; 
+        position: fixed; 
+        left: 50%;
+        transform: translate(-50%, -50%);
+        top: 50%;
         margin-inline: auto; 
         width: fit-content;
-        position:absolute;
         border-radius: 2rem;
         border: .5rem solid #f4f1dc;
         background-color: black;
@@ -253,43 +262,78 @@ import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
         opacity: 0;
     }
 
-    .transform {
+    /* .upside-down {
         transform:rotate(180deg);
         -ms-transform:rotate(180deg);
         -webkit-transform:rotate(180deg);
-    }
+    } */
 
-    .barrel-roll {
-        -moz-animation-name: roll;
-        -moz-animation-duration: 4s;
-        -moz-animation-iteration-count: 1;
-        -webkit-animation-name: roll;
-        -webkit-animation-duration: 4s;
-        -webkit-animation-iteration-count: 1;
-    }
-
-    @-webkit-keyframes roll {
-    from { -webkit-transform: rotate(0deg) }
-    to   { -webkit-transform: rotate(360deg) }
-    }
-
-    @-moz-keyframes roll {
-    from { -moz-transform: rotate(0deg) }
-    to   { -moz-transform: rotate(360deg) }
-    }
-
-    @keyframes roll {
-    from { transform: rotate(0deg) }
-    to   { transform: rotate(360deg) }
-    }
-
-    .hide-treat {
-        opacity: 0;
+    .upside-down {
+        -moz-transform: scale(-1, -1);
+        -o-transform: scale(-1, -1);
+        -webkit-transform: scale(-1, -1);
+        transform: scale(-1, -1);
     }
 
     .fall-off-screen {
         transform: translateY(100dvh);
         transition: transform 1.5s;
+    }
+
+    .barrel-roll {
+        animation-name: roll;
+        animation-duration: 4s;
+        animation-iteration-count: 1;
+        /* -moz-animation-name: roll;
+        -moz-animation-duration: 4s;
+        -moz-animation-iteration-count: 1; */
+        /* -webkit-animation-name: roll;
+        -webkit-animation-duration: 4s;
+        -webkit-animation-iteration-count: 1; */
+    }
+
+    /* @-webkit-keyframes roll {
+        from { -webkit-transform: rotate(0deg) }
+        to   { -webkit-transform: rotate(360deg) }
+    }
+
+    @-moz-keyframes roll {
+        from { -moz-transform: rotate(0deg) }
+        to   { -moz-transform: rotate(360deg) }
+    } */
+
+    @keyframes roll {
+        from { transform: rotate(0deg) }
+        to   { transform: rotate(360deg) }
+    }
+
+    .flip-upside-down {
+        animation-name: flip;
+        animation-duration: 4s;
+        animation-iteration-count: 1;
+        /* -moz-animation-name: flip;
+        -moz-animation-duration: 4s;
+        -moz-animation-iteration-count: 1; */
+        /* -webkit-animation-name: flip;
+        -webkit-animation-duration: 4s;
+        -webkit-animation-iteration-count: 1; */
+    }
+
+    /* @-webkit-keyframes flip {
+        from { -webkit-transform: scale(1, 1) }
+        to   { -webkit-transform: scale(1, -1) }
+    }
+
+    @-moz-keyframes flip {
+        from { -moz-transform: scale(1, 1) }
+        to   { -moz-transform: scale(1, -1) }
+    } */
+
+    @keyframes flip {
+        0% { transform: scale(1, 1) }
+        60% { transform: scale(1, -1) }
+        80% { transform: scale(1, -1) }
+        100% { transform: scale(1, 1) }
     }
 
 </style>

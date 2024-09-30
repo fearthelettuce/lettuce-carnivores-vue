@@ -63,6 +63,9 @@
                     </button>
                 </div>
                 <div v-show="selectedPlant === undefined" class="text-center text-warning mt-2">Please select a plant to add to cart</div>
+                <div class="contest-container">
+                    <ContestCard />
+                </div>
             </article>
         </section>
         <section v-else>
@@ -80,6 +83,7 @@ import ProductDetailsPhotoList from '@/components/products/ProductDetailsPhotoLi
 import { toast } from 'vue3-toastify'
 import type { PlantCategory, Plant} from '@/types/Plant'
 import { formattedDate } from '@/utils/utils'
+import ContestCard from '../contest/ContestCard.vue'
 
 const route = useRoute()
 const plantCategory: Ref<PlantCategory | undefined> = ref()
@@ -100,7 +104,8 @@ onMounted(async () => {
     const pageDescription = plantCategory.value?.description
     const pageTitle = `${plantCategory.value?.name}`
     document.title = pageTitle
-    document.querySelector('meta[name="description"]')!.setAttribute("content", pageDescription ?? `Mature ${pageTitle} divisions available for sale`);
+    const descEle = document.querySelector('head meta[name="description"]');
+    descEle?.setAttribute('content', pageDescription ?? `Mature ${pageTitle} divisions available for sale`);
 })
 
 const hideDescription = ref(true)
@@ -267,7 +272,11 @@ const freshDivision = computed (() => {
         text-overflow: ellipsis;
         cursor: pointer;
     }
-
+    .contest-container {
+        display: flex;
+        justify-content: center;
+        padding: 2rem 0;
+    }
     @media (min-width: 30rem) {
         .specimen-button {
             flex-basis: auto;
