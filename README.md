@@ -39,18 +39,6 @@ npm run dev
 npm run build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
-
 ### Deploy to Firebase
 
 ```
@@ -59,9 +47,4 @@ firebase login (if not already logged in)
 firebase deploy
 ```
 
-
-Bootstrap replacement:
-- DaisyUI = single class of multiple TW classes, similar to Bootstrap
-- Preline = Tailwind templates - copy/paste standard TW + library that injects JS to open/close dialog
-- ShadCn = copy/paste TW
 

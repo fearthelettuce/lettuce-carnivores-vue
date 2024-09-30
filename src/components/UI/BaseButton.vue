@@ -72,6 +72,15 @@ const props = defineProps({
     background: linear-gradient(0.15turn,#FFBF46, #fccb72, #FFBF46);
     color: black;
 }
+.trick {
+    background: linear-gradient(0.15turn,#BFDA7A, #5E32BA);
+    color: white;
+}
+
+.treat {
+    background: linear-gradient(0.0turn,#ffffff, #EB6123, #F5CD08 );
+    color: white;
+}
 
 .small {
     font-size: .875rem;
@@ -87,7 +96,8 @@ const props = defineProps({
 
 .large {
     font-size: 1.25rem;
-    padding: .5rem 1.25rem;
+    padding: .5rem 1.5rem;
+    border-radius: .5rem;
 }
 
 </style>

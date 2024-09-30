@@ -12,7 +12,7 @@ const EasterEggView  = () => import('@/views/EasterEggView.vue')
 const AccountView = () => import('@/views/AccountView.vue')
 const PlantAdminView = () => import('@/views/PlantAdmin.vue')
 const AdminView = () => import('@/views/AdminView.vue')
-
+const ContestView = () => import('@/views/ContestView.vue')
 const routeData = [
     {
       path: "/",
@@ -113,6 +113,17 @@ const routeData = [
       meta: {
         showInNav: true,
         requiresLogin: true,
+        requiresAdmin: false,
+      }
+    },
+    {
+      path: "/giveaway",
+      name: 'giveaway',
+      label: 'Win a Free Plant!',
+      component: ContestView,
+      meta: {
+        showInNav: true,
+        requiresLogin: false,
         requiresAdmin: false,
       }
     },
