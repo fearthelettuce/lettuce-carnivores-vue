@@ -63,8 +63,8 @@
                     </button>
                 </div>
                 <div v-show="selectedPlant === undefined" class="text-center text-warning mt-2">Please select a plant to add to cart</div>
-                <div class="contest-container">
-                    <ContestCard />
+                <div class="game-container">
+                    <HalloweenGameCard />
                 </div>
             </article>
         </section>
@@ -83,7 +83,7 @@ import ProductDetailsPhotoList from '@/components/products/ProductDetailsPhotoLi
 import { toast } from 'vue3-toastify'
 import type { PlantCategory, Plant} from '@/types/Plant'
 import { formattedDate } from '@/utils/utils'
-import ContestCard from '../contest/ContestCard.vue'
+import HalloweenGameCard from '@/components/giveaway/HalloweenGameCard.vue'
 
 const route = useRoute()
 const plantCategory: Ref<PlantCategory | undefined> = ref()
@@ -272,7 +272,7 @@ const freshDivision = computed (() => {
         text-overflow: ellipsis;
         cursor: pointer;
     }
-    .contest-container {
+    .game-container {
         display: flex;
         justify-content: center;
         padding: 2rem 0;

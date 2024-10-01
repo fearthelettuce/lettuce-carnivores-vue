@@ -1,5 +1,5 @@
 <template>
-    <div class="contest-card">
+    <div class="game-card">
         <component v-if="dynamicComponent !== undefined" :is="dynamicComponent" :class="dynamicComponentClass" title="You found me!"/>
 
         <Transition>
@@ -102,7 +102,7 @@ import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
         reset()
         appendGhost(6000)
         const nextLetter = 'G' //Get next letter from contest store
-        ghostMessage.value = `I added a '${nextLetter}' to your trick-or-treat bag.`
+        ghostMessage.value = `I added a '${nextLetter}' to your trick-or-treat bucket.`
         receivedTreat.value = true
     }
     function reset() {
@@ -125,20 +125,13 @@ import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
             doAFlip()
         }
     }
-    function appendElement(elementId: string, timeout = 3000) {
-        const div = document.createElement('div')
-        div.id = elementId
-        document.getElementsByTagName('body')[0].appendChild(div)
-        setTimeout(() => {
-            const div = document.getElementById(elementId)
-            div?.parentNode?.removeChild(div)
-        },timeout)
-    }
+
     function appendClassToBody(className: string, timeout = 2000) {
         const bodyEle = document.getElementsByTagName('body')[0]
         bodyEle.classList.add(className)
         setTimeout(() => {bodyEle.classList.remove(className)}, timeout)
     }
+
     function appendGhost(ghostDuration = 4000) {
         showGhost.value = true
         nextTick()
@@ -174,6 +167,7 @@ import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
             window.open('https://www.youtube.com/watch?v=2qBlE2-WL60','_blank')?.focus()
         }, 400)
     }
+    
     const hideTreatButton = ref(false)
     function hideTreat() {
         ghostMessage.value = `You didn't need that anyway, did you?`
@@ -186,7 +180,7 @@ import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
 </script>
 
 <style>
-    .contest-card {
+    .game-card {
         width: 20rem;
         display: flex;
         flex-direction: column;
