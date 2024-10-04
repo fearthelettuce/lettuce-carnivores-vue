@@ -54,6 +54,9 @@ async function fulfillCheckout (checkoutWebhookData: any) {
         shippingType = 'Expedited'
     }
     const orderNumber = await getNextSequentialId('orders')
+    if(typeof orderNumber !== 'number') {
+        throw new Error('Unable to get next order ID')
+    }
     const orderDetails = {
         id: orderNumber,
         customer: checkoutWebhookData.client_reference_id,

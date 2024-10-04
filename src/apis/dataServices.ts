@@ -15,20 +15,22 @@ export function parseJSON(jsonData: JSON) {
     return results
 }
 
-async function getNextSequentialId(collectionName: string, idFieldName: string) {
-    const startingValue = 1000
+export async function getNextSequentialId(collectionName: string, idFieldName: string = 'id', startingValue = 1000) {
     let docs: Array<unknown> | undefined = []
     try {
         docs = await findAll(collectionName)
+        console.log(docs)
     } catch (err) {
         console.log(err)
+        return err
     }
     let nextSequentialId: number
     if (docs) {
         nextSequentialId = await docs.reduce((acc: number, doc: any) => acc = acc > doc[idFieldName] ? acc : doc[idFieldName], startingValue).valueOf()
         nextSequentialId++ 
     } else {
-        return startingValue + 1
+        return {success: false, error: true, message: 'Unable to get next ID'}
+        // return startingValue + 1
     }
     return nextSequentialId
 }
@@ -39,8 +41,15 @@ export async function saveItem(collectionName: string, obj: any) {
     }
 
     if (!Object.prototype.hasOwnProperty.call(obj, 'id') || !obj.id) {
-        const nextId: number = await getNextSequentialId(collectionName, 'id')
-        obj.id = nextId
+        try {
+            const nextId = await getNextSequentialId(collectionName, 'id')
+            if(typeof nextId === 'number') {
+                obj.id = nextId
+            }
+        } catch (e) {
+            console.error(e)
+            return
+        }
     } 
     try {
         const res = await setDoc(doc(db, collectionName, obj.id.toString()), { ...obj })

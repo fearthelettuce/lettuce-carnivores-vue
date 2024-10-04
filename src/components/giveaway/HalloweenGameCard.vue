@@ -19,7 +19,7 @@
                         <GhostIcon class="ghost-icon"/>
                     </div>
                     
-                    <div  class="message-container"><h4>{{ ghostMessage }}</h4></div>
+                    <div class="message-container"><p class="ghost-message">{{ ghostMessage }}</p><h4></h4></div>
                     
                 </div>
             </div>
@@ -47,8 +47,17 @@ const VampireIcon = defineAsyncComponent(() => import( '@/assets/icons/halloween
 const WitchIcon = defineAsyncComponent(() => import( '@/assets/icons/halloween/WitchIcon.vue'))
 
 import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
+import { useGiveawayStore } from '@/stores/giveaway'
+import { toast } from 'vue3-toastify'
+import { storeToRefs } from 'pinia'
+const { addLetter, newGame, fetchActiveGiveaway } = useGiveawayStore()
+const { isGameComplete, isGameActive } = storeToRefs(useGiveawayStore())
+    onMounted( async() => {
+        await fetchActiveGiveaway()
 
-    onMounted(() => {
+        if(!isGameActive && !isGameComplete) {
+            newGame()
+        }
         const random = Math.floor(Math.random() * 10) + 1
         switch (random){
         case 1:
@@ -84,32 +93,52 @@ import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
             dynamicComponent.value = PumpkinIcon
             dynamicComponentClass.value = ''
         }
-
     })
-    const dynamicComponent = ref()
+    const dynamicComponent = shallowRef()
     const dynamicComponentClass = ref('')
     const showGhost = shallowRef(false)
     const ghostTimer = ref()
     const ghostMessage = ref('')
     const receivedTreat = ref(false)
+
     function treat() {
+        reset()
+        if(isGameComplete.value) {
+            ghostMessage.value = `You've collected all the letters! Head to the Giveaway page to enter the giveaway.`
+            appendGhost(3500)
+            return
+        }
         if(receivedTreat.value === true) {
-            ghostMessage.value = `I already gave you a treat!  Save some for the other kids!  Here's a trick instead!`
+            ghostMessage.value = `Save some for the other kids!  \nHere's a trick instead!`
             appendGhost(1500)
             setTimeout(()=>{trick()},1700)
             return
         }
-        reset()
-        appendGhost(6000)
-        const nextLetter = 'G' //Get next letter from contest store
-        ghostMessage.value = `I added a '${nextLetter}' to your trick-or-treat bucket.`
+        
+        const nextLetter = addLetter()
+
+        if(nextLetter === undefined || nextLetter === null || nextLetter === '') {
+            console.error('Unable to get next letter')
+            toast.error('There seems to be an issue. Please contact support@dangerlettuce.com if this issue persists')
+            return
+         }
+        
+        if(isGameComplete.value) {
+            ghostMessage.value = ghostMessage.value + `Congratulations, you found all the letters!  Head to the Giveaway page to enter!`
+            appendGhost(30000)
+        } else {
+            ghostMessage.value = `I added a '${nextLetter?.toUpperCase()}' to your trick-or-treat bucket.`
+            appendGhost(6000)
+        }
         receivedTreat.value = true
     }
+
     function reset() {
         clearTimeout(ghostTimer.value)
         showGhost.value = false
         ghostMessage.value = ''
     }
+
     function trick() {
         reset()
         let randomTrick = Math.random()
@@ -140,11 +169,11 @@ import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
 
     const showBlackout = ref(false)
     function blackout() {
-        ghostMessage.value = 'Oops, who turned off the lights???'
-        setTimeout(()=>{appendGhost(3000)}, 300)
+        ghostMessage.value = 'Who turned off the lights???'
+        setTimeout(()=>{appendGhost(3000)}, 600)
         showBlackout.value = true
         setTimeout(() => {showBlackout.value = false}, 2500)
-        appendClassToBody('hide-overflow', 2500)
+        appendClassToBody('hide-overflow', 4500)
     }
 
     function upsideDownScreen() {
@@ -207,15 +236,14 @@ import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
         height: 100dvh;
         z-index: 9990;
         background-color: black;
-
     }
 
     .ghost-card {
         z-index: 9995;
         position: fixed; 
-        left: 50%;
+        left: 50dvw;
         transform: translate(-50%, -50%);
-        top: 50%;
+        top: 50dvh;
         margin-inline: auto; 
         width: fit-content;
         border-radius: 2rem;
@@ -223,7 +251,7 @@ import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
         background-color: black;
         color: #f4f1dc;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: center;
     }
     .black-font {
@@ -237,14 +265,19 @@ import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
         filter: brightness(0) saturate(100%) invert(87%) sepia(31%) saturate(146%) hue-rotate(348deg) brightness(108%) contrast(91%);
         width: 100%;
         height: 100%;
-        padding: 2rem;
+        padding: 1rem;
     }
     .message-container {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 2rem 3rem 2rem 0;
-
+        padding: 1rem;
+        width: 16rem;
+    }
+    .ghost-message {
+        text-align: center;
+        font-size: 1.3rem;
+        white-space:pre-wrap;
     }
     .v-enter-active,
     .v-leave-active {
@@ -255,12 +288,6 @@ import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
     .v-leave-to {
         opacity: 0;
     }
-
-    /* .upside-down {
-        transform:rotate(180deg);
-        -ms-transform:rotate(180deg);
-        -webkit-transform:rotate(180deg);
-    } */
 
     .upside-down {
         -moz-transform: scale(-1, -1);
@@ -330,4 +357,18 @@ import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
         100% { transform: scale(1, 1) }
     }
 
+    @media(min-width: 80rem) {
+        .ghost-card {
+            flex-direction: row;
+        }
+        .ghost-icon {
+            padding: 2rem;
+        }
+        .message-container {
+            padding: 2rem 3rem 2rem 0;
+        }
+        .ghost-message {
+            font-size: 2rem;
+        }
+    }
 </style>

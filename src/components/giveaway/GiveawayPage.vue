@@ -3,51 +3,135 @@
         <div class="giveaway-container">
 
             <div class="giveaway-header">
-                <h3>{{ giveawayName }}</h3>
-                <h4>{{ giveawayDateText }}</h4>
-                <h4>{{ winnerAnnouncedText }}</h4>
-                <p>{{ giveawaySummary }}</p>
+                <div class="giveaway-body">
+                    <h3>{{ giveawayDetails?.description }}</h3>
+                    <p>{{ giveawayDetails?.prize }}</p>
+                    <p>{{ giveawayDetails?.duration }}</p>
+                    <p>{{ giveawayDetails?.summary }}</p>
+                    <p>{{ giveawayDetails?.winnerAnnounced }}</p>
+                    <div class="action-container margin-bottom">
+                        <BaseButton type="info" @click.prevent="expandHelp">Need Help?</BaseButton>
+                        <BaseButton type="info" @click.prevent="expandRules">*Rules</BaseButton>
+                    </div>
+                    <Transition>
+                        <div v-show="showHelp">
+                            <p>{{gameHelpLine1}} <span><BaseButton @click.prevent="" type='treat'>Treat</BaseButton></span> button on any of the 'View Details' pages.</p>
+                            <p>{{gameHelpLine2}}</p>
+                            <p v-if="isGameActive">Not interested in playing the game? <BaseButton size="small" @click="setBypassGame">Click here</BaseButton> to skip it and enter the contest</p>
+                        </div>
+                    </Transition>
+                    <Transition>
+                        <div v-show="showRules">
+                            <p>{{`Valid in the United States only. The winner will be contacted via their selected contact method within 48 hours of the close of the contest and will need to respond within 7 calendar days with a valid U.S. shipping address. Failing to provide a valid contact method or eligible shipping address within 7 calendar days will void their claim to the prize. Odds are winning depend on the number of entries into the giveaway, with each entrant having one chance to win. Prize valued at $${giveawayDetails?.prizeValue?.toString()} but may not be exchanged for a cash prize. No purchase necessary, and neither purchase, nor completion of the game will increase odds of winning. Void where prohibited.`}}</p>
+                        </div>
+                    </Transition>
+                </div>
+                <Transition>
+                    <GiveawayEntryForm v-show="isGameComplete || bypassGame" />
+                </Transition>
             </div>
-            <component class='game' :is="activeGame" />
+            <component :is="activeGame" class="game" />
         </div>
     </BaseContainer>
     
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import HalloweenLetterGame from './HalloweenLetterGame.vue';
+import GiveawayEntryForm from './GiveawayEntryForm.vue';
+import { useGiveawayStore } from '@/stores/giveaway'
+import { storeToRefs } from 'pinia'
 
-    const giveawayName = 'Trick or Treat Giveaway'
-    const giveawayDateText = 'October 1 - October 6 9:00PM CDT'
-    const winnerAnnouncedText = 'Winner will be announced October 7th'
-    const giveawaySummary = 'Look for Halloween themed icons around the site and when you find one, a friendly little ghost might put a letter in your bucket.  Find all the letters and unscramble them to be entered in the giveaway*!'
-    const giveawayHelpText = `Need help?`
-    const giveawayHelpDetails = `Having issues or just want to enter the giveaway without playing the game?`
-    const giveawayBypassText = `Click here to skip the game and enter the giveaway`
-    const giveawayRuleReference = `*`
-    const giveawayRules = ``
     const activeGame = HalloweenLetterGame
+    const gameHelpLine1 = `Go to the 'Shop' link at the top and click on any of the plants.  Then find the`
+    const gameHelpLine2 = `Once you collect all the letters, come back to this page to submit your name for the contest`
+    
+    const {giveawayDetails, isGameActive, isGameComplete, bypassGame} = storeToRefs(useGiveawayStore())
+    const { newGame, fetchActiveGiveaway } = useGiveawayStore()
+    const showHelp = ref(false)
+    function expandHelp() {
+        showHelp.value = !showHelp.value
+    }
+    const showRules = ref(false)
+    function expandRules() {
+        showRules.value = !showRules.value
+    }
+    function setBypassGame() {
+        bypassGame.value = !bypassGame.value
+        showHelp.value = false
+    }
+
+onMounted( async()=> {
+    await fetchActiveGiveaway()
+    
+    if(!isGameActive.value && !isGameComplete.value) {
+        newGame()
+    }
+})
 </script>
 
 <style scoped>
     .giveaway-container {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: center;
     }
-    .giveaway-header {
-        width: 30rem;
+    .giveaway-body {
         align-items: center;
         display: flex;
         flex-direction: column;
         justify-content: center;
     }
+
+    .giveaway-header {
+        max-width: 90dvw;
+        margin-inline: 5dvw;
+        
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
     .game {
-        width: 60rem;
+        max-width: 90dvw;
+        margin: 0 1rem;
+    }
+    .margin-bottom {
+        margin-bottom: 1rem;
     }
     p {
         text-justify: newspaper;
+        text-align: center;
+    }
+    .v-enter-active,
+    .v-leave-active {
+        transition: opacity .7s ease-in-out;
+    }
+
+    .v-enter-from,
+    .v-leave-to {
+        opacity: 0;
+    }
+    @media (min-width: 45rem) {
+        .game {
+            width: 90%;
+        }
+        .giveaway-header {
+            width: 50rem;
+        }
+        .giveaway-container {
+            flex-direction: row;
+        }
+    }
+
+    @media (min-width: 100rem) {
+        .game {
+            width: 50rem;
+        }
+        .giveaway-header {
+            width: 30rem;
+        }
     }
 
 </style>

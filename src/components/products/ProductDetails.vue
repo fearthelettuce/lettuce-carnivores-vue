@@ -84,6 +84,10 @@ import { toast } from 'vue3-toastify'
 import type { PlantCategory, Plant} from '@/types/Plant'
 import { formattedDate } from '@/utils/utils'
 import HalloweenGameCard from '@/components/giveaway/HalloweenGameCard.vue'
+import { storeToRefs } from 'pinia'
+import { useGiveawayStore } from '@/stores/giveaway'
+
+const {isGameActive} = storeToRefs(useGiveawayStore())
 
 const route = useRoute()
 const plantCategory: Ref<PlantCategory | undefined> = ref()

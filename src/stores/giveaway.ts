@@ -1,0 +1,110 @@
+import { defineStore } from 'pinia'
+import { useUserStore } from './users';
+import { ref, type Ref } from 'vue'
+import { connectFunctionsEmulator, getFunctions, httpsCallable } from 'firebase/functions'
+import { collection, getDocs, query, Timestamp, where} from 'firebase/firestore';
+import type {Giveaway, GiveawayEntry, GiveawayFormData } from '@/types/Giveaway'
+import { db } from '@/apis/firebase'
+export const useGiveawayStore = defineStore('giveaway', () => {
+
+    const userStore = useUserStore()
+    const giveawayName = ref('')
+    const entryStartTime = ref()
+    const entryEndTime = ref()
+    const isGameActive = ref(false)
+    const isGameComplete = ref(false)
+    
+    //giveaway specifics
+    const password = ref('')
+    const myLetters: Ref<string[]> = ref([])
+    const myBlanks: Ref<string[]> = ref([])
+    const bypassGame = ref(false)
+    const remainingLetters: Ref<string[]> = ref([])
+    function newGame() {
+        entryStartTime.value = new Date()
+        isGameComplete.value = false
+        remainingLetters.value.length = 0
+        remainingLetters.value = password.value.toLowerCase().split("")
+        myLetters.value.length = 0
+        bypassGame.value = false
+        myBlanks.value = Array(password.value.length).fill('_')
+        isGameActive.value = true
+
+
+    }
+    function addLetter() {
+        if(remainingLetters.value.length === 0 || myBlanks.value.length === 0) { console.error('no remaining letters / blanks'); return }
+        const newLetter = remainingLetters.value.shift()
+        myLetters.value.push(newLetter!)
+        myBlanks.value.pop()
+        if(myBlanks.value.length === 0 || myLetters.value.length >= password.value.length) {checkAnswer()}
+        return newLetter
+    }
+
+    function checkAnswer() {
+        const myAnswer = myLetters.value.join('')
+        const isCorrect = myAnswer.toLowerCase() === password.value.toLowerCase()
+        if(!isCorrect) {
+            return false
+        } else {
+            isGameComplete.value = true
+            entryEndTime.value = new Date()
+            return true
+        }
+    }
+
+    async function submitGiveawayEntry(entryData: GiveawayFormData) {
+        if(!userStore.isLoggedInOrAnonymous) {
+            userStore.loginAnonymously()
+        }
+        const giveawayEntry: GiveawayEntry = {giveawayName: giveawayName.value, ...entryData, uid: userStore.user?.uid ?? '', entryStartTime: entryStartTime.value, entryEndTime: entryEndTime.value, bypassGame: bypassGame.value}
+        const functions = getFunctions()
+        //connectFunctionsEmulator(functions,'127.0.0.1', 5001)
+        const submitGiveawayEntryFunction: Function = httpsCallable(functions, 'giveawayService')
+        const res = await submitGiveawayEntryFunction(giveawayEntry).catch((e: any) => {
+            console.error(e)
+            return {success: false, error: true, message: e.message, errorDetails: e}
+        })
+        return res.data
+    }
+
+    const isGiveawayActive = ref(false)
+    async function fetchActiveGiveaway() {
+        if(giveawayDetails.value !== undefined) { return }
+        const q = query(collection(db, 'giveaways'), where('active', '==', true))
+        const querySnapshot = await getDocs(q)
+        if(querySnapshot.docs.length > 1) {
+            console.error('Multiple active giveaways, check db')
+            return 
+        }
+        console.log(querySnapshot.docs)
+        if(querySnapshot.docs.length === 0) {
+            return
+        }
+        setGiveawayData(querySnapshot.docs[0].data() as unknown as Giveaway)
+    }
+
+    const giveawayDetails: Ref<Giveaway | undefined> = ref(undefined)
+    function setGiveawayData(data: Giveaway) {
+        console.log(data)
+        giveawayDetails.value = {...data}
+        isGiveawayActive.value = data.active
+        giveawayName.value = data.name
+        password.value = data.gameData.password
+
+    }
+    return {
+        isGameActive,
+        isGameComplete,
+        bypassGame,
+        newGame,
+        myLetters,
+        myBlanks,
+        submitGiveawayEntry,
+        addLetter,
+        fetchActiveGiveaway,
+        giveawayDetails
+        
+    }
+
+})

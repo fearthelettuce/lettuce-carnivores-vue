@@ -2,7 +2,8 @@
     <div class="game-container">
         <PumpkinBucket class="bucket" />
         <div class="letter-container">
-            <LetterCard v-for="letter in myLetters" class="letter">{{ letter }}</LetterCard>
+            <LetterCard v-for="(letter, index) in myLetters" :key="index">{{ letter.toUpperCase() }}</LetterCard>
+            <LetterCard v-for="(blank, index) in myBlanks" :key="index">_</LetterCard> 
         </div>
     </div>
 
@@ -10,18 +11,12 @@
 
 
 <script setup lang="ts">
-import { ref, type Ref, onMounted } from 'vue';
 import PumpkinBucket from '@/assets/icons/halloween/PumpkinBucket.vue';
 import LetterCard from './LetterCard.vue'
+import { storeToRefs } from 'pinia'
+import { useGiveawayStore } from '@/stores/giveaway'
+const { myLetters, myBlanks } = storeToRefs(useGiveawayStore())
 
-const myLetters: Ref<string[]> = ref([])
-onMounted(() => {
-    myLetters.value.push('G')
-    myLetters.value.push('_')
-    myLetters.value.push('_')
-    myLetters.value.push('S')
-    myLetters.value.push('_')
-})
 </script>
 
 <style scoped>
@@ -36,13 +31,8 @@ onMounted(() => {
         flex-direction: row;
         position: absolute;
         top: 30%;
+        max-width:100%;
+        gap: .5rem;
     }
-    .letter {
 
-        margin: .5rem;
-    }
-    /* .bucket {
-        position: absolute;
-        top: 0;
-    } */
 </style>

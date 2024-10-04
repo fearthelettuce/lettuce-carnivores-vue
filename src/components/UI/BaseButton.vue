@@ -22,7 +22,6 @@ const props = defineProps({
 
 <style scoped>
 .base-button {
-    
     font-weight: 500;
     cursor: pointer;
     box-shadow: 0 0 2px darkslategray;
@@ -49,7 +48,7 @@ const props = defineProps({
     background-color: #00A0E5;
     color: white;
 }
-.secondary {
+/* .secondary {
 
 }
 .warning {
@@ -57,7 +56,7 @@ const props = defineProps({
 }
 .danger {
 
-}
+} */
 .primary-outline {
     border: 1px solid #9fdb50;
     color: #9fdb50;

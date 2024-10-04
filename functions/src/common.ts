@@ -1,19 +1,19 @@
 import admin from 'firebase-admin'
 
-export async function getNextSequentialId(collectionName: string, idFieldName: string = 'id') {
-    const startingValue = 1000
+export async function getNextSequentialId(collectionName: string, startingValue = 1000, idFieldName: string = 'id') {
     let docs: Array<unknown> | undefined = []
     try {
         docs = await getAllDocs(collectionName)
     } catch (err) {
         console.log(err)
+        return undefined
     }
     let nextSequentialId: number
-    if (docs.length > 0) {
-        nextSequentialId = await docs.reduce((acc: number, doc: any) => acc = acc > parseInt(doc[idFieldName]) ? acc : parseInt(doc[idFieldName]), startingValue).valueOf()
-        nextSequentialId++ 
+    if (docs.length === 0) { 
+        return startingValue
     } else {
-        return startingValue + 1
+        nextSequentialId = docs.reduce((acc: number, doc: any) => acc = acc > parseInt(doc[idFieldName]) ? acc : parseInt(doc[idFieldName]), startingValue).valueOf()
+        nextSequentialId++
     }
     return nextSequentialId
 }

@@ -11,8 +11,8 @@ export async function saveProductUtil(product: Product | Plant, collectionName: 
     try {
         const res = await saveItem(collectionName, product)
         //TODO convert to toRaw
-        if(res.success) {
-            const productDetails = JSON.parse(JSON.stringify( res.documentDetails))
+        if(res?.success) {
+            const productDetails = JSON.parse(JSON.stringify( res?.documentDetails))
             const productIndex = productList?.findIndex(item => item.id === productDetails.id)
             if (productList && productIndex !== null && productIndex !== undefined && productIndex > -1) {
                 productList.splice(productIndex, 1, productDetails)
@@ -24,7 +24,7 @@ export async function saveProductUtil(product: Product | Plant, collectionName: 
             // }
             return { success: true, message: res.message }
         } else {
-            return {success: false, error: true, errorDetails: res.error, message: 'There was an error saving'}
+            return {success: false, error: true, errorDetails: res?.error, message: 'There was an error saving'}
         }
     } catch (err) {
         console.log(err)
