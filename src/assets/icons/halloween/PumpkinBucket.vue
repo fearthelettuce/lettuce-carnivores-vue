@@ -1,7 +1,5 @@
 <template>
-    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-        viewBox="0 0 1000 1000" style="enable-background:new 0 0 1000 1000;" xml:space="preserve">
-
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 1000 1000"><defs></defs><title>pumpkin bucket</title>
     <g>
         <path class="st0" d="M354.6,290.1c33.8-2.3,67.6,2.7,100.3,11.3c23.6-4,45.5-6.7,67.3-7.9l0,0c6.9-0.4,13.9-0.6,20.7-0.7l0,0
             c35.2-0.2,70.2,4.4,104.7,12c4.2-1.7,10.1-1.6,14.5-2c11.4-1.2,22.9-1.6,34.3-1.2c25.4,1.2,49.6,8.4,72.3,19.9

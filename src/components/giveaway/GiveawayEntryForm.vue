@@ -6,7 +6,7 @@
             id="giveaway-entry"
             @submit="submitHandler"
         >
-            <h1 class="text-2xl font-bold mb-2 text-center">Enter Giveaway</h1>
+            <h2 class="text-2xl font-bold mb-1 text-center">Enter Giveaway</h2>
 
             <FormKit
                 type="text"
@@ -18,7 +18,7 @@
                 validation="required"
                 v-model="formData.name"
             />
-            <h3 class="text-2xl font-bold mb-2 text-center">Contact Method</h3>
+            <h3 class="text-2xl font-bold mb-1 text-center">Contact Method</h3>
             <FormKit
                 type="text"
                 name="email"
@@ -102,7 +102,7 @@ async function submitHandler() {
     }
     @media (min-width: 80rem) {
         .form-container {
-            padding: 2rem;
+            padding: 1.5rem;
         }
     }
 </style>

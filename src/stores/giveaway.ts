@@ -13,7 +13,8 @@ export const useGiveawayStore = defineStore('giveaway', () => {
     const entryEndTime = ref()
     const isGameActive = ref(false)
     const isGameComplete = ref(false)
-    
+    const isEntered = ref(false)
+    const beenRickRolled = ref(false)
     //giveaway specifics
     const password = ref('')
     const myLetters: Ref<string[]> = ref([])
@@ -21,12 +22,16 @@ export const useGiveawayStore = defineStore('giveaway', () => {
     const bypassGame = ref(false)
     const remainingLetters: Ref<string[]> = ref([])
     function newGame() {
+        //reset old game, if it exists
         entryStartTime.value = new Date()
         isGameComplete.value = false
         remainingLetters.value.length = 0
         remainingLetters.value = password.value.toLowerCase().split("")
         myLetters.value.length = 0
         bypassGame.value = false
+        beenRickRolled.value = false
+
+        //populate data for new game
         myBlanks.value = Array(password.value.length).fill('_')
         isGameActive.value = true
 
@@ -52,10 +57,11 @@ export const useGiveawayStore = defineStore('giveaway', () => {
             return true
         }
     }
-
+    const isSaving = ref(false)
     async function submitGiveawayEntry(entryData: GiveawayFormData) {
+        isSaving.value = true
         if(!userStore.isLoggedInOrAnonymous) {
-            userStore.loginAnonymously()
+            await userStore.loginAnonymously()
         }
         const giveawayEntry: GiveawayEntry = {giveawayName: giveawayName.value, ...entryData, uid: userStore.user?.uid ?? '', entryStartTime: entryStartTime.value, entryEndTime: entryEndTime.value, bypassGame: bypassGame.value}
         const functions = getFunctions()
@@ -63,8 +69,10 @@ export const useGiveawayStore = defineStore('giveaway', () => {
         const submitGiveawayEntryFunction: Function = httpsCallable(functions, 'giveawayService')
         const res = await submitGiveawayEntryFunction(giveawayEntry).catch((e: any) => {
             console.error(e)
+            isSaving.value = false
             return {success: false, error: true, message: e.message, errorDetails: e}
         })
+        isSaving.value = false
         return res.data
     }
 
@@ -77,7 +85,6 @@ export const useGiveawayStore = defineStore('giveaway', () => {
             console.error('Multiple active giveaways, check db')
             return 
         }
-        console.log(querySnapshot.docs)
         if(querySnapshot.docs.length === 0) {
             return
         }
@@ -86,7 +93,6 @@ export const useGiveawayStore = defineStore('giveaway', () => {
 
     const giveawayDetails: Ref<Giveaway | undefined> = ref(undefined)
     function setGiveawayData(data: Giveaway) {
-        console.log(data)
         giveawayDetails.value = {...data}
         isGiveawayActive.value = data.active
         giveawayName.value = data.name
@@ -103,7 +109,8 @@ export const useGiveawayStore = defineStore('giveaway', () => {
         submitGiveawayEntry,
         addLetter,
         fetchActiveGiveaway,
-        giveawayDetails
+        giveawayDetails,
+        beenRickRolled
         
     }
 

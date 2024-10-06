@@ -19,7 +19,7 @@
                         <GhostIcon class="ghost-icon"/>
                     </div>
                     
-                    <div class="message-container"><p class="ghost-message">{{ ghostMessage }}</p><h4></h4></div>
+                    <div class="message-container"><div class="ghost-message">{{ ghostMessage }}</div><h4></h4></div>
                     
                 </div>
             </div>
@@ -51,11 +51,11 @@ import { useGiveawayStore } from '@/stores/giveaway'
 import { toast } from 'vue3-toastify'
 import { storeToRefs } from 'pinia'
 const { addLetter, newGame, fetchActiveGiveaway } = useGiveawayStore()
-const { isGameComplete, isGameActive } = storeToRefs(useGiveawayStore())
+const { isGameComplete, isGameActive, beenRickRolled } = storeToRefs(useGiveawayStore())
     onMounted( async() => {
         await fetchActiveGiveaway()
 
-        if(!isGameActive && !isGameComplete) {
+        if(!isGameActive.value && !isGameComplete.value) {
             newGame()
         }
         const random = Math.floor(Math.random() * 10) + 1
@@ -138,7 +138,7 @@ const { isGameComplete, isGameActive } = storeToRefs(useGiveawayStore())
         showGhost.value = false
         ghostMessage.value = ''
     }
-
+    
     function trick() {
         reset()
         let randomTrick = Math.random()
@@ -147,7 +147,12 @@ const { isGameComplete, isGameActive } = storeToRefs(useGiveawayStore())
         } else if(randomTrick < .5) {
             upsideDownScreen()
         } else if (randomTrick < .75) {
-            rickRoll()
+            if(beenRickRolled.value === false) {
+                rickRoll()
+            } else {
+                doAFlip()
+            }
+            beenRickRolled.value = true
         } else if (randomTrick < .9) {
             hideTreat()
         } else {
@@ -183,7 +188,7 @@ const { isGameComplete, isGameActive } = storeToRefs(useGiveawayStore())
     }
 
     function doAFlip() {
-        ghostMessage.value = 'Weeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+        ghostMessage.value = 'Weeeeeeeeeeeeeeeeeeee'
         appendGhost(4500)
         appendClassToBody('hide-overflow', 4000)
         appendClassToBody('barrel-roll', 4000)
@@ -272,12 +277,13 @@ const { isGameComplete, isGameActive } = storeToRefs(useGiveawayStore())
         justify-content: center;
         align-items: center;
         padding: 1rem;
-        width: 16rem;
+        width: 18rem;
     }
     .ghost-message {
         text-align: center;
         font-size: 1.3rem;
         white-space:pre-wrap;
+        word-wrap: break-word
     }
     .v-enter-active,
     .v-leave-active {
@@ -366,9 +372,11 @@ const { isGameComplete, isGameActive } = storeToRefs(useGiveawayStore())
         }
         .message-container {
             padding: 2rem 3rem 2rem 0;
+            min-width: 30rem;
         }
         .ghost-message {
             font-size: 2rem;
         }
+        
     }
 </style>

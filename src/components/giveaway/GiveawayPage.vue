@@ -72,10 +72,23 @@ onMounted( async()=> {
 </script>
 
 <style scoped>
+    p {
+        margin: .2rem 0;
+    }
+    h3 {
+        margin: 0 0 .2rem 0;
+    }
+    .action-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        gap: 1rem;
+    }
     .giveaway-container {
         display: flex;
         flex-direction: column;
         justify-content: center;
+        margin-bottom: 2rem;
     }
     .giveaway-body {
         align-items: center;
@@ -94,7 +107,7 @@ onMounted( async()=> {
         flex-direction: column;
     }
     .game {
-        max-width: 90dvw;
+        width: 85dvw;
         margin: 0 1rem;
     }
     .margin-bottom {
@@ -113,25 +126,18 @@ onMounted( async()=> {
     .v-leave-to {
         opacity: 0;
     }
-    @media (min-width: 45rem) {
+    @media (min-width: 50rem) {
         .game {
-            width: 90%;
+            width: clamp(40rem, 50rem, 60rem);
         }
         .giveaway-header {
-            width: 50rem;
+            width: clamp(30rem, 100%, 40rem);
         }
         .giveaway-container {
             flex-direction: row;
         }
     }
 
-    @media (min-width: 100rem) {
-        .game {
-            width: 50rem;
-        }
-        .giveaway-header {
-            width: 30rem;
-        }
-    }
+
 
 </style>

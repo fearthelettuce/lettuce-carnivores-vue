@@ -109,9 +109,7 @@ onMounted(async () => {
 })
 
 async function save() {
-    console.log(isSaving.value)
     await saveCategory(plantCategoryToEdit.value)
-    console.log(isSaving.value)
 }
 
 const isExpanded = ref(true)

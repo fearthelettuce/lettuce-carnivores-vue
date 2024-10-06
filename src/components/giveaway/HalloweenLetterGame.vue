@@ -20,6 +20,9 @@ const { myLetters, myBlanks } = storeToRefs(useGiveawayStore())
 </script>
 
 <style scoped>
+    .bucket {
+       
+    }
     .game-container {
         display: flex;
         justify-content: center;
