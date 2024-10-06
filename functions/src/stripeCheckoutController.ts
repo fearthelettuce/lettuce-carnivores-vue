@@ -1,6 +1,5 @@
 import admin from 'firebase-admin'
-import { onCall } from 'firebase-functions/v2/https';
-import type { CallableRequest } from 'firebase-functions/v2/https'
+import { onCall, type CallableRequest } from 'firebase-functions/v2/https';
 import { getAllDocs } from './common'
 import { discountedShippingThreshold, discountedStandardShippingId, discountedExpeditedShippingId, standardShippingId, expeditedShippingId} from './constants/stripeConstants'
 import Stripe from 'stripe'

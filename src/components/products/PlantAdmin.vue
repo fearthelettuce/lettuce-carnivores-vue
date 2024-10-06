@@ -3,6 +3,7 @@
     Heli Count : ${currentAvailablePlants.heliCount} ---
     Heli Varieties: ${currentAvailablePlants.heliVarieties}
     `}}</div>
+    <InventoryManagement />
     <div class="container-fluid layout"> 
         
         <div>
@@ -90,6 +91,7 @@ import PhotoUploadModal from '@/components/PhotoUploadModal.vue';
 import { type PhotoItem } from '@/types/Product';
 import { getCardName, getDisplayPrice, getCardPhoto } from '@/composables/useCardUtils';
 import { getAllPlants } from '@/apis/dataServices'
+import InventoryManagement from './InventoryManagement.vue'
 
 const {fetchAllCategories, findPlantCategoryById, setCategoryToEdit, saveCategory, addPlant, getAvailablePlants, removePlant} = usePlantStore()
 const {plantCategories, plantCategoryToEdit, isSaving} = storeToRefs(usePlantStore())
