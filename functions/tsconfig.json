@@ -6,10 +6,9 @@
     "outDir": "lib",
     "sourceMap": true,
     "strict": true,
-    "target": "es2017",
+    "target": "ES2022",
     "esModuleInterop": true,
-    "noErrorTruncation": true,
-    
+    "noErrorTruncation": true,    
   },
   "compileOnSave": true,
   "include": [

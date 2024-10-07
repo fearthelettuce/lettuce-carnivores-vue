@@ -13,6 +13,7 @@ const AccountView = () => import('@/views/AccountView.vue')
 const PlantAdminView = () => import('@/views/PlantAdmin.vue')
 const AdminView = () => import('@/views/AdminView.vue')
 const GiveawayView = () => import('@/views/GiveawayView.vue')
+const EbayLoginSuccess = () => import('@/views/EbayLoginSuccess.vue')
 const routeData = [
     {
       path: "/",
@@ -26,18 +27,6 @@ const routeData = [
         hideHeader: false,
       }
     },
-    // {
-    //   path: "/",
-    //   name: 'home',
-    //   label: 'Home',
-    //   component: HomeView,
-    //   meta: {
-    //     showInNav: false,
-    //     requiresLogin: false,
-    //     requiresAdmin: false,
-    //     hideHeader: true,
-    //   }
-    // },
     {
       path: "/products",
       name: 'products',
@@ -182,8 +171,19 @@ const routeData = [
         requiresLoginOrAnon: true,
         requiresAdmin: false,
       }
-
-    }
+    },
+    {
+      path: '/ebayLoginSuccess',
+      name: 'ebayLoginSuccess',
+      label: 'Ebay Login Success',
+      component: EbayLoginSuccess,
+      meta: {
+        showInNav: false,
+        requiresLogin: false,
+        requiresLoginOrAnon: false,
+        requiresAdmin: true,
+      }
+    },
 ]
 
 //Ignore ES Lint barfing an unused variable error, this line is specifically to exclude that variable from the exported object 

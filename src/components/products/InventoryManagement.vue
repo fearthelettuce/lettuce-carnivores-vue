@@ -1,13 +1,34 @@
 <template>
-    <BaseButton @click="clickHandler">Test</BaseButton>
-
+    <BaseButton @click="accessToken">Test Access Token</BaseButton>
+    <BaseButton @click="ebayLogin">Ebay Login</BaseButton>
+    <BaseButton @click="refreshEbay">Refresh Ebay</BaseButton>
+    
 </template>
 
 <script setup lang="ts">
-import { testEbay } from '@/composables/useEbayUtils';
+import { ref } from 'vue';
+import { getEbayAccessToken, getUserConsent, refreshAccessToken } from '@/composables/useEbayUtils';
+import BaseDialog from '@/components/UI/BaseDialog.vue';
+import { toast } from 'vue3-toastify'
 
-async function clickHandler() {
-    const res = await testEbay()
-    console.log(res.data.access_token)
+async function accessToken() {
+    const res = await getEbayAccessToken().catch(e => {console.error(e); return})
+    console.log(res)
+}
+
+async function ebayLogin() {
+    const res = await getUserConsent().catch(e => {console.error(e); return})
+
+    console.log(res)
+    if(res && res.data) { 
+        window.open(res.data as string)
+    } else {
+        toast.error('Unable to get ebay sign in URL')
+    }
+}
+
+async function refreshEbay() {
+    const res = await refreshAccessToken()
+    console.log(res)
 }
 </script>
