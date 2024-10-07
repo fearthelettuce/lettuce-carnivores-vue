@@ -36,23 +36,7 @@
                         <hr />
                         <div class="item-details my-3">
                             <h5>Products</h5>
-                            <div class="item-grid">
-                                <div class="item-name">Item</div>
-                                <div>Item #</div>
-                                <div>Size</div>
-                                <div v-if="isAdmin">Location</div>
-                                <div>Quantity</div>
-                                <div>Price</div>
-                                <template v-for="item of order.lineItems" :key="item.price_data.product_data.metadata.sku" class="grid-item">
-                                    <div class="item-name">{{` ${item.price_data.product_data.name} ${item.price_data.product_data.metadata.clone || ''} `}}</div>
-                                    <div>{{ item.price_data.product_data.metadata.sku }}</div>
-                                    <div>{{ item.price_data.product_data.description }}</div>
-                                    <div v-if="isAdmin">{{ item.price_data.product_data.metadata?.shelfLocation }}</div>
-                                    <div>{{ item.quantity }}</div>
-                                    <div>{{ USDollar.format(item.price_data.unit_amount / 100) }}</div>
-                                </template>
-                            </div>
-                            
+                            <OrderDetails :lineItems="order.lineItems" :isAdmin :order />
                         </div>
                         <div class="my-5 ">
                             <h5>Total</h5>
@@ -85,6 +69,7 @@ import AccordionContent from 'primevue/accordioncontent'
 import OrderStatusModal from '@/components/OrderStatusModal.vue'
 import type { Order } from '@/types/Orders'
 import { USDollar, formatFirebaseDate } from '@/utils/utils';
+import OrderDetails from './OrderDetails.vue'
 const props = defineProps<{orders: Order[], isAdmin: boolean}>();
 
 const orderStatusModal = ref()
