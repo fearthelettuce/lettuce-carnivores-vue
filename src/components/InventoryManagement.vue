@@ -1,8 +1,11 @@
 <template>
-    <BaseButton @click="accessToken">Test Access Token</BaseButton>
-    <BaseButton @click="ebayLogin">Ebay Login</BaseButton>
-    <BaseButton @click="refreshEbay">Refresh Ebay</BaseButton>
-    
+    <BaseContainer>
+        <div class="actions">
+            <BaseButton @click="accessToken">Test Access Token</BaseButton>
+            <BaseButton @click="ebayLogin">Ebay Login</BaseButton>
+            <BaseButton @click="refreshEbay">Refresh Ebay</BaseButton>
+        </div>
+    </BaseContainer>
 </template>
 
 <script setup lang="ts">
@@ -20,7 +23,7 @@ async function ebayLogin() {
     const res = await getUserConsent().catch(e => {console.error(e); return})
 
     console.log(res)
-    if(res && res.data) { 
+    if(res && res.data) {
         window.open(res.data as string)
     } else {
         toast.error('Unable to get ebay sign in URL')
@@ -32,3 +35,12 @@ async function refreshEbay() {
     console.log(res)
 }
 </script>
+<style scoped>
+.actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+
+}
+</style>

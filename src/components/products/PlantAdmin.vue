@@ -1,17 +1,16 @@
 <template>
-    <div class="my-2 ms-5">{{`Total Inv: ${currentAvailablePlants.totalAvailable} --- 
+    <div class="my-2 ms-5">{{`Total Inv: ${currentAvailablePlants.totalAvailable} ---
     Heli Count : ${currentAvailablePlants.heliCount} ---
     Heli Varieties: ${currentAvailablePlants.heliVarieties}
     `}}</div>
-    <InventoryManagement />
-    <div class="container-fluid layout"> 
-        
+    <div class="container-fluid layout">
+
         <div>
-            <ItemSelect 
-                :options="plantCategories" 
+            <ItemSelect
+                :options="plantCategories"
                 v-model="plantCategoryToEdit"
                 class="item-select"
-                id="selectProduct" 
+                id="selectProduct"
                 label="Select a product to edit"
                 :includeCreate="true"
             />
@@ -22,27 +21,27 @@
                     </div>
                 </Transition>
                 <button class="btn btn-secondary" @click="toggleExpand"> {{isExpanded ? 'Hide Form' : `Edit ${plantCategoryToEdit.name !== '' ? plantCategoryToEdit.name : 'Category'}`  }}</button>
-                
+
             </div>
             <div class="plant-list mt-5">
                 <div v-for="(plant, index) in plantCategoryToEdit.plants" :key="index" >
                     <hr />
                     <div class="d-flex flex-row gap-2">
                         <div class="up-down-arrows align-content-center text-center">
-                            <button 
+                            <button
                                 class="btn px-1 py-0"
                                 v-if="index !== 0"
                                 @click="arrayMove(plantCategoryToEdit.plants,index,index-1)">
-                                <FontAwesome 
-                                class="move-arrow" 
+                                <FontAwesome
+                                class="move-arrow"
                                 icon="caret-up" />
                             </button>
                             <button
                                 v-if="index !== plantCategoryToEdit.plants.length -1"
                                 class="btn px-1 py-0"
                                 @click="arrayMove(plantCategoryToEdit.plants,index,index+1)" >
-                                <FontAwesome  
-                                class="move-arrow" 
+                                <FontAwesome
+                                class="move-arrow"
                                 icon="caret-down" />
                             </button>
                         </div>
@@ -68,11 +67,11 @@
         </div>
     </div>
 
-    <PhotoUploadModal 
+    <PhotoUploadModal
         v-if="plantCategoryToEdit !== undefined"
-        :photos="photoModalArr" 
-        :storageFolder="photoModalFolder" 
-        ref="photoModal" 
+        :photos="photoModalArr"
+        :storageFolder="photoModalFolder"
+        ref="photoModal"
         @triggerSave="saveCategory(plantCategoryToEdit)"
     />
 
@@ -91,7 +90,6 @@ import PhotoUploadModal from '@/components/PhotoUploadModal.vue';
 import { type PhotoItem } from '@/types/Product';
 import { getCardName, getDisplayPrice, getCardPhoto } from '@/composables/useCardUtils';
 import { getAllPlants } from '@/apis/dataServices'
-import InventoryManagement from './InventoryManagement.vue'
 
 const {fetchAllCategories, findPlantCategoryById, setCategoryToEdit, saveCategory, addPlant, getAvailablePlants, removePlant} = usePlantStore()
 const {plantCategories, plantCategoryToEdit, isSaving} = storeToRefs(usePlantStore())

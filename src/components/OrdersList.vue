@@ -10,7 +10,7 @@
                 <AccordionContent class="my-1">
                         <div class="shipping-info my-3">
                             <h5>Shipping</h5>
-                            
+
                             <div class="d-flex flex-row flex-wrap justify-content-around gap-2">
 
                                 <div class="ms-3">
@@ -22,14 +22,14 @@
                                 </div>
                                 <div>
                                     <div>{{order.shippingInfo.shippingType}} Shipping</div>
-                                    <div>{{  order.orderStatus.trackingNumber !== '' ? 
-                                        order.orderStatus.trackingNumber : 
+                                    <div>{{  order.orderStatus.trackingNumber !== '' ?
+                                        order.orderStatus.trackingNumber :
                                         'Tracking number not yet assigned' }}
                                     </div>
                                 </div>
                                 <div>
                                     <button v-if="isAdmin" @click="openOrderStatusModal(order)" :key="order.id" class="btn btn-info">Update Status</button>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -37,21 +37,6 @@
                         <div class="item-details my-3">
                             <h5>Products</h5>
                             <OrderDetails :lineItems="order.lineItems" :isAdmin :order />
-                        </div>
-                        <div class="my-5 ">
-                            <h5>Total</h5>
-                            <div class="total">
-                                <template v-if="order.cartTotal.amount_discount && order.cartTotal.amount_discount !== 0">
-                                    <div>Discount</div>
-                                    <div class="justify-right">-{{ USDollar.format(order.cartTotal.amount_discount / 100) }}</div>
-                                </template>
-                                <div>Shipping</div>
-                                <div class="justify-right">{{ USDollar.format(order.cartTotal.amount_shipping / 100) }}</div>
-                                <div>Tax</div>
-                                <div class="justify-right">{{ USDollar.format(order.cartTotal.amount_tax / 100) }}</div>
-                                <div>Order Total</div>
-                                <div class="justify-right">{{ USDollar.format(order.cartTotal.amountTotal / 100) }}</div>
-                            </div>
                         </div>
                 </AccordionContent>
             </AccordionPanel>
@@ -94,13 +79,13 @@ const columnCount = props.isAdmin ? 7 : 6
     grid-template-columns: repeat(v-bind(columnCount), minmax(2.8rem, 1fr));
     gap: 0.5rem 1rem;
 }
-.grid-span-1 { 
+.grid-span-1 {
     grid-column: span 1
 }
 .grid-span-2 {
     grid-column: span 2;
 }
-.grid-span-3 { 
+.grid-span-3 {
     grid-column: span 3
 }
 .item-name {
@@ -122,10 +107,10 @@ const columnCount = props.isAdmin ? 7 : 6
     max-width: 16rem;
 }
 .justify-right{
-    text-align: end;    
+    text-align: end;
 }
 p-accordionheader-toggle-icon {
         margin-left: auto;
-        
+
     }
 </style>

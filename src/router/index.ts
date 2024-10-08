@@ -14,6 +14,7 @@ const PlantAdminView = () => import('@/views/PlantAdmin.vue')
 const AdminView = () => import('@/views/AdminView.vue')
 const GiveawayView = () => import('@/views/GiveawayView.vue')
 const EbayLoginSuccess = () => import('@/views/EbayLoginSuccess.vue')
+const InventoryManagement = () => import('@/views/InventoryManagementView.vue')
 const routeData = [
     {
       path: "/",
@@ -170,6 +171,18 @@ const routeData = [
         requiresLogin: false,
         requiresLoginOrAnon: true,
         requiresAdmin: false,
+      }
+    },
+    {
+      path: '/inventoryManagement',
+      name: 'inventoryManagement',
+      label: 'Inventory',
+      component: InventoryManagement,
+      meta: {
+        showInNav: true,
+        requiresLogin: true,
+        requiresLoginOrAnon: false,
+        requiresAdmin: true,
       }
     },
     {
