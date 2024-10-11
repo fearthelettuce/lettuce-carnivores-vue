@@ -4,28 +4,28 @@
         <ProductDetailsPhotoList :photos="photosToDisplay" />
             <article class="product-information d-flex align-content-center flex-column">
                 <div class="d-flex justify-content-center">
-                    <h1 class="text-center">{{ plantCategory.name }}</h1>   
+                    <h1 class="text-center">{{ plantCategory.name }}</h1>
                 </div>
                 <div v-if="plantCategory.clone !== ''" class="d-flex flex-row justify-content-around">
-                    <h3>Clone {{ plantCategory.clone }}</h3>  
+                    <h3>Clone {{ plantCategory.clone }}</h3>
                 </div>
 
                 <div>
-                    <p class="text-center my-4" :class="hideDescription ? '' : 'description-one-line'" @click="toggleHideDescription">{{ plantCategory.description }}</p>   
+                    <p class="text-center my-4" :class="hideDescription ? '' : 'description-one-line'" @click="toggleHideDescription">{{ plantCategory.description }}</p>
                 </div>
 
                 <div class="d-flex justify-content-evenly">
-                    <button 
+                    <button
                         v-for="plant in referencePlants"
-                        :key="plant.size" 
+                        :key="plant.size"
                         class="btn px-4"
                         :class="selectedPlant?.sku == plant.sku ? 'btn-primary' : 'btn-outline-secondary text-body'"
                         @click="setSelectedPlant(plant)"
                     >{{plant.size}}</button>
                 </div>
                 <div class="specimen-button-container">
-                    <button 
-                        v-for="plant in specimenPlants" 
+                    <button
+                        v-for="plant in specimenPlants"
                         :key="plant.id"
                         class="btn px-4 specimen-button"
                         :class="selectedPlant?.sku === plant.sku ? 'btn-primary' : 'btn-outline-secondary text-body'"
@@ -45,17 +45,17 @@
                         <h5 class="m-0">{{ formattedPrice }}</h5>
                     </div>
                     <div v-if="availableForSale" class="d-flex flex-column justify-contents-center">
-                        <button 
+                        <button
                             class="btn btn-primary mx-auto"
                             @click="addToCart"
-                            
+
                             :disabled="selectedPlant === undefined">
                             Add to Cart
                         </button>
-                        
+
                     </div>
-                    
-                    <button 
+
+                    <button
                         v-else
                         class="btn btn-secondary"
                         disabled>
@@ -209,9 +209,9 @@ async function addToCart() {
         clone: plantCategory.value.clone,
         photo: selectedPlant.value.photos[0],
         size: selectedPlant.value.size,
-        isDiscounted: selectedPlant.value.isDiscounted,
         isRepresentative: selectedPlant.value.isRepresentative,
-        shelfLocation: selectedPlant.value?.shelfLocation
+        shelfLocation: selectedPlant.value?.shelfLocation,
+        dateListedForSale: selectedPlant.value?.dateListedForSale
     })
 
         if(res && res.success === true) {
@@ -235,16 +235,16 @@ const freshDivision = computed (() => {
     const formattedPropagationDate = formattedDate(selectedPlant.value.propagationDate)
     if(plantCategory.value.genus === 'Heliamphora') {
         return {
-            isFreshDivision: daysSinceDivision.value < 35, 
-            message: `This is division was taken on ${formattedPropagationDate} and may not yet be rooted or established. 
-        We've had good success in shipping fresh divisions and our live arrival guarantee does apply. However, un-rooted divisions need extra attention 
+            isFreshDivision: daysSinceDivision.value < 35,
+            message: `This is division was taken on ${formattedPropagationDate} and may not yet be rooted or established.
+        We've had good success in shipping fresh divisions and our live arrival guarantee does apply. However, un-rooted divisions need extra attention
         and therefore are not recommended for beginners. \nFresh divisions may be shipped bare-root, depending on the plant, to ensure the plant arrives safely.`
         }
     }
     if(plantCategory.value.genus === 'Nepenthes') {
         return {
-            isFreshDivision: daysSinceDivision.value < 14, 
-            message: `This is a freshly taken cutting, taken on ${formattedPropagationDate}, and is not rooted. In our experience, Nepenthes cuttings have a 
+            isFreshDivision: daysSinceDivision.value < 14,
+            message: `This is a freshly taken cutting, taken on ${formattedPropagationDate}, and is not rooted. In our experience, Nepenthes cuttings have a
             good success rate, but it definitely is not 100%. Our live arrival guarantee does apply, however we make no guarantees that this cutting will root.`
         }
     }

@@ -36,7 +36,7 @@
                         <hr />
                         <div class="item-details my-3">
                             <h5>Products</h5>
-                            <OrderDetails :lineItems="order.lineItems" :isAdmin :order />
+                            <OrderDetails :order :isAdmin />
                         </div>
                 </AccordionContent>
             </AccordionPanel>

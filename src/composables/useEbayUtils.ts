@@ -1,5 +1,5 @@
 import useFirebaseFunctions from '@/utils/useFirebaseFunctions'
-const environment = 'SANDBOX'
+const environment = import.meta.env.DEV ? 'SANDBOX' : 'PRODUCTION'
 
 type FunctionResponse = {
     success: boolean,

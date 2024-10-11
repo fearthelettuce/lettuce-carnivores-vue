@@ -1,6 +1,6 @@
 <template>
     <form class="plant-item-form">
-        <FormKit 
+        <FormKit
             type="text"
             label="ID"
             class="flex-1"
@@ -8,13 +8,13 @@
             v-model="plant.id"
             @change="setRepresentative"
         />
-        <FormKit 
+        <FormKit
             type="text"
             label="SKU"
             class="flex-1"
             v-model="plant.sku"
         />
-        <FormKit 
+        <FormKit
             type="select"
             label="Size"
             validation="required"
@@ -22,7 +22,7 @@
             :options="sizeList"
             v-model="plant.size"
         />
-        <FormKit 
+        <FormKit
             type="text"
             number
             label="Price"
@@ -30,7 +30,7 @@
             class="flex-1"
             v-model="plant.price"
         />
-        <FormKit 
+        <FormKit
             type="text"
             number
             label="Quantity"
@@ -38,7 +38,7 @@
             class="flex-1"
             v-model="plant.quantity"
         />
-        <FormKit 
+        <FormKit
             type="select"
             label="Status"
             validation-visibility="live"
@@ -46,26 +46,19 @@
             :options="statusListArr"
             v-model="plant.status"
         />
-        <FormKit 
+        <FormKit
             type="date"
             label="Propagation Date"
             class="flex-2"
             v-model="plant.propagationDate"
         />
-        <FormKit 
+        <FormKit
             type="text"
             label="Shelf"
             class="flex-1"
             v-model="plant.shelfLocation"
         />
         <div>
-            <FormKit
-                type="checkbox"
-                label="Discounted?"
-                class="flex-2"
-                outer-class="align-content-center"
-                v-model="plant.isDiscounted"
-            />
             <FormKit
                 type="checkbox"
                 label="Representative?"
@@ -77,9 +70,9 @@
         <div class="center-content">
             <button class="btn btn-info m-1" @click.prevent="addPhotos">Photos <span>({{ plant.photos.length }})</span></button>
             <button class="btn btn-danger m-1" @click.prevent="$emit('deletePlant')" :disabled="plant.status !== 'Archived'">Delete</button>
-            
+
         </div>
-        
+
     </form>
 </template>
 
@@ -100,7 +93,7 @@ watch(
         }
         if(!plant.value.size && !statusListArr.includes(plant.value.status)) {
             alert(`Plant ${plant.value.id}/${plant.value.sku} value for status does not match options in statusListArr `)
-        } 
+        }
     },
     { immediate: true }
 )

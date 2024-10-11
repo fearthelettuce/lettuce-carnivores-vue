@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import { useUserStore } from './users';
 import { ref, type Ref } from 'vue'
-import { connectFunctionsEmulator, getFunctions, httpsCallable } from 'firebase/functions'
-import { collection, getDocs, query, Timestamp, where} from 'firebase/firestore';
+import { getFunctions, httpsCallable } from 'firebase/functions'
+import { collection, getDocs, query, where} from 'firebase/firestore';
 import type {Giveaway, GiveawayEntry, GiveawayFormData } from '@/types/Giveaway'
 import { db } from '@/apis/firebase'
 export const useGiveawayStore = defineStore('giveaway', () => {
@@ -15,6 +15,8 @@ export const useGiveawayStore = defineStore('giveaway', () => {
     const isGameComplete = ref(false)
     const isEntered = ref(false)
     const beenRickRolled = ref(false)
+    const giveawayCollectionName = 'giveaways'
+
     //giveaway specifics
     const password = ref('')
     const myLetters: Ref<string[]> = ref([])
@@ -65,7 +67,6 @@ export const useGiveawayStore = defineStore('giveaway', () => {
         }
         const giveawayEntry: GiveawayEntry = {giveawayName: giveawayName.value, ...entryData, uid: userStore.user?.uid ?? '', entryStartTime: entryStartTime.value, entryEndTime: entryEndTime.value, bypassGame: bypassGame.value}
         const functions = getFunctions()
-        //connectFunctionsEmulator(functions,'127.0.0.1', 5001)
         const submitGiveawayEntryFunction: Function = httpsCallable(functions, 'giveawayService')
         const res = await submitGiveawayEntryFunction(giveawayEntry).catch((e: any) => {
             console.error(e)
@@ -75,20 +76,25 @@ export const useGiveawayStore = defineStore('giveaway', () => {
         isSaving.value = false
         return res.data
     }
-
+    const isGiveawayLoading = ref(false)
     const isGiveawayActive = ref(false)
     async function fetchActiveGiveaway() {
+        isGiveawayLoading.value = true
         if(giveawayDetails.value !== undefined) { return }
-        const q = query(collection(db, 'giveaways'), where('active', '==', true))
+        const q = query(collection(db, giveawayCollectionName), where('active', '==', true))
         const querySnapshot = await getDocs(q)
         if(querySnapshot.docs.length > 1) {
             console.error('Multiple active giveaways, check db')
-            return 
+            isGiveawayLoading.value = false
+            return
         }
         if(querySnapshot.docs.length === 0) {
+            isGiveawayLoading.value = false
             return
         }
         setGiveawayData(querySnapshot.docs[0].data() as unknown as Giveaway)
+        isGiveawayLoading.value = false
+        isGiveawayActive.value = true
     }
 
     const giveawayDetails: Ref<Giveaway | undefined> = ref(undefined)
@@ -110,8 +116,9 @@ export const useGiveawayStore = defineStore('giveaway', () => {
         addLetter,
         fetchActiveGiveaway,
         giveawayDetails,
-        beenRickRolled
-        
+        beenRickRolled,
+        isGiveawayLoading,
+        isGiveawayActive
     }
 
 })

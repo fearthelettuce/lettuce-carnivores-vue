@@ -19,7 +19,7 @@ export const usePlantStore = defineStore('plant', () => {
     const setCategoryToEdit = (plantCategory: PlantCategory | null) => {
         if(plantCategory) {
             plantCategoryToEdit.value = plantCategory
-        } else { 
+        } else {
             plantCategoryToEdit.value.plants.length = 0
             plantCategoryToEdit.value = {...newPlantCategory};
             plantCategoryToEdit.value.id = ''
@@ -31,8 +31,9 @@ export const usePlantStore = defineStore('plant', () => {
     const saveCategory = async (plantCategory: PlantCategory) => {
         if(plantCategoryToEdit === null) { return false}
         isSaving.value = true
+        setDateListed(plantCategory)
         try {
-            await saveItem(collectionName,plantCategory)
+            await saveItem(collectionName, plantCategory)
             toast.success('Saved')
         } catch(e: any) {
             throw new Error(e.toString())
@@ -42,6 +43,14 @@ export const usePlantStore = defineStore('plant', () => {
                 plantCategories.value.push(plantCategory)
             }
         }
+    }
+    function setDateListed(plantCategory: PlantCategory) {
+        const now = new Date()
+        plantCategory.plants.forEach(plant => {
+            if(plant.status === 'In Stock' && plant.dateListedForSale === undefined) {
+                plant.dateListedForSale = now
+            }
+        })
     }
 
     const deleteCategoryById = async (id: number | string) => {
@@ -91,7 +100,7 @@ export const usePlantStore = defineStore('plant', () => {
         () => {
             if(plantCategories.value.length === 0) { return }
             updateFilteredCategories()
-        }, 
+        },
         { deep: true }
     )
     const getAvailableCategories = () => {
@@ -100,8 +109,8 @@ export const usePlantStore = defineStore('plant', () => {
         const selectedExperience = productFilters.value.experience.items
         const availableCategories = plantCategories.value.filter(category => {
             const plants = getAvailablePlants(category)
-            
-            return plants.length > 0 && 
+
+            return plants.length > 0 &&
             !['Hidden', 'Archived', 'Sold'].includes(category.status) &&
             selectedGenus.includes(category.genus) &&
             selectedOther.includes(category.speciesHybrid) &&
@@ -115,7 +124,7 @@ export const usePlantStore = defineStore('plant', () => {
         if(category === undefined) {return []}
         const selectedStatuses = productFilters.value.status.items.map(status => status.value)
         const selectedOther = productFilters.value.other.items.map(item => item.value)
-        const visiblePlants = category.plants.filter(plant => 
+        const visiblePlants = category.plants.filter(plant =>
             plant.quantity > 0 &&
             plant.status !== 'Hidden' &&
             plant.status !== 'Archived' &&
@@ -147,15 +156,15 @@ export const usePlantStore = defineStore('plant', () => {
                 propagationDate: dateToUse,
                 status: 'In Stock',
                 price: lastPlant.price,
-                discountedPrice: lastPlant.discountedPrice,
-                isDiscounted: lastPlant.isDiscounted,
                 quantity: 1,
                 photos: [],
                 plantCategoryId: plantCategory.id,
-                shelfLocation: '',
+                shelfLocation: lastPlant.shelfLocation,
+                dateListedForSale: undefined
+
             })
         }
-        
+
     }
 
     const removePlant = async(index: number) => {
@@ -180,15 +189,15 @@ export const usePlantStore = defineStore('plant', () => {
         }
         return plantCategories.value.find(category => category.id === plant.plantCategoryId)
     }
-    return { 
+    return {
         isLoading,
         isSaving,
-        plantCategories, 
+        plantCategories,
         plantCategoryToEdit,
         setCategoryToEdit,
         saveCategory,
         deleteCategoryById,
-        findPlantCategoryById, 
+        findPlantCategoryById,
         fetchAllCategories,
         addPlant,
         removePlant,

@@ -1,26 +1,17 @@
 import type { Timestamp } from 'firebase/firestore'
-import type { Sizes } from '@/types/Plant'
+import type { Plant, PlantCategory, Sizes } from '@/types/Plant'
 import type { PhotoItem } from '@/types/Product'
 
 export type ShoppingCart = {
     cartItems: CartItem[],
 }
 
-export type CartItem = {
-    sku: string,
-    plantCategoryId: string | number,
-    categoryId: string | number,
+export type CartItem = Pick<Plant, 'sku' | 'size' | 'isRepresentative' | 'shelfLocation' | 'dateListedForSale' | 'price'> & Pick<PlantCategory, 'name' | 'clone'> & {
+    plantCategoryId: PlantCategory['id'],
+    categoryId: PlantCategory['id'],
     quantity: number,
     maxQuantity: number,
-    price: number,
-    name: string,
-    clone: string,
     photo: PhotoItem,
-    size: Sizes,
-    isDiscounted: boolean,
-    isRepresentative: boolean,
-    shelfLocation?: string,
-
 }
 //export type StripeCartItem = StripeProduct & {quantity: number}
 
@@ -86,6 +77,7 @@ export type Order = {
                     size: string,
                     isRepresentative: boolean,
                     shelfLocation?: string,
+                    dateListedForSale?: Date
                 },
             },
         },
@@ -99,7 +91,7 @@ export type Order = {
     shippingInfo: {
         address: {
             line1: string,
-            line2: string | null, 
+            line2: string | null,
             city: string,
             state: string,
             postal_code: string

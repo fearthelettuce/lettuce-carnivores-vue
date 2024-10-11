@@ -14,7 +14,6 @@ export const sizeList = [
 ]
 
 export const genusListArr = ['', 'Heliamphora', 'Nepenthes', 'Cephalotus', 'Other']
-
 export const statusListArr = ['', 'In Stock', 'Coming Soon', 'Archived', 'Hidden', 'Sold']
 export const experienceList = ['', 'Beginner Friendly', 'Intermediate', 'Advanced']
 export const speciesHybridArr = ['', 'Species', 'Hybrid']
@@ -26,17 +25,17 @@ export const otherFiltersList = [
     {label: 'Only Sale Items', value: 'Only Sale Items', hidden: false},
 ]
 export const genusList = [
-    {label:'', value: false, hidden: true}, 
-    {label:'Heliamphora', value: 'Heliamphora', hidden: false}, 
+    {label:'', value: false, hidden: true},
+    {label:'Heliamphora', value: 'Heliamphora', hidden: false},
     {label:'Nepenthes', value: 'Nepenthes', hidden: false},
-    {label:'Cephalotus', value: 'Cephalotus', hidden: false}, 
+    {label:'Cephalotus', value: 'Cephalotus', hidden: false},
     {label:'Other', value: 'Other', hidden: true},
 ]
 export const statusList = [
-    {label:'', value: false, hidden: true}, 
-    {label:'In Stock', value: 'In Stock', hidden: false}, 
+    {label:'', value: false, hidden: true},
+    {label:'In Stock', value: 'In Stock', hidden: false},
     {label:'Coming Soon', value: 'Coming Soon', hidden: false},
-    {label:'Archived', value: false, hidden: true}, 
+    {label:'Archived', value: false, hidden: true},
     {label:'Hidden', value: false, hidden: true},
     {label:'Sold', value: false, hidden: true}
 ]
@@ -50,7 +49,7 @@ export const defaultFilters = {
         label: 'Availability',
         filterKey: 'status',
         items: [
-            {label:'In Stock', value: 'In Stock', hidden: false}, 
+            {label:'In Stock', value: 'In Stock', hidden: false},
         ]
     },
     experience: {
@@ -66,22 +65,19 @@ export const defaultFilters = {
             {label: 'Representative', value: 'Representative', hidden: false},
         ]
     },
-
-
-
 }
 
 export const sortOptions = []
 export const defaultSort = [
     {
-        label: 'A - Z', 
+        label: 'A - Z',
         value: 'asc',
         sortFunction: (arr: Object[], value: String) => {
             return arr.sort()
         }
     },
     {
-        label: 'Z - A', 
+        label: 'Z - A',
         value: 'asc',
         sortFunction: (arr: Object[], value: String) => {
             return arr.sort()
@@ -104,8 +100,6 @@ export const defaultSort = [
 
 ]
 
-
-
 export const newPlantCategory: PlantCategory = {
     id: '',
     name: '',
@@ -127,9 +121,9 @@ export const newPlant: Plant = {
     propagationDate: new Date().toLocaleDateString('en-CA'),
     status: 'In Stock',
     price: 0,
-    discountedPrice: 0,
-    isDiscounted: false,
     quantity: 1,
     photos: [],
     plantCategoryId: '',
+    shelfLocation: '',
+    dateListedForSale: undefined
 }

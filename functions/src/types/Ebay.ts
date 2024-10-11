@@ -8,8 +8,8 @@ export interface EbayAccessTokenRequest extends CallableRequest  {
 }
 
 export interface EbayAccessTokenResponse {
-    access_token: string, 
-    expires_in: number, 
+    access_token: string,
+    expires_in: number,
     token_type: string
 }
 
@@ -23,3 +23,5 @@ export interface EbayAccessTokenFunctionResponse extends FunctionResponse {
 }
 
 export type EbayEnvironment = 'SANDBOX' | 'PRODUCTION'
+
+export type GranularityLevel = 'Coarse' | 'Medium' | 'Fine'

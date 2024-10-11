@@ -1,6 +1,9 @@
 <template>
     <BaseContainer>
-        <div class="giveaway-container">
+        <div v-if="!isGiveawayActive" class="giveaway-banner">
+            {{ giveawayBannerMessage }}
+        </div>
+        <div v-else class="giveaway-container">
 
             <div class="giveaway-header">
                 <div class="giveaway-body">
@@ -33,21 +36,21 @@
             <component :is="activeGame" class="game" />
         </div>
     </BaseContainer>
-    
+    <!-- <GiveawayEntriesList /> -->
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import HalloweenLetterGame from './HalloweenLetterGame.vue';
 import GiveawayEntryForm from './GiveawayEntryForm.vue';
 import { useGiveawayStore } from '@/stores/giveaway'
 import { storeToRefs } from 'pinia'
-
+import GiveawayEntriesList from './GiveawayEntriesList.vue'
     const activeGame = HalloweenLetterGame
     const gameHelpLine1 = `Go to the 'Shop' link at the top and click on any of the plants.  Then find the`
     const gameHelpLine2 = `Once you collect all the letters, come back to this page to submit your name for the contest`
-    
-    const {giveawayDetails, isGameActive, isGameComplete, bypassGame} = storeToRefs(useGiveawayStore())
+
+    const {isGiveawayActive, isGiveawayLoading, giveawayDetails, isGameActive, isGameComplete, bypassGame} = storeToRefs(useGiveawayStore())
     const { newGame, fetchActiveGiveaway } = useGiveawayStore()
     const showHelp = ref(false)
     function expandHelp() {
@@ -61,10 +64,17 @@ import { storeToRefs } from 'pinia'
         bypassGame.value = !bypassGame.value
         showHelp.value = false
     }
-
+    const giveawayBannerMessage = computed(() => {
+        if(isGiveawayLoading.value) {
+            return 'Loading giveaway details...'
+        }
+        if(!isGiveawayLoading.value && !isGiveawayActive.value) {
+            return 'Sorry, there is not an active giveaway at this time.  Please follow us on Instagram or Facebook to stay up to date with our latest sales and giveaways.'
+        }
+    })
 onMounted( async()=> {
     await fetchActiveGiveaway()
-    
+
     if(!isGameActive.value && !isGameComplete.value) {
         newGame()
     }
@@ -84,6 +94,12 @@ onMounted( async()=> {
         justify-content: space-around;
         gap: 1rem;
     }
+    .giveaway-banner {
+        display: flex;
+        justify-content: center;
+        margin-inline: 4rem;
+        margin-block: 4rem;
+    }
     .giveaway-container {
         display: flex;
         flex-direction: column;
@@ -100,7 +116,7 @@ onMounted( async()=> {
     .giveaway-header {
         max-width: 90dvw;
         margin-inline: 5dvw;
-        
+
         display: flex;
         align-items: center;
         justify-content: center;

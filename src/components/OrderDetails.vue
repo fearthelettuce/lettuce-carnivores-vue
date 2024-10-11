@@ -1,5 +1,5 @@
 <template>
-    <div class="table-container">
+    <div class="table-container" @mousedown="uglyMode">
 
         <table class="item-detail-table">
             <thead>
@@ -14,10 +14,10 @@
             </thead>
             <tbody>
 
-                <tr v-for="item in lineItems" :key="item.price_data.product_data.metadata.sku">
+                <tr v-for="item in order.lineItems" :key="item.price_data.product_data.metadata.sku">
                     <td data-th="Item">{{` ${item.price_data.product_data.name} ${item.price_data.product_data.metadata.clone || ''} `}}</td>
                     <td data-th="Item #" class="justify-center">{{ item.price_data.product_data.metadata.sku }}</td>
-                    <td data-th="Shelf" class="justify-center">{{item.price_data.product_data.metadata?.shelfLocation ? item.price_data.product_data.metadata?.shelfLocation : ''}}</td>
+                    <td data-th="Shelf" v-if="isAdmin" class="justify-center">{{item.price_data.product_data.metadata?.shelfLocation ? item.price_data.product_data.metadata?.shelfLocation : ''}}</td>
                     <td data-th="Size" class="justify-center">{{ item.price_data.product_data.description }}</td>
                     <td data-th="Quantity" class="justify-center">{{ item.quantity }}</td>
                     <td data-th="Price" class="justify-right">{{ USDollar.format(item.price_data.unit_amount / 100) }}</td>
@@ -38,23 +38,70 @@
                     <td data-th="Tax" class="justify-right">{{ USDollar.format(order.cartTotal.amount_tax / 100) }}</td>
                 </tr>
                 <tr>
-                    <td class="justify-right" :colspan="isAdmin ? 5 : 4">Total</td>
+                    <th class="justify-right" :colspan="isAdmin ? 5 : 4">Total</th>
                     <td data-th="Total" class="justify-right">{{ USDollar.format(order.cartTotal.amountTotal / 100) }}</td>
                 </tr>
             </tfoot>
-
-
         </table>
     </div>
 </template>
 
 <script setup lang="ts">
+import { nextTick, onMounted, ref } from 'vue'
+import type { Order } from '@/types/Orders'
 import { USDollar } from '@/utils/utils';
-    const props = defineProps(['lineItems', 'isAdmin', 'order'])
-    const hasDiscount = props.order.cartTotal.amount_discount && props.order.cartTotal.amount_discount !== 0
-    const textColor = props.isAdmin ? 'black' : 'inherit'
-    const backgroundColor = props.isAdmin ? 'white' : 'inherit'
-    const borderColor = props.isAdmin ? 'black' : 'rgb(225, 220, 189)'
+    const {isAdmin, order} = defineProps<{
+        order: Order,
+        isAdmin: boolean,
+    }>()
+    const hasDiscount = order.cartTotal.amount_discount && order.cartTotal.amount_discount !== 0
+
+    const isUgly = ref(false)
+    const textColor = ref('inherit')
+    const backgroundColor = ref('inherit')
+    const borderColor = ref('inherit')
+    function uglyMode() {
+
+        isUgly.value = !isUgly.value
+        if(isUgly.value && isAdmin) {
+            textColor.value = 'black'
+            backgroundColor.value = 'white'
+            borderColor.value = 'black'
+        } else {
+            textColor.value = 'inherit'
+            backgroundColor.value = 'inherit'
+            borderColor.value = 'inherit'
+        }
+
+    }
+
+    // isUgly.value ? 'black' : 'inherit'
+    // const backgroundColor = isUgly.value ? 'white' : 'inherit'
+    // const borderColor = isUgly.value ? 'black' : 'rgb(225, 220, 189)'
+
+    // function uglyMode() {
+
+    //     if (typeof window.getSelection !== "undefined") {
+    //         const text = window.getSelection()!.toString()
+    //         console.log(text)
+    //         if(text) {
+    //             console.log('hi')
+    //             textColor.value = 'black'
+    //             backgroundColor.value = 'white'
+    //             borderColor.value = 'white'
+    //             nextTick()
+    //         }
+    //         else {
+    //             console.log('Ugly Off')
+    //             nextTick()
+    //             textColor.value = 'inherit'
+    //             backgroundColor.value = 'inherit'
+    //             borderColor.value = 'inherit'
+    //         }
+    //     }
+    // }
+
+
 </script>
 <style scoped>
     .item-detail-table {
@@ -105,12 +152,12 @@ import { USDollar } from '@/utils/utils';
         }
     }
 
-    td, th {
-        color: v-bind(textColor);
+    table, tr, td, th {
+        color:v-bind(textColor);
         background-color: v-bind(backgroundColor);
         line-height: 1.5rem;
-
     }
+
     .table-container {
         display: flex;
         flex-direction: row;
