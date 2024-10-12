@@ -1,12 +1,24 @@
 import { type CallableRequest } from 'firebase-functions/https'
 import type { FunctionResponse } from './Functions'
-export interface EbayAccessTokenRequest extends CallableRequest  {
+export interface EbayAccessTokenRequest extends CallableRequest {
     data: {
         environment: EbayEnvironment,
         authCode?: string,
     }
 }
 
+export interface EbayDataRequest extends CallableRequest {
+    data: {
+        environment: EbayEnvironment,
+    }
+}
+
+export type EbayListingRequest = EbayDataRequest & {
+    data: {
+        granularityLevel?: GranularityLevel,
+        daysAgo?: number
+    }
+}
 export interface EbayAccessTokenResponse {
     access_token: string,
     expires_in: number,

@@ -63,7 +63,7 @@
                     </button>
                 </div>
                 <div v-show="selectedPlant === undefined" class="text-center text-warning mt-2">Please select a plant to add to cart</div>
-                <div class="game-container">
+                <div class="game-container" v-show="isGameActive">
                     <HalloweenGameCard />
                 </div>
             </article>

@@ -18,9 +18,9 @@
                     <div class="ghost-icon-container">
                         <GhostIcon class="ghost-icon"/>
                     </div>
-                    
+
                     <div class="message-container"><div class="ghost-message">{{ ghostMessage }}</div><h4></h4></div>
-                    
+
                 </div>
             </div>
         </Transition>
@@ -50,11 +50,13 @@ import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
 import { useGiveawayStore } from '@/stores/giveaway'
 import { toast } from 'vue3-toastify'
 import { storeToRefs } from 'pinia'
+import { app } from 'firebase-admin'
 const { addLetter, newGame, fetchActiveGiveaway } = useGiveawayStore()
 const { isGameComplete, isGameActive, beenRickRolled } = storeToRefs(useGiveawayStore())
     onMounted( async() => {
         await fetchActiveGiveaway()
-
+        ghostMessage.value = `Enter to win this Heliamphora exappendiculata 'Ewok'!`
+        appendGhost(50000)
         if(!isGameActive.value && !isGameComplete.value) {
             newGame()
         }
@@ -89,7 +91,7 @@ const { isGameComplete, isGameActive, beenRickRolled } = storeToRefs(useGiveaway
         case 9:
             dynamicComponent.value = WitchIcon
             break
-        default: 
+        default:
             dynamicComponent.value = PumpkinIcon
             dynamicComponentClass.value = ''
         }
@@ -114,7 +116,7 @@ const { isGameComplete, isGameActive, beenRickRolled } = storeToRefs(useGiveaway
             setTimeout(()=>{trick()},1700)
             return
         }
-        
+
         const nextLetter = addLetter()
 
         if(nextLetter === undefined || nextLetter === null || nextLetter === '') {
@@ -122,7 +124,7 @@ const { isGameComplete, isGameActive, beenRickRolled } = storeToRefs(useGiveaway
             toast.error('There seems to be an issue. Please contact support@dangerlettuce.com if this issue persists')
             return
          }
-        
+
         if(isGameComplete.value) {
             ghostMessage.value = ghostMessage.value + `Congratulations, you found all the letters!  Head to the Giveaway page to enter!`
             appendGhost(30000)
@@ -138,7 +140,7 @@ const { isGameComplete, isGameActive, beenRickRolled } = storeToRefs(useGiveaway
         showGhost.value = false
         ghostMessage.value = ''
     }
-    
+
     function trick() {
         reset()
         let randomTrick = Math.random()
@@ -201,7 +203,7 @@ const { isGameComplete, isGameActive, beenRickRolled } = storeToRefs(useGiveaway
             window.open('https://www.youtube.com/watch?v=2qBlE2-WL60','_blank')?.focus()
         }, 400)
     }
-    
+
     const hideTreatButton = ref(false)
     function hideTreat() {
         ghostMessage.value = `You didn't need that anyway, did you?`
@@ -210,7 +212,7 @@ const { isGameComplete, isGameActive, beenRickRolled } = storeToRefs(useGiveaway
         hideTreatButton.value = true
         setTimeout(()=>{hideTreatButton.value = false}, 5000)
     }
-    
+
 </script>
 
 <style>
@@ -245,11 +247,11 @@ const { isGameComplete, isGameActive, beenRickRolled } = storeToRefs(useGiveaway
 
     .ghost-card {
         z-index: 9995;
-        position: fixed; 
+        position: fixed;
         left: 50dvw;
         transform: translate(-50%, -50%);
         top: 50dvh;
-        margin-inline: auto; 
+        margin-inline: auto;
         width: fit-content;
         border-radius: 2rem;
         border: .5rem solid #f4f1dc;
@@ -377,6 +379,6 @@ const { isGameComplete, isGameActive, beenRickRolled } = storeToRefs(useGiveaway
         .ghost-message {
             font-size: 2rem;
         }
-        
+
     }
 </style>
