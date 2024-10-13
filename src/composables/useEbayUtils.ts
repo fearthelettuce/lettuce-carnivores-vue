@@ -64,3 +64,19 @@ export async function refreshAccessToken() {
     }
     const res = refreshUserAccessToken(environment)
 }
+
+export async function getEbayListings() {
+    const getListings = useFirebaseFunctions('getListings')
+    if(!getListings) {
+        console.error('Unable to get FB function')
+        return undefined
+    }
+    const data = {
+        environment: 'PRODUCTION', //environment,
+        granularityLevel: 'Medium',
+        daysAgo: 120
+    }
+    const res = await getListings(data)
+    console.log(res)
+    return res
+}

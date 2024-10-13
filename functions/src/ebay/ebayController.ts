@@ -2,7 +2,7 @@ import admin from 'firebase-admin'
 import { onCall, type CallableRequest } from 'firebase-functions/v2/https';
 import { defineSecret } from 'firebase-functions/params'
 import type {  EbayAccessTokenRequest, EbayEnvironment, EbayListingRequest } from '../types/Ebay';
-import { submitAccessTokenRequest, generateUserConsentUrl, getOrRefreshUserAccessToken } from './ebayService';
+import { submitAccessTokenRequest, generateUserConsentUrl, getOrRefreshUserAccessToken, getTokenFromDb } from './ebayService';
 import { getListingsData } from './ebayData';
 
 const ebayClientId = defineSecret('EBAY_CLIENT_ID')
@@ -69,8 +69,12 @@ export const refreshUserAccessToken = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_
 
 export const getListings = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayListingRequest): Promise<any> => {
     //get token
-    const token = ''
+    const token = await getTokenFromDb(environment)
+    if(!token) {
+        return {error: true, success: false, message: 'Unable to get valid token'}
+    }
     const res = await getListingsData(request.data.environment, token, request.data.granularityLevel, request.data.daysAgo)
+    return res
 })
 
 function setSecrets() {

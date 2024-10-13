@@ -50,13 +50,10 @@ import GhostIcon from '@/assets/icons/halloween/GhostIcon.vue';
 import { useGiveawayStore } from '@/stores/giveaway'
 import { toast } from 'vue3-toastify'
 import { storeToRefs } from 'pinia'
-import { app } from 'firebase-admin'
 const { addLetter, newGame, fetchActiveGiveaway } = useGiveawayStore()
 const { isGameComplete, isGameActive, beenRickRolled } = storeToRefs(useGiveawayStore())
     onMounted( async() => {
         await fetchActiveGiveaway()
-        ghostMessage.value = `Enter to win this Heliamphora exappendiculata 'Ewok'!`
-        appendGhost(50000)
         if(!isGameActive.value && !isGameComplete.value) {
             newGame()
         }

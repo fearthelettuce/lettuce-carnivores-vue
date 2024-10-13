@@ -63,7 +63,7 @@
                     </button>
                 </div>
                 <div v-show="selectedPlant === undefined" class="text-center text-warning mt-2">Please select a plant to add to cart</div>
-                <div class="game-container" v-show="isGameActive">
+                <div class="game-container" v-show="isGiveawayActive">
                     <HalloweenGameCard />
                 </div>
             </article>
@@ -83,11 +83,11 @@ import ProductDetailsPhotoList from '@/components/products/ProductDetailsPhotoLi
 import { toast } from 'vue3-toastify'
 import type { PlantCategory, Plant} from '@/types/Plant'
 import { formattedDate } from '@/utils/utils'
-import HalloweenGameCard from '@/components/giveaway/HalloweenGameCard.vue'
+ import HalloweenGameCard from '@/components/giveaway/HalloweenGameCard.vue'
 import { storeToRefs } from 'pinia'
 import { useGiveawayStore } from '@/stores/giveaway'
 
-const {isGameActive} = storeToRefs(useGiveawayStore())
+const {isGiveawayActive} = storeToRefs(useGiveawayStore())
 
 const route = useRoute()
 const plantCategory: Ref<PlantCategory | undefined> = ref()

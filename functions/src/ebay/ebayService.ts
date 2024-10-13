@@ -107,7 +107,7 @@ export async function getTokenFromDb(environment: EbayEnvironment) {
         return undefined
     }
     const tokenIssuedTime = new Date(tokenResponse.data()?.updatedTimestamp)
-    const isTokenStillValid = (now.getTime() + (30*60000)) > tokenIssuedTime.getTime()
+    const isTokenStillValid = (tokenIssuedTime.getTime()+ (100*60000)) >  now.getTime()
     if(isTokenStillValid) {
         return tokenResponse.data()?.access_token
     } else {
