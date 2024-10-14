@@ -76,6 +76,7 @@ export async function getEbayListings() {
         granularityLevel: 'Medium',
         daysAgo: 120
     }
+    debugger
     const res = await getListings(data)
     console.log(res)
     return res

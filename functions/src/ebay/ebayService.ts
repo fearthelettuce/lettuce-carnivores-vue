@@ -91,7 +91,7 @@ export async function getOrRefreshUserAccessToken(
         }
         return {success: false, error: true, message: messageText, errorDetails: errorDetails, data: null}
     }
-    const newTokenData = {...res.data, updatedTimestamp: new Date()}
+    const newTokenData = {...res.data, updatedTimestamp: Math.floor(Date.now() / 1000)}
     const tokenDoc = environment === 'PRODUCTION' ? 'ebayToken' : 'sandboxToken'
     await admin.firestore().collection('admin').doc(tokenDoc).update(newTokenData)
     return {success: true, error: false, message: 'Success', data: newTokenData as unknown as UserAccessTokenResponse, errorDetails: null}
@@ -100,18 +100,15 @@ export async function getOrRefreshUserAccessToken(
 
 export async function getTokenFromDb(environment: EbayEnvironment) {
     const tokenDoc = environment === 'PRODUCTION' ? 'ebayToken' : 'sandboxToken'
-    const now = new Date()
+    const now = Math.floor(Date.now() / 1000)
     const tokenResponse = await admin.firestore().collection('admin').doc(tokenDoc).get().catch((e) => {console.log(e); return undefined})
-
     if( !tokenResponse || !tokenResponse.data || !tokenResponse.data()) {
         return undefined
     }
-    const tokenIssuedTime = new Date(tokenResponse.data()?.updatedTimestamp)
-    const isTokenStillValid = (tokenIssuedTime.getTime()+ (100*60000)) >  now.getTime()
-    if(isTokenStillValid) {
+
+    if((tokenResponse.data()?.updatedTimestamp + (100*60)) >  now) {
         return tokenResponse.data()?.access_token
     } else {
         return undefined
     }
-
 }

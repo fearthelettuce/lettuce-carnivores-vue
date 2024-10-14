@@ -38,8 +38,5 @@ export async function getListingsData(environment: EbayEnvironment, token: strin
         },
     }
 
-    const res = await axios.post(`${baseUrl}/url`, xmlBody, config).catch(e => {return e})
-    if(res && res.data) {
-        return res.data
-    }
+    return axios.post(`${baseUrl}/url`, xmlBody, config).catch(e => {return e})
 }
