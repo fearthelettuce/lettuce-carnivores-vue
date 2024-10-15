@@ -2,8 +2,6 @@ import admin from 'firebase-admin'
 import axios from 'axios'
 import type {  FunctionResponse } from '../types/Functions'
 import type { EbayEnvironment, EbayAccessTokenFunctionResponse, EbayAccessTokenResponse, UserAccessTokenResponse } from '../types/Ebay'
-import { Timestamp } from 'firebase-admin/firestore'
-
 import { authUrl, sandboxAuthUrl, apiUrl, sandboxApiUrl, RuNameProd, RuNameSandbox, prodScopes, sandboxScopes} from './ebayConstants'
 
 export async function submitAccessTokenRequest(environment: EbayEnvironment, clientId: string, clientSecret: string): Promise<EbayAccessTokenFunctionResponse | FunctionResponse> {
@@ -91,7 +89,7 @@ export async function getOrRefreshUserAccessToken(
         }
         return {success: false, error: true, message: messageText, errorDetails: errorDetails, data: null}
     }
-    const newTokenData = {...res.data, updatedTimestamp: Math.floor(Date.now() / 1000)}
+    const newTokenData = {...res.data, updatedTimestamp: Math.floor(Date.now() / 1000), environment: environment}
     const tokenDoc = environment === 'PRODUCTION' ? 'ebayToken' : 'sandboxToken'
     await admin.firestore().collection('admin').doc(tokenDoc).update(newTokenData)
     return {success: true, error: false, message: 'Success', data: newTokenData as unknown as UserAccessTokenResponse, errorDetails: null}
@@ -106,9 +104,13 @@ export async function getTokenFromDb(environment: EbayEnvironment) {
         return undefined
     }
 
-    if((tokenResponse.data()?.updatedTimestamp + (100*60)) >  now) {
-        return tokenResponse.data()?.access_token
+    if((tokenResponse.data()?.updatedTimestamp + (100*60)) >  now && tokenResponse.data()?.access_token) {
+        return tokenResponse.data()!.access_token
     } else {
+        console.log(`updateTimestamp: ${tokenResponse.data()?.updatedTimestamp}`)
+        console.log(`plus ${(100*60)}`)
+        console.log(`Sum: ${(tokenResponse.data()?.updatedTimestamp + (100*60))}`)
+        console.log(`Now: ${now}`)
         return undefined
     }
 }

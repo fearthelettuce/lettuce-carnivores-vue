@@ -1,5 +1,11 @@
+import type { EbayEnvironment } from '@/types/Ebay'
 import useFirebaseFunctions from '@/utils/useFirebaseFunctions'
-const environment = import.meta.env.DEV ? 'SANDBOX' : 'PRODUCTION'
+let environment: EbayEnvironment
+if((import.meta.env.VITE_EBAY_ENVIRONMENT && import.meta.env.VITE_EBAY_ENVIRONMENT === 'PRODUCTION') || import.meta.env.PROD) {
+    environment = 'PRODUCTION'
+} else {
+    environment = 'SANDBOX'
+}
 
 type FunctionResponse = {
     success: boolean,
@@ -62,7 +68,8 @@ export async function refreshAccessToken() {
         console.error('Unable to get FB function')
         return undefined
     }
-    const res = refreshUserAccessToken(environment)
+    const res = refreshUserAccessToken({environment: environment})
+    return res
 }
 
 export async function getEbayListings() {
@@ -72,12 +79,20 @@ export async function getEbayListings() {
         return undefined
     }
     const data = {
-        environment: 'PRODUCTION', //environment,
+        environment: environment,
         granularityLevel: 'Medium',
         daysAgo: 120
     }
-    debugger
     const res = await getListings(data)
-    console.log(res)
-    return res
+    const jsonRes = JSON.parse(res.data)
+     setEbayListingData(jsonRes)
+    return jsonRes
+}
+
+type EbayListing = {
+    [key: string]: string
+}
+function setEbayListingData(data) {
+    const items = data.ItemArray[0].Item
+    console.log(items)
 }

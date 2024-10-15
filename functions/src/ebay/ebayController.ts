@@ -62,14 +62,13 @@ export const refreshUserAccessToken = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_
 
     const oldRefreshToken = snap.data()?.refresh_token
     console.log(`Old: ${oldRefreshToken}`)
-    const res = await getOrRefreshUserAccessToken(environment,clientId, clientSecret, undefined, oldRefreshToken)
+    const res = await getOrRefreshUserAccessToken(environment, clientId, clientSecret, undefined, oldRefreshToken)
     console.log(res.data)
     return res
 })
 
 export const getListings = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayListingRequest): Promise<any> => {
-    //get token
-    const token = await getTokenFromDb(environment)
+    const token = await getTokenFromDb(request.data.environment)
     if(!token) {
         return {error: true, success: false, message: 'Unable to get valid token'}
     }
@@ -91,11 +90,7 @@ function setSecrets() {
 
 import { log } from 'firebase-functions/logger'
 import { onRequest } from 'firebase-functions/v2/https'
-
-
 import { getNextSequentialId } from '../common'
-const stripeSecretKey = defineSecret("STRIPE_RESTRICTED_KEY")
-const stripeWebhookSecretKey = defineSecret("STRIPE_WEBHOOK_SECRET_KEY")
 
 export const ebayNotificationController =  onRequest(async(req, res): Promise<any> => {
     console.log(req)

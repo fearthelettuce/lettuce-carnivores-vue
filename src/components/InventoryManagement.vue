@@ -36,9 +36,8 @@ async function refreshEbay() {
     console.log(res)
 }
 async function getListings() {
-    debugger
     const res = await getEbayListings()
-
+    console.log(res)
 
 }
 </script>

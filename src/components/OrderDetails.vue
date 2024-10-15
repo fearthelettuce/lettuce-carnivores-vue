@@ -1,48 +1,55 @@
 <template>
-    <div class="table-container" @mousedown="uglyMode">
+    <div class="ugly">
+        <template v-if="isAdmin">
+            <div>The status of order has been marked 'Shipped'</div>
+            <br />
+            <div>Tracking number: {{order.orderStatus.trackingNumber }}</div>
+        </template>
+        <div class="table-container" @mousedown="uglyMode">
 
-        <table class="item-detail-table">
-            <thead>
-                <tr>
-                    <th scope="col">Item</th>
-                    <th scope="col" class="justify-center">Item #</th>
-                    <th v-if="isAdmin" scope="col" class="justify-center">Shelf</th>
-                    <th scope="col" class="justify-center">Size</th>
-                    <th scope="col" class="justify-center">Quantity</th>
-                    <th scope="col">Price</th>
-                </tr>
-            </thead>
-            <tbody>
+            <table class="item-detail-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Item</th>
+                        <th scope="col" class="justify-center">Item #</th>
+                        <th v-if="isAdmin" scope="col" class="justify-center">Shelf</th>
+                        <th scope="col" class="justify-center">Size</th>
+                        <th scope="col" class="justify-center">Quantity</th>
+                        <th scope="col">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-                <tr v-for="item in order.lineItems" :key="item.price_data.product_data.metadata.sku">
-                    <td data-th="Item">{{` ${item.price_data.product_data.name} ${item.price_data.product_data.metadata.clone || ''} `}}</td>
-                    <td data-th="Item #" class="justify-center">{{ item.price_data.product_data.metadata.sku }}</td>
-                    <td data-th="Shelf" v-if="isAdmin" class="justify-center">{{item.price_data.product_data.metadata?.shelfLocation ? item.price_data.product_data.metadata?.shelfLocation : ''}}</td>
-                    <td data-th="Size" class="justify-center">{{ item.price_data.product_data.description }}</td>
-                    <td data-th="Quantity" class="justify-center">{{ item.quantity }}</td>
-                    <td data-th="Price" class="justify-right">{{ USDollar.format(item.price_data.unit_amount / 100) }}</td>
-                </tr>
-            </tbody>
-            <tfoot>
+                    <tr v-for="item in order.lineItems" :key="item.price_data.product_data.metadata.sku">
+                        <td data-th="Item">{{` ${item.price_data.product_data.name} ${item.price_data.product_data.metadata.clone || ''} `}}</td>
+                        <td data-th="Item #" class="justify-center">{{ item.price_data.product_data.metadata.sku }}</td>
+                        <td data-th="Shelf" v-if="isAdmin" class="justify-center">{{item.price_data.product_data.metadata?.shelfLocation ? item.price_data.product_data.metadata?.shelfLocation : ''}}</td>
+                        <td data-th="Size" class="justify-center">{{ item.price_data.product_data.description }}</td>
+                        <td data-th="Quantity" class="justify-center">{{ item.quantity }}</td>
+                        <td data-th="Price" class="justify-right">{{ USDollar.format(item.price_data.unit_amount / 100) }}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
 
-                <tr v-if="hasDiscount" class="top-border">
-                    <th class="justify-right" :colspan="isAdmin ? 5 : 4">{{`${hasDiscount ? 'Discount' : ''}`}}</th>
-                    <td data-th="Discount" class="justify-right">{{`${hasDiscount ? '-' + USDollar.format(order.cartTotal.amount_discount / 100) : ''}  `}}</td>
-                </tr>
-                <tr>
-                    <th class="justify-right" :colspan="isAdmin ? 5 : 4">Shipping</th>
-                    <td data-th="Shipping" class="justify-right">{{ USDollar.format(order.cartTotal.amount_shipping / 100) }}</td>
-                </tr>
-                <tr>
-                    <th class="justify-right" :colspan="isAdmin ? 5 : 4">Tax</th>
-                    <td data-th="Tax" class="justify-right">{{ USDollar.format(order.cartTotal.amount_tax / 100) }}</td>
-                </tr>
-                <tr>
-                    <th class="justify-right" :colspan="isAdmin ? 5 : 4">Total</th>
-                    <td data-th="Total" class="justify-right">{{ USDollar.format(order.cartTotal.amountTotal / 100) }}</td>
-                </tr>
-            </tfoot>
-        </table>
+                    <tr v-if="hasDiscount" class="top-border">
+                        <th class="justify-right" :colspan="isAdmin ? 5 : 4">{{`${hasDiscount ? 'Discount' : ''}`}}</th>
+                        <td data-th="Discount" class="justify-right">{{`${hasDiscount ? '-' + USDollar.format(order.cartTotal.amount_discount / 100) : ''}  `}}</td>
+                    </tr>
+                    <tr>
+                        <th class="justify-right" :colspan="isAdmin ? 5 : 4">Shipping</th>
+                        <td data-th="Shipping" class="justify-right">{{ USDollar.format(order.cartTotal.amount_shipping / 100) }}</td>
+                    </tr>
+                    <tr>
+                        <th class="justify-right" :colspan="isAdmin ? 5 : 4">Tax</th>
+                        <td data-th="Tax" class="justify-right">{{ USDollar.format(order.cartTotal.amount_tax / 100) }}</td>
+                    </tr>
+                    <tr>
+                        <th class="justify-right" :colspan="isAdmin ? 5 : 4">Total</th>
+                        <td data-th="Total" class="justify-right">{{ USDollar.format(order.cartTotal.amountTotal / 100) }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
     </div>
 </template>
 
@@ -75,34 +82,8 @@ import { USDollar } from '@/utils/utils';
 
     }
 
-    // isUgly.value ? 'black' : 'inherit'
-    // const backgroundColor = isUgly.value ? 'white' : 'inherit'
-    // const borderColor = isUgly.value ? 'black' : 'rgb(225, 220, 189)'
-
-    // function uglyMode() {
-
-    //     if (typeof window.getSelection !== "undefined") {
-    //         const text = window.getSelection()!.toString()
-    //         console.log(text)
-    //         if(text) {
-    //             console.log('hi')
-    //             textColor.value = 'black'
-    //             backgroundColor.value = 'white'
-    //             borderColor.value = 'white'
-    //             nextTick()
-    //         }
-    //         else {
-    //             console.log('Ugly Off')
-    //             nextTick()
-    //             textColor.value = 'inherit'
-    //             backgroundColor.value = 'inherit'
-    //             borderColor.value = 'inherit'
-    //         }
-    //     }
-    // }
-
-
 </script>
+
 <style scoped>
     .item-detail-table {
         margin: 1rem 0.25rem;
@@ -151,7 +132,10 @@ import { USDollar } from '@/utils/utils';
             padding-right: 0;
         }
     }
-
+    .ugly {
+        color:v-bind(textColor);
+        background-color: v-bind(backgroundColor);
+    }
     table, tr, td, th {
         color:v-bind(textColor);
         background-color: v-bind(backgroundColor);

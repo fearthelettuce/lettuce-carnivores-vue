@@ -1,8 +1,8 @@
 import type { GranularityLevel } from '../types/Ebay'
-import axios from 'axios'
-import admin from 'firebase-admin'
+import axios, { AxiosResponse } from 'axios'
 import { apiUrl, sandboxApiUrl  } from './ebayConstants'
 import type { EbayEnvironment} from '../types/Ebay'
+import xml2js from 'xml2js'
 
 export async function getListingsData(environment: EbayEnvironment, token: string, granularityLevel: GranularityLevel = 'Medium', daysAgo: number = 120) {
     if(daysAgo > 121) { return {error: true, success: false, message: 'Cannot query more than 121 days'}}
@@ -11,8 +11,7 @@ export async function getListingsData(environment: EbayEnvironment, token: strin
     const startDate = new Date(new Date().setDate(now.getDate() - daysAgo));
 
     const granularity = granularityLevel
-    const xmlBody = `
-        <?xml version="1.0" encoding="utf-8"?>
+    const xmlBody = `<?xml version="1.0" encoding="utf-8"?>
         <GetSellerListRequest xmlns="urn:ebay:apis:eBLBaseComponents">
             <ErrorLanguage>en_US</ErrorLanguage>
             <WarningLevel>High</WarningLevel>
@@ -26,8 +25,7 @@ export async function getListingsData(environment: EbayEnvironment, token: strin
         <Pagination>
             <EntriesPerPage>200</EntriesPerPage>
         </Pagination>
-        </GetSellerListRequest>
-    `
+        </GetSellerListRequest>`
     const config = {
         headers: {
             'Content-Type': 'text/xml',
@@ -37,6 +35,25 @@ export async function getListingsData(environment: EbayEnvironment, token: strin
             'X-EBAY-API-IAF-TOKEN' : token
         },
     }
+    console.log(`${baseUrl}/ws/api.dll`)
+    const res = await axios.post(`${baseUrl}/ws/api.dll`, xmlBody, config).catch(e => {return e})
+    console.log(res.status)
+    if(res.status === 200) {
+        const parsedResponse = await parseXmlResponse(res)
+        return JSON.stringify(parsedResponse)
+    }
+    return res
+}
 
-    return axios.post(`${baseUrl}/url`, xmlBody, config).catch(e => {return e})
+async function parseXmlResponse(response: AxiosResponse) {
+    let parsedData
+    const parser = new xml2js.Parser()
+    await parser.parseStringPromise(response.data).then((result) => {
+        console.log('parsing')
+        parsedData = result
+    }).catch((err) => {
+        console.error('Error parsing XML:', err)
+        parsedData = undefined
+    })
+    return parsedData
 }
