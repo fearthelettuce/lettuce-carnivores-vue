@@ -1,9 +1,9 @@
 import admin from 'firebase-admin'
 import { onCall, type CallableRequest } from 'firebase-functions/v2/https';
 import { defineSecret } from 'firebase-functions/params'
-import type {  EbayAccessTokenRequest, EbayEnvironment, EbayListingRequest } from '../types/Ebay';
+import type {  EbayAccessTokenRequest, EbayEnvironment, EbayListingRequest, EbayInventoryRequest } from '../types/Ebay';
 import { submitAccessTokenRequest, generateUserConsentUrl, getOrRefreshUserAccessToken, getTokenFromDb } from './ebayService';
-import { getListingsData } from './ebayData';
+import { getListingsData, deleteInventoryItem } from './ebayData';
 
 const ebayClientId = defineSecret('EBAY_CLIENT_ID')
 const ebayClientSecret = defineSecret('EBAY_SECRET_ID')
@@ -59,13 +59,33 @@ export const refreshUserAccessToken = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_
         console.log(snap)
         return {success: false, error: true, message: 'Unable to get refresh token from db', errorDetails: {}, data: {}}
     }
-
     const oldRefreshToken = snap.data()?.refresh_token
-    console.log(`Old: ${oldRefreshToken}`)
     const res = await getOrRefreshUserAccessToken(environment, clientId, clientSecret, undefined, oldRefreshToken)
-    console.log(res.data)
     return res
 })
+
+export const getInventory = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayInventoryRequest): Promise<any> => {
+    const token = await getTokenFromDb(request.data.environment)
+    if(!token) {
+        return {error: true, success: false, message: 'Unable to get valid token'}
+    }
+    const res = await getListingsData(request.data.environment, token, )
+    return res
+})
+
+export const deleteInventory = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayInventoryRequest): Promise<any> => {
+    const token = await getTokenFromDb(request.data.environment)
+    if(!token) {
+        return {error: true, success: false, message: 'Unable to get valid token'}
+    }
+    if(!request.data.sku || request.data.sku.length < 2) {
+        return {error: true, success: false, message: 'Invalid SKU'}
+    }
+    const res = await deleteInventoryItem(token, request.data.sku, request.data.environment,)
+    return res
+})
+
+
 
 export const getListings = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayListingRequest): Promise<any> => {
     const token = await getTokenFromDb(request.data.environment)

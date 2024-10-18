@@ -68,12 +68,24 @@ export async function refreshAccessToken() {
         console.error('Unable to get FB function')
         return undefined
     }
-    const res = refreshUserAccessToken({environment: environment})
-    return res
+    try{
+        const res = refreshUserAccessToken({environment: environment})
+        return res
+    } catch (e: any) {
+        console.log('hi')
+        return {success: false, error: true, errorDetails: e.message}
+    }
 }
 
 export async function getEbayListings() {
-    const getListings = useFirebaseFunctions('getListings')
+    let getListings
+    try {
+        getListings = useFirebaseFunctions('getListings')
+    } catch {
+        console.error('Unable to get FB function')
+        return undefined
+    }
+
     if(!getListings) {
         console.error('Unable to get FB function')
         return undefined
@@ -84,7 +96,7 @@ export async function getEbayListings() {
         daysAgo: 120
     }
     const res = await getListings(data)
-    const jsonRes = JSON.parse(res.data)
+    const jsonRes = JSON.parse(res.data as string)
      setEbayListingData(jsonRes)
     return jsonRes
 }
@@ -92,7 +104,49 @@ export async function getEbayListings() {
 type EbayListing = {
     [key: string]: string
 }
-function setEbayListingData(data) {
+function setEbayListingData(data: any) {
     const items = data.ItemArray[0].Item
     console.log(items)
 }
+
+export async function getInventoryItem(sku: string) {
+
+}
+
+export async function deleteEbayItem(sku: string) {
+    let deleteInventory
+    try {
+        deleteInventory = useFirebaseFunctions('deleteInventory')
+    } catch {
+        console.error('Unable to get FB function')
+        return undefined
+    }
+
+    if(!deleteInventory) {
+        console.error('Unable to get FB function')
+        return undefined
+    }
+    const data = {
+        environment: environment,
+        sku: sku,
+    }
+    const res = await deleteInventory(data)
+    return res
+}
+
+//BulkMigrateListingResponse
+// {
+//   "responses": [
+//     {
+//       "statusCode": 200,
+//       "listingId": "135248481479",
+//       "marketplaceId": "EBAY_US",
+//       "inventoryItems": [
+//         {
+//           "sku": "Specimen 1432",
+//           "offerId": "543632798016"
+//         }
+//       ]
+//     }
+//   ]
+// }

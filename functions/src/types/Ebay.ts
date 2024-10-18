@@ -13,6 +13,12 @@ export interface EbayDataRequest extends CallableRequest {
     }
 }
 
+export type EbayInventoryRequest = EbayDataRequest & {
+    data: {
+        sku?: string
+    }
+}
+
 export type EbayListingRequest = EbayDataRequest & {
     data: {
         granularityLevel?: GranularityLevel,
