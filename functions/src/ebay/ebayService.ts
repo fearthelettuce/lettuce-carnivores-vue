@@ -89,7 +89,7 @@ export async function getOrRefreshUserAccessToken(
         }
         return {success: false, error: true, message: messageText, errorDetails: errorDetails, data: null}
     }
-    const newTokenData = {...res.data, updatedTimestamp: Math.floor(Date.now() / 1000), environment: environment}
+    const newTokenData = {...res.data, updatedTimestamp: Math.floor(Date.now() / 1000), updatedDateTime: new Date().toLocaleString("en-US", {timeZone: 'America/Chicago'}), environment: environment}
     const tokenDoc = environment === 'PRODUCTION' ? 'ebayToken' : 'sandboxToken'
     await admin.firestore().collection('admin').doc(tokenDoc).update(newTokenData)
     return {success: true, error: false, message: 'Success', data: newTokenData as unknown as UserAccessTokenResponse, errorDetails: null}

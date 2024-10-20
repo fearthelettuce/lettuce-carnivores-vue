@@ -15,6 +15,7 @@ const AdminView = () => import('@/views/AdminView.vue')
 const GiveawayView = () => import('@/views/GiveawayView.vue')
 const EbayLoginSuccess = () => import('@/views/EbayLoginSuccess.vue')
 const InventoryManagement = () => import('@/views/InventoryManagementView.vue')
+const AdminPanel = () => import('@/views/AdminPanelView.vue')
 const routeData = [
     {
       path: "/",
@@ -118,6 +119,17 @@ const routeData = [
       }
     },
     {
+      path: "/adminPanel",
+      name: 'Admin Panel',
+      label: 'Admin Panel',
+      component: AdminPanel,
+      meta: {
+        showInNav: true,
+        requiresLogin: true,
+        requiresAdmin: true,
+      }
+    },
+    {
       path: "/orderAdmin",
       name: 'Order Admin',
       label: 'Order Admin',
@@ -199,7 +211,7 @@ const routeData = [
     },
 ]
 
-//Ignore ES Lint barfing an unused variable error, this line is specifically to exclude that variable from the exported object 
+//Ignore ES Lint barfing an unused variable error, this line is specifically to exclude that variable from the exported object
 export const navData = routeData.map(({ component, ...rest }) => rest) //eslint-disable-line @typescript-eslint/no-unused-vars
 export const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

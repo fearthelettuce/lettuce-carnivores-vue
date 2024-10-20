@@ -36,7 +36,7 @@
             <component :is="activeGame" class="game" />
         </div>
     </BaseContainer>
-    <!-- <GiveawayEntriesList /> -->
+
 </template>
 
 <script setup lang="ts">
@@ -45,7 +45,6 @@ import HalloweenLetterGame from './HalloweenLetterGame.vue';
 import GiveawayEntryForm from './GiveawayEntryForm.vue';
 import { useGiveawayStore } from '@/stores/giveaway'
 import { storeToRefs } from 'pinia'
-import GiveawayEntriesList from './GiveawayEntriesList.vue'
     const activeGame = HalloweenLetterGame
     const gameHelpLine1 = `Go to the 'Shop' link at the top and click on any of the plants.  Then find the`
     const gameHelpLine2 = `Once you collect all the letters, come back to this page to submit your name for the contest`

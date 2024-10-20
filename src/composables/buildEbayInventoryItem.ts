@@ -73,9 +73,9 @@ function getProductDetails(plantCategory: PlantCategory, plant: Plant) {
         })
     }
 
-    aspects?: string;
-    mpn?: string;
-    upc?: (string)[];
+    // aspects?: string;
+    // mpn?: string;
+    // upc?: (string)[];
 }
 function getShippingSize(size: Sizes): PackageWeightAndSize {
     let box: StandardBoxSizes | undefined = undefined

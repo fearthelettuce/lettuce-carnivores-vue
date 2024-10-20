@@ -5,13 +5,13 @@ export type Giveaway = {
         description: string,
         active: boolean,
         duration: string,
-        startTime: Timestamp,
-        endTime: Timestamp,
+        giveawayStartTime: string | undefined,
+        giveawayEndTime: string | undefined,
         winnerAnnounced: string,
         prize: string,
         prizeValue: number,
         summary: string,
-        testMode: boolean,
+        testMode?: boolean,
         gameData: {
                 [key: string]: string
         }
