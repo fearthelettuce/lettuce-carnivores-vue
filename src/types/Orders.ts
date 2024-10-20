@@ -1,7 +1,8 @@
 import type { Timestamp } from 'firebase/firestore'
-import type { Plant, PlantCategory, Sizes } from '@/types/Plant'
+import type { Plant, PlantCategory, PotSize } from '@/types/Plant'
 import type { PhotoItem } from '@/types/Product'
 
+export type StandardBoxSizes = '7x5x5' | '10x5x5' | '10x8x6' | '10x10x5' | '14x6x6'
 export type ShoppingCart = {
     cartItems: CartItem[],
 }

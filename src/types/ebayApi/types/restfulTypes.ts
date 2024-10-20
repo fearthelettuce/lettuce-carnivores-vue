@@ -31,7 +31,7 @@ import {components as sellAccount} from './restful/specs/sell_account_v1_oas3.js
 import {components as sellCompliance} from './restful/specs/sell_compliance_v1_oas3.js';
 
 import {components as sellFulfillment} from './restful/specs/sell_fulfillment_v1_oas3.js';
-import type {components as sellInventory} from './restful/specs/sell_inventory_v1_oas3.js';
+import {components as sellInventory} from './restful/specs/sell_inventory_v1_oas3.js';
 import {components as sellMarketing} from './restful/specs/sell_marketing_v1_oas3.js';
 import {components as sellRecommendation} from './restful/specs/sell_recommendation_v1_oas3.js';
 
@@ -537,3 +537,5 @@ export type UpdateCampaignRequest = sellMarketing['schemas']['UpdateCampaignRequ
 export type QuickSetupRequest = sellMarketing['schemas']['QuickSetupRequest']
 
 export type FindListingRecommendationRequest = sellRecommendation['schemas']['FindListingRecommendationRequest']
+
+

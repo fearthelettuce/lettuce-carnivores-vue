@@ -1,53 +1,37 @@
-import type { Plant, PlantCategory, Sizes } from '@/types/Plant'
-import type { InventoryItem } from '@/types/ebayApi/restfulTypes'
 import { formattedDate } from '@/utils/utils'
-type EbayInventoryItem = {
-    product: {},
-    condition: string,
-    packageWeightAndSize: PackageWeightAndSize,
-    availability: EbayAvailability
-}
+import {getShippingSize } from '@/composables/useShippingUtils'
+import type { Plant, PlantCategory } from '@/types/Plant'
+import type { InventoryItem } from '@/types/ebayApi/types'
+import type { ResponseError } from '@/types/App'
 
-type EbayAvailability = {
-    shipToLocationAvailability: {
-        quantity: number
-    }
-}
-type PackageWeightAndSize = {
-    dimensions: BoxDimensions,
-    packageType: 'MAILING_BOX',
-    weight: {
-        value: number,
-        unit: 'POUND' | 'OUNCE',
-    }
-}
-type StandardBoxSizes = '7x5x5' | '10x5x5' | '10x8x6' | '14x6x6'
-type BoxDimensions = {
-    height: number,
-    length: number,
-    width: number,
-    unit: 'INCH' | 'FEET'
-}
-export function createEbayInventoryItem (plantCategory: PlantCategory, plant: Plant) {
-
-    const InventoryItem: InventoryItem = {
-        product: getProductDetails(plantCategory, plant),
-        condition: 'NEW',
-        packageWeightAndSize: getShippingSize(plant.size),
-        availability: {
-            shipToLocationAvailability: {
-                quantity: 1
+export function createEbayInventoryItem (plantCategory: PlantCategory, plant: Plant): InventoryItem | ResponseError<InventoryItem, any> {
+    try {
+        const inventoryItem: InventoryItem = {
+            product: getProductDetails(plantCategory, plant),
+            condition: 'NEW',
+            packageWeightAndSize: getShippingSize(plant.size),
+            availability: {
+                shipToLocationAvailability: {
+                    quantity: 1
+                }
             }
         }
+        return inventoryItem
+    }
+    catch (e: any) {
+        console.error(e)
+        return {success: false, errorMessage: 'Unable to create inventory item', errorDetails: e }
     }
 
 }
 
-function getProductDetails(plantCategory: PlantCategory, plant: Plant) {
+function getProductDetails(plantCategory: PlantCategory, plant: Plant): InventoryItem['product'] {
     return {
         title: `${plantCategory.name} - ${plant.size}`,
         description: createDescription(),
-        imageUrls: getImageUrls()
+        imageUrls: getImageUrls(),
+        aspects: buildAspects(plantCategory, plant) as any //ts-any: Ebay OpenApi 3 JSON currently (10/20/24) defines aspects as string, which is wrongo dongo.
+                                                           // https://github.com/hendt/ebay-api/issues/181
     }
 
     function createDescription() {
@@ -71,93 +55,27 @@ function getProductDetails(plantCategory: PlantCategory, plant: Plant) {
         plant.photos.forEach((photo) => {
             console.log(photo.path)
         })
-    }
-
-    // aspects?: string;
-    // mpn?: string;
-    // upc?: (string)[];
-}
-function getShippingSize(size: Sizes): PackageWeightAndSize {
-    let box: StandardBoxSizes | undefined = undefined
-    let weight: number | undefined = undefined
-
-    switch (size) {
-        case '2.5"':
-            box = '7x5x5'
-            weight = 1
-            break
-        case '3" deep':
-            box = '7x5x5'
-            weight = 1
-            break
-        case '3.5"':
-            box = '7x5x5'
-            weight = 1
-            break
-        case '3.5" deep':
-            box = '10x5x5'
-            weight = 1.5
-            break
-        case '4" deep':
-            box = '10x8x6'
-            weight = 1.75
-            break
-        case '4.5" deep':
-            box = '10x8x6'
-            weight = 2
-            break
-        case '5" deep':
-            box = '14x6x6'
-            weight = 2
-            break
-        case 'Bare Root':
-            box = '10x8x6'
-            weight = 1
-            break
-        default:
-            box = '10x8x6'
-            weight = 1.5
-    }
-    if(box === undefined || weight === undefined) {
-        box = '10x8x6'
-        weight = 1.5
-    }
-    const boxSizeMap = buildBoxSizeMap()
-    return {
-        dimensions: boxSizeMap.get(box) || boxSizeMap.get('10x8x6')!,
-        packageType: 'MAILING_BOX',
-        weight: {
-            value: weight,
-            unit: 'POUND',
-        }
+        return []
     }
 }
 
-function buildBoxSizeMap () {
-    const boxSizeMap: Map<StandardBoxSizes, BoxDimensions> = new Map()
-    boxSizeMap.set('7x5x5', {
-        height: 7,
-        length: 5,
-        width: 5,
-        unit: 'INCH'
-    })
-    boxSizeMap.set('10x5x5', {
-        height: 10,
-        length: 5,
-        width: 5,
-        unit: 'INCH'
-    })
-    boxSizeMap.set('10x8x6', {
-        height: 10,
-        length: 8,
-        width: 6,
-        unit: 'INCH'
-    })
-    boxSizeMap.set('14x6x6', {
-        height: 14,
-        length: 6,
-        width: 6,
-        unit: 'INCH'
-    })
-    return boxSizeMap
+function buildAspects(plantCategory: PlantCategory, plant: Plant) {
+    const aspects: {[key: string]: string[]} = {
+        "Climate": ["Highland"],
+        "Common Name": ["Pitcher Plant"],
+        "Indoor/Outdoor": ["Indoor"],
+        "Growth Habit": ["Clumping"],
+        "California Prop 65 Warning": ["I don't have cancer yet, if that tells you anything"],
+        "Brand": ["Danger Lettuce Carnivores"],
+        "Type": ["Carnivorous Plants"],
+        "Growth Stage": ["Mature"],
+        "Watering": ["Heavy"],
+        "Genus": [plantCategory.genus],
+        "Number in Pack": ["1"],
+        "Sunlight": [plantCategory.genus === 'Heliamphora' ? "Medium Sun" : ''],
+    }
+    if(plant.size !== 'Bare Root') {
+        aspects["Features"] = ['Potted']
+    }
+    return aspects
 }

@@ -15,7 +15,7 @@ export type Plant = {
     id: string,
     sku: string,
     isRepresentative: boolean,
-    size: Sizes,
+    size: PotSize,
     propagationDate?: string ,
     status:  'In Stock' | 'Coming Soon' | 'Archived' | 'Hidden' | 'Sold',
     price: number,
@@ -32,7 +32,7 @@ export interface PlantWithCategoryDetails extends Plant {
     genus: string,
     clone: string,
 }
-export type Sizes =
+export type PotSize =
     '' |
     '2.5"' |
     '3" deep' |
@@ -41,7 +41,11 @@ export type Sizes =
     '4" deep' |
     '4.5" deep' |
     '5" deep' |
-    'Bare Root'
+    'Bare Root' |
+    'Bundle - 2 sm' |
+    'Bundle - 3 sm' |
+    'Bundle - 2 lg' |
+    'Bundle - 3 lg'
 
 
 type PhotoItem = {

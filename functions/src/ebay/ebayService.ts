@@ -107,10 +107,6 @@ export async function getTokenFromDb(environment: EbayEnvironment) {
     if((tokenResponse.data()?.updatedTimestamp + (100*60)) >  now && tokenResponse.data()?.access_token) {
         return tokenResponse.data()!.access_token
     } else {
-        console.log(`updateTimestamp: ${tokenResponse.data()?.updatedTimestamp}`)
-        console.log(`plus ${(100*60)}`)
-        console.log(`Sum: ${(tokenResponse.data()?.updatedTimestamp + (100*60))}`)
-        console.log(`Now: ${now}`)
         return undefined
     }
 }

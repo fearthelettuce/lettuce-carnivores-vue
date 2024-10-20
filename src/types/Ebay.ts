@@ -44,3 +44,19 @@ export interface EbayAccessTokenResponse {
 export type EbayEnvironment = 'SANDBOX' | 'PRODUCTION'
 
 export type GranularityLevel = 'Coarse' | 'Medium' | 'Fine'
+
+export type PackageWeightAndSize = {
+    dimensions: BoxDimensions,
+    packageType: 'MAILING_BOX',
+    weight: {
+        value: number,
+        unit: 'POUND' | 'OUNCE',
+    }
+}
+
+export type BoxDimensions = {
+    height: number,
+    length: number,
+    width: number,
+    unit: 'INCH' | 'FEET'
+}
