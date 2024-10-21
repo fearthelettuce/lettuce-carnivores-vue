@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {multipartHeader} from '../../../../request.js';
 import {
   AddEvidencePaymentDisputeRequest,

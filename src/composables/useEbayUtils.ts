@@ -1,5 +1,9 @@
-import type { EbayEnvironment } from '@/types/Ebay'
+import type { EbayEnvironment, AccessTokenDBResponse } from '@/types/Ebay'
 import useFirebaseFunctions from '@/utils/useFirebaseFunctions'
+import type { AppReturn, AppData, AppError, AppResponse } from '@/types/App'
+import type { InventoryItem } from '@/types/ebayApi/types'
+import type { HttpsCallableResult } from 'firebase/functions'
+
 let environment: EbayEnvironment
 if((import.meta.env.VITE_EBAY_ENVIRONMENT && import.meta.env.VITE_EBAY_ENVIRONMENT === 'PRODUCTION') || import.meta.env.PROD) {
     environment = 'PRODUCTION'
@@ -16,122 +20,160 @@ type FunctionResponse = {
 }
 
 export async function getEbayAccessToken() {
-    const getEbayAccessToken = useFirebaseFunctions('getEbayAccessToken')
-    if(!getEbayAccessToken) {
-        return undefined
-    }
+    // const getEbayAccessToken = useFirebaseFunctions('getEbayAccessToken')
+    // if(!getEbayAccessToken) {
+    //     return undefined
+    // }
+    // const data = {environment: environment}
+    // const res = await getEbayAccessToken(data).catch((e: any) => {
+    //     console.error(e)
+    //     return {success: false, error: true, message: e.message, errorDetails: e}
+    // })
+    // console.log(res)
+    // return res
     const data = {environment: environment}
-    const res = await getEbayAccessToken(data).catch((e: any) => {
-        console.error(e)
-        return {success: false, error: true, message: e.message, errorDetails: e}
-    })
-    console.log(res)
-    return res
+    return await executeFunction<any>('getEbayAccessToken', data)
 }
 
 export async function getUserConsent() {
-
-    const getUserConsent = useFirebaseFunctions('getUserConsent')
-    if(!getUserConsent) {
-        return undefined
-    }
+    // const getUserConsent = useFirebaseFunctions('getUserConsent')
+    // if(!getUserConsent) {
+    //     return undefined
+    // }
+    // const data = {environment: environment}
+    // const res = await getUserConsent(data).catch(e => {console.error(e); return undefined})
+    // console.log(res)
+    // return res
     const data = {environment: environment}
-    const res = await getUserConsent(data).catch(e => {console.error(e); return undefined})
-    console.log(res)
-    return res
+    const res = await executeFunction<string>('getUserConsent', data)
+    if(isSuccess(res)) {
+        return res.res.data
+    }
 }
 
 export async function handleEbayLogin(authCode: string, expires: string | null) {
-    const getUserAccessToken = useFirebaseFunctions('getUserAccessToken')
-    if(!getUserAccessToken) {
-        console.error('Unable to get FB function')
-        return undefined
-    }
     const data = {
         environment: environment,
         authCode: authCode,
         authCodeExpires: expires
     }
-    const res = await getUserAccessToken(data).catch(e => {console.error(e); return false})
-    console.log(res)
-    if((res as {data: FunctionResponse}).data.success) {
-        return true
-    } else {
-        console.log(res)
-        return false
-    }
+    return await executeFunction<any>('getUserAccessToken', data)
+    // const getUserAccessToken = useFirebaseFunctions('getUserAccessToken')
+    // if(!getUserAccessToken) {
+    //     console.error('Unable to get FB function')
+    //     return undefined
+    // }
+    // const res = await getUserAccessToken(data).catch((e: any) => {console.error(e); return false})
+    // console.log(res)
+    // if((res as {data: FunctionResponse}).data.success) {
+    //     return true
+    // } else {
+    //     console.log(res)
+    //     return false
+    // }
 }
 
-export async function refreshAccessToken() {
-    const refreshUserAccessToken = useFirebaseFunctions('refreshUserAccessToken')
-    if(!refreshUserAccessToken) {
-        console.error('Unable to get FB function')
-        return undefined
+export async function refreshAccessToken(): Promise<AppData<AccessTokenDBResponse> | AppError> {
+    const res = await executeFunction<{data: AccessTokenDBResponse}>('refreshUserAccessToken', {environment: environment})
+    if(isSuccess(res)) {
+        console.log(res.res.data?.data)
+        return {success: true, data: res.res.data?.data}
     }
-    try{
-        const res = refreshUserAccessToken({environment: environment})
-        return res
+    return {success: false, errorMessage: res.message ?? '', errorDetails: res}
+    // const refreshUserAccessToken = useFirebaseFunctions('refreshUserAccessToken')
+    // if(!refreshUserAccessToken) {
+    //     console.error('Unable to get FB function')
+    //     return undefined
+    // }
+    // try{
+    //     const res = refreshUserAccessToken({environment: environment})
+    //     return res
+    // } catch (e: any) {
+    //     console.log('hi')
+    //     return {success: false, error: true, errorDetails: e.message}
+    // }
+}
+
+// export async function getEbayListings() {
+//     let getListings
+//     try {
+//         getListings = useFirebaseFunctions('getListings')
+//     } catch {
+//         console.error('Unable to get FB function')
+//         return undefined
+//     }
+
+//     if(!getListings) {
+//         console.error('Unable to get FB function')
+//         return undefined
+//     }
+//     const data = {
+//         environment: environment,
+//         granularityLevel: 'Medium',
+//         daysAgo: 120
+//     }
+//     const res = await getListings(data)
+//     const jsonRes = JSON.parse(res.data as string)
+//      setEbayListingData(jsonRes)
+//     return jsonRes
+// }
+
+// type EbayListing = {
+//     [key: string]: string
+// }
+// function setEbayListingData(data: any) {
+//     const items = data.ItemArray[0].Item
+//     console.log(items)
+// }
+
+export async function getInventoryItem(sku: string): Promise<AppResponse<HttpsCallableResult<InventoryItem>> | AppError> {
+    const res = await executeFunction<InventoryItem>('getInventory', {environment: environment, sku: sku})
+    if(isSuccess(res)) { return res }
+    return {success: false, errorMessage: res.message ?? '', errorDetails: res}
+}
+
+
+// export async function deleteEbayItem(sku: string): AppReturn | AppError<any> {
+//     let deleteInventory
+//     try {
+//         deleteInventory = useFirebaseFunctions('deleteInventory')
+//     } catch {
+//         console.error('Unable to get FB function')
+//         return {success: false, errorMessage: 'Unable to get FB Function'}
+//     }
+//     if(deleteInventory === undefined) { return {success: false, errorMessage: 'Unable to get FB Function'} }
+
+//     try {
+//         const res = await deleteInventory({ environment: environment,sku: sku })
+//         return {success: true}
+//     } catch (e: any) {
+//         return {success: false, errorMessage: 'Error calling function', errorDetails: e}
+//     }
+
+// }
+
+export async function executeFunction<T>(functionName: string, params: any): Promise<AppResponse<HttpsCallableResult<T>> | AppError> {
+    let firebaseFunction
+    try {
+        const res = useFirebaseFunctions(functionName)
+        firebaseFunction = res.res
     } catch (e: any) {
-        console.log('hi')
-        return {success: false, error: true, errorDetails: e.message}
+        console.error('Unable to get FB function')
+        return {success: false, errorMessage: `Unable to get FB Function ${functionName}`, errorDetails: e}
     }
-}
-
-export async function getEbayListings() {
-    let getListings
+    if(firebaseFunction === undefined) { return {success: false, errorMessage: `Unable to get FB Function ${functionName}`} }
     try {
-        getListings = useFirebaseFunctions('getListings')
-    } catch {
-        console.error('Unable to get FB function')
-        return undefined
+        const res = await firebaseFunction(params) as HttpsCallableResult<T>
+        console.log(res)
+        return {success: true, res: res}
+    } catch (e: any) {
+        console.error(e)
+        return {success: false, errorMessage: `Error calling FB Function ${functionName}`, errorDetails: e}
     }
-
-    if(!getListings) {
-        console.error('Unable to get FB function')
-        return undefined
-    }
-    const data = {
-        environment: environment,
-        granularityLevel: 'Medium',
-        daysAgo: 120
-    }
-    const res = await getListings(data)
-    const jsonRes = JSON.parse(res.data as string)
-     setEbayListingData(jsonRes)
-    return jsonRes
 }
 
-type EbayListing = {
-    [key: string]: string
-}
-function setEbayListingData(data: any) {
-    const items = data.ItemArray[0].Item
-    console.log(items)
-}
-
-export async function getInventoryItem(sku: string) {
-
-}
-
-export async function deleteEbayItem(sku: string) {
-    let deleteInventory
-    try {
-        deleteInventory = useFirebaseFunctions('deleteInventory')
-    } catch {
-        console.error('Unable to get FB function')
-        return undefined
-    }
-
-    if(!deleteInventory) {
-        console.error('Unable to get FB function')
-        return undefined
-    }
-    const data = {
-        environment: environment,
-        sku: sku,
-    }
-    const res = await deleteInventory(data)
-    return res
+export function isSuccess<T, E>(res: AppResponse<T> | AppError): res is AppResponse<T> {
+    return res.success === true
 }
 
 //BulkMigrateListingResponse

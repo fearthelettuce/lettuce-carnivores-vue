@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Auth from '../../auth/index.js';
 import {EBayInvalidAccessToken, handleEBayError} from '../../errors/index.js';
 import {IEBayApiRequest} from '../../request.js';

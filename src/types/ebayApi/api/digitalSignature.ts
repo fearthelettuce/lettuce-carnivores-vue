@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {createHash, sign} from 'crypto';
 import {EBayError} from '../errors/index.js';
 import {Cipher, Headers} from '../types/index.js';
@@ -136,4 +137,3 @@ export function generateSignature(
   const signature = signatureBuffer.toString('base64');
   return `sig1=:${signature}:`;
 }
-

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {PaymentsProgramType} from '../../../../enums/index.js';
 import {
   CustomPolicyCreateRequest,

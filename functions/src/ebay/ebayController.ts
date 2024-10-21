@@ -3,7 +3,7 @@ import { onCall, type CallableRequest } from 'firebase-functions/v2/https';
 import { defineSecret } from 'firebase-functions/params'
 import type {  EbayAccessTokenRequest, EbayEnvironment, EbayListingRequest, EbayInventoryRequest } from '../types/Ebay';
 import { submitAccessTokenRequest, generateUserConsentUrl, getOrRefreshUserAccessToken, getTokenFromDb } from './ebayService';
-import { getListingsData, deleteInventoryItem } from './ebayData';
+import { getInventoryItems, deleteInventoryItem } from './ebayData';
 
 const ebayClientId = defineSecret('EBAY_CLIENT_ID')
 const ebayClientSecret = defineSecret('EBAY_SECRET_ID')
@@ -69,7 +69,7 @@ export const getInventory = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID'
     if(!token) {
         return {error: true, success: false, message: 'Unable to get valid token'}
     }
-    const res = await getListingsData(request.data.environment, token, )
+    const res = await getInventoryItems(request.data.environment, token, request.data.sku)
     return res
 })
 
@@ -87,14 +87,14 @@ export const deleteInventory = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_
 
 
 
-export const getListings = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayListingRequest): Promise<any> => {
-    const token = await getTokenFromDb(request.data.environment)
-    if(!token) {
-        return {error: true, success: false, message: 'Unable to get valid token'}
-    }
-    const res = await getListingsData(request.data.environment, token, request.data.granularityLevel, request.data.daysAgo)
-    return res
-})
+// export const getListings = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayListingRequest): Promise<any> => {
+//     const token = await getTokenFromDb(request.data.environment)
+//     if(!token) {
+//         return {error: true, success: false, message: 'Unable to get valid token'}
+//     }
+//     const res = await getListingsData(request.data.environment, token, request.data.granularityLevel, request.data.daysAgo)
+//     return res
+// })
 
 function setSecrets() {
     if(environment === 'PRODUCTION') {

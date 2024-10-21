@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {ClientAlerts, Finding, Merchandising, Shopping, Trading} from '../types/index.js';
 import Api from './index.js';
 import {

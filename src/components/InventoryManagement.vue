@@ -4,8 +4,8 @@
             <BaseButton @click="accessToken">Test Access Token</BaseButton>
             <BaseButton @click="ebayLogin">Ebay Login</BaseButton>
             <BaseButton @click="refreshEbay">Refresh Ebay</BaseButton>
-            <BaseButton @click="getListings">Get Listings</BaseButton>
         </div>
+        <div>{{ `${environment} - Token refreshed: ${ebayTokenIssued}` }}</div>
         <div>
             <FormKit
                 type="text"
@@ -13,17 +13,30 @@
                 outer-class="grid-col-2"
                 v-model="ebaySkuInput"
             />
-            <BaseButton @click="deleteListing">Delete</BaseButton>
+            <BaseButton @click="getInventoryBySku">Get Inventory</BaseButton>
         </div>
     </BaseContainer>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { getEbayAccessToken, getUserConsent, refreshAccessToken, getEbayListings, deleteEbayItem } from '@/composables/useEbayUtils';
+import { onMounted, ref } from 'vue';
+import { getEbayAccessToken, getUserConsent, refreshAccessToken, getInventoryItem, isSuccess } from '@/composables/useEbayUtils';
+import type { EbayEnvironment, AccessTokenDBResponse } from '@/types/Ebay'
 import BaseDialog from '@/components/UI/BaseDialog.vue';
 import { toast } from 'vue3-toastify'
+import { findDocById } from '@/apis/dataServices'
+import { getPhotoDownloadUrl } from '@/apis/fileServices'
+const ebayTokenIssued = ref('')
+const environment = import.meta.env.VITE_EBAY_ENVIRONMENT
+onMounted(async ()=>{
+    getLastTokenDate()
+    getPhotoDownloadUrl(undefined)
+})
 
+async function getLastTokenDate() {
+    const res = await findDocById('admin', environment === 'SANDBOX' ? 'sandboxToken' : 'ebayToken')
+    ebayTokenIssued.value = res?.updatedDateTime
+}
 async function accessToken() {
     const res = await getEbayAccessToken().catch(e => {console.error(e); return})
     console.log(res)
@@ -31,37 +44,37 @@ async function accessToken() {
 
 async function ebayLogin() {
     const res = await getUserConsent().catch(e => {console.error(e); return})
-
     console.log(res)
-    if(res && res.data) {
-        window.open(res.data as string)
-    } else {
-        toast.error('Unable to get ebay sign in URL')
+    if(res) {
+        window.open(res)
     }
 }
 
 async function refreshEbay() {
-    const res: any = await refreshAccessToken()
-    if(res && res.data.success === true) {
+    const res = await refreshAccessToken()
+    console.log(res)
+    if(res && res.success) {
         toast.success('Ebay token refreshed')
+        ebayTokenIssued.value = res.data.updatedDateTime
     } else {
         toast.error('Something went wrong')
         console.error(res)
     }
 }
-async function getListings() {
-    const res = await getEbayListings()
+
+const ebaySkuInput = ref('')
+async function getInventoryBySku() {
+    const res = await getInventoryItem(ebaySkuInput.value)
     console.log(res)
 
 }
 
-const ebaySkuInput = ref('')
-async function deleteListing() {
-    if(ebaySkuInput.value && ebaySkuInput.value.length > 3) {
-        const res = await deleteEbayItem(ebaySkuInput.value)
-        console.log(res)
-    }
-}
+// async function deleteListing() {
+//     if(ebaySkuInput.value && ebaySkuInput.value.length > 3) {
+//         const res = await deleteEbayItem(ebaySkuInput.value)
+//         console.log(res)
+//     }
+// }
 </script>
 <style scoped>
 .actions {

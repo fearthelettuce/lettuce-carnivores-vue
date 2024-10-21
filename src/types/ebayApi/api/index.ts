@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Auth from '../auth/index.js';
 import {IEBayApiRequest} from '../request.js';
 import {AppConfig} from '../types/index.js';

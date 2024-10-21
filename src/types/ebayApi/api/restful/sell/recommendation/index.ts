@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {FindListingRecommendationRequest} from '../../../../types/index.js';
 import {operations} from '../../../../types/restful/specs/sell_recommendation_v1_oas3.js';
 import Restful, {OpenApi} from '../../index.js';

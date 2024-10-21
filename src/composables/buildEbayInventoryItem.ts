@@ -2,12 +2,12 @@ import { formattedDate } from '@/utils/utils'
 import {getShippingSize } from '@/composables/useShippingUtils'
 import type { Plant, PlantCategory } from '@/types/Plant'
 import type { InventoryItem } from '@/types/ebayApi/types'
-import type { ResponseError } from '@/types/App'
+import type { AppError } from '@/types/App'
 
-export function createEbayInventoryItem (plantCategory: PlantCategory, plant: Plant): InventoryItem | ResponseError<InventoryItem, any> {
+export function createEbayInventoryItem (plantCategory: PlantCategory, plant: Plant): InventoryItem | AppError<any> {
     try {
         const inventoryItem: InventoryItem = {
-            product: getProductDetails(plantCategory, plant),
+            product: buildProductDetails(plantCategory, plant),
             condition: 'NEW',
             packageWeightAndSize: getShippingSize(plant.size),
             availability: {
@@ -25,7 +25,7 @@ export function createEbayInventoryItem (plantCategory: PlantCategory, plant: Pl
 
 }
 
-function getProductDetails(plantCategory: PlantCategory, plant: Plant): InventoryItem['product'] {
+function buildProductDetails(plantCategory: PlantCategory, plant: Plant): InventoryItem['product'] {
     return {
         title: `${plantCategory.name} - ${plant.size}`,
         description: createDescription(),
@@ -51,11 +51,21 @@ function getProductDetails(plantCategory: PlantCategory, plant: Plant): Inventor
     }
 
     function getImageUrls() {
-        const images: string[] = []
+        const mockImages = [
+            'https://i.ebayimg.com/00/s/MTYwMFgxNjAw/z/gMQAAOSwirhm5eza/$_57.JPG?set_id=880000500F',
+            'https://i.ebayimg.com/00/s/MTYwMFgxNjAw/z/~H4AAOSwNqBm5eza/$_57.JPG?set_id=880000500F',
+            'https://i.ebayimg.com/00/s/MTYwMFgxNjAw/z/xrMAAOSwhbFm5eza/$_57.JPG?set_id=880000500F',
+            'https://firebasestorage.googleapis.com/v0/b/lettuce-carnivores.appspot.com/o/plants%2F1432%20(3)_1600x1600?alt=media&token=ece9928d-d9c1-4f30-9312-9330b6561760'
+
+        ]
+        console.error('using mock images')
+        const images: string[] = mockImages
         plant.photos.forEach((photo) => {
             console.log(photo.path)
         })
-        return []
+
+
+        return images
     }
 }
 

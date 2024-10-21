@@ -1,6 +1,6 @@
-import {BuyFeedParams} from '../../../../types/index.js';
-import {operations} from '../../../../types/restful/specs/buy_feed_v1_beta_oas3.js';
-import Restful, {OpenApi} from '../../index.js';
+import type {BuyFeedParams} from '../../../../types/index.js';
+import type {operations} from '../../../../types/restful/specs/buy_feed_v1_beta_oas3.js';
+import Restful, {type OpenApi} from '../../index.js';
 
 /**
  * The Feed API provides the ability to download TSV_GZIP feed files containing eBay items and an hourly snapshot file

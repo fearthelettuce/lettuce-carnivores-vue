@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Restful from '../../index.js';
 import {
   BuyerCloseInquiryRequest,

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
   CancelReason,
   CaseSearchFieldGroup,
@@ -537,5 +538,3 @@ export type UpdateCampaignRequest = sellMarketing['schemas']['UpdateCampaignRequ
 export type QuickSetupRequest = sellMarketing['schemas']['QuickSetupRequest']
 
 export type FindListingRecommendationRequest = sellRecommendation['schemas']['FindListingRecommendationRequest']
-
-

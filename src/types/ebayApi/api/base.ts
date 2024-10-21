@@ -1,5 +1,5 @@
-import {AxiosRequest, IEBayApiRequest} from '../request.js';
-import {AppConfig} from '../types/index.js';
+import {AxiosRequest, type IEBayApiRequest} from '../request.js';
+import type {AppConfig} from '../types/index.js';
 
 /**
  * Abstract superclass.

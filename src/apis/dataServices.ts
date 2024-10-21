@@ -27,7 +27,7 @@ export async function getNextSequentialId(collectionName: string, idFieldName: s
     let nextSequentialId: number
     if (docs) {
         nextSequentialId = await docs.reduce((acc: number, doc: any) => acc = acc > doc[idFieldName] ? acc : doc[idFieldName], startingValue).valueOf()
-        nextSequentialId++ 
+        nextSequentialId++
     } else {
         return {success: false, error: true, message: 'Unable to get next ID'}
         // return startingValue + 1
@@ -50,7 +50,7 @@ export async function saveItem(collectionName: string, obj: any) {
             console.error(e)
             return
         }
-    } 
+    }
     try {
         const res = await setDoc(doc(db, collectionName, obj.id.toString()), { ...obj })
         return { success: true, error: false, message: 'Saved successfully', errorDetails: null, documentDetails: obj}
@@ -67,7 +67,7 @@ export async function deleteItem(collectionName: string, id: number | string) {0
     } catch (err) {
         throw new Error('An error occurred when trying to delete')
     }
-    
+
 }
 
 export async function findDocById(collectionName: string, id: number | string) {

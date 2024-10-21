@@ -1,3 +1,4 @@
+// @ts-nocheck
 import debug from 'debug';
 import Base from '../api/base.js';
 import XMLRequest from '../api/traditional/XMLRequest.js';

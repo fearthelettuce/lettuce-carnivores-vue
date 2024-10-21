@@ -1,14 +1,18 @@
-export interface Response<T> {
-    success: boolean,
+export interface AppReturn {
+    success: true,
     message?: string,
-    data?: T,
 }
 
-export interface ResponseWithData<T> extends Omit<Response<T>, 'data'> {
+export interface AppData<T> extends AppReturn {
     data: T
 }
 
-export interface ResponseError<T, E> extends Response<T> {
-    errorMessage: string
-    errorDetails?: E,
+export interface AppError extends Omit<AppReturn, 'success'> {
+    success: false,
+    errorMessage: string,
+    errorDetails?: {[key: string]: any},
+}
+
+export interface AppResponse<T> extends AppReturn {
+    res: T
 }

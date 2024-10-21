@@ -1,3 +1,4 @@
+// @ts-nocheck
 import debug from 'debug';
 import {X2jOptions, XMLBuilder, XmlBuilderOptions, XMLParser} from 'fast-xml-parser';
 import {checkEBayTraditionalResponse, EBayNoCallError} from '../../errors/index.js';

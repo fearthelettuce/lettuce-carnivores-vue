@@ -1,6 +1,6 @@
 import Base from '../api/base.js';
-import {IEBayApiRequest} from '../request.js';
-import {AppConfig} from '../types/index.js';
+import type {IEBayApiRequest} from '../request.js';
+import type {AppConfig} from '../types/index.js';
 import AuthNAuth from './authNAuth.js';
 import OAuth2 from './oAuth2.js';
 

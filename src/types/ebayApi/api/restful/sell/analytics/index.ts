@@ -1,6 +1,6 @@
 import {Metric} from '../../../../enums/index.js';
-import {operations} from '../../../../types/restful/specs/sell_analytics_v1_oas3.js';
-import Restful, {OpenApi} from '../../index.js';
+import type {operations} from '../../../../types/restful/specs/sell_analytics_v1_oas3.js';
+import Restful, {type OpenApi} from '../../index.js';
 
 /**
  * The Analytics API provides information about a seller's business performance.

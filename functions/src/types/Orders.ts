@@ -1,3 +1,5 @@
+import { PotSize } from './Plants'
+
 export type ShoppingCart = {
     cartItems: CartItem[],
 }
@@ -12,7 +14,7 @@ export type CartItem = {
     name: string,
     clone: string,
     // photo: PhotoItem,
-    size: string,
+    size: PotSize,
     isDiscounted: boolean,
     isRepresentative: boolean,
     shelfLocation?: string,

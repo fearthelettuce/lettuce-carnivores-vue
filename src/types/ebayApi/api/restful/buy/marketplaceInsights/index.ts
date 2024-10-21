@@ -1,6 +1,6 @@
-import {MarketingInsightsSearchParams} from '../../../../types/index.js';
-import {operations} from '../../../../types/restful/specs/buy_marketplace_insights_v1_beta_oas3.js';
-import Restful, {OpenApi} from '../../index.js';
+import type {MarketingInsightsSearchParams} from '../../../../types/index.js';
+import type {operations} from '../../../../types/restful/specs/buy_marketplace_insights_v1_beta_oas3.js';
+import Restful, {type OpenApi} from '../../index.js';
 
 /**
  * (Limited Release) The Marketplace Insights API provides the ability to search for sold items on eBay by keyword,

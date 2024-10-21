@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {operations} from '../../../../types/restful/specs/developer_key_management_v1_oas3.js';
 import Restful, {OpenApi} from '../../index.js';
 

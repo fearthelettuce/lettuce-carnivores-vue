@@ -15,7 +15,7 @@ export type Plant = {
     id: string,
     sku: string,
     isRepresentative: boolean,
-    size: Sizes,
+    size: PotSize,
     propagationDate?: Date,
     status:  'In Stock' | 'Coming Soon' | 'Sold' | 'Archived' | 'Hidden',
     price: number,
@@ -27,13 +27,13 @@ export type Plant = {
     shelfLocation?: string,
 }
 
-export type Sizes = 
+export type PotSize =
     '' |
-    '2.5"' | 
-    '3" deep' | 
-    '3.5"' | 
-    '3.5" deep' | 
-    '4" deep' | 
+    '2.5"' |
+    '3" deep' |
+    '3.5"' |
+    '3.5" deep' |
+    '4" deep' |
     '4.5" deep' |
     '5" deep' |
     'Bare Root'

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {FilePurpose, GetReturnFieldGroupEnum} from '../../../../enums/index.js';
 import {
   CheckEligibilityRequest,

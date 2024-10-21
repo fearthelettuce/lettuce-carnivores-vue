@@ -1,6 +1,6 @@
-import {CommerceCatalogSearchParams} from '../../../../types/index.js';
-import {operations} from '../../../../types/restful/specs/commerce_catalog_v1_beta_oas3.js';
-import Restful, {OpenApi} from '../../index.js';
+import type {CommerceCatalogSearchParams} from '../../../../types/index.js';
+import type {operations} from '../../../../types/restful/specs/commerce_catalog_v1_beta_oas3.js';
+import Restful, {type OpenApi} from '../../index.js';
 
 /**
  * Use the Catalog API to search the eBay catalog for products on which to base a seller's item listing;

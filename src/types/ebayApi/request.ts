@@ -1,3 +1,4 @@
+// @ts-nocheck
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
 import debug from 'debug';
 import {stringify} from 'qs';

@@ -46,7 +46,7 @@
                             </button>
                         </div>
 
-                        <PlantItemForm :plant @triggerSave="saveCategory(plantCategoryToEdit)" @deletePlant="removePlant(index)"/>
+                        <PlantItemForm :plant @triggerSave="saveCategory(plantCategoryToEdit)" @deletePlant="removePlant(index)" @createEbayItem="createEbayInventory(index)"/>
 
                     </div>
                 </div>
@@ -90,6 +90,7 @@ import PhotoUploadModal from '@/components/PhotoUploadModal.vue';
 import { type PhotoItem } from '@/types/Product';
 import { getCardName, getDisplayPrice, getCardPhoto } from '@/composables/useCardUtils';
 import { getAllPlants } from '@/apis/dataServices'
+import { createEbayInventoryItem } from '@/composables/buildEbayInventoryItem'
 
 const {fetchAllCategories, findPlantCategoryById, setCategoryToEdit, saveCategory, addPlant, getAvailablePlants, removePlant} = usePlantStore()
 const {plantCategories, plantCategoryToEdit, isSaving} = storeToRefs(usePlantStore())
@@ -146,6 +147,13 @@ async function fetchCurrentAvailablePlants() {
         cephCount: cephCount
     }
 }
+
+function createEbayInventory(index: number) {
+    console.log(index)
+    const res = createEbayInventoryItem(plantCategoryToEdit.value, plantCategoryToEdit.value.plants[index])
+    console.log(res)
+}
+
 
 const photoModal = ref()
 const photoModalFolder = ref('')

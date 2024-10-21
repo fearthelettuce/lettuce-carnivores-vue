@@ -1,3 +1,4 @@
+// @ts-nocheck
 // tslint:disable:max-classes-per-file
 import debug from 'debug';
 

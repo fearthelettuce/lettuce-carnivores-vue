@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {CreateVideoRequest, InputStream} from '../../../../types/index.js';
 import {operations} from '../../../../types/restful/specs/commerce_media_v1_beta_oas3.js';
 import Restful, {OpenApi} from '../../index.js';

@@ -70,7 +70,7 @@
         <div class="center-content">
             <button class="btn btn-info m-1" @click.prevent="addPhotos">Photos <span>({{ plant.photos.length }})</span></button>
             <button class="btn btn-danger m-1" @click.prevent="$emit('deletePlant')" :disabled="plant.status !== 'Archived'">Delete</button>
-
+            <BaseButton @click.prevent="$emit('createEbayItem')">Ebay</BaseButton>
         </div>
 
     </form>
@@ -81,7 +81,7 @@ import { inject, watch, type PropType } from 'vue'
 import { type Plant } from '@/types/Plant';
 import { sizeList, statusListArr} from '@/constants/constants';
 
-defineEmits(['triggerSave', 'deletePlant'])
+defineEmits(['triggerSave', 'deletePlant', 'createEbayItem'])
 
 const plant = defineModel('plant', {type: Object as PropType<Plant>, required: true})
 

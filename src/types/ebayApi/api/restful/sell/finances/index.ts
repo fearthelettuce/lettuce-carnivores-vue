@@ -1,5 +1,5 @@
-import {operations} from '../../../../types/restful/specs/sell_finances_v1_oas3.js';
-import Restful, {OpenApi} from '../../index.js';
+import type {operations} from '../../../../types/restful/specs/sell_finances_v1_oas3.js';
+import Restful, { type OpenApi} from '../../index.js';
 
 /**
  * The Finances API is used by sellers in eBay's managed payments program to retrieve seller payout information.

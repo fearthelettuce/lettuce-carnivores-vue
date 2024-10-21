@@ -7,8 +7,11 @@ export default function getFirebaseFunction(functionName: string) {
         connectFunctionsEmulator(functions,'127.0.0.1', 5001)
     }
     try {
-        return httpsCallable(functions, functionName)
+        return {success: true, res: httpsCallable(functions, functionName)}
     } catch (e: any) {
-        return undefined
+        if(import.meta.env.MODE !== 'PRODUCTION' && import.meta.env.VITE_EMULATE_FIREBASE_FUNCTIONS === "true") {
+            return {success: false, errorMessage: 'Unable to get FIrebase functions, may need to start emulator'}
+        }
+        return {success: false, errorMessage: 'Unable to get Firebase functions'}
     }
 }

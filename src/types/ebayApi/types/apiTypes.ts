@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {AxiosRequestConfig} from 'axios';
 import {Locale, MarketplaceId, SiteId} from '../enums/index.js';
 
@@ -49,5 +50,3 @@ export type ApiRequestConfig = {
 }
 
 export type AppConfig = eBayConfig & ApiConfig;
-
-

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {operations} from '../../../../types/restful/specs/commerce_charity_v1_oas3.js';
 import Restful, {OpenApi} from '../../index.js';
 

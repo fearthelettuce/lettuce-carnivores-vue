@@ -1,3 +1,4 @@
+// @ts-nocheck
 import debug from 'debug';
 import Base from '../api/base.js';
 import {createNanoEvents, EventCallback} from '../nanoevents.js';
