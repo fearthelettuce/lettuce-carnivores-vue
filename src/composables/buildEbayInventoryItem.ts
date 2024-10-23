@@ -3,11 +3,13 @@ import {getShippingSize } from '@/composables/useShippingUtils'
 import type { Plant, PlantCategory } from '@/types/Plant'
 import type { InventoryItem } from '@/types/ebayApi/types'
 import type { AppError } from '@/types/App'
+import type { PhotoItem } from '@/types/Product'
+import { getPhotoDownloadUrl } from '@/apis/fileServices'
 
-export function createEbayInventoryItem (plantCategory: PlantCategory, plant: Plant): InventoryItem | AppError<any> {
+export async function createEbayInventoryItem (plantCategory: PlantCategory, plant: Plant): InventoryItem | AppError<any> {
     try {
         const inventoryItem: InventoryItem = {
-            product: buildProductDetails(plantCategory, plant),
+            product: await buildProductDetails(plantCategory, plant),
             condition: 'NEW',
             packageWeightAndSize: getShippingSize(plant.size),
             availability: {
@@ -25,11 +27,12 @@ export function createEbayInventoryItem (plantCategory: PlantCategory, plant: Pl
 
 }
 
-function buildProductDetails(plantCategory: PlantCategory, plant: Plant): InventoryItem['product'] {
+async function buildProductDetails(plantCategory: PlantCategory, plant: Plant): InventoryItem['product'] {
+    const photoUrls = await getImageUrls(plant.photos)
     return {
         title: `${plantCategory.name} - ${plant.size}`,
         description: createDescription(),
-        imageUrls: getImageUrls(),
+        imageUrls: photoUrls,
         aspects: buildAspects(plantCategory, plant) as any //ts-any: Ebay OpenApi 3 JSON currently (10/20/24) defines aspects as string, which is wrongo dongo.
                                                            // https://github.com/hendt/ebay-api/issues/181
     }
@@ -50,22 +53,15 @@ function buildProductDetails(plantCategory: PlantCategory, plant: Plant): Invent
         return text
     }
 
-    function getImageUrls() {
-        const mockImages = [
-            'https://i.ebayimg.com/00/s/MTYwMFgxNjAw/z/gMQAAOSwirhm5eza/$_57.JPG?set_id=880000500F',
-            'https://i.ebayimg.com/00/s/MTYwMFgxNjAw/z/~H4AAOSwNqBm5eza/$_57.JPG?set_id=880000500F',
-            'https://i.ebayimg.com/00/s/MTYwMFgxNjAw/z/xrMAAOSwhbFm5eza/$_57.JPG?set_id=880000500F',
-            'https://firebasestorage.googleapis.com/v0/b/lettuce-carnivores.appspot.com/o/plants%2F1432%20(3)_1600x1600?alt=media&token=ece9928d-d9c1-4f30-9312-9330b6561760'
-
-        ]
-        console.error('using mock images')
-        const images: string[] = mockImages
-        plant.photos.forEach((photo) => {
-            console.log(photo.path)
-        })
-
-
-        return images
+    async function getImageUrls(photos: PhotoItem[]) {
+        let photoUrls = []
+        if(photos.length > 0) {
+            for(let photo of photos) {
+                const url = await getPhotoDownloadUrl(photo)
+                if(url) { photoUrls.push(url) }
+            }
+        }
+        return photoUrls
     }
 }
 

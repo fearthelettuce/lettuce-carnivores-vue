@@ -1,6 +1,6 @@
 <template>
     <form @submit.prevent class="plant-admin-form">
-        <FormKit 
+        <FormKit
             type="text"
             label="ID"
             number
@@ -9,51 +9,51 @@
             class="grid-col-1"
             v-model="plantCategoryToEdit.id"
         />
-        <FormKit 
+        <FormKit
             type="text"
             label="Name"
             outer-class="grid-col-2"
-            v-model="plantCategoryToEdit.name" 
+            v-model="plantCategoryToEdit.name"
         />
-        <FormKit 
+        <FormKit
             type="select"
             label="Genus"
             :options="genusListArr"
             class="grid-col-1"
-            v-model="plantCategoryToEdit.genus" 
+            v-model="plantCategoryToEdit.genus"
         />
         <FormKit
             type="text"
             label="Clone"
             class="grid-col-1"
-            v-model="plantCategoryToEdit.clone" 
+            v-model="plantCategoryToEdit.clone"
         />
         <FormKit
             type="select"
             label="Species/Hybrid"
             class="grid-col-1"
             :options="speciesHybridArr"
-            v-model="plantCategoryToEdit.speciesHybrid" 
+            v-model="plantCategoryToEdit.speciesHybrid"
         />
         <FormKit
             type="select"
             label="Experience"
             :options="experienceList"
             class="grid-col-1"
-            v-model="plantCategoryToEdit.experience" 
+            v-model="plantCategoryToEdit.experience"
         />
         <FormKit
             type="select"
             label="Status"
             :options="statusListArr"
             class="grid-col-1"
-            v-model="plantCategoryToEdit.status" 
+            v-model="plantCategoryToEdit.status"
         />
         <FormKit
             type="textarea"
             label="Description"
             outer-class="description"
-            v-model="plantCategoryToEdit.description" 
+            v-model="plantCategoryToEdit.description"
         />
     </form>
     <section class="form-actions">
@@ -77,8 +77,8 @@
                 <div>Are you sure you want to delete this product?<br><br> {{ plantCategoryToEdit.name }}({{ plantCategoryToEdit.id }})</div>
             </template>
             <template #modalAction>
-                <button 
-                type="button" 
+                <button
+                type="button"
                 class="btn btn-danger"
                 @click="deleteProduct"
                 >
@@ -86,7 +86,7 @@
                 </button>
             </template>
     </BaseModal>
-    
+
 </template>
 
 <script setup lang="ts">
@@ -154,8 +154,8 @@ function addPhotos() {
         flex-wrap: wrap;
         flex-direction: row;
         justify-content: space-evenly;
-        margin-bottom: 2rem;
-        gap: 1.5em 1.5em;
+        margin-bottom: .5rem;
+        gap: .5em;
     }
     .spinner-border {
         height: 1rem;

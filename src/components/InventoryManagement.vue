@@ -30,7 +30,6 @@ const ebayTokenIssued = ref('')
 const environment = import.meta.env.VITE_EBAY_ENVIRONMENT
 onMounted(async ()=>{
     getLastTokenDate()
-    getPhotoDownloadUrl(undefined)
 })
 
 async function getLastTokenDate() {

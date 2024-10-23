@@ -20,7 +20,7 @@ const props = defineProps({
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .base-button {
     font-weight: 500;
     cursor: pointer;
@@ -32,6 +32,10 @@ const props = defineProps({
 .base-button:active {
     box-shadow: 2px 3px darkslategray;
     transform: translateY(3px);
+}
+.base-button:disabled {
+    filter: brightness(75%);
+    cursor:not-allowed;
 }
 .spinner-border {
     height: 1rem;
@@ -53,10 +57,12 @@ const props = defineProps({
 }
 .warning {
 
-}
+}  */
 .danger {
-
-} */
+    background-color: $medium-red;
+    color: white;
+    border: 0;
+}
 .primary-outline {
     border: 1px solid #9fdb50;
     color: #9fdb50;

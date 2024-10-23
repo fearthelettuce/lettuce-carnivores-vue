@@ -14,7 +14,7 @@ export const sizeList = [
 ]
 
 export const genusListArr = ['', 'Heliamphora', 'Nepenthes', 'Cephalotus', 'Other']
-export const statusListArr = ['', 'In Stock', 'Coming Soon', 'Archived', 'Hidden', 'Sold']
+export const statusListArr = ['', 'In Stock', 'Coming Soon', 'Archived', 'Hidden', 'Sold', 'Delete']
 export const experienceList = ['', 'Beginner Friendly', 'Intermediate', 'Advanced']
 export const speciesHybridArr = ['', 'Species', 'Hybrid']
 export const otherFiltersList = [

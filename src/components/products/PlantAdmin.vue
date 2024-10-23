@@ -23,9 +23,9 @@
                 <button class="btn btn-secondary" @click="toggleExpand"> {{isExpanded ? 'Hide Form' : `Edit ${plantCategoryToEdit.name !== '' ? plantCategoryToEdit.name : 'Category'}`  }}</button>
 
             </div>
-            <div class="plant-list mt-5">
+            <div class="plant-list mt-4">
                 <div v-for="(plant, index) in plantCategoryToEdit.plants" :key="index" >
-                    <hr />
+                    <hr style="margin-block: .4rem" />
                     <div class="d-flex flex-row gap-2">
                         <div class="up-down-arrows align-content-center text-center">
                             <button
@@ -91,6 +91,7 @@ import { type PhotoItem } from '@/types/Product';
 import { getCardName, getDisplayPrice, getCardPhoto } from '@/composables/useCardUtils';
 import { getAllPlants } from '@/apis/dataServices'
 import { createEbayInventoryItem } from '@/composables/buildEbayInventoryItem'
+import { getPhotoDownloadUrl } from '@/apis/fileServices'
 
 const {fetchAllCategories, findPlantCategoryById, setCategoryToEdit, saveCategory, addPlant, getAvailablePlants, removePlant} = usePlantStore()
 const {plantCategories, plantCategoryToEdit, isSaving} = storeToRefs(usePlantStore())
@@ -129,16 +130,11 @@ function arrayMove(arr: Array<any>, fromIndex: number, toIndex: number) {
 const currentAvailablePlants = ref({totalAvailable: -1, heliCount: -1, heliVarieties: -1, nepCount: -1, cephCount: -1})
 async function fetchCurrentAvailablePlants() {
     const allPlants = await getAllPlants()
-    console.log(allPlants)
     const availablePlants = allPlants.filter((plant) => !['Hidden', 'Archived', 'Sold'].includes(plant.status) && plant.quantity !== 0)
     const heliCount = availablePlants.filter((plant) => plant.genus === 'Heliamphora').reduce((acc, obj) => {return acc + obj.quantity}, 0)
     const heliVarieties = [... new Set(availablePlants.filter((plant) => plant.genus === 'Heliamphora').map(heli => heli.plantCategoryId))]
-    console.log(heliVarieties)
     const nepCount = availablePlants.filter((plant) => plant.genus === 'Nepenthes').reduce((acc, obj) => {return acc + obj.quantity}, 0)
     const cephCount = availablePlants.filter((plant) => plant.genus === 'Cephalotus').reduce((acc, obj) => {return acc + obj.quantity}, 0)
-    console.log('Heli: ' + heliCount)
-    console.log('Nep: ' + nepCount)
-    console.log('Ceph: ' + cephCount)
     return {
         totalAvailable: availablePlants.length,
         heliCount: heliCount,
@@ -148,9 +144,8 @@ async function fetchCurrentAvailablePlants() {
     }
 }
 
-function createEbayInventory(index: number) {
-    console.log(index)
-    const res = createEbayInventoryItem(plantCategoryToEdit.value, plantCategoryToEdit.value.plants[index])
+async function createEbayInventory(index: number) {
+    const res = await createEbayInventoryItem(plantCategoryToEdit.value, plantCategoryToEdit.value.plants[index])
     console.log(res)
 }
 
@@ -215,7 +210,7 @@ provide('managePhotos', managePhotos)
     }
     @media(min-width: 62rem) {
         .layout {
-            grid-template-columns: 3fr 1fr;
+            grid-template-columns: 5fr 1fr;
         }
     }
 </style>

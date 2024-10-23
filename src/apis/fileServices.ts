@@ -1,6 +1,6 @@
 import { ref, uploadBytes, deleteObject, getDownloadURL } from 'firebase/storage'
 import { storage } from '@/apis/firebase'
-import type { PhotoItem } from '@/types/Product'
+import type { PhotoItem, PhotoSizes } from '@/types/Product'
 
 export async function uploadFile(fileName: string, subfolder: string, file: File) {
     const filePath = `/${subfolder}/${fileName}`
@@ -40,18 +40,15 @@ export async function deletePhoto(photoPath: string) {
 }
 
 
-export async function getPhotoDownloadUrl(photo: PhotoItem) {
-
-    const photoUrl = `https://firebasestorage.googleapis.com/v0/b/lettuce-carnivores.appspot.com/o/plants/1432 (3)_1600x1600`
-    //const photoUrl = `https://firebasestorage.googleapis.com/v0/b/lettuce-carnivores.appspot.com/o/${photo.path}_1600x1600`
+export async function getPhotoDownloadUrl(photo: PhotoItem, size: PhotoSizes = 1600 ) {
+    const photoUrl = `https://firebasestorage.googleapis.com/v0/b/lettuce-carnivores.appspot.com/o/${photo.path}_${size}x${size}`
     const storageRef = ref(storage, photoUrl)
-    if(!storageRef) {return {success: false, message: `Photo path ${photo.path} does not exist in Firebase`}}
+    if(!storageRef) { return null }
     try {
         const url = await getDownloadURL(storageRef)
-        console.log(url)
         return url
     } catch (e: any) {
         console.log(e)
-        return {success: false, error: true, message: 'Error getting download url from Firebase Storage', errorDetails: e}
+        return null
     }
 }

@@ -7,7 +7,7 @@ export function sortAlphabetically(arr: any[], prop: keyof typeof arr) {
 }
 
 
-export function formattedDate (someDate: string | Date, format: 'mm/dd/yy' | 'yyyy-mm-dd' =  'mm/dd/yy') {
+export function formattedDate (someDate: string | Date, format: 'mm/dd/yy' | 'yyyy-mm-dd' = 'mm/dd/yy') {
     let date
     if(typeof someDate === 'string') {
         date = new Date(`${someDate}T00:00`)
@@ -41,5 +41,5 @@ export function formatFirebaseDate(firebaseDate: any) {
 export const USDollar = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
-    minimumFractionDigits: 2, 
+    minimumFractionDigits: 2,
 });

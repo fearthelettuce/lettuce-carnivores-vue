@@ -1,4 +1,4 @@
-interface Product {
+export interface Product {
     id: number,
     name: string,
     price?: number,
@@ -11,7 +11,7 @@ interface Product {
     plantId?: number | undefined,
 }
 
-type PhotoItem = {
+export type PhotoItem = {
     name: string,
     folder: string,
     originalFilename: string,
@@ -27,7 +27,8 @@ export enum PhotoTypes {
     Lower = 'lower',
 }
 
-type ProductFilters = {
+export type ProductFilters = {
     [key: string] : any
 }
-export type { Product, ProductFilters, PhotoItem}
+
+export type PhotoSizes = 256 | 512 | 960 | 1600
