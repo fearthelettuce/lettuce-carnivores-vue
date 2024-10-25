@@ -37,19 +37,17 @@ export async function createOrReplaceInventoryItem(token: string, sku: string, i
         data: item
     }
 
-    //const body = qs.stringify(item)
-
-    //console.log(config)
     const res = await axios(config).catch((e: any) => {console.error(e); return e})
-    console.log('oh hey it got past res')
-    console.log(res)
-    if(res && res.response && 'data' in res.response) {
-        console.log(res.response.data)
+    if( res && 'status' in res && res.status === 204) {
+        return {success: true}
+    }
+    if(res && 'response' in res && 'data' in res.response) {
         return res.response.data
-    } else {
-        console.log(res.response)
+    }
+    if(res && 'response' in res) {
         return res.response
     }
+    return res
 }
 
 export async function deleteInventoryItem(token: string, sku: string, environment?: EbayEnvironment) {

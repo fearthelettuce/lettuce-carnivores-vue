@@ -94,10 +94,12 @@ import { createEbayInventoryItem } from '@/composables/buildEbayInventoryItem'
 import { getPhotoDownloadUrl } from '@/apis/fileServices'
 import { addOrReplaceEbayInventory } from '@/composables/useEbayUtils'
 import { toast } from 'vue3-toastify'
+import { useInventoryStore } from '@/stores/inventory'
 
 const {fetchAllCategories, findPlantCategoryById, setCategoryToEdit, saveCategory, addPlant, getAvailablePlants, removePlant} = usePlantStore()
 const {plantCategories, plantCategoryToEdit, isSaving} = storeToRefs(usePlantStore())
 const route = useRoute()
+const { addUpdateEbayItem} = useInventoryStore()
 
 onMounted(async () => {
     await fetchAllCategories()
@@ -147,13 +149,14 @@ async function fetchCurrentAvailablePlants() {
 }
 
 async function createEbayInventory(index: number) {
-    const res = await addOrReplaceEbayInventory(plantCategoryToEdit.value, plantCategoryToEdit.value.plants[index])
-    console.log(res)
-    if('success' in res && !res.success || ('error' in res &&  res.error)) {
-        console.error(res)
+    const res = await addUpdateEbayItem(plantCategoryToEdit.value.plants[index],plantCategoryToEdit.value)
+    debugger
+    if(typeof res === 'boolean') {
+        if(res) {
+            toast.success('Something probably worked')
+        }
         toast.error('Something went wrong')
     }
-
 }
 
 

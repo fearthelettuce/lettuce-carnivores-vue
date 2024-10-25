@@ -26,6 +26,7 @@ import BaseDialog from '@/components/UI/BaseDialog.vue';
 import { toast } from 'vue3-toastify'
 import { findDocById } from '@/apis/dataServices'
 import { getPhotoDownloadUrl } from '@/apis/fileServices'
+import { useInventoryStore } from '@/stores/inventory'
 const ebayTokenIssued = ref('')
 const environment = import.meta.env.VITE_EBAY_ENVIRONMENT
 onMounted(async ()=>{
@@ -50,14 +51,11 @@ async function ebayLogin() {
 }
 
 async function refreshEbay() {
-    const res = await refreshAccessToken()
-    console.log(res)
-    if(res && res.success) {
+    const res = await useInventoryStore().getOrRefreshEbayToken()
+    if(res) {
         toast.success('Ebay token refreshed')
-        ebayTokenIssued.value = res.data.updatedDateTime
     } else {
         toast.error('Something went wrong')
-        console.error(res)
     }
 }
 

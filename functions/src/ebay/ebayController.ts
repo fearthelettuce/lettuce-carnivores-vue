@@ -1,9 +1,10 @@
 import admin from 'firebase-admin'
 import { onCall, type CallableRequest } from 'firebase-functions/v2/https';
 import { defineSecret } from 'firebase-functions/params'
-import type {  EbayAccessTokenRequest, EbayEnvironment, EbayListingRequest, EbayInventoryRequest, EbayInventoryPostRequest } from '../types/Ebay';
+import type {  EbayAccessTokenRequest, EbayEnvironment, EbayInventoryRequest, EbayInventoryPostRequest } from '../types/Ebay';
 import { submitAccessTokenRequest, generateUserConsentUrl, getOrRefreshUserAccessToken, getTokenFromDb } from './ebayService';
 import { getInventoryItems, deleteInventoryItem, createOrReplaceInventoryItem } from './ebayData';
+import { unwrapResponse } from '../common';
 
 const ebayClientId = defineSecret('EBAY_CLIENT_ID')
 const ebayClientSecret = defineSecret('EBAY_SECRET_ID')
@@ -25,14 +26,13 @@ export const getEbayAccessToken = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECR
         console.log(res.data)
         return {success: false, error: true, message: 'Unable to get Access Token', errorDetails: res.data}
     }
-    return res
+    return unwrapResponse(res)
 })
 
 export const getUserConsent = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: CallableRequest): Promise<any> => {
     environment = request.data.environment
     if(!setSecrets()) {return {success: false, error: true, message: 'Unable to get clientId or clientSecret', errorDetails: {}, data: {}}}
     return generateUserConsentUrl(environment, clientId)
-
 })
 
 export const getUserAccessToken = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayAccessTokenRequest): Promise<any> => {
@@ -47,7 +47,7 @@ export const getUserAccessToken = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECR
         console.error(e)
         return {success: false, error: true, errorDetails: e, data: null, message: 'Error getting or refreshing token'}
     })
-    return res
+    return unwrapResponse(res)
 })
 
 export const refreshUserAccessToken = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayAccessTokenRequest): Promise<any> => {
@@ -61,7 +61,7 @@ export const refreshUserAccessToken = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_
     }
     const oldRefreshToken = snap.data()?.refresh_token
     const res = await getOrRefreshUserAccessToken(environment, clientId, clientSecret, undefined, oldRefreshToken)
-    return res
+    return unwrapResponse(res)
 })
 
 export const getInventory = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayInventoryRequest): Promise<any> => {
@@ -70,7 +70,7 @@ export const getInventory = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID'
         return {error: true, success: false, message: 'Unable to get valid token'}
     }
     const res = await getInventoryItems(request.data.environment, token, request.data.sku)
-    return res
+    return unwrapResponse(res)
 })
 
 export const postInventoryItem = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayInventoryPostRequest): Promise<any> => {
@@ -80,6 +80,16 @@ export const postInventoryItem = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRE
     }
     console.log(request.data.item)
     const res = await createOrReplaceInventoryItem(token, request.data.sku, request.data.item, request.data.environment)
+    console.log(res)
+    if('success' in res) {
+        return res.success
+    }
+    if('res' in res) {
+        return res.res
+    }
+    if('data' in res) {
+        return res.data
+    }
     return res
 })
 
@@ -92,7 +102,7 @@ export const deleteInventory = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_
         return {error: true, success: false, message: 'Invalid SKU'}
     }
     const res = await deleteInventoryItem(token, request.data.sku, request.data.environment,)
-    return res
+    return unwrapResponse(res)
 })
 
 
