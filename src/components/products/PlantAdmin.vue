@@ -92,6 +92,8 @@ import { getCardName, getDisplayPrice, getCardPhoto } from '@/composables/useCar
 import { getAllPlants } from '@/apis/dataServices'
 import { createEbayInventoryItem } from '@/composables/buildEbayInventoryItem'
 import { getPhotoDownloadUrl } from '@/apis/fileServices'
+import { addOrReplaceEbayInventory } from '@/composables/useEbayUtils'
+import { toast } from 'vue3-toastify'
 
 const {fetchAllCategories, findPlantCategoryById, setCategoryToEdit, saveCategory, addPlant, getAvailablePlants, removePlant} = usePlantStore()
 const {plantCategories, plantCategoryToEdit, isSaving} = storeToRefs(usePlantStore())
@@ -145,8 +147,13 @@ async function fetchCurrentAvailablePlants() {
 }
 
 async function createEbayInventory(index: number) {
-    const res = await createEbayInventoryItem(plantCategoryToEdit.value, plantCategoryToEdit.value.plants[index])
+    const res = await addOrReplaceEbayInventory(plantCategoryToEdit.value, plantCategoryToEdit.value.plants[index])
     console.log(res)
+    if('success' in res && !res.success || ('error' in res &&  res.error)) {
+        console.error(res)
+        toast.error('Something went wrong')
+    }
+
 }
 
 

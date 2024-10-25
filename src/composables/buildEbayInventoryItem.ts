@@ -2,11 +2,11 @@ import { formattedDate } from '@/utils/utils'
 import {getShippingSize } from '@/composables/useShippingUtils'
 import type { Plant, PlantCategory } from '@/types/Plant'
 import type { InventoryItem } from '@/types/ebayApi/types'
-import type { AppError } from '@/types/App'
+import type { AppData, AppError } from '@/types/App'
 import type { PhotoItem } from '@/types/Product'
 import { getPhotoDownloadUrl } from '@/apis/fileServices'
 
-export async function createEbayInventoryItem (plantCategory: PlantCategory, plant: Plant): InventoryItem | AppError<any> {
+export async function createEbayInventoryItem (plantCategory: PlantCategory, plant: Plant): Promise<AppData<InventoryItem> | AppError> {
     try {
         const inventoryItem: InventoryItem = {
             product: await buildProductDetails(plantCategory, plant),
@@ -18,7 +18,7 @@ export async function createEbayInventoryItem (plantCategory: PlantCategory, pla
                 }
             }
         }
-        return inventoryItem
+        return {success: true, data: inventoryItem}
     }
     catch (e: any) {
         console.error(e)
@@ -27,7 +27,7 @@ export async function createEbayInventoryItem (plantCategory: PlantCategory, pla
 
 }
 
-async function buildProductDetails(plantCategory: PlantCategory, plant: Plant): InventoryItem['product'] {
+async function buildProductDetails(plantCategory: PlantCategory, plant: Plant): Promise<InventoryItem['product']> {
     const photoUrls = await getImageUrls(plant.photos)
     return {
         title: `${plantCategory.name} - ${plant.size}`,

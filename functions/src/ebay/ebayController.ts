@@ -1,9 +1,9 @@
 import admin from 'firebase-admin'
 import { onCall, type CallableRequest } from 'firebase-functions/v2/https';
 import { defineSecret } from 'firebase-functions/params'
-import type {  EbayAccessTokenRequest, EbayEnvironment, EbayListingRequest, EbayInventoryRequest } from '../types/Ebay';
+import type {  EbayAccessTokenRequest, EbayEnvironment, EbayListingRequest, EbayInventoryRequest, EbayInventoryPostRequest } from '../types/Ebay';
 import { submitAccessTokenRequest, generateUserConsentUrl, getOrRefreshUserAccessToken, getTokenFromDb } from './ebayService';
-import { getInventoryItems, deleteInventoryItem } from './ebayData';
+import { getInventoryItems, deleteInventoryItem, createOrReplaceInventoryItem } from './ebayData';
 
 const ebayClientId = defineSecret('EBAY_CLIENT_ID')
 const ebayClientSecret = defineSecret('EBAY_SECRET_ID')
@@ -70,6 +70,16 @@ export const getInventory = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID'
         return {error: true, success: false, message: 'Unable to get valid token'}
     }
     const res = await getInventoryItems(request.data.environment, token, request.data.sku)
+    return res
+})
+
+export const postInventoryItem = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayInventoryPostRequest): Promise<any> => {
+    const token = await getTokenFromDb(request.data.environment)
+    if(!token) {
+        return {error: true, success: false, message: 'Unable to get valid token'}
+    }
+    console.log(request.data.item)
+    const res = await createOrReplaceInventoryItem(token, request.data.sku, request.data.item, request.data.environment)
     return res
 })
 

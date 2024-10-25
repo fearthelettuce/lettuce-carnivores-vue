@@ -18,6 +18,12 @@ export type EbayInventoryRequest = EbayDataRequest & {
         sku?: string
     }
 }
+export type EbayInventoryPostRequest = EbayDataRequest & {
+    data: {
+        sku: string,
+        item: any
+    }
+}
 
 export type EbayListingRequest = EbayDataRequest & {
     data: {

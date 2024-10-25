@@ -1,5 +1,6 @@
 import type { GranularityLevel } from '../types/Ebay'
 import axios, { AxiosResponse } from 'axios'
+import qs from 'qs'
 import { apiUrl, sandboxApiUrl  } from './ebayConstants'
 import type { EbayEnvironment} from '../types/Ebay'
 import xml2js from 'xml2js'
@@ -22,21 +23,33 @@ export async function getInventoryItems(environment: EbayEnvironment, token: str
     return res.data
 }
 
-export async function createOrReplaceInventoryItem(token: string, sku: string, environment?: EbayEnvironment) {
-    const baseUrl = environment === 'SANDBOX' ? sandboxApiUrl: apiUrl
-    const url = `${baseUrl}/sell/inventory/v1/inventory_item/${sku}`
+export async function createOrReplaceInventoryItem(token: string, sku: string, item: any, environment?: EbayEnvironment) {
+    const baseUrl = environment === 'SANDBOX' ? sandboxApiUrl : apiUrl
     const config = {
+        method: 'put',
+        url: `${baseUrl}/sell/inventory/v1/inventory_item/${sku}`,
         headers: {
             'Authorization':`Bearer ${token}`,
-            'Content-Language': 'en-US',
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
-
-        }
+            'Content-Type': 'application/json',
+            'Content-Language': 'en-US'
+        },
+        data: item
     }
-    const body = {}
-    const res = await axios.put(url, body, config)
-    return res
+
+    //const body = qs.stringify(item)
+
+    //console.log(config)
+    const res = await axios(config).catch((e: any) => {console.error(e); return e})
+    console.log('oh hey it got past res')
+    console.log(res)
+    if(res && res.response && 'data' in res.response) {
+        console.log(res.response.data)
+        return res.response.data
+    } else {
+        console.log(res.response)
+        return res.response
+    }
 }
 
 export async function deleteInventoryItem(token: string, sku: string, environment?: EbayEnvironment) {
@@ -102,4 +115,59 @@ async function parseXmlResponse(response: AxiosResponse) {
         parsedData = undefined
     })
     return parsedData
+}
+
+function getBody() {
+    return {
+        product: {
+        title: 'Heliamphora exappendiculata - 3" deep',
+        description: 'This listing is for a Heliamphora exappendiculata which was divided on 09/09/24\n' +
+            '\n' +
+            '\n' +
+            '\n' +
+            'The plant in the photo is the actual plant for sale.\n' +
+            '\n' +
+            '<b>Care</b>\n' +
+            '\n' +
+            'This would be a great plant for someone with experience growing nepenthes, orchids, or similar. Heliamphora grow in similar conditions as intermediate / highland nepenthes. They like bright light, high humidity, low-mineral water, and good airflow.\n' +
+            '\n' +
+            '\n' +
+            '\n' +
+            'Shipping\n' +
+            '\n' +
+            '\n' +
+            '        Your plant will be shipped potted with plenty of cushion.\n' +
+            '\n' +
+            '\n' +
+            "        Live arrival is guaranteed.  If you experience any issues, please take photos and contact me the day of receipt.  I'm happy to combine shipping.",
+        imageUrls: [
+            'https://firebasestorage.googleapis.com/v0/b/lettuce-carnivores.appspot.com/o/plants%2F1437%201.1%20(2)_1600x1600?alt=media&token=5d430678-cbde-4735-bfc9-a55b229f5a3c',
+            'https://firebasestorage.googleapis.com/v0/b/lettuce-carnivores.appspot.com/o/plants%2F1437%201.1%20(1)_1600x1600?alt=media&token=dbedae5e-59b7-472b-9ebb-f852dd3c1965',
+            'https://firebasestorage.googleapis.com/v0/b/lettuce-carnivores.appspot.com/o/plants%2F1437%201.1%20(3)_1600x1600?alt=media&token=66b2ec78-8524-49ad-bcf0-51bda631054f',
+            'https://firebasestorage.googleapis.com/v0/b/lettuce-carnivores.appspot.com/o/plants%2F1437%201.1%20(4)_1600x1600?alt=media&token=59c9a66d-2a92-4513-9642-ba057c3cde38'
+        ],
+        aspects: {
+            Climate: [Array],
+            'Common Name': [Array],
+            'Indoor/Outdoor': [Array],
+            'Growth Habit': [Array],
+            'California Prop 65 Warning': [Array],
+            Brand: [Array],
+            Type: [Array],
+            'Growth Stage': [Array],
+            Watering: [Array],
+            Genus: [Array],
+            'Number in Pack': [Array],
+            Sunlight: [Array],
+            Features: [Array]
+        }
+        },
+        condition: 'NEW',
+        packageWeightAndSize: {
+        dimensions: { height: "7", length: "5", width: "5", unit: 'INCH' },
+        packageType: 'MAILING_BOX',
+        weight: { value: "1", unit: 'POUND' }
+        },
+        availability: { shipToLocationAvailability: { quantity: 1 } }
+    }
 }
