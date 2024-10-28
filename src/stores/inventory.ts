@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
 import { ref, type Ref } from 'vue'
 import type { EbayEnvironment, AccessTokenDBResponse } from '@/types/Ebay'
-import { addOrReplaceEbayInventory, isEbayTokenExpired, postInventoryItem, refreshAccessToken } from '@/composables/useEbayUtils'
+import { addOrReplaceEbayInventory, deleteEbayItem, isEbayTokenExpired, postInventoryItem, refreshAccessToken } from '@/composables/useEbayUtils'
 import type { Plant, PlantCategory } from '@/types/Plant'
 import { findDocById } from '@/apis/dataServices'
+import { unwrapResponse } from '@/utils/useFirebaseFunctions'
 
 export const useInventoryStore = defineStore('inventory', () => {
     const ebayTokenData: Ref<AccessTokenDBResponse | undefined> = ref(undefined)
@@ -29,13 +30,22 @@ export const useInventoryStore = defineStore('inventory', () => {
         return false
     }
 
+    async function deleteInventoryItem(sku: string) {
+        if (!getOrRefreshEbayToken()) {
+            return {success: false, message: 'Unable to refresh toke'}
+        }
+
+        const res = await deleteEbayItem(sku, ebayTokenData.value!.access_token)
+        //update doc in db
+        return unwrapResponse(res)
+    }
+
     async function getOrRefreshEbayToken() {
         if(!ebayTokenData.value) {
             const res = await findDocById('admin', environment === 'SANDBOX' ? 'sandboxToken' : 'ebayToken')
             debugger
             if(res && 'access_token' in res) {
                 ebayTokenData.value = res as AccessTokenDBResponse
-
             }
         }
         if(!ebayTokenData.value || isEbayTokenExpired(ebayTokenData.value)) {
