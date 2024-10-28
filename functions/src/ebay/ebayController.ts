@@ -10,6 +10,7 @@ const ebayClientId = defineSecret('EBAY_CLIENT_ID')
 const ebayClientSecret = defineSecret('EBAY_SECRET_ID')
 const sandboxClientId = defineSecret('EBAY_SANDBOX_CLIENT_ID')
 const sandboxClientSecret = defineSecret('EBAY_SANDBOX_CLIENT_SECRET')
+const onCallOpts = {secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}
 let environment: EbayEnvironment
 let clientId: string
 let clientSecret: string
@@ -93,13 +94,13 @@ export const postInventoryItem = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRE
     return res
 })
 
-export const deleteInventory = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayInventoryRequest): Promise<any> => {
+export const deleteInventory = onCall(onCallOpts, async(request: EbayInventoryRequest): Promise<any> => {
     const token = await getTokenFromDb(request.data.environment)
     if(!token) {
-        return {error: true, success: false, message: 'Unable to get valid token'}
+        return {success: false, message: 'Unable to get valid token'}
     }
-    if(!request.data.sku || request.data.sku.length < 2) {
-        return {error: true, success: false, message: 'Invalid SKU'}
+    if(!request.data.sku || request.data.sku.length < 1) {
+        return {success: false, message: 'Invalid SKU'}
     }
     const res = await deleteInventoryItem(token, request.data.sku, request.data.environment,)
     return unwrapResponse(res)

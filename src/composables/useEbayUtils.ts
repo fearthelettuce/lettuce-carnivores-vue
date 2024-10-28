@@ -70,7 +70,6 @@ export async function addOrReplaceEbayInventory(plantCategory: PlantCategory, pl
 
 export async function postInventoryItem(sku: string, item: InventoryItem): Promise<AppReturn | AppError> {
     const res = await executeFunction<InventoryItem>('postInventoryItem', {environment: environment, sku: sku, item: item})
-    debugger
     if(res && res.success) {
         return {success: true}
     }
@@ -84,8 +83,20 @@ export function isEbayTokenExpired(data: AccessTokenDBResponse) {
     debugger
     const now = Math.floor(Date.now() / 1000)
     const tokenExpiration = data.updatedTimestamp + (110*60) //tokens are valid for 120 min, refresh after 110
+    console.log(`now: ${now} expiration: ${tokenExpiration}`)
     return tokenExpiration > now
 }
+
+
+export async function deleteEbayItem(sku: string , token: string) {
+    const res = await executeFunction('deleteInventory', {environment: environment, sku: sku, token: token})
+    if(res && res.success) {
+        return {success: true}
+    }
+    if(isSuccess(res)) { return res }
+    return {success: false, errorMessage: res.message ?? '', errorDetails: res}
+}
+
 // export async function deleteEbayItem(sku: string): AppReturn | AppError<any> {
 //     let deleteInventory
 //     try {
@@ -103,26 +114,6 @@ export function isEbayTokenExpired(data: AccessTokenDBResponse) {
 //         return {success: false, errorMessage: 'Error calling function', errorDetails: e}
 //     }
 
-// }
-
-// export async function executeFunction<T>(functionName: string, params: any): Promise<AppResponse<HttpsCallableResult<T>> | AppError> {
-//     let firebaseFunction
-//     try {
-//         const res = getFirebaseFunction(functionName)
-//         firebaseFunction = res.res
-//     } catch (e: any) {
-//         console.error('Unable to get FB function')
-//         return {success: false, errorMessage: `Unable to get FB Function ${functionName}`, errorDetails: e}
-//     }
-//     if(firebaseFunction === undefined) { return {success: false, errorMessage: `Unable to get FB Function ${functionName}`} }
-//     try {
-//         const res = await firebaseFunction(params) as HttpsCallableResult<T>
-//         console.log(res)
-//         return {success: true, res: res}
-//     } catch (e: any) {
-//         console.error(e)
-//         return {success: false, errorMessage: `Error calling FB Function ${functionName}`, errorDetails: e}
-//     }
 // }
 
 export function isSuccess<T, E>(res: AppResponse<T> | AppError): res is AppResponse<T> {
