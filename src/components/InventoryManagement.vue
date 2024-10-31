@@ -1,7 +1,7 @@
 <template>
     <BaseContainer>
         <div class="actions">
-            <BaseButton @click="accessToken">Test Access Token</BaseButton>
+            <BaseButton @click="accessToken">Access Token</BaseButton>
             <BaseButton @click="ebayLogin">Ebay Login</BaseButton>
             <BaseButton @click="refreshEbay">Refresh Ebay</BaseButton>
         </div>
@@ -22,22 +22,16 @@
 import { onMounted, ref } from 'vue';
 import { getEbayAccessToken, getUserConsent, getInventoryItem } from '@/composables/useEbayUtils';
 import { toast } from 'vue3-toastify'
-import { findDocById } from '@/apis/dataServices'
 import { useInventoryStore } from '@/stores/inventory'
 import { storeToRefs } from 'pinia'
-const ebayTokenIssued = ref('')
+
 let environment = 'PRODUCTION'
-
 const { ebayTokenData } = storeToRefs(useInventoryStore())
-
+const { getOrRefreshEbayToken } = useInventoryStore()
 onMounted(async ()=>{
-    useInventoryStore().getOrRefreshEbayToken()
+    getOrRefreshEbayToken()
 })
 
-async function getLastTokenDate() {
-    const res = await findDocById('admin', environment === 'SANDBOX' ? 'sandboxToken' : 'ebayToken')
-    ebayTokenIssued.value = res?.updatedDateTime
-}
 async function accessToken() {
     const res = await getEbayAccessToken().catch(e => {console.error(e); return})
     console.log(res)
@@ -53,7 +47,7 @@ async function ebayLogin() {
 }
 
 async function refreshEbay() {
-    const res = await useInventoryStore().getOrRefreshEbayToken()
+    const res = await getOrRefreshEbayToken()
     if(res) {
         toast.success('Ebay token refreshed')
     } else {

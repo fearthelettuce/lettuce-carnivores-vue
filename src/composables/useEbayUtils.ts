@@ -45,10 +45,11 @@ export async function handleEbayLogin(authCode: string, expires: string | null) 
 
 }
 
-export async function refreshAccessToken(environment: EbayEnvironment): Promise<AccessTokenDBResponse | AppError> {
-    const res = unwrapResponse(await executeFunction<{data: AccessTokenDBResponse}>('refreshUserAccessToken', {environment: environment}))
-    if(res && 'access_token' in res) {
-        return res
+export async function refreshAccessToken(environment: EbayEnvironment): Promise<AppData<AccessTokenDBResponse> | AppError> {
+    const res = await executeFunction<{data: AccessTokenDBResponse}>('refreshUserAccessToken', {environment: environment})
+    const data = unwrapResponse(res)
+    if(res.success && 'access_token' in data) {
+        return {success: true, data}
     }
     return {success: false, errorMessage: res.message ?? '', errorDetails: res}
 }
