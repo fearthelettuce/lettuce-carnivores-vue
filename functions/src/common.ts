@@ -23,21 +23,15 @@ export async function getAllDocs(collectionName: string) {
     return snapshot.docs.map(doc => doc.data())
 }
 
-export function unwrapResponse(res: any) {
-    if('res' in res) {
-        if('data' in res.res) {
-            return res.res.data
-        }
-        if('res' in res.res) {
-            return res.res.res
-        }
-        return res.res
+export function unwrapResponse(obj: any) {
+    if(!obj || typeof obj !== 'object') {
+        return obj
     }
-    if('data' in res) {
-        if('data' in res.data) {
-            return res.data.data
-        }
-        return res.data
+    if('data' in obj) {
+        return unwrapResponse(obj.data)
     }
-    return res
+    if('res' in obj) {
+        return unwrapResponse(obj.res)
+    }
+    return obj
 }

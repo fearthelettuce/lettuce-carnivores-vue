@@ -6,11 +6,13 @@ import type { Plant, PlantCategory } from '@/types/Plant'
 import { findDocById } from '@/apis/dataServices'
 import { unwrapResponse } from '@/utils/useFirebaseFunctions'
 
+let ebayEnvironment = 'PRODUCTION'
+
 export const useInventoryStore = defineStore('inventory', () => {
     const ebayTokenData: Ref<AccessTokenDBResponse | undefined> = ref(undefined)
 
     let environment: EbayEnvironment
-    if((import.meta.env.VITE_EBAY_ENVIRONMENT && import.meta.env.VITE_EBAY_ENVIRONMENT === 'PRODUCTION') || import.meta.env.PROD) {
+    if((ebayEnvironment === 'PRODUCTION') || import.meta.env.PROD) {
         environment = 'PRODUCTION'
     } else {
         environment = 'SANDBOX'
@@ -43,14 +45,14 @@ export const useInventoryStore = defineStore('inventory', () => {
     async function getOrRefreshEbayToken() {
         if(!ebayTokenData.value) {
             const res = await findDocById('admin', environment === 'SANDBOX' ? 'sandboxToken' : 'ebayToken')
-            debugger
             if(res && 'access_token' in res) {
                 ebayTokenData.value = res as AccessTokenDBResponse
             }
         }
+
         if(!ebayTokenData.value || isEbayTokenExpired(ebayTokenData.value)) {
-            const res = await refreshAccessToken(environment)
-            if('access_token' in res) {
+            const res = unwrapResponse(await refreshAccessToken(environment))
+            if(res.success && 'access_token' in res) {
                 ebayTokenData.value = res
                 return true
             } else {
@@ -60,5 +62,5 @@ export const useInventoryStore = defineStore('inventory', () => {
     }
 
 
-    return {addUpdateEbayItem, getOrRefreshEbayToken}
+    return {addUpdateEbayItem, getOrRefreshEbayToken, ebayTokenData}
 })

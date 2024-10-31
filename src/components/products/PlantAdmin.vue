@@ -150,7 +150,6 @@ async function fetchCurrentAvailablePlants() {
 
 async function createEbayInventory(index: number) {
     const res = await addUpdateEbayItem(plantCategoryToEdit.value.plants[index],plantCategoryToEdit.value)
-    debugger
     if(typeof res === 'boolean') {
         if(res) {
             toast.success('Something probably worked')

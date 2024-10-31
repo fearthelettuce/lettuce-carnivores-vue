@@ -137,16 +137,13 @@ const formData: Ref<Giveaway> = ref({
 
 async function addGiveaway() {
     const res = await setDoc(doc(db, collectionName, formData.value.name), { ...formData.value })
-    console.log(res)
 }
 
 const copyFrom = ref('')
 async function fetchPrevious() {
     const oldDoc = await findDocById(collectionName, copyFrom.value.toString())
-    console.log(oldDoc)
     if(oldDoc) {
         formData.value = oldDoc as Giveaway
-
     }
 }
 </script>

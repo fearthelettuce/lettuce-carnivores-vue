@@ -77,7 +77,6 @@ export async function getOrRefreshUserAccessToken(
         console.log(e)
         return {success: false, error: true, message: 'Unable to get access token', errorDetails: e, data: null}
     })
-    console.log(res.data)
     if(!res || !res.data) {
         let messageText = ''
         if('message' in res) {
@@ -89,7 +88,8 @@ export async function getOrRefreshUserAccessToken(
         }
         return {success: false, error: true, message: messageText, errorDetails: errorDetails, data: null}
     }
-    const newTokenData = {...res.data, updatedTimestamp: Math.floor(Date.now() / 1000), updatedDateTime: new Date().toLocaleString("en-US", {timeZone: 'America/Chicago'}), environment: environment}
+    const updatedDateTime = new Date().toLocaleString("en-US", {timeZone: 'America/Chicago'})
+    const newTokenData = {...res.data, updatedTimestamp: Math.floor(Date.now() / 1000), updatedDateTime, environment}
     const tokenDoc = environment === 'PRODUCTION' ? 'ebayToken' : 'sandboxToken'
     await admin.firestore().collection('admin').doc(tokenDoc).update(newTokenData)
     return {success: true, data: newTokenData as unknown as UserAccessTokenResponse}

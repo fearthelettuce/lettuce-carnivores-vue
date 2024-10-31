@@ -5,7 +5,7 @@
             <BaseButton @click="ebayLogin">Ebay Login</BaseButton>
             <BaseButton @click="refreshEbay">Refresh Ebay</BaseButton>
         </div>
-        <div>{{ `${environment} - Token refreshed: ${ebayTokenIssued}` }}</div>
+        <div>{{ `${environment} - Token refreshed: ${ebayTokenData?.updatedDateTime}` }}</div>
         <div>
             <FormKit
                 type="text"
@@ -20,17 +20,18 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { getEbayAccessToken, getUserConsent, refreshAccessToken, getInventoryItem, isSuccess } from '@/composables/useEbayUtils';
-import type { EbayEnvironment, AccessTokenDBResponse } from '@/types/Ebay'
-import BaseDialog from '@/components/UI/BaseDialog.vue';
+import { getEbayAccessToken, getUserConsent, getInventoryItem } from '@/composables/useEbayUtils';
 import { toast } from 'vue3-toastify'
 import { findDocById } from '@/apis/dataServices'
-import { getPhotoDownloadUrl } from '@/apis/fileServices'
 import { useInventoryStore } from '@/stores/inventory'
+import { storeToRefs } from 'pinia'
 const ebayTokenIssued = ref('')
-const environment = import.meta.env.VITE_EBAY_ENVIRONMENT
+let environment = 'PRODUCTION'
+
+const { ebayTokenData } = storeToRefs(useInventoryStore())
+
 onMounted(async ()=>{
-    getLastTokenDate()
+    useInventoryStore().getOrRefreshEbayToken()
 })
 
 async function getLastTokenDate() {
@@ -43,10 +44,11 @@ async function accessToken() {
 }
 
 async function ebayLogin() {
-    const res = await getUserConsent().catch(e => {console.error(e); return})
-    console.log(res)
-    if(res) {
-        window.open(res)
+    const res = await getUserConsent()
+    if(res.success && res.data) {
+        window.open(res.data)
+    } else {
+        toast.error('Something went wrong')
     }
 }
 

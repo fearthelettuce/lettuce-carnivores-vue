@@ -14,14 +14,12 @@ async function getGiveawayEntries() {
 onMounted(async () => {
     const res = await getGiveawayEntries()
     if(res) {
-        console.log(res)
         giveawayEntries.value = res
     }
 })
 function formatDisplayName(name: string) {
     if(!name) {return}
     const names = name.trim().toString().split(" ")
-    console.log(name)
     if(names.length === 1) {
         return names[0]
     }
