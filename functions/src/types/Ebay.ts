@@ -1,4 +1,4 @@
-import { type CallableRequest } from 'firebase-functions/https'
+import { CallableRequest } from 'firebase-functions/v2/https'
 import type { FunctionResponse } from './Functions'
 export interface EbayAccessTokenRequest extends CallableRequest {
     data: {

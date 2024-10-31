@@ -70,14 +70,14 @@
             name="giveawayStartTime"
             label="Start Time"
             validation="required"
-            v-model="formData.giveawayStartTime"
+            v-model="startTime"
         />
         <FormKit
             type="datetime-local"
             name="giveawayEndTime"
             label="End Time"
             validation="required"
-            v-model="formData.giveawayEndTime"
+            v-model="endTime"
         />
         <FormKit
             type="text"
@@ -98,7 +98,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref,} from 'vue';
+import { computed, ref, type Ref,} from 'vue';
 import { FormKit } from '@formkit/vue'
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/apis/firebase'
@@ -107,6 +107,16 @@ import BaseButton from '../UI/BaseButton.vue'
 import { findDocById } from '@/apis/dataServices'
 
 const collectionName = 'giveaways'
+const now = new Date()
+const endTime = ref()
+const startTime = ref()
+
+const formattedStartTime = computed(() => {
+    return startTime.value.toISOString().substring(0, 16)
+})
+const formattedEndTime = computed(() => {
+    return endTime.value.toISOString().substring(0, 16)
+})
 const formData: Ref<Giveaway> = ref({
     active: false,
     name: '',
@@ -115,8 +125,8 @@ const formData: Ref<Giveaway> = ref({
     gameData: {
         password: '',
     },
-    giveawayEndTime: undefined,
-    giveawayStartTime: undefined,
+    giveawayEndTime: formattedEndTime,
+    giveawayStartTime: formattedStartTime,
     prize: '',
     prizeValue: 0,
     summary: '',
@@ -124,8 +134,6 @@ const formData: Ref<Giveaway> = ref({
 
 })
 
-const endTime = ref('')
-const startTime = ref('')
 
 async function addGiveaway() {
     const res = await setDoc(doc(db, collectionName, formData.value.name), { ...formData.value })
