@@ -38,7 +38,6 @@ export async function createStripeCheckoutSession(cart: CartItem[]){
     const createCheckoutSession: Function = httpsCallable(functions, 'stripeCheckoutController')
     const res = await createCheckoutSession({
         cart: cart, 
-        customerEmail: 'test@gmail.com',
         returnUrl: `${window.location.origin}/checkoutComplete`,
         cancelUrl:`${window.location.origin}/cart`,
         stripeCustomer: stripeCustomer,
@@ -46,7 +45,7 @@ export async function createStripeCheckoutSession(cart: CartItem[]){
         success: false, 
         error: true, 
         errorDetails: e, 
-        message: 'Error when trying to create Strip checkout session'}
+        message: 'Error when trying to create Stripe checkout session'}
     })
     return res
 }
