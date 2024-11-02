@@ -3,7 +3,7 @@
     Heli Count : ${currentAvailablePlants.heliCount} ---
     Heli Varieties: ${currentAvailablePlants.heliVarieties}
     `}}</div>
-    <div class="container-fluid layout">
+    <div class="layout">
 
         <div>
             <ItemSelect
@@ -23,10 +23,10 @@
                 <button class="btn btn-secondary" @click="toggleExpand"> {{isExpanded ? 'Hide Form' : `Edit ${plantCategoryToEdit.name !== '' ? plantCategoryToEdit.name : 'Category'}`  }}</button>
 
             </div>
-            <div class="plant-list mt-4">
+            <div class="mt-4">
                 <div v-for="(plant, index) in plantCategoryToEdit.plants" :key="index" >
                     <hr style="margin-block: .4rem" />
-                    <div class="d-flex flex-row gap-2">
+                    <div class="d-flex flex-row gap-1">
                         <div class="up-down-arrows align-content-center text-center">
                             <button
                                 class="btn px-1 py-0"
@@ -172,6 +172,11 @@ provide('managePhotos', managePhotos)
 </script>
 <style scoped>
     .layout {
+        width: 100%;
+        margin-right: auto;
+        margin-left: auto;
+        padding-left: .5rem;
+        padding-right: .5rem;
         display: grid;
         grid-template-columns: 1fr;
         gap: 0 2rem;
@@ -190,7 +195,7 @@ provide('managePhotos', managePhotos)
     }
     .up-down-arrows {
         display: grid;
-        min-width: 2.5rem;
+        min-width: 1.5rem;
     }
     @media(min-width: 82rem) {
         .product-list {

@@ -25,6 +25,7 @@ const props = defineProps({
     font-weight: 500;
     cursor: pointer;
     box-shadow: 0 0 2px darkslategray;
+    height: fit-content
 }
 .base-button:hover {
     filter: brightness(105%);
@@ -95,7 +96,7 @@ const props = defineProps({
 
 .normal {
     font-size: 1rem;
-    padding: .25rem .75rem;
+    padding: .5rem .75rem;
     border-radius: .5rem;
 }
 

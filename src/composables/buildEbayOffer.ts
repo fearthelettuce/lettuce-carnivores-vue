@@ -1,16 +1,73 @@
-export async function buildEbayOffer() {
+import type { Plant, PlantCategory } from '@/types/Plant'
+
+export async function buildEbayOffer(plantCategory: PlantCategory, plant: Plant) {
+    const ebayPrice = getEbayPrice(plant.price)
+    if(!isValidPrice(ebayPrice)) {
+        return null
+    }
+
 
 }
 
+function getEbayPrice(price: number) {
+    const markupPercent = 1.12
+    if (!isValidPrice(price)) {
+        return null
+    }
+    const markedUpPrice = price * markupPercent
+    return parseFloat(markedUpPrice.toFixed(0))
 
+}
 
-// {
-//   "availableQuantity": "integer",
+function isValidPrice(price: number | null) {
+    if (!price || Number.isNaN(price) || price < 10 || !price) {
+        return false
+    }
+    return true
+}
+
+function getConstantOfferData() {
+    return {
+        categoryId: undefined,
+        listingDescription: undefined,
+        marketplaceId: 'EBAY_US',
+        availableQuantity: 1,
+        format: 'FIXED_PRICE',
+        listingDuration: 'GTC',
+        listingPolicies: {
+            bestOfferTerms: {
+                bestOfferEnabled: true,
+
+            },
+            eBayPlusIfEligible: false,
+            fulfillmentPolicyId: 'NEED',
+            paymentPolicyId: 'NEED',
+            returnPolicyId: 'NEED',
+
+        },
+        merchantLocationKey: 'NEED',
+        pricingSummary: {
+            price: {
+                currency: 'USD',
+                value: undefined
+            }
+        }
+
+    }
+}
+
 //   "categoryId": "string",
-//   "format": "FormatTypeEnum : [AUCTION,FIXED_PRICE]",
 //   "listingDescription": "string",
-//   "listingDuration": "ListingDurationEnum : [DAYS_1,DAYS_3,DAYS_5,DAYS_7,DAYS_10,DAYS_21,DAYS_30,GTC]",
-//   "listingPolicies": {
+
+//   "pricingSummary": {
+//     "price": {
+//       "currency": "string",
+//       "value": "string"
+//     },
+//   },
+// }
+
+
 //     "bestOfferTerms": {
 //       "autoAcceptPrice": {
 //         "currency": "string",
@@ -22,13 +79,7 @@ export async function buildEbayOffer() {
 //       },
 //       "bestOfferEnabled": "boolean"
 //     },
-//     "eBayPlusIfEligible": "boolean",
-//     "fulfillmentPolicyId": "string",
-//     "paymentPolicyId": "string",
-//     "productCompliancePolicyIds": [
-//       "string"
-//     ],
-//     "returnPolicyId": "string",
+
 //     "shippingCostOverrides": [
 //       {
 //         "additionalShippingCost": {
@@ -47,39 +98,3 @@ export async function buildEbayOffer() {
 //         }
 //       }
 //     ],
-//     "takeBackPolicyId": "string"
-//   },
-//   "listingStartDate": "string",
-//   "lotSize": "integer",
-//   "marketplaceId": "MarketplaceEnum : [EBAY_US]",
-//   "merchantLocationKey": "string",
-//   "pricingSummary": {
-//     "auctionReservePrice": {
-//       "currency": "string",
-//       "value": "string"
-//     },
-//     "auctionStartPrice": {
-//       "currency": "string",
-//       "value": "string"
-//     },
-//     "minimumAdvertisedPrice": {
-//       "currency": "string",
-//       "value": "string"
-//     },
-//     "originallySoldForRetailPriceOn": "SoldOnEnum : [ON_EBAY,OFF_EBAY,ON_AND_OFF_EBAY]",
-//     "originalRetailPrice": {
-//       "currency": "string",
-//       "value": "string"
-//     },
-//     "price": {
-//       "currency": "string",
-//       "value": "string"
-//     },
-//     "pricingVisibility": "MinimumAdvertisedPriceHandlingEnum : [NONE,PRE_CHECKOUT,DURING_CHECKOUT]"
-//   },
-//   "tax": {
-//     "applyTax": "boolean",
-//     "thirdPartyTaxCategory": "string",
-//     "vatPercentage": "number"
-//   }
-// }

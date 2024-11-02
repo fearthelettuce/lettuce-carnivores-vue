@@ -3,7 +3,7 @@
         <FormKit
             type="text"
             label="ID"
-            outer-class="flex-1"
+            outer-class="min-size"
             validation="required"
             v-model="plant.id"
             @change="setRepresentative"
@@ -11,7 +11,7 @@
         <FormKit
             type="text"
             label="SKU"
-            outer-class="flex-1"
+
             v-model="plant.sku"
         />
         <FormKit
@@ -60,8 +60,7 @@
         <div class="other-stuff">
             <FormKit
                 type="checkbox"
-                label="Representative?"
-                class=""
+                label="Representative"
                 outer-class="flex-2 align-content-center"
                 v-model="plant.isRepresentative"
             />
@@ -69,11 +68,10 @@
                 {{ `Photo: ${mostRecentPhoto}` }}
             </div>
         </div>
-        <div class="actions">
-            <BaseButton @click.prevent="addPhotos">Photos <span>({{ plant.photos.length }})</span></BaseButton>
-            <BaseButton type="danger" @click.prevent="$emit('deletePlant')" :disabled="plant.status !== 'Delete'">Delete</BaseButton>
-            <BaseButton @click.prevent="$emit('createEbayItem')">Create Ebay Item</BaseButton>
-        </div>
+
+        <BaseButton @click.prevent="addPhotos">Photos <span>({{ plant.photos.length }})</span></BaseButton>
+        <BaseButton type="danger" @click.prevent="$emit('deletePlant')" :disabled="plant.status !== 'Delete'">Delete</BaseButton>
+        <BaseButton @click.prevent="$emit('createEbayItem')">Create Ebay Item</BaseButton>
 
     </form>
 </template>
@@ -82,7 +80,7 @@
 import { computed, inject, watch, type PropType } from 'vue'
 import { type Plant } from '@/types/Plant';
 import { sizeList, statusListArr} from '@/constants/constants';
-import { formatFirebaseDate, formattedDate } from '@/utils/utils'
+import { formatDate, formatFirebaseDate, formattedDate } from '@/utils/utils'
 
 defineEmits(['triggerSave', 'deletePlant', 'createEbayItem'])
 
@@ -112,7 +110,7 @@ const mostRecentPhoto = computed(() => {
     const photoDates = plant.value.photos.map(photo => photo.date)
     if(photoDates.length > 0) {
         const mostRecentDate = photoDates.reduce((a, b) => {return a > b ? a : b})
-        return formatFirebaseDate(mostRecentDate)
+        return formatDate(mostRecentDate)
     }
     return '-'
 })
@@ -131,13 +129,13 @@ watch(() => plant.value.id, () => {
 <style scoped>
 
     .plant-item-form {
+        width: 100%;
         margin: .25rem 0;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        /* display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr)); */
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(14ch, 1fr));
         gap: .5rem;
+        align-items: center;
+
     }
     .actions {
         display: flex;
@@ -145,6 +143,9 @@ watch(() => plant.value.id, () => {
         justify-self: center;
         align-content: center;
         margin: 1rem 0 1rem .5rem;
+    }
+    .min-size {
+        min-width: 8ch;
     }
     .flex-1 {
         display: flex;
@@ -159,6 +160,7 @@ watch(() => plant.value.id, () => {
         flex-direction: column;
         justify-content: center;
         margin: .1rem 0;
+        gap: .25rem;
     }
 
 </style>

@@ -5,9 +5,9 @@
             <header class="mb-2 border-0">
                 <h5 class="modal-title text-light">Manage Photos</h5>
                 <div class="text-info align-content-center">Photos will take ~30s to load after uploading</div>
-                <button 
-                    type="button" 
-                    class="btn-close btn-close-white" 
+                <button
+                    type="button"
+                    class="btn-close btn-close-white"
                     aria-label="Close"
                     data-bs-dismiss="modal"
                     @click="toggleModal"
@@ -43,9 +43,9 @@
 
                         </div>
                         <div class="grid-col-1 align-content-center text-light">
-                            <div>{{ photo.name }}</div>                                
+                            <div>{{ photo.name }}</div>
                         </div>
-                        
+
                         <div class="col-7 d-flex  align-items-center justify-content-center">
                             <img class="imagePreview" :src="photoSrc(photo, 256)" />
                         </div>
@@ -58,36 +58,36 @@
                     </template>
                 </TransitionGroup>
             </div>
-            
+
                 <footer class="bg-dark">
                         <div class="">
                             <label for="formFile" class="btn btn-primary" :disabled="isSaving">
                                 Select Files
                             </label>
-                            <input 
+                            <input
                             ref="fileSelectElement"
-                            class="form-control" 
-                            type="file" 
-                            id="formFile" 
-                            @change="onFileChanged($event)" 
-                            accept="capture=camera,image/*" 
+                            class="form-control"
+                            type="file"
+                            id="formFile"
+                            @change="onFileChanged($event)"
+                            accept="capture=camera,image/*"
                             multiple
                             :disabled="isSaving">
                             <div v-if="selectedFiles.length !== 0" class="d-inline-block mx-3 text-light">{{ selectedFiles.length }} files selected</div>
                         </div>
                     <div class="d-flex flex-row gap-2">
                         <button type="button" class="btn btn-primary" @click="uploadFiles" :disabled="selectedFiles.length === 0 || isSaving">Upload <span v-if="isSaving" class="spinner-border"></span></button>
-                        <button type="button" class="btn btn-info" @click="reloadImages" data-bs-dismiss="modal":disabled="isSaving || photos.length === 0">Reload Images</button>     
+                        <button type="button" class="btn btn-info" @click="reloadImages" data-bs-dismiss="modal":disabled="isSaving || photos.length === 0">Reload Images</button>
                         <button type="button" class="btn btn-secondary" @click="toggleModal" data-bs-dismiss="modal":disabled="selectedFiles.length !== 0">Close</button>
                     </div>
 
                 </footer>
-                
-            
+
+
         </div>
 
     </BaseDialog>
-    
+
 </template>
 
 <script setup lang="ts">
@@ -141,7 +141,6 @@ function arrayMove(arr: Array<any>, fromIndex: number, toIndex: number) {
 function removePhoto(index: number, photo: SelectedFile| PhotoItem) {
     //const photoIndex = photos.value.findIndex((ele) => ele.originalFilename === photo.name)
     if(index !== -1) {
-        console.log(photos.value[index])
         photos.value.splice(index,1)
         if(photo.hasOwnProperty('folder')) {
             deleteAllPhotos(photo as PhotoItem)
@@ -162,8 +161,8 @@ async function deleteAllPhotos(photo: PhotoItem) {
 const selectedFiles: Ref<SelectedFile[]> = ref([])
 
 type SelectedFile = {
-    file?: File, 
-    tempUrl: string, 
+    file?: File,
+    tempUrl: string,
     name: string,
     originalName: string,
 }
@@ -183,7 +182,7 @@ function onFileChanged($event: Event) {
                 name: target.files[i].name.replace(/\.[^/.]+$/, ""),
             })
         }
-    }    
+    }
 }
 
 const isSaving = ref(false)
@@ -207,7 +206,7 @@ async function uploadFiles() {
                 originalFilename: photo.originalName,
                 date: new Date(),
             })
-            
+
             fileUploadCounter++
             if (fileUploadCounter >= photosToUpload.length) {
                 emit('triggerSave')

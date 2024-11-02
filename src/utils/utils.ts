@@ -29,6 +29,7 @@ export function formattedDate (someDate: string | Date, format: 'mm/dd/yy' | 'yy
 }
 
 export function formatFirebaseDate(firebaseDate: any) {
+
     const date =  new Date(firebaseDate.seconds * 1000)
     return new Intl.DateTimeFormat("en-US", {
         year: "2-digit",
@@ -37,6 +38,18 @@ export function formatFirebaseDate(firebaseDate: any) {
         }).format(date);
 }
 
+export function formatDate(date: any) {
+    const inputType = typeof date
+
+    if(inputType === 'object' && 'seconds' in date) {
+        return formatFirebaseDate(date)
+    }
+    if(date instanceof Date || inputType === 'string') {
+        return formattedDate(date)
+    }
+    return undefined
+
+}
 
 export const USDollar = new Intl.NumberFormat('en-US', {
     style: 'currency',
