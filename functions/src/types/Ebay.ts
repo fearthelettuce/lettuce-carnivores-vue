@@ -24,6 +24,9 @@ export type EbayInventoryPostRequest = EbayDataRequest & {
         item: any
     }
 }
+export type EbayOfferPostRequest = EbayDataRequest & {
+    data: any
+}
 
 export type EbayListingRequest = EbayDataRequest & {
     data: {

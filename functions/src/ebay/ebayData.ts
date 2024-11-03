@@ -50,6 +50,34 @@ export async function createOrReplaceInventoryItem(token: string, sku: string, i
     return res
 }
 
+export async function postEbayData(token: string, data: any, environment?: EbayEnvironment) {
+    const baseUrl = environment === 'SANDBOX' ? sandboxApiUrl : apiUrl
+    //todo: update to take a URL
+    const config = {
+        method: 'post',
+        url: `${baseUrl}/sell/inventory/v1/offer`,
+        headers: {
+            'Authorization':`Bearer ${token}`,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Content-Language': 'en-US'
+        },
+        data: data
+    }
+
+    const res = await axios(config).catch((e: any) => {console.error(e); return e})
+    if( res && 'status' in res && res.status === 201) {
+        return {success: true}
+    }
+    if(res && 'response' in res && 'data' in res.response) {
+        return res.response.data
+    }
+    if(res && 'response' in res) {
+        return res.response
+    }
+    return res
+}
+
 export async function deleteInventoryItem(token: string, sku: string, environment?: EbayEnvironment) {
     const baseUrl = environment === 'SANDBOX' ? sandboxApiUrl: apiUrl
     const url = `${baseUrl}/sell/inventory/v1/inventory_item/${sku}`

@@ -31,25 +31,20 @@ async function buildProductDetails(plantCategory: PlantCategory, plant: Plant): 
     const photoUrls = await getImageUrls(plant.photos)
     return {
         title: `${plantCategory.name} - ${plant.size}`,
-        description: createDescription(),
+        description: createDescription(plantCategory, plant),
         imageUrls: photoUrls,
         aspects: buildAspects(plantCategory, plant) as any //ts-any: Ebay OpenApi 3 JSON currently (10/20/24) defines aspects as string, which is wrongo dongo.
                                                            // https://github.com/hendt/ebay-api/issues/181
     }
 
-    function createDescription() {
+    function createDescription(plantCategory: PlantCategory, plant: Plant) {
         let text = ''
-        text = `This listing is for a ${plantCategory.name}`
+        text = `${plantCategory.name} - ${plant.size}\n\n`
         if(plant.propagationDate) {
-            text = text + ` which was divided on ${formattedDate(plant.propagationDate,'mm/dd/yy')}\n\n`
+            text = text + `Division was taken on ${formattedDate(plant.propagationDate,'mm/dd/yy')}\n\n`
         }
-        text = text + '\n\n'
-        text = text + 'The plant in the photo is the actual plant for sale.\n\n'
-        text = text + `<b>Care</b>\n\nThis would be a great plant for someone with experience growing nepenthes, orchids, or similar. Heliamphora grow in similar conditions as intermediate / highland nepenthes. They like bright light, high humidity, low-mineral water, and good airflow.\n\n`
-        text = text + '\n\n'
-        text = text + `Shipping\n\n
-        Your plant will be shipped potted with plenty of cushion.\n\n
-        Live arrival is guaranteed.  If you experience any issues, please take photos and contact me the day of receipt.  I'm happy to combine shipping.`
+        text = text + `${plantCategory.description}`
+
         return text
     }
 

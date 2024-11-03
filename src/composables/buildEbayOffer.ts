@@ -1,12 +1,23 @@
+import type { EbayOfferDetailsWithKeys } from '@/types/ebayApi/types'
 import type { Plant, PlantCategory } from '@/types/Plant'
+import { formattedDate } from '@/utils/utils'
 
 export async function buildEbayOffer(plantCategory: PlantCategory, plant: Plant) {
     const ebayPrice = getEbayPrice(plant.price)
     if(!isValidPrice(ebayPrice)) {
         return null
     }
-
-
+    const offer: EbayOfferDetailsWithKeys = {...getConstantOfferData()}
+    offer.sku = plant.sku
+    offer.categoryId = getCategoryId(plantCategory)
+    offer.listingDescription = getListingDescription(plantCategory, plant)
+    offer.pricingSummary = {
+            price: {
+                currency: 'USD',
+                value: ebayPrice.toString()
+            }
+        }
+    return offer
 }
 
 function getEbayPrice(price: number) {
@@ -16,10 +27,30 @@ function getEbayPrice(price: number) {
     }
     const markedUpPrice = price * markupPercent
     return parseFloat(markedUpPrice.toFixed(0))
-
 }
 
-function isValidPrice(price: number | null) {
+function getCategoryId(plantCategory: PlantCategory) {
+    return '181003'
+}
+
+function getListingDescription(plantCategory: PlantCategory, plant: Plant) {
+    let text = ''
+    text = `This listing is for a ${plantCategory.name} - ${plant.size}`
+    if(plant.propagationDate) {
+        text = text + ` which was divided on ${formattedDate(plant.propagationDate,'mm/dd/yy')}\n\n`
+    }
+    text = text + '\n\n'
+    text = text + 'The plant in the photo is the actual plant for sale.\n\n'
+    if(plantCategory.genus === 'Heliamphora') {
+        text = text + `<b>Care</b>\n\nThis would be a great plant for someone with experience growing nepenthes, orchids, or similar. Heliamphora grow in similar conditions as intermediate / highland nepenthes. They like bright light, high humidity, low-mineral water, and good airflow.\n\n`
+        text = text + '\n\n'
+    }
+    text = text + `<b>Shipping</b>\n\n
+    Your plant will be shipped potted.\n\n
+    Live arrival is guaranteed.  If you experience any issues, please take photos and contact me the day of receipt.  I'm happy to combine shipping.`
+    return text
+}
+function isValidPrice(price: number | null): price is number {
     if (!price || Number.isNaN(price) || price < 10 || !price) {
         return false
     }
@@ -28,8 +59,6 @@ function isValidPrice(price: number | null) {
 
 function getConstantOfferData() {
     return {
-        categoryId: undefined,
-        listingDescription: undefined,
         marketplaceId: 'EBAY_US',
         availableQuantity: 1,
         format: 'FIXED_PRICE',
@@ -46,13 +75,6 @@ function getConstantOfferData() {
 
         },
         merchantLocationKey: 'US_63303',
-        pricingSummary: {
-            price: {
-                currency: 'USD',
-                value: undefined
-            }
-        }
-
     }
 }
 

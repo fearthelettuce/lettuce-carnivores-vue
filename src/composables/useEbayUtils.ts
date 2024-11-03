@@ -5,6 +5,7 @@ import type { InventoryItem } from '@/types/ebayApi/types'
 import type { HttpsCallableResult } from 'firebase/functions'
 import { createEbayInventoryItem } from './buildEbayInventoryItem'
 import type { Plant, PlantCategory } from '@/types/Plant'
+import { buildEbayOffer } from './buildEbayOffer'
 let environment: EbayEnvironment = 'PRODUCTION'
 if((environment === 'PRODUCTION') || import.meta.env.PROD) {
     environment = 'PRODUCTION'
@@ -72,6 +73,19 @@ export async function addOrReplaceEbayInventory(plantCategory: PlantCategory, pl
 
 export async function postInventoryItem(sku: string, item: InventoryItem): Promise<AppReturn | AppError> {
     const res = await executeFunction<InventoryItem>('postInventoryItem', {environment: environment, sku: sku, item: item})
+    if(res && res.success) {
+        return {success: true}
+    }
+    if(isSuccess(res)) { return res }
+    return {success: false, errorMessage: res.message ?? '', errorDetails: res}
+}
+
+export async function postOffer(plantCategory: PlantCategory, plant: Plant): Promise<AppReturn | AppError> {
+    const offer = await buildEbayOffer(plantCategory, plant)
+    if(!offer) {
+        return {success: false, errorMessage: 'Unable to create offer'}
+    }
+    const res = await executeFunction<AppReturn>('createEbayOffer', {environment: environment, offer: offer})
     if(res && res.success) {
         return {success: true}
     }
