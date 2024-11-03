@@ -47,6 +47,7 @@ export async function handleEbayLogin(authCode: string, expires: string | null) 
 
 export async function refreshAccessToken(environment: EbayEnvironment): Promise<AppData<AccessTokenDBResponse> | AppError> {
     const res = await executeFunction<{data: AccessTokenDBResponse}>('refreshUserAccessToken', {environment: environment})
+    console.log(res)
     const data = unwrapResponse(res)
     if(res.success && 'access_token' in data) {
         return {success: true, data}
@@ -83,7 +84,7 @@ export async function postInventoryItem(sku: string, item: InventoryItem): Promi
 export function isEbayTokenExpired(data: AccessTokenDBResponse) {
     const now = Math.floor(Date.now() / 1000)
     const tokenExpiration = data.updatedTimestamp + (110*60) //tokens are valid for 120 min, refresh after 110
-    return tokenExpiration > now
+    return now > tokenExpiration
 }
 
 

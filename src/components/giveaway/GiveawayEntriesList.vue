@@ -1,5 +1,13 @@
 <template>
-    <div v-for="entry in giveawayEntries">{{ formatDisplayName(entry.displayName) }}</div>
+    <div v-for="entry in giveawayEntries">
+        <div>
+            {{ formatDisplayName(entry.displayName) }}
+        </div>
+            <div>Email: {{ entry.email }}</div>
+            <div>Insta: {{ entry.instagram }}</div>
+            <div>Face: {{ entry.facebook }}</div>
+    </div>
+
 </template>
 
 <script setup lang="ts">

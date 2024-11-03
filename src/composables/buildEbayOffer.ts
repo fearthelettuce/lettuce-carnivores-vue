@@ -40,12 +40,12 @@ function getConstantOfferData() {
 
             },
             eBayPlusIfEligible: false,
-            fulfillmentPolicyId: 'NEED',
-            paymentPolicyId: 'NEED',
-            returnPolicyId: 'NEED',
+            fulfillmentPolicyId: '285168399011',
+            paymentPolicyId: '285168378011',
+            returnPolicyId: '285168380011',
 
         },
-        merchantLocationKey: 'NEED',
+        merchantLocationKey: 'US_63303',
         pricingSummary: {
             price: {
                 currency: 'USD',

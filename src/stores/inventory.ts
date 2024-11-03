@@ -49,7 +49,6 @@ export const useInventoryStore = defineStore('inventory', () => {
                 ebayTokenData.value = res as AccessTokenDBResponse
             }
         }
-
         if(!ebayTokenData.value || isEbayTokenExpired(ebayTokenData.value)) {
             const res = await refreshAccessToken(environment)
             const data = unwrapResponse(res)
