@@ -25,7 +25,7 @@ export function getShippingSize(size: PotSize): PackageWeightAndSize {
     const boxSizeMap = buildBoxSizeMap()
     return {
         dimensions: boxSizeMap.get(boxWeight.box)!,
-        packageType: 'MAILING_BOX',
+        // packageType: 'MAILING_BOX',
         weight: {
             value: boxWeight.weight,
             unit: 'POUND',

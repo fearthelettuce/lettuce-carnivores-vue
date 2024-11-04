@@ -1,9 +1,9 @@
 import admin from 'firebase-admin'
 import { onCall, type CallableRequest } from 'firebase-functions/v2/https';
 import { defineSecret } from 'firebase-functions/params'
-import type {  EbayAccessTokenRequest, EbayEnvironment, EbayInventoryRequest, EbayInventoryPostRequest } from '../types/Ebay';
+import type {  EbayAccessTokenRequest, EbayEnvironment, EbayInventoryRequest, EbayInventoryPostRequest, EbayOfferPostRequest } from '../types/Ebay';
 import { submitAccessTokenRequest, generateUserConsentUrl, getOrRefreshUserAccessToken, getTokenFromDb } from './ebayService';
-import { getInventoryItems, deleteInventoryItem, createOrReplaceInventoryItem, postEbayData } from './ebayData';
+import { getInventoryItems, deleteInventoryItem, createOrReplaceInventoryItem, postEbayOffer, publishOffer } from './ebayData';
 import { unwrapResponse } from '../common';
 
 const ebayClientId = defineSecret('EBAY_CLIENT_ID')
@@ -20,7 +20,6 @@ export const getEbayAccessToken = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECR
     if(!setSecrets()) {return {success: false, error: true, message: 'Unable to get clientId or clientSecret', errorDetails: {}, data: {}}}
 
     const res = await submitAccessTokenRequest(request.data.environment, clientId, clientSecret )
-    console.log(res)
     if(res.success && res.data && 'access_token' in res.data) {
         accessToken = res.data.access_token
     } else {
@@ -57,7 +56,6 @@ export const refreshUserAccessToken = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_
     const tokenDoc = environment === 'PRODUCTION' ? 'ebayToken' : 'sandboxToken'
     const snap = await admin.firestore().collection('admin').doc(tokenDoc).get()
     if(!snap || snap === undefined || snap.data() === undefined) {
-        console.log(snap)
         return {success: false, error: true, message: 'Unable to get refresh token from db', errorDetails: {}, data: {}}
     }
     const oldRefreshToken = snap.data()?.refresh_token
@@ -79,9 +77,7 @@ export const postInventoryItem = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRE
     if(!token) {
         return {error: true, success: false, message: 'Unable to get valid token'}
     }
-    console.log(request.data.item)
     const res = await createOrReplaceInventoryItem(token, request.data.sku, request.data.item, request.data.environment)
-    console.log(res)
     if('success' in res) {
         return res.success
     }
@@ -94,23 +90,29 @@ export const postInventoryItem = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRE
     return res
 })
 
-export const createEbayOffer = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayInventoryPostRequest): Promise<any> => {
+export const createEbayOffer = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayOfferPostRequest): Promise<any> => {
+    //check if offer exists, call update instead of post if needed
     const token = await getTokenFromDb(request.data.environment)
     if(!token) {
         return {error: true, success: false, message: 'Unable to get valid token'}
     }
-    const res = await postEbayData(token, request.data, request.data.environment)
-    console.log(res)
-    if('success' in res) {
-        return res.success
+
+    const res = await postEbayOffer(token, request.data.data, request.data.environment)
+
+    if(!res || !('success' in res) || !res.success) {
+        return { success: false, message: 'Error posting offer'}
     }
-    if('res' in res) {
-        return res.res
+    const offerId = res.data.offerId
+    const publishRes = await publishOffer(token, offerId, request.data.environment)
+    if(!publishRes || !('success' in publishRes) || !publishRes.success) {
+        return { success: false, message: 'Error publishing offer'}
     }
-    if('data' in res) {
-        return res.data
-    }
-    return res
+    const listingId = publishRes.data.listingId
+    const updatedDateTime = new Date().toLocaleString("en-US", {timeZone: 'America/Chicago'})
+    const updatedTimestamp = Math.floor(Date.now() / 1000)
+    admin.firestore().collection('inventory').doc(request.data.data.sku).set({offerId, listingId, updatedDateTime, updatedTimestamp})
+    return {success: true}
+
 })
 
 

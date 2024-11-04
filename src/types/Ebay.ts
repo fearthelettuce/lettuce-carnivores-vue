@@ -56,7 +56,7 @@ export type GranularityLevel = 'Coarse' | 'Medium' | 'Fine'
 
 export type PackageWeightAndSize = {
     dimensions: BoxDimensions,
-    packageType: 'MAILING_BOX',
+    // packageType: 'MAILING_BOX', //seems like this should be there, but getting error when publishing offer
     weight: {
         value: number,
         unit: 'POUND' | 'OUNCE',

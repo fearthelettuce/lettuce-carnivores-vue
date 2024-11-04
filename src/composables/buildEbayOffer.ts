@@ -30,24 +30,28 @@ function getEbayPrice(price: number) {
 }
 
 function getCategoryId(plantCategory: PlantCategory) {
-    return '181003'
+    return '19617' //"categoryName": "Plants & Seedlings"
 }
 
 function getListingDescription(plantCategory: PlantCategory, plant: Plant) {
     let text = ''
     text = `This listing is for a ${plantCategory.name} - ${plant.size}`
     if(plant.propagationDate) {
-        text = text + ` which was divided on ${formattedDate(plant.propagationDate,'mm/dd/yy')}\n\n`
+        text = text + ` which was divided on ${formattedDate(plant.propagationDate,'mm/dd/yy')}<br>`
     }
-    text = text + '\n\n'
-    text = text + 'The plant in the photo is the actual plant for sale.\n\n'
+    text = text + '<br>'
+    text = text + 'The plant in the photo is the actual plant for sale.<br><br>'
     if(plantCategory.genus === 'Heliamphora') {
-        text = text + `<b>Care</b>\n\nThis would be a great plant for someone with experience growing nepenthes, orchids, or similar. Heliamphora grow in similar conditions as intermediate / highland nepenthes. They like bright light, high humidity, low-mineral water, and good airflow.\n\n`
-        text = text + '\n\n'
+        text = text + `<b>Care</b><br>This would be a great plant for someone with experience growing nepenthes, orchids, or similar. Heliamphora grow in similar conditions as intermediate / highland nepenthes. They like bright light, high humidity, low-mineral water, and good airflow.<br>`
+        text = text + '<br>'
     }
-    text = text + `<b>Shipping</b>\n\n
-    Your plant will be shipped potted.\n\n
-    Live arrival is guaranteed.  If you experience any issues, please take photos and contact me the day of receipt.  I'm happy to combine shipping.`
+    text = text + `<b>Shipping</b><br>`
+    if(plant.size === 'Bare Root') {
+        text = text + `<b>Your plant will be shipped bare root</b>.<br>`
+    } else {
+        text = text + `Your plant will be shipped potted.<br>`
+     }
+    text = text + `Live arrival is guaranteed.  If you experience any issues, please take photos and contact me the day of receipt.  I'm happy to combine shipping.`
     return text
 }
 function isValidPrice(price: number | null): price is number {

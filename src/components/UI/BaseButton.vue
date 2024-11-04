@@ -96,7 +96,7 @@ const props = defineProps({
 
 .normal {
     font-size: 1rem;
-    padding: .5rem .75rem;
+    padding: .5rem;
     border-radius: .5rem;
 }
 

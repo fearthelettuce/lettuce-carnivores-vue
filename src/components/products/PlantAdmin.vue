@@ -46,7 +46,13 @@
                             </button>
                         </div>
 
-                        <PlantItemForm :plant @triggerSave="saveCategory(plantCategoryToEdit)" @deletePlant="removePlant(index)" @createEbayItem="createEbayInventory(index)"/>
+                        <PlantItemForm
+                            :plant
+                            @triggerSave="saveCategory(plantCategoryToEdit)"
+                            @deletePlant="removePlant(index)"
+                            @createEbayItem="createEbayInventory(index)"
+                            @listEbayOffer="createEbayOffer(index)"
+                        />
 
                     </div>
                 </div>
@@ -99,7 +105,7 @@ import { useInventoryStore } from '@/stores/inventory'
 const {fetchAllCategories, findPlantCategoryById, setCategoryToEdit, saveCategory, addPlant, getAvailablePlants, removePlant} = usePlantStore()
 const {plantCategories, plantCategoryToEdit, isSaving} = storeToRefs(usePlantStore())
 const route = useRoute()
-const { addUpdateEbayItem} = useInventoryStore()
+const { addUpdateEbayItem, listOnEbay } = useInventoryStore()
 
 onMounted(async () => {
     await fetchAllCategories()
@@ -153,6 +159,18 @@ async function createEbayInventory(index: number) {
     if(typeof res === 'boolean') {
         if(res) {
             toast.success('Something probably worked')
+            return
+        }
+        toast.error('Something went wrong')
+    }
+}
+
+async function createEbayOffer(index: number) {
+    const res = await listOnEbay(plantCategoryToEdit.value, plantCategoryToEdit.value.plants[index])
+    if(typeof res === 'boolean') {
+        if(res) {
+            toast.success('Something probably worked')
+            return
         }
         toast.error('Something went wrong')
     }
@@ -170,13 +188,14 @@ function managePhotos(folder: string, arr: PhotoItem[]) {
 provide('managePhotos', managePhotos)
 
 </script>
+
 <style scoped>
     .layout {
         width: 100%;
         margin-right: auto;
         margin-left: auto;
         padding-left: .5rem;
-        padding-right: .5rem;
+        padding-right: .75rem;
         display: grid;
         grid-template-columns: 1fr;
         gap: 0 2rem;

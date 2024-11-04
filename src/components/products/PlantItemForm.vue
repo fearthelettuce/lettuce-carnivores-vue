@@ -72,6 +72,7 @@
         <BaseButton @click.prevent="addPhotos">Photos <span>({{ plant.photos.length }})</span></BaseButton>
         <BaseButton type="danger" @click.prevent="$emit('deletePlant')" :disabled="plant.status !== 'Delete'">Delete</BaseButton>
         <BaseButton @click.prevent="$emit('createEbayItem')">Create Ebay Item</BaseButton>
+        <BaseButton @click.prevent="$emit('listEbayOffer')">List on Ebay</BaseButton>
 
     </form>
 </template>
@@ -82,7 +83,7 @@ import { type Plant } from '@/types/Plant';
 import { sizeList, statusListArr} from '@/constants/constants';
 import { formatDate, formatFirebaseDate, formattedDate } from '@/utils/utils'
 
-defineEmits(['triggerSave', 'deletePlant', 'createEbayItem'])
+defineEmits(['triggerSave', 'deletePlant', 'createEbayItem', 'listEbayOffer'])
 
 const plant = defineModel('plant', {type: Object as PropType<Plant>, required: true})
 
@@ -132,17 +133,10 @@ watch(() => plant.value.id, () => {
         width: 100%;
         margin: .25rem 0;
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(14ch, 1fr));
-        gap: .5rem;
+        grid-template-columns: repeat(auto-fit, minmax(16ch, 1fr));
+        gap: .4rem;
         align-items: center;
 
-    }
-    .actions {
-        display: flex;
-        gap: .5rem;
-        justify-self: center;
-        align-content: center;
-        margin: 1rem 0 1rem .5rem;
     }
     .min-size {
         min-width: 8ch;

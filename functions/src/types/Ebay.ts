@@ -25,7 +25,10 @@ export type EbayInventoryPostRequest = EbayDataRequest & {
     }
 }
 export type EbayOfferPostRequest = EbayDataRequest & {
-    data: any
+    data: {
+        environment: EbayEnvironment,
+        data: {sku: string}
+    }
 }
 
 export type EbayListingRequest = EbayDataRequest & {

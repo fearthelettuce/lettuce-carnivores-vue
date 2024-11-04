@@ -10,7 +10,7 @@ export async function createEbayInventoryItem (plantCategory: PlantCategory, pla
     try {
         const inventoryItem: InventoryItem = {
             product: await buildProductDetails(plantCategory, plant),
-            condition: 'NEW',
+            //condition: 'NEW',
             packageWeightAndSize: getShippingSize(plant.size),
             availability: {
                 shipToLocationAvailability: {
@@ -39,9 +39,9 @@ async function buildProductDetails(plantCategory: PlantCategory, plant: Plant): 
 
     function createDescription(plantCategory: PlantCategory, plant: Plant) {
         let text = ''
-        text = `${plantCategory.name} - ${plant.size}\n\n`
+        text = `${plantCategory.name} - ${plant.size}<br>`
         if(plant.propagationDate) {
-            text = text + `Division was taken on ${formattedDate(plant.propagationDate,'mm/dd/yy')}\n\n`
+            text = text + `Division was taken on ${formattedDate(plant.propagationDate,'mm/dd/yy')}<br>`
         }
         text = text + `${plantCategory.description}`
 
