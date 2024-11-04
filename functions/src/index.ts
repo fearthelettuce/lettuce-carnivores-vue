@@ -3,7 +3,7 @@ admin.initializeApp()
 import stripeCheckoutController from './stripeCheckoutController'
 import stripeWebhookController from './stripeWebhookController'
 import giveawayService from './giveawayService'
-import { getEbayAccessToken, getUserConsent, getUserAccessToken, refreshUserAccessToken, getInventory, postInventoryItem, createEbayOffer } from './ebay/ebayController'
+import { getEbayAccessToken, getUserConsent, getUserAccessToken, refreshUserAccessToken, getInventory, postInventoryItem, createEbayOffer, deleteEbayInventory } from './ebay/ebayController'
 
 exports.stripeCheckoutController = stripeCheckoutController
 exports.stripeWebhookController = stripeWebhookController
@@ -15,3 +15,4 @@ exports.refreshUserAccessToken = refreshUserAccessToken
 exports.getInventory = getInventory
 exports.postInventoryItem = postInventoryItem
 exports.createEbayOffer = createEbayOffer
+exports.deleteEbayInventory = deleteEbayInventory

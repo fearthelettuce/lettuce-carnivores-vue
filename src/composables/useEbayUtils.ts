@@ -103,7 +103,7 @@ export function isEbayTokenExpired(data: AccessTokenDBResponse) {
 
 
 export async function deleteEbayItem(sku: string , token: string) {
-    const res = await executeFunction('deleteInventory', {environment: environment, sku: sku, token: token})
+    const res = await executeFunction('deleteEbayInventory', {environment: environment, sku: sku, token: token})
     if(res && res.success) {
         return {success: true}
     }

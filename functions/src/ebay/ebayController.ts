@@ -1,7 +1,7 @@
 import admin from 'firebase-admin'
 import { onCall, type CallableRequest } from 'firebase-functions/v2/https';
 import { defineSecret } from 'firebase-functions/params'
-import type {  EbayAccessTokenRequest, EbayEnvironment, EbayInventoryRequest, EbayInventoryPostRequest, EbayOfferPostRequest } from '../types/Ebay';
+import type {  EbayAccessTokenRequest, EbayEnvironment, EbayInventoryRequest, EbayInventoryPostRequest, EbayOfferPostRequest, EbaySkuRequest } from '../types/Ebay';
 import { submitAccessTokenRequest, generateUserConsentUrl, getOrRefreshUserAccessToken, getTokenFromDb } from './ebayService';
 import { getInventoryItems, deleteInventoryItem, createOrReplaceInventoryItem, postEbayOffer, publishOffer } from './ebayData';
 import { unwrapResponse } from '../common';
@@ -91,53 +91,53 @@ export const postInventoryItem = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRE
 })
 
 export const createEbayOffer = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayOfferPostRequest): Promise<any> => {
-    //check if offer exists, call update instead of post if needed
-    const token = await getTokenFromDb(request.data.environment)
+    const data = request.data.data
+    const environment = request.data.environment
+    const token = await getTokenFromDb(environment)
     if(!token) {
         return {error: true, success: false, message: 'Unable to get valid token'}
     }
+    const docRef = admin.firestore().collection('inventory').doc(data.sku)
+    const snap = (await docRef.get()).data()
+    let res
+    if(snap && 'offerId' in snap) {
+        res = await postEbayOffer(token, data, environment, snap.offerId)
+    } else {
+        res = await postEbayOffer(token, data, environment)
+    }
 
-    const res = await postEbayOffer(token, request.data.data, request.data.environment)
 
     if(!res || !('success' in res) || !res.success) {
         return { success: false, message: 'Error posting offer'}
     }
     const offerId = res.data.offerId
-    const publishRes = await publishOffer(token, offerId, request.data.environment)
+    const publishRes = await publishOffer(token, offerId, environment)
     if(!publishRes || !('success' in publishRes) || !publishRes.success) {
         return { success: false, message: 'Error publishing offer'}
     }
     const listingId = publishRes.data.listingId
     const updatedDateTime = new Date().toLocaleString("en-US", {timeZone: 'America/Chicago'})
     const updatedTimestamp = Math.floor(Date.now() / 1000)
-    admin.firestore().collection('inventory').doc(request.data.data.sku).set({offerId, listingId, updatedDateTime, updatedTimestamp})
+    docRef.update({offerId, listingId, updatedDateTime, updatedTimestamp})
     return {success: true}
 
 })
 
 
-export const deleteInventory = onCall(onCallOpts, async(request: EbayInventoryRequest): Promise<any> => {
+export const deleteEbayInventory = onCall(onCallOpts, async(request: EbaySkuRequest): Promise<any> => {
     const token = await getTokenFromDb(request.data.environment)
+    const sku = request.data.sku
     if(!token) {
         return {success: false, message: 'Unable to get valid token'}
     }
     if(!request.data.sku || request.data.sku.length < 1) {
         return {success: false, message: 'Invalid SKU'}
     }
-    const res = await deleteInventoryItem(token, request.data.sku, request.data.environment,)
+    const res = await deleteInventoryItem(sku, token, request.data.environment)
+    console.log(res)
+    const docRef = admin.firestore().collection('inventory').doc(sku)
     return unwrapResponse(res)
 })
-
-
-
-// export const getListings = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayListingRequest): Promise<any> => {
-//     const token = await getTokenFromDb(request.data.environment)
-//     if(!token) {
-//         return {error: true, success: false, message: 'Unable to get valid token'}
-//     }
-//     const res = await getListingsData(request.data.environment, token, request.data.granularityLevel, request.data.daysAgo)
-//     return res
-// })
 
 function setSecrets() {
     if(environment === 'PRODUCTION') {

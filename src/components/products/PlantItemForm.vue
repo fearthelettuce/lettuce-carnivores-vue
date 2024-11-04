@@ -70,9 +70,10 @@
         </div>
 
         <BaseButton @click.prevent="addPhotos">Photos <span>({{ plant.photos.length }})</span></BaseButton>
-        <BaseButton type="danger" @click.prevent="$emit('deletePlant')" :disabled="plant.status !== 'Delete'">Delete</BaseButton>
-        <BaseButton @click.prevent="$emit('createEbayItem')">Create Ebay Item</BaseButton>
-        <BaseButton @click.prevent="$emit('listEbayOffer')">List on Ebay</BaseButton>
+        <BaseButton v-if="plant.status === 'Delete'" type="danger" @click.prevent="$emit('deletePlant')" :disabled="plant.status !== 'Delete'">Delete</BaseButton>
+        <BaseButton @click.prevent="$emit('createEbayItem')" :disabled="plant.status === 'Sold'">Update eBay Item</BaseButton>
+        <BaseButton @click.prevent="$emit('listEbayOffer')" :disabled="plant.status === 'Sold'">List on eBay</BaseButton>
+        <BaseButton @click.prevent="$emit('deleteEbayItem')" type="danger" :disabled="plant.status === 'Sold'">Delete from eBay</BaseButton>
 
     </form>
 </template>
@@ -81,9 +82,9 @@
 import { computed, inject, watch, type PropType } from 'vue'
 import { type Plant } from '@/types/Plant';
 import { sizeList, statusListArr} from '@/constants/constants';
-import { formatDate, formatFirebaseDate, formattedDate } from '@/utils/utils'
+import { formatDate} from '@/utils/utils'
 
-defineEmits(['triggerSave', 'deletePlant', 'createEbayItem', 'listEbayOffer'])
+defineEmits(['triggerSave', 'deletePlant', 'createEbayItem', 'listEbayOffer', 'deleteEbayItem'])
 
 const plant = defineModel('plant', {type: Object as PropType<Plant>, required: true})
 

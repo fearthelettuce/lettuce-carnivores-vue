@@ -1,8 +1,10 @@
+import admin from 'firebase-admin'
 import type { GranularityLevel } from '../types/Ebay'
 import axios, { AxiosResponse } from 'axios'
 import { apiUrl, sandboxApiUrl  } from './ebayConstants'
 import type { EbayEnvironment} from '../types/Ebay'
 import xml2js from 'xml2js'
+import { getUpdateDateTime } from '../common'
 
 
 export async function getInventoryItems(environment: EbayEnvironment, token: string, sku?: string) {
@@ -38,6 +40,7 @@ export async function createOrReplaceInventoryItem(token: string, sku: string, i
 
     const res = await axios(config).catch((e: any) => {console.error(e); return e})
     if( res && 'status' in res && res.status === 204) {
+        admin.firestore().collection('inventory').doc(sku).set({...getUpdateDateTime()})
         return {success: true}
     }
     if(res && 'response' in res && 'data' in res.response) {
@@ -49,7 +52,7 @@ export async function createOrReplaceInventoryItem(token: string, sku: string, i
     return res
 }
 
-export async function postEbayOffer(token: string, data: any, environment?: EbayEnvironment) {
+export async function postEbayOffer(token: string, data: any, environment?: EbayEnvironment, offerId?: string) {
     const baseUrl = environment === 'SANDBOX' ? sandboxApiUrl : apiUrl
     const config = {
         method: 'post',
@@ -62,10 +65,14 @@ export async function postEbayOffer(token: string, data: any, environment?: Ebay
         },
         data: data
     }
+    if(offerId && offerId.length > 0) {
+        config.url = `${config.url}/${offerId}`
+    }
 
-    const res = await axios(config).catch((e: any) => {console.log('err:'); console.error(e); console.log('---'); return e})
+    const res = await axios(config).catch((e: any) => {console.error(e); return e})
 
     if( res && 'status' in res && res.status === 201) {
+        admin.firestore().collection('inventory').doc(data.sku).set({offerId: res.data.offerId, ...getUpdateDateTime()})
         return {success: true, data: res.data}
     }
     console.log(res.status)
@@ -91,13 +98,6 @@ export async function publishOffer(token: string, offerId: string, environment?:
     }
     const res = await axios(config).catch((e: any) => {
         console.log(e.response.data.errors)
-        const errors = e.response.data.errors
-        errors.forEach((error: any) => {
-            console.log(error.toString())
-        })
-        console.log(e.data.errors)
-        console.error(e);
-
         return {success: false, message: e.data.errors[0]}
     })
 
@@ -109,9 +109,15 @@ export async function publishOffer(token: string, offerId: string, environment?:
 
 }
 
-export async function deleteInventoryItem(token: string, sku: string, environment?: EbayEnvironment) {
-    const baseUrl = environment === 'SANDBOX' ? sandboxApiUrl: apiUrl
-    const url = `${baseUrl}/sell/inventory/v1/inventory_item/${sku}`
+export async function deleteInventoryItem(sku: string, token?: string) {
+    if(!token) {
+        //Need to make call to get a fresh token from within the FB function
+        //How do the secrets work in that case?????
+        //make it so that this can be called with just a SKU
+        //then update stripe checkout success to call this with each SKU
+    }
+
+    const url = `${apiUrl}/sell/inventory/v1/inventory_item/${sku}`
     const config = {
         headers: {
             'Authorization':`Bearer ${token}`,
@@ -119,6 +125,7 @@ export async function deleteInventoryItem(token: string, sku: string, environmen
         }
     }
     const res = await axios.delete(url, config)
+    console.log(res)
     return res
 }
 

@@ -52,6 +52,7 @@
                             @deletePlant="removePlant(index)"
                             @createEbayItem="createEbayInventory(index)"
                             @listEbayOffer="createEbayOffer(index)"
+                            @deleteEbayItem="deleteEbayItem(index)"
                         />
 
                     </div>
@@ -105,7 +106,7 @@ import { useInventoryStore } from '@/stores/inventory'
 const {fetchAllCategories, findPlantCategoryById, setCategoryToEdit, saveCategory, addPlant, getAvailablePlants, removePlant} = usePlantStore()
 const {plantCategories, plantCategoryToEdit, isSaving} = storeToRefs(usePlantStore())
 const route = useRoute()
-const { addUpdateEbayItem, listOnEbay } = useInventoryStore()
+const { addUpdateEbayItem, listOnEbay, deleteItem } = useInventoryStore()
 
 onMounted(async () => {
     await fetchAllCategories()
@@ -156,6 +157,17 @@ async function fetchCurrentAvailablePlants() {
 
 async function createEbayInventory(index: number) {
     const res = await addUpdateEbayItem(plantCategoryToEdit.value.plants[index],plantCategoryToEdit.value)
+    if(typeof res === 'boolean') {
+        if(res) {
+            toast.success('Something probably worked')
+            return
+        }
+        toast.error('Something went wrong')
+    }
+}
+
+async function deleteEbayItem(index: number) {
+    const res = await deleteItem(plantCategoryToEdit.value.plants[index].sku)
     if(typeof res === 'boolean') {
         if(res) {
             toast.success('Something probably worked')

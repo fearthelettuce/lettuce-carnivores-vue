@@ -43,13 +43,12 @@ export const useInventoryStore = defineStore('inventory', () => {
         isLoading.value = false
         console.log(res )
         if(res && 'success' in res && res.success) {
-            //create a doc in Firebase Inventory
             return true
         }
         return false
     }
 
-    async function deleteInventoryItem(sku: string) {
+    async function deleteItem(sku: string) {
         if (!getOrRefreshEbayToken()) {
             return {success: false, message: 'Unable to refresh toke'}
         }
@@ -80,5 +79,5 @@ export const useInventoryStore = defineStore('inventory', () => {
     }
 
 
-    return {addUpdateEbayItem, listOnEbay, getOrRefreshEbayToken, ebayTokenData}
+    return {addUpdateEbayItem, listOnEbay, getOrRefreshEbayToken, ebayTokenData, deleteItem}
 })

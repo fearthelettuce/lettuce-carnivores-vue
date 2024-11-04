@@ -35,3 +35,9 @@ export function unwrapResponse(obj: any) {
     }
     return obj
 }
+
+export function getUpdateDateTime() {
+    const updatedDateTime = new Date().toLocaleString("en-US", {timeZone: 'America/Chicago'})
+    const updatedTimestamp = Math.floor(Date.now() / 1000)
+    return { updatedDateTime, updatedTimestamp}
+}

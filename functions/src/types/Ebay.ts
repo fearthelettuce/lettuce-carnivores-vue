@@ -12,7 +12,11 @@ export interface EbayDataRequest extends CallableRequest {
         environment: EbayEnvironment,
     }
 }
-
+export type EbaySkuRequest = EbayDataRequest & {
+    data: {
+        sku: string
+    }
+}
 export type EbayInventoryRequest = EbayDataRequest & {
     data: {
         sku?: string
