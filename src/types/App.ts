@@ -9,7 +9,7 @@ export interface AppData<T> extends AppReturn {
 
 export interface AppError extends Omit<AppReturn, 'success'> {
     success: false,
-    errorMessage: string,
+    message?: string,
     errorDetails?: {[key: string]: any},
 }
 

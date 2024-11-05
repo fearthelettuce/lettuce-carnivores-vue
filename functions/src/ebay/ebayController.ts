@@ -2,8 +2,8 @@ import admin from 'firebase-admin'
 import { onCall, type CallableRequest } from 'firebase-functions/v2/https';
 import { defineSecret } from 'firebase-functions/params'
 import type {  EbayAccessTokenRequest, EbayEnvironment, EbayInventoryRequest, EbayInventoryPostRequest, EbayOfferPostRequest, EbaySkuRequest } from '../types/Ebay';
-import { submitAccessTokenRequest, generateUserConsentUrl, getOrRefreshUserAccessToken, getTokenFromDb } from './ebayService';
-import { getInventoryItems, deleteInventoryItem, createOrReplaceInventoryItem, postEbayOffer, publishOffer } from './ebayData';
+import { submitAccessTokenRequest, generateUserConsentUrl, getAccessToken, updateUserAccessToken } from './ebayService';
+import { getInventoryItems, deleteEbayInventoryItem, createOrReplaceInventoryItem, postEbayOffer, publishOffer } from './ebayData';
 import { unwrapResponse } from '../common';
 
 const ebayClientId = defineSecret('EBAY_CLIENT_ID')
@@ -38,11 +38,7 @@ export const getUserConsent = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_I
 export const getUserAccessToken = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayAccessTokenRequest): Promise<any> => {
     environment = request.data.environment
     if(!setSecrets()) {return {success: false, error: true, message: 'Unable to get clientId or clientSecret', errorDetails: {}, data: {}}}
-    if(!request.data.authCode) {
-        console.log(request.data)
-        return {success: false, error: true, message: 'Unable to get auth code', errorDetails: null, data: null}
-    }
-    const res = await getOrRefreshUserAccessToken(environment,clientId, clientSecret, request.data.authCode)
+    const res = await updateUserAccessToken(clientId, clientSecret, request.data.authCode)
     .catch(e => {
         console.error(e)
         return {success: false, error: true, errorDetails: e, data: null, message: 'Error getting or refreshing token'}
@@ -51,33 +47,26 @@ export const getUserAccessToken = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECR
 })
 
 export const refreshUserAccessToken = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayAccessTokenRequest): Promise<any> => {
-    environment = request.data.environment
-    if(!setSecrets()) {return {success: false, error: true, message: 'Unable to get clientId or clientSecret', errorDetails: {}, data: {}}}
-    const tokenDoc = environment === 'PRODUCTION' ? 'ebayToken' : 'sandboxToken'
-    const snap = await admin.firestore().collection('admin').doc(tokenDoc).get()
-    if(!snap || snap === undefined || snap.data() === undefined) {
-        return {success: false, error: true, message: 'Unable to get refresh token from db', errorDetails: {}, data: {}}
-    }
-    const oldRefreshToken = snap.data()?.refresh_token
-    const res = await getOrRefreshUserAccessToken(environment, clientId, clientSecret, undefined, oldRefreshToken)
+    if(!setSecrets()) {return {success: false, message: 'Unable to get clientId or clientSecret'}}
+    const res = await getAccessToken()
     return unwrapResponse(res)
 })
 
 export const getInventory = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayInventoryRequest): Promise<any> => {
-    const token = await getTokenFromDb(request.data.environment)
-    if(!token) {
+    const tokenData = await getAccessToken()
+    if(!tokenData.success) {
         return {error: true, success: false, message: 'Unable to get valid token'}
     }
-    const res = await getInventoryItems(request.data.environment, token, request.data.sku)
+    const res = await getInventoryItems(request.data.environment, tokenData.data.access_token, request.data.sku)
     return unwrapResponse(res)
 })
 
 export const postInventoryItem = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayInventoryPostRequest): Promise<any> => {
-    const token = await getTokenFromDb(request.data.environment)
-    if(!token) {
-        return {error: true, success: false, message: 'Unable to get valid token'}
+    const tokenData = await getAccessToken()
+    if(!tokenData.success) {
+        return {success: false, message: 'Unable to get valid token'}
     }
-    const res = await createOrReplaceInventoryItem(token, request.data.sku, request.data.item, request.data.environment)
+    const res = await createOrReplaceInventoryItem(tokenData.data.access_token, request.data.sku, request.data.item, request.data.plantCategoryId)
     if('success' in res) {
         return res.success
     }
@@ -93,17 +82,17 @@ export const postInventoryItem = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRE
 export const createEbayOffer = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID', 'EBAY_SANDBOX_CLIENT_ID', 'EBAY_SANDBOX_CLIENT_SECRET']}, async(request: EbayOfferPostRequest): Promise<any> => {
     const data = request.data.data
     const environment = request.data.environment
-    const token = await getTokenFromDb(environment)
-    if(!token) {
+    const tokenData = await getAccessToken()
+    if(!tokenData.success) {
         return {error: true, success: false, message: 'Unable to get valid token'}
     }
     const docRef = admin.firestore().collection('inventory').doc(data.sku)
     const snap = (await docRef.get()).data()
     let res
     if(snap && 'offerId' in snap) {
-        res = await postEbayOffer(token, data, environment, snap.offerId)
+        res = await postEbayOffer(tokenData.data.access_token, data, environment, snap.offerId)
     } else {
-        res = await postEbayOffer(token, data, environment)
+        res = await postEbayOffer(tokenData.data.access_token, data, environment)
     }
 
 
@@ -111,7 +100,7 @@ export const createEbayOffer = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_
         return { success: false, message: 'Error posting offer'}
     }
     const offerId = res.data.offerId
-    const publishRes = await publishOffer(token, offerId, environment)
+    const publishRes = await publishOffer(tokenData.data.access_token, offerId, environment)
     if(!publishRes || !('success' in publishRes) || !publishRes.success) {
         return { success: false, message: 'Error publishing offer'}
     }
@@ -125,18 +114,17 @@ export const createEbayOffer = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_
 
 
 export const deleteEbayInventory = onCall(onCallOpts, async(request: EbaySkuRequest): Promise<any> => {
-    const token = await getTokenFromDb(request.data.environment)
+    const tokenData = await getAccessToken()
     const sku = request.data.sku
-    if(!token) {
+    if(!tokenData.success) {
         return {success: false, message: 'Unable to get valid token'}
     }
     if(!request.data.sku || request.data.sku.length < 1) {
         return {success: false, message: 'Invalid SKU'}
     }
-    const res = await deleteInventoryItem(sku, token, request.data.environment)
-    console.log(res)
-    const docRef = admin.firestore().collection('inventory').doc(sku)
-    return unwrapResponse(res)
+    const res = await deleteEbayInventoryItem(sku, tokenData.data.access_token)
+    admin.firestore().collection('inventory').doc(sku).delete()
+    return res
 })
 
 function setSecrets() {
@@ -153,7 +141,7 @@ function setSecrets() {
 
 import { log } from 'firebase-functions/logger'
 import { onRequest } from 'firebase-functions/v2/https'
-import { getNextSequentialId } from '../common'
+
 
 export const ebayNotificationController =  onRequest(async(req, res): Promise<any> => {
     console.log(req)

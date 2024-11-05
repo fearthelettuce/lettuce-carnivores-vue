@@ -29,20 +29,20 @@ export const useOrderStore = defineStore('order', () => {
         if(cart && cartIndex !== undefined) {
             const {plant} = await getCategoryBySku(item)
             if(!plant|| plant.quantity === 0) {
-                return {success: false, error: true, errorMessage: 'Unable to add to cart, quantity not available'}
+                return {success: false, message: 'Unable to add to cart, quantity not available'}
             }
             if(cartIndex === -1) {
                 cart.value.cartItems.push(item)
                 return {success: true}
-            } 
+            }
             if (cart?.value.cartItems[cartIndex].quantity < plant.quantity) {
                 cart.value.cartItems[cartIndex].quantity ++
                 return {success: true}
             } else {
-                return {success: false, error: true, errorMessage: 'Unable to add to cart, quantity not available'}
+                return {success: false, message: 'Unable to add to cart, quantity not available'}
             }
         }
-        return {success: false, error: true, errorMessage: 'Unable to get cart'}
+        return {success: false, message: 'Unable to get cart'}
     }
 
 
@@ -67,11 +67,11 @@ export const useOrderStore = defineStore('order', () => {
             if(cart.value.cartItems[cartIndex].quantity > 1) {
                 cart.value.cartItems[cartIndex].quantity --
                 return
-            } 
+            }
             if(cart.value.cartItems[cartIndex].quantity = 1) {
                 cart.value.cartItems.splice(cartIndex,1)
                 return
-            } 
+            }
         }
     }
 
@@ -140,16 +140,16 @@ export const useOrderStore = defineStore('order', () => {
         if(!activeDiscounts || !cart.cartItems || cart.cartItems.length === 0) {
             return null
         }
-        
+
         const stripeDiscounts: {coupon: string}[] = []
         const discountValues: Discount[] = []
-    
+
         const multiPlantDiscount = activeDiscounts.find(item => item.type === 'multiplePlants')
         if(multiPlantDiscount && cartItemCount.value >= multiPlantDiscount.parameters.minimumQuantity) {
             stripeDiscounts.push({coupon: multiPlantDiscount.id})
             discountValues.push(multiPlantDiscount)
         }
-    
+
         const siteWideDiscount = activeDiscounts.find(item => item.type === 'siteWide')
         if(siteWideDiscount && siteWideDiscount.id !== null) {
             stripeDiscounts.push({coupon: siteWideDiscount.id})
@@ -160,17 +160,17 @@ export const useOrderStore = defineStore('order', () => {
             discountValues: discountValues
         }
     }
-    return { 
-        cart, 
-        cartItemCount, 
-        getCategoryBySku, 
-        addItemToCart, 
+    return {
+        cart,
+        cartItemCount,
+        getCategoryBySku,
+        addItemToCart,
         removeItemFromCart,
         validateCart,
         resetCart,
-        startCheckoutSession, 
-        cartTotal, 
-        isLoading, 
+        startCheckoutSession,
+        cartTotal,
+        isLoading,
         getCartDiscounts,
         getActiveDiscounts
     }

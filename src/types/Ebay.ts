@@ -34,11 +34,14 @@ export interface EbayAccessTokenResponse {
 
 export type AccessTokenDBResponse = {
     access_token: string,
+    refresh_token: string,
     environment: EbayEnvironment,
     expires_in: number,
     token_type: string,
     updatedDateTime: string,
-    updatedTimestamp: number
+    updatedTimestamp: number,
+    clientId: string,
+    clientSecret: string
 }
 
 // export interface UserAccessTokenResponse extends EbayAccessTokenFunctionResponse {

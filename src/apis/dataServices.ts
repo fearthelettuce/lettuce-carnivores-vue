@@ -37,7 +37,7 @@ export async function getNextSequentialId(collectionName: string, idFieldName: s
 
 export async function saveItem(collectionName: string, obj: any) {
     if (obj == null || typeof obj !== 'object') {
-        return {success: false, error:true, errorMessage: `Invalid object ${obj.toString()}`}
+        return {success: false, message: `Invalid object ${obj.toString()}`}
     }
 
     if (!Object.prototype.hasOwnProperty.call(obj, 'id') || !obj.id) {

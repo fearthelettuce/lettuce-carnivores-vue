@@ -41,3 +41,35 @@ export function getUpdateDateTime() {
     const updatedTimestamp = Math.floor(Date.now() / 1000)
     return { updatedDateTime, updatedTimestamp}
 }
+
+// async function updateInventory(: StripeLineItem[]) {
+//     for (const item of items) {
+//         const data = item.price_data.product_data.metadata
+//         await deleteEbayInventoryItem(data.sku)
+//         const quantity = item.quantity
+//         const docRef = admin.firestore().doc(`plantCategories/${data.categoryId}`)
+//         const doc = await docRef.get().catch((e: any) => log(e))
+
+//         if(!doc || !doc.data()){
+//             log(`Error getting doc ${docRef.toString()}`)
+//             log(`${item}`)
+//             return
+//         }
+//         const plantCategory = doc.data()!
+//         const plantIndex = plantCategory.plants.findIndex((plant: Plant) => plant.sku === data.sku)
+
+//         if(plantCategory.plants[plantIndex].quantity === 1) {
+//             plantCategory.plants[plantIndex].status = 'Sold'
+//             plantCategory.plants[plantIndex].quantity = 0
+//         } else {
+//             if(quantity > plantCategory.plants[plantIndex].quantity) {
+//                 plantCategory.plants[plantIndex].quantity = 0
+//                 log(`Plant ${plantCategory.plants[plantIndex].sku} quantity ${plantCategory.plants[plantIndex].quantity} less than cart quantity ${quantity}`)
+//             } else {
+//                 plantCategory.plants[plantIndex].quantity = plantCategory.plants[plantIndex].quantity - quantity
+//             }
+//         }
+//         await docRef.update({plants: plantCategory.plants})
+//     }
+//     return
+// }

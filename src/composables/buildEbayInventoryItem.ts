@@ -22,7 +22,7 @@ export async function createEbayInventoryItem (plantCategory: PlantCategory, pla
     }
     catch (e: any) {
         console.error(e)
-        return {success: false, errorMessage: 'Unable to create inventory item', errorDetails: e }
+        return {success: false, message: 'Unable to create inventory item', errorDetails: e }
     }
 
 }

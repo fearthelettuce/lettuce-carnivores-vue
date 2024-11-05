@@ -1,8 +1,9 @@
 import admin from 'firebase-admin'
 import axios from 'axios'
 import type {  FunctionResponse } from '../types/Functions'
-import type { EbayEnvironment, EbayAccessTokenFunctionResponse, EbayAccessTokenResponse, UserAccessTokenResponse } from '../types/Ebay'
+import type { EbayEnvironment, EbayAccessTokenFunctionResponse, EbayAccessTokenResponse, UserAccessTokenResponse, AccessTokenDBResponse } from '../types/Ebay'
 import { authUrl, sandboxAuthUrl, apiUrl, sandboxApiUrl, RuNameProd, RuNameSandbox, prodScopes, sandboxScopes} from './ebayConstants'
+import { getUpdateDateTime } from '../common'
 
 export async function submitAccessTokenRequest(environment: EbayEnvironment, clientId: string, clientSecret: string): Promise<EbayAccessTokenFunctionResponse | FunctionResponse> {
     const url = `${environment === 'PRODUCTION' ? authUrl : sandboxAuthUrl}/identity/v1/oauth2/token`
@@ -44,17 +45,19 @@ export function generateUserConsentUrl(environment: EbayEnvironment, clientId: s
     return ebayLoginUrl
 }
 
-export async function getOrRefreshUserAccessToken(
-    environment: EbayEnvironment,
+export async function updateUserAccessToken(
     clientId: string,
     clientSecret: string,
     authCode: string | undefined,
-    refreshToken?: string | undefined
+    environment: EbayEnvironment = 'PRODUCTION'
 ): Promise<UserAccessTokenResponse | FunctionResponse> {
     const url = `${environment === 'PRODUCTION' ? apiUrl : sandboxApiUrl}/identity/v1/oauth2/token`
     const RuName = environment === 'PRODUCTION' ? RuNameProd : RuNameSandbox
-    if(!clientId || !clientSecret) { return {success: false, error: true, message: 'Unable to get access token', errorDetails: null, data: null}}
-    if(!authCode && !refreshToken) { return {success: false, error: true, message: 'Missing auth code or refresh token', errorDetails: null, data: null}}
+    if(!clientId || !clientSecret) { return {success: false, message: 'Unable to get access token'}}
+    if(!authCode) {
+        return {success: false, message: 'Missing auth code'}
+    }
+
     const authCredentials = Buffer.from(`${clientId}:${clientSecret}`).toString('base64')
     const headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -66,11 +69,6 @@ export async function getOrRefreshUserAccessToken(
             'grant_type': 'authorization_code',
             'redirect_uri': RuName,
             code: decodeURI(authCode)
-        }
-    } else if (refreshToken !== undefined) {
-        body = {
-            'grant_type': 'refresh_token',
-            'refresh_token': refreshToken,
         }
     }
     const res = await axios.post(url,body,{headers: headers}).catch((e) => {
@@ -95,18 +93,84 @@ export async function getOrRefreshUserAccessToken(
     return {success: true, data: newTokenData as unknown as UserAccessTokenResponse}
 }
 
+export async function getAccessToken(clientId?: string, clientSecret?: string, environment: EbayEnvironment = 'PRODUCTION') {
+    const oldTokenData = await getTokenFromDb()
+    if(oldTokenData.isValid) {
+        return {success: true, data: oldTokenData.data}
+    }
+    console.log('Well got here 1111')
+    const headers = buildAuthHeaders(clientId ?? oldTokenData.data?.clientId, clientSecret ?? oldTokenData.data?.clientSecret)
+    console.log('shitty old data')
+    console.log(oldTokenData)
+    if(!headers || !oldTokenData.data?.refresh_token) {
+        return {success: false, message: 'Unable to build request'}
+    }
+    const config = {
+        url: `${environment === 'PRODUCTION' ? apiUrl : sandboxApiUrl}/identity/v1/oauth2/token`,
+        method: 'post',
+        headers: headers,
+        data: {
+            'grant_type':'refresh_token',
+            'refresh_token': oldTokenData.data.refresh_token,
+        }
+    }
 
-export async function getTokenFromDb(environment: EbayEnvironment) {
-    const tokenDoc = environment === 'PRODUCTION' ? 'ebayToken' : 'sandboxToken'
+    const res = await axios(config).catch((e) => {
+        console.log(e)
+        return {success: false, message: 'Unable to get access token', errorDetails: e}
+    })
+    if(res && 'data' in res) {
+        console.log(res.data)
+        return {success: true, data: await updateTokenInDb(res.data)}
+    }
+    console.log('Well everything else went wrong')
+    console.log(res)
+    return {success: false, message: 'Something went wrong with API call'}
+}
+
+
+export async function getTokenFromDb() {
+    const data = await getTokenData()
+    if(!data) {
+        return {isValid: false, data}
+    }
     const now = Math.floor(Date.now() / 1000)
-    const tokenResponse = await admin.firestore().collection('admin').doc(tokenDoc).get().catch((e) => {console.log(e); return undefined})
-    if( !tokenResponse || !tokenResponse.data || !tokenResponse.data()) {
-        return undefined
-    }
+    const isValid = (data.updatedTimestamp + (115*60)) >  now && (data.access_token !== '')
+    return {isValid, data}
+}
 
-    if((tokenResponse.data()?.updatedTimestamp + (100*60)) >  now && tokenResponse.data()?.access_token) {
-        return tokenResponse.data()!.access_token
-    } else {
-        return undefined
+export async function getTokenData(): Promise<AccessTokenDBResponse | undefined> {
+    const tokenDoc = 'ebayToken'
+    const tokenResponse = await admin.firestore().collection('admin').doc(tokenDoc).get().catch((e) => {console.log(e); return undefined})
+    const data = tokenResponse?.data()
+    if(data && 'access_token' in data) {
+        return data as unknown as AccessTokenDBResponse
     }
+    return undefined
+}
+
+function buildAuthHeaders(clientId: string | undefined, clientSecret: string | undefined) {
+    if(!clientId || !clientSecret) { return null }
+    console.log(clientId)
+    console.log(clientSecret)
+    const authCredentials = Buffer.from(`${clientId}:${clientSecret}`).toString('base64')
+    return {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `Basic ${authCredentials}`
+    }
+}
+
+async function getAuthCodeFromDb() {
+    const snap = await admin.firestore().collection('admin').doc('ebayToken').get()
+    if(!snap || snap === undefined || snap.data() === undefined) {
+        return {success: false, error: true, message: 'Unable to get refresh token from db', errorDetails: {}, data: {}}
+    }
+    return snap.data()?.authCode
+}
+
+async function updateTokenInDb(data: any) {
+    const updateDateTime = getUpdateDateTime()
+    const newTokenData = {...data, ...updateDateTime}
+    await admin.firestore().collection('admin').doc('ebayToken').update(newTokenData)
+    return newTokenData
 }

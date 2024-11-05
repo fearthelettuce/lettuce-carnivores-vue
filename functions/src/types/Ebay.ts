@@ -25,7 +25,8 @@ export type EbayInventoryRequest = EbayDataRequest & {
 export type EbayInventoryPostRequest = EbayDataRequest & {
     data: {
         sku: string,
-        item: any
+        item: any,
+        plantCategoryId: string
     }
 }
 export type EbayOfferPostRequest = EbayDataRequest & {
@@ -45,6 +46,18 @@ export interface EbayAccessTokenResponse {
     access_token: string,
     expires_in: number,
     token_type: string
+}
+
+export type AccessTokenDBResponse = {
+    access_token: string,
+    refresh_token: string,
+    environment: EbayEnvironment,
+    expires_in: number,
+    token_type: string,
+    updatedDateTime: string,
+    updatedTimestamp: number,
+    clientId: string,
+    clientSecret: string
 }
 
 export interface UserAccessTokenResponse extends EbayAccessTokenFunctionResponse {

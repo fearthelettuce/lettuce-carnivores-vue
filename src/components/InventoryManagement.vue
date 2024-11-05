@@ -3,7 +3,6 @@
         <div class="actions">
             <BaseButton @click="accessToken">Access Token</BaseButton>
             <BaseButton @click="ebayLogin">Ebay Login</BaseButton>
-            <BaseButton @click="refreshEbay">Refresh Ebay</BaseButton>
         </div>
         <div>{{ `${environment} - Token refreshed: ${ebayTokenData?.updatedDateTime}` }}</div>
         <div>
@@ -20,17 +19,13 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { getEbayAccessToken, getUserConsent, getInventoryItem } from '@/composables/useEbayUtils';
+import { getEbayAccessToken, getUserConsent } from '@/composables/useEbayUtils';
 import { toast } from 'vue3-toastify'
 import { useInventoryStore } from '@/stores/inventory'
 import { storeToRefs } from 'pinia'
 
 let environment = 'PRODUCTION'
 const { ebayTokenData } = storeToRefs(useInventoryStore())
-const { getOrRefreshEbayToken } = useInventoryStore()
-onMounted(async ()=>{
-    getOrRefreshEbayToken()
-})
 
 async function accessToken() {
     const res = await getEbayAccessToken().catch(e => {console.error(e); return})
@@ -46,19 +41,11 @@ async function ebayLogin() {
     }
 }
 
-async function refreshEbay() {
-    const res = await getOrRefreshEbayToken()
-    if(res) {
-        toast.success('Ebay token refreshed')
-    } else {
-        toast.error('Something went wrong')
-    }
-}
 
 const ebaySkuInput = ref('')
 async function getInventoryBySku() {
-    const res = await getInventoryItem(ebaySkuInput.value)
-    console.log(res)
+    // const res = await getInventoryItem(ebaySkuInput.value)
+    // console.log(res)
 
 }
 

@@ -5,6 +5,7 @@ import { apiUrl, sandboxApiUrl  } from './ebayConstants'
 import type { EbayEnvironment} from '../types/Ebay'
 import xml2js from 'xml2js'
 import { getUpdateDateTime } from '../common'
+import { getAccessToken } from './ebayService'
 
 
 export async function getInventoryItems(environment: EbayEnvironment, token: string, sku?: string) {
@@ -24,11 +25,10 @@ export async function getInventoryItems(environment: EbayEnvironment, token: str
     return res.data
 }
 
-export async function createOrReplaceInventoryItem(token: string, sku: string, item: any, environment?: EbayEnvironment) {
-    const baseUrl = environment === 'SANDBOX' ? sandboxApiUrl : apiUrl
+export async function createOrReplaceInventoryItem(token: string, sku: string, item: any, plantCategoryId: string) {
     const config = {
         method: 'put',
-        url: `${baseUrl}/sell/inventory/v1/inventory_item/${sku}`,
+        url: `${apiUrl}/sell/inventory/v1/inventory_item/${sku}`,
         headers: {
             'Authorization':`Bearer ${token}`,
             'Accept': 'application/json',
@@ -40,7 +40,7 @@ export async function createOrReplaceInventoryItem(token: string, sku: string, i
 
     const res = await axios(config).catch((e: any) => {console.error(e); return e})
     if( res && 'status' in res && res.status === 204) {
-        admin.firestore().collection('inventory').doc(sku).set({...getUpdateDateTime()})
+        admin.firestore().collection('inventory').doc(sku).set({...getUpdateDateTime(), plantCategoryId})
         return {success: true}
     }
     if(res && 'response' in res && 'data' in res.response) {
@@ -109,24 +109,29 @@ export async function publishOffer(token: string, offerId: string, environment?:
 
 }
 
-export async function deleteInventoryItem(sku: string, token?: string) {
-    if(!token) {
-        //Need to make call to get a fresh token from within the FB function
-        //How do the secrets work in that case?????
-        //make it so that this can be called with just a SKU
-        //then update stripe checkout success to call this with each SKU
+export async function deleteEbayInventoryItem(sku: string, token?: string) {
+    let accessToken = token ?? (await getAccessToken()).data.access_token
+    if(!accessToken) {
+        return {success: false, message: 'Unable to get access token'}
     }
-
     const url = `${apiUrl}/sell/inventory/v1/inventory_item/${sku}`
     const config = {
         headers: {
             'Authorization':`Bearer ${token}`,
-
         }
     }
     const res = await axios.delete(url, config)
-    console.log(res)
-    return res
+    if(res.status === 204) {
+        return {success: true}
+    }
+    if(res.status === 404) {
+        return {success: false, message: `SKU ${sku} not found`}
+    }
+    return {success: false, message: 'Something went wrong'}
+
+        //TODO: update stripe checkout success to call this with each SKU
+        //also, this isn't working yet.... eek!
+        //Do we  update the firebase DB to delete here as well???
 }
 
 

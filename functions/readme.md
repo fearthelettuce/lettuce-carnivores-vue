@@ -1,6 +1,6 @@
 Debug
 firebase emulators:start --inspect-functions
-Start debugger in VS Code
+Start debug in VS Code
 
 Run Locally
 

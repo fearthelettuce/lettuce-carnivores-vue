@@ -8,6 +8,7 @@ import Stripe from 'stripe'
 import { discountedStandardShippingId, standardShippingId } from './constants/stripeConstants'
 import { defineSecret } from 'firebase-functions/params'
 import { getNextSequentialId } from './common'
+import { deleteEbayInventoryItem } from './ebay/ebayData'
 const stripeSecretKey = defineSecret("STRIPE_RESTRICTED_KEY")
 const stripeWebhookSecretKey = defineSecret("STRIPE_WEBHOOK_SECRET_KEY")
 
@@ -64,7 +65,7 @@ async function fulfillCheckout (checkoutWebhookData: any) {
         checkoutSessionId: checkoutWebhookData.id,
         paymentStatus: checkoutWebhookData.payment_status,
         shippingInfo: {
-            address: checkoutWebhookData.shipping_details.address, 
+            address: checkoutWebhookData.shipping_details.address,
             name: checkoutWebhookData.shipping_details.name,
             email: checkoutWebhookData.customer_details.email,
             phone: checkoutWebhookData.customer_details.phone,
@@ -90,8 +91,10 @@ async function fulfillCheckout (checkoutWebhookData: any) {
 
 async function updateInventory(items: StripeLineItem[]) {
     for (const item of items) {
+        const data = item.price_data.product_data.metadata
+        await deleteEbayInventoryItem(data.sku)
         const quantity = item.quantity
-        const docRef = admin.firestore().doc(`plantCategories/${item.price_data.product_data.metadata.categoryId}`)
+        const docRef = admin.firestore().doc(`plantCategories/${data.categoryId}`)
         const doc = await docRef.get().catch((e: any) => log(e))
 
         if(!doc || !doc.data()){
@@ -100,7 +103,7 @@ async function updateInventory(items: StripeLineItem[]) {
             return
         }
         const plantCategory = doc.data()!
-        const plantIndex = plantCategory.plants.findIndex((plant: Plant) => plant.sku === item.price_data.product_data.metadata.sku)
+        const plantIndex = plantCategory.plants.findIndex((plant: Plant) => plant.sku === data.sku)
 
         if(plantCategory.plants[plantIndex].quantity === 1) {
             plantCategory.plants[plantIndex].status = 'Sold'

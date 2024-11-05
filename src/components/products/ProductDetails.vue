@@ -217,8 +217,8 @@ async function addToCart() {
         if(res && res.success === true) {
             toast.success('Added to cart!')
         } else {
-            if(res && res.errorMessage) {
-                toast.error(res.errorMessage)
+            if(res && res.message) {
+                toast.error(res.message)
             } else {
                 toast.error('Unable to add to cart')
             }
