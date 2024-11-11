@@ -46,37 +46,6 @@ export async function handleEbayLogin(authCode: string, expires: string | null) 
 
 }
 
-// export async function refreshAccessToken(environment: EbayEnvironment): Promise<AppData<AccessTokenDBResponse> | AppError> {
-//     const res = await executeFunction<AppData<AccessTokenDBResponse | AppError>>('refreshUserAccessToken', {environment: environment})
-//     let data
-//     if('data' in res) {
-//         data = res.data
-//     }
-//     if(!res.success) {
-//         return {success: false, errorDetails: res}
-//     }
-//     if(data && 'success' in data && !res.data) {
-//         return {success: false, errorDetails: res.data}
-//     }
-//     if('data' in res)
-//     console.log(res)
-//     if('data' in res) { return res.data}
-//     if(!res.success || !res.data || !res.data.success) {
-//         return {success: false, message: 'Error getting refresh token', errorDetails: res}
-//     }
-//     //const data = res.data
-//     if('data' in res && 'success' in res.data && res.data.success && 'access_token' in res.data.data) {
-//         return {success: true, data: res.data as AccessTokenDBResponse}
-//     }
-//     return {success: false, message: res.message ?? '', errorDetails: res}
-// }
-
-// export async function getInventoryItem(sku: string): Promise<AppData<HttpsCallableResult<InventoryItem>> | AppError> {
-//     const res = await executeFunction<InventoryItem>('getInventory', {environment: environment, sku: sku})
-//     if(res.success) { return res }
-//     return {success: false, message: res.message ?? '', errorDetails: res}
-// }
-
 export async function addOrReplaceEbayInventory(plantCategory: PlantCategory, plant: Plant) {
     const item = await createEbayInventoryItem(plantCategory, plant)
     if(!item || !item.success) {
@@ -101,6 +70,7 @@ export async function postOffer(plantCategory: PlantCategory, plant: Plant): Pro
         return {success: false, message: 'Unable to create offer'}
     }
     const res = await executeFunction<AppReturn>('createEbayOffer', {environment, data: offer})
+    console.log(res)
     if(res && res.success) {
         return {success: true}
     }
@@ -111,31 +81,8 @@ export async function postOffer(plantCategory: PlantCategory, plant: Plant): Pro
 
 export async function deleteEbayItem(sku: string) {
     const res = await executeFunction('deleteEbayInventory', {sku})
-    if(res && res.success) {
-        return {success: true}
-    }
-    if(isSuccess(res)) { return res }
-    return {success: false, message: res.message ?? '', errorDetails: res}
+    return unwrapResponse(res)
 }
-
-// export async function deleteEbayItem(sku: string): AppReturn | AppError<any> {
-//     let deleteInventory
-//     try {
-//         deleteInventory = useFirebaseFunctions('deleteInventory')
-//     } catch {
-//         console.error('Unable to get FB function')
-//         return {success: false, message: 'Unable to get FB Function'}
-//     }
-//     if(deleteInventory === undefined) { return {success: false, message: 'Unable to get FB Function'} }
-
-//     try {
-//         const res = await deleteInventory({ environment: environment,sku: sku })
-//         return {success: true}
-//     } catch (e: any) {
-//         return {success: false, message: 'Error calling function', errorDetails: e}
-//     }
-
-// }
 
 export function isSuccess<T, E>(res: AppResponse<T> | AppError): res is AppResponse<T> {
     return res.success === true

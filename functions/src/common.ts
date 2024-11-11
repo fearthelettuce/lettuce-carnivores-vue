@@ -1,5 +1,11 @@
 import admin from 'firebase-admin'
 
+import { ParserOptions, parseString } from 'xml2js'
+import { debug, error} from 'firebase-functions/logger'
+import { parseBooleans, stripPrefix } from 'xml2js/lib/processors'
+import { PlantCategory } from './types/Plants'
+
+
 export async function getNextSequentialId(collectionName: string, startingValue = 1000, idFieldName: string = 'id') {
     let docs: Array<unknown> | undefined = []
     try {
@@ -18,9 +24,22 @@ export async function getNextSequentialId(collectionName: string, startingValue 
     return nextSequentialId
 }
 
-export async function getAllDocs(collectionName: string) {
-    const snapshot = await admin.firestore().collection(collectionName).get()
-    return snapshot.docs.map(doc => doc.data())
+export async function getAllDocs<T>(collectionName: string) {
+    const snap = await admin.firestore().collection(collectionName).get()
+    return snap.docs.map(doc => doc.data() as T)
+}
+
+export async function getCategoryBySku(sku: string) {
+    const categories = await getAllDocs<PlantCategory>('plantCategories')
+    let categoryId: string | undefined = undefined
+    for(let category of categories) {
+        const plantSkus = category.plants.map(plant => plant.sku)
+        if(plantSkus.includes(sku)) {
+            categoryId = category.id
+            break
+        }
+    }
+    return categoryId
 }
 
 export function unwrapResponse(obj: any) {
@@ -42,34 +61,105 @@ export function getUpdateDateTime() {
     return { updatedDateTime, updatedTimestamp}
 }
 
-// async function updateInventory(: StripeLineItem[]) {
-//     for (const item of items) {
-//         const data = item.price_data.product_data.metadata
-//         await deleteEbayInventoryItem(data.sku)
-//         const quantity = item.quantity
-//         const docRef = admin.firestore().doc(`plantCategories/${data.categoryId}`)
-//         const doc = await docRef.get().catch((e: any) => log(e))
+export function parseXmlResponse(xml: any) {
+    const options: ParserOptions = {
+        trim: true,
+        normalize: true,
+        explicitArray: false,
+        explicitRoot: false,
+        tagNameProcessors: [stripPrefix],
+        valueProcessors: [parseBooleans]
+    }
+    let parsed
+    parseString(xml, options, (err, result) => {
+        if(err) {
+            error('Error parsing XML:', err)
+            parsed = undefined
+        }
+        parsed = result
+    })
+    if(!parsed) {
+        error('Parsed is undefined in parseXmlResponse')
+        return undefined
+    }
+    const cleaned = cleanXML(parsed)
+    //log(inspect(cleaned, false, 4))
+    debug(cleaned)
+    return cleaned
 
-//         if(!doc || !doc.data()){
-//             log(`Error getting doc ${docRef.toString()}`)
-//             log(`${item}`)
-//             return
-//         }
-//         const plantCategory = doc.data()!
-//         const plantIndex = plantCategory.plants.findIndex((plant: Plant) => plant.sku === data.sku)
+}
 
-//         if(plantCategory.plants[plantIndex].quantity === 1) {
-//             plantCategory.plants[plantIndex].status = 'Sold'
-//             plantCategory.plants[plantIndex].quantity = 0
-//         } else {
-//             if(quantity > plantCategory.plants[plantIndex].quantity) {
-//                 plantCategory.plants[plantIndex].quantity = 0
-//                 log(`Plant ${plantCategory.plants[plantIndex].sku} quantity ${plantCategory.plants[plantIndex].quantity} less than cart quantity ${quantity}`)
-//             } else {
-//                 plantCategory.plants[plantIndex].quantity = plantCategory.plants[plantIndex].quantity - quantity
-//             }
-//         }
-//         await docRef.update({plants: plantCategory.plants})
-//     }
-//     return
-// }
+function cleanXML(xml: any) {
+    let keys = Object.keys(xml)
+    let o = 0
+    let k = keys.length
+    let node, value, singulars
+    let l = -1, i = -1, s = -1, e = -1
+    let isInt = /^-?\s*\d+$/
+    let isDig = /^(-?\s*\d*\.?\d*)$/
+    let radix = 10
+
+    for(; o < k; ++o){
+        node = keys[o];
+
+        if(xml[node] instanceof Array && xml[node].length === 1){
+            xml[node] = xml[node][0];
+        }
+
+        if(xml[node] instanceof Object){
+            value = Object.keys(xml[node]);
+
+            if(value.length === 1){
+                l = node.length;
+
+                singulars = [
+                    node.substring(0, l - 1),
+                    node.substring(0, l - 3) + 'y'
+                ];
+
+                i = singulars.indexOf(value[0]);
+
+                if(i !== -1){
+                    xml[node] = xml[node][singulars[i]];
+                }
+            }
+        }
+
+        if(typeof(xml[node]) === 'object'){
+            xml[node] = cleanXML(xml[node]);
+        }
+
+        if(typeof(xml[node]) === 'string'){
+            value = xml[node].trim();
+
+            if(value.match(isDig)){
+                if(value.match(isInt)){
+                    if(Math.abs(parseInt(value, radix)) <= Number.MAX_SAFE_INTEGER){
+                        xml[node] = parseInt(value, radix);
+                    }
+                }else{
+                    l = value.length;
+
+                    if(l <= 15){
+                        xml[node] = parseFloat(value);
+                    }else{
+                        for(i = 0, s = -1, e = -1; i < l && e - s <= 15; ++i){
+                            if(value.charAt(i) > 0){
+                                if(s === -1){
+                                    s = i;
+                                }else{
+                                    e = i;
+                                }
+                            }
+                        }
+
+                        if(e - s <= 15){
+                            xml[node] = parseFloat(value);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return xml
+}

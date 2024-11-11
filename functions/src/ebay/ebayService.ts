@@ -4,6 +4,7 @@ import type {  FunctionResponse } from '../types/Functions'
 import type { EbayEnvironment, EbayAccessTokenFunctionResponse, EbayAccessTokenResponse, UserAccessTokenResponse, AccessTokenDBResponse } from '../types/Ebay'
 import { authUrl, sandboxAuthUrl, apiUrl, sandboxApiUrl, RuNameProd, RuNameSandbox, prodScopes, sandboxScopes} from './ebayConstants'
 import { getUpdateDateTime } from '../common'
+import { debug, error } from 'firebase-functions/logger'
 
 export async function submitAccessTokenRequest(environment: EbayEnvironment, clientId: string, clientSecret: string): Promise<EbayAccessTokenFunctionResponse | FunctionResponse> {
     const url = `${environment === 'PRODUCTION' ? authUrl : sandboxAuthUrl}/identity/v1/oauth2/token`
@@ -93,20 +94,17 @@ export async function updateUserAccessToken(
     return {success: true, data: newTokenData as unknown as UserAccessTokenResponse}
 }
 
-export async function getAccessToken(clientId?: string, clientSecret?: string, environment: EbayEnvironment = 'PRODUCTION') {
+export async function getAccessToken(clientId?: string, clientSecret?: string) {
     const oldTokenData = await getTokenFromDb()
     if(oldTokenData.isValid) {
         return {success: true, data: oldTokenData.data}
     }
-    console.log('Well got here 1111')
     const headers = buildAuthHeaders(clientId ?? oldTokenData.data?.clientId, clientSecret ?? oldTokenData.data?.clientSecret)
-    console.log('shitty old data')
-    console.log(oldTokenData)
     if(!headers || !oldTokenData.data?.refresh_token) {
         return {success: false, message: 'Unable to build request'}
     }
     const config = {
-        url: `${environment === 'PRODUCTION' ? apiUrl : sandboxApiUrl}/identity/v1/oauth2/token`,
+        url: `${apiUrl}/identity/v1/oauth2/token`,
         method: 'post',
         headers: headers,
         data: {
@@ -116,15 +114,12 @@ export async function getAccessToken(clientId?: string, clientSecret?: string, e
     }
 
     const res = await axios(config).catch((e) => {
-        console.log(e)
+        error(e)
         return {success: false, message: 'Unable to get access token', errorDetails: e}
     })
     if(res && 'data' in res) {
-        console.log(res.data)
         return {success: true, data: await updateTokenInDb(res.data)}
     }
-    console.log('Well everything else went wrong')
-    console.log(res)
     return {success: false, message: 'Something went wrong with API call'}
 }
 
@@ -173,4 +168,21 @@ async function updateTokenInDb(data: any) {
     const newTokenData = {...data, ...updateDateTime}
     await admin.firestore().collection('admin').doc('ebayToken').update(newTokenData)
     return newTokenData
+}
+
+async function validateEbayNotification(data: any) {
+
+}
+
+export function getSkuFromEbayResponse(data: any) {
+    if(data && 'Body' in data  && 'GetItemResponse' in data.Body && 'Item' in data.Body.GetItemResponse) {
+        if( 'SKU' in data.Body.GetItemResponse.Item) {
+            return data.body.item.SKU
+        }
+        error('Unable to get SKU in getSkuFromEbayResponse')
+        debug(data)
+        return undefined
+
+    }
+    return undefined
 }

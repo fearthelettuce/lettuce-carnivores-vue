@@ -33,31 +33,9 @@ export const useInventoryStore = defineStore('inventory', () => {
         return false
     }
 
-    async function deleteItem(sku: string) {
+    async function deleteItemFromEbay(sku: string) {
         const res = await deleteEbayItem(sku)
-        return unwrapResponse(res)
+        return res
     }
-
-    // async function getOrRefreshEbayToken() {
-    //     if(!ebayTokenData.value) {
-    //         const res = await findDocById('admin', environment === 'SANDBOX' ? 'sandboxToken' : 'ebayToken')
-    //         if(res && 'access_token' in res) {
-    //             ebayTokenData.value = res as AccessTokenDBResponse
-    //         }
-    //     }
-    //     if(!ebayTokenData.value || isEbayTokenExpired(ebayTokenData.value)) {
-    //         const res = await refreshAccessToken(environment)
-    //         const data = unwrapResponse(res)
-    //         if(res.success && 'access_token' in data) {
-    //             ebayTokenData.value = data
-    //             return true
-    //         } else {
-    //             return false
-    //         }
-    //     }
-    //     return true
-    // }
-
-
-    return {addUpdateEbayItem, listOnEbay, ebayTokenData, deleteItem}
+    return {addUpdateEbayItem, listOnEbay, ebayTokenData, deleteItemFromEbay}
 })

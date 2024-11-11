@@ -1,4 +1,4 @@
-import type { Plant } from "@/types/Plant"
+import type { PlantCategory, Plant } from "@/types/Plant"
 import type { Product } from "@/types/Product"
 import { deleteAllPhotosUtil } from '@/composables/usePhotoUtils'
 import { saveItem, findAll, deleteItem, findDocById } from '@/apis/dataServices'
@@ -7,6 +7,19 @@ export async function findProductById(id: number | string, collectionName: strin
     const res = await findDocById(collectionName, id).catch(err => console.log(err))
     return res as Product
 }
+export async function getCategoryBySku(sku: string) {
+    const categories = await findAll<PlantCategory>('plantCategories')
+    let categoryId: string | undefined = undefined
+    for(let category of categories) {
+        const plantSkus = category.plants.map(plant => plant.sku)
+        if(plantSkus.includes(sku)) {
+            categoryId = category.id
+            break
+        }
+    }
+    return categoryId
+}
+
 export async function saveProductUtil(product: Product | Plant, collectionName: string, productList: Array<Product>) {
     try {
         const res = await saveItem(collectionName, product)
@@ -32,7 +45,7 @@ export async function saveProductUtil(product: Product | Plant, collectionName: 
     }
 }
 
-export async function deleteById(id: number | string, collectionName: string, collectionList: Array<any>) { 
+export async function deleteById(id: number | string, collectionName: string, collectionList: Array<any>) {
     deleteAllPhotosUtil(await findProductById(id, collectionName))
     const res = await deleteItem(collectionName, id).catch(err => {
         console.log(err)

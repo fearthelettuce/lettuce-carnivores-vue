@@ -6,6 +6,7 @@ import type { EbayEnvironment} from '../types/Ebay'
 import xml2js from 'xml2js'
 import { getUpdateDateTime } from '../common'
 import { getAccessToken } from './ebayService'
+import { error, log } from 'firebase-functions/logger'
 
 
 export async function getInventoryItems(environment: EbayEnvironment, token: string, sku?: string) {
@@ -40,7 +41,7 @@ export async function createOrReplaceInventoryItem(token: string, sku: string, i
 
     const res = await axios(config).catch((e: any) => {console.error(e); return e})
     if( res && 'status' in res && res.status === 204) {
-        admin.firestore().collection('inventory').doc(sku).set({...getUpdateDateTime(), plantCategoryId})
+        admin.firestore().collection('inventory').doc(sku).set({...getUpdateDateTime(), plantCategoryId}, {merge: true})
         return {success: true}
     }
     if(res && 'response' in res && 'data' in res.response) {
@@ -71,12 +72,17 @@ export async function postEbayOffer(token: string, data: any, environment?: Ebay
 
     const res = await axios(config).catch((e: any) => {console.error(e); return e})
 
-    if( res && 'status' in res && res.status === 201) {
-        admin.firestore().collection('inventory').doc(data.sku).set({offerId: res.data.offerId, ...getUpdateDateTime()})
+    if( res && 'status' in res && res.status === 201 || res.status === 200 || res.status === 204) {
+        admin.firestore().collection('inventory').doc(data.sku).set({offerId: res.data.offerId, ...getUpdateDateTime()}, {merge: true})
         return {success: true, data: res.data}
     }
-    console.log(res.status)
-    console.log(res.data)
+    log(`Errors from eBay ${res.status} response:`)
+    if(res.response.data && 'errors' in res.response.data) {
+        res.response.data.errors.forEach((error: any) => log(error))
+    }
+    if(res.data && 'errors' in res.data) {
+        res.data.errors.forEach((error: any) => log(error))
+    }
     return {success: false, message: 'Unexpected response. Expected 201 with res.data.offerId value'}
 }
 
@@ -109,29 +115,27 @@ export async function publishOffer(token: string, offerId: string, environment?:
 
 }
 
-export async function deleteEbayInventoryItem(sku: string, token?: string) {
-    let accessToken = token ?? (await getAccessToken()).data.access_token
-    if(!accessToken) {
+export async function deleteEbayInventoryItem(sku: string) {
+    const {access_token} = (await getAccessToken()).data
+    if(!access_token || access_token.length < 20) {
         return {success: false, message: 'Unable to get access token'}
     }
     const url = `${apiUrl}/sell/inventory/v1/inventory_item/${sku}`
     const config = {
         headers: {
-            'Authorization':`Bearer ${token}`,
+            'Authorization':`Bearer ${access_token}`,
         }
     }
-    const res = await axios.delete(url, config)
+    const res = await axios.delete(url, config).catch((e) => {console.log(e)})
+    if(!res || !res?.status) { return {success: false}}
     if(res.status === 204) {
         return {success: true}
     }
     if(res.status === 404) {
         return {success: false, message: `SKU ${sku} not found`}
     }
+    error(res)
     return {success: false, message: 'Something went wrong'}
-
-        //TODO: update stripe checkout success to call this with each SKU
-        //also, this isn't working yet.... eek!
-        //Do we  update the firebase DB to delete here as well???
 }
 
 

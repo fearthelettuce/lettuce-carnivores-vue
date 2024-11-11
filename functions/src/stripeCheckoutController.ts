@@ -31,9 +31,9 @@ export default onCall({secrets: [stripeSecretKey]},async(request: CheckoutSessio
         return {success: false, error: true, message: 'Unable to create checkout session', errorDetails: null, data: null}
     }
     const checkoutSession = await buildCheckoutSession(
-        request.data.cart, 
-        uid, 
-        request.data.returnUrl, 
+        request.data.cart,
+        uid,
+        request.data.returnUrl,
         request.data.cancelUrl,
         request.data.stripeCustomer,
     )
@@ -72,14 +72,14 @@ async function buildCheckoutSession (cartItems: CartItem[], uid: string, returnU
                     },
                     tax_code: 'txcd_99999999',
                 }
-            }, 
+            },
             quantity: item.quantity
         }
     })
 
     const cartTotal = (stripeCart.data as CartItem[]).reduce(
         (accumulator, cartItem) => accumulator + (cartItem.price * cartItem.quantity), 0)
-    
+
 
     const session: Stripe.Checkout.SessionCreateParams = {
         mode: 'payment',
@@ -116,7 +116,7 @@ async function buildCheckoutSession (cartItems: CartItem[], uid: string, returnU
     if(discounts && discountAmount > 0){
         session.discounts = discounts.stripeDiscounts
     }
-    
+
     if(cartTotal - discountAmount >= discountedShippingThreshold) {
         session.shipping_options = [{shipping_rate: discountedStandardShippingId}, {shipping_rate: discountedExpeditedShippingId}]
     } else {
@@ -149,11 +149,11 @@ async function buildStripeCart (cartItems: CartItem[]): Promise<FunctionResponse
 }
 
 async function getDiscounts(line_items: StripeLineItem[]){
-    const discountDocs = await getAllDocs('discounts')
+    const discountDocs = await getAllDocs<Discount>('discounts')
     if(!discountDocs || discountDocs.length === 0 || !line_items || line_items.length === 0) {
         return null
     }
-    const activeDiscounts: Discount[] = discountDocs.filter(item => item.valid && item.validThrough.toMillis() >= admin.firestore.Timestamp.now().toMillis()) as Discount[]
+    const activeDiscounts = discountDocs.filter(item => item.valid && item.validThrough.toMillis() >= admin.firestore.Timestamp.now().toMillis())
     const stripeDiscounts: {coupon: string}[] = []
     const discountValues: Discount[] = []
 

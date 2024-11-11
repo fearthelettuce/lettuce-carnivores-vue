@@ -1,3 +1,4 @@
+import { Timestamp } from 'firebase-admin/firestore'
 import { PotSize } from './Plants'
 
 export type ShoppingCart = {
@@ -68,7 +69,7 @@ export type Discount = {
     parameters: {
         minimumQuantity: number,
     },
-    validThrough: Date,
+    validThrough: Timestamp,
     type: string,
     duration: string,
     message: string,

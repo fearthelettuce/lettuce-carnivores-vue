@@ -30,7 +30,7 @@ export async function createEbayInventoryItem (plantCategory: PlantCategory, pla
 async function buildProductDetails(plantCategory: PlantCategory, plant: Plant): Promise<InventoryItem['product']> {
     const photoUrls = await getImageUrls(plant.photos)
     return {
-        title: `${plantCategory.name} - ${plant.size}`,
+        title: `${plantCategory.name} ${plantCategory.clone} - ${plant.size}`,
         description: createDescription(plantCategory, plant),
         imageUrls: photoUrls,
         aspects: buildAspects(plantCategory, plant) as any //ts-any: Ebay OpenApi 3 JSON currently (10/20/24) defines aspects as string, which is wrongo dongo.

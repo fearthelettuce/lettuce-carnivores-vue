@@ -90,18 +90,9 @@ export async function findByProperty(collectionName: string, property: string, c
     return returnArr
 }
 
-export async function findAll(collectionName: string) {
-    const returnArr: Array<unknown> = []
-    try {
-        const querySnapshot = await getDocs(collection(db, collectionName))
-        querySnapshot.forEach((doc) => {
-            returnArr.push({ ...doc.data() })
-        })
-        return returnArr
-    } catch (error) {
-        console.log(error)
-        return
-    }
+export async function findAll<T>(collectionName: string) {
+    const snap = await getDocs(collection(db, collectionName))
+    return snap.docs.map(doc => doc.data() as T)
 }
 
 
