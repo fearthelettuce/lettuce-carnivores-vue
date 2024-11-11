@@ -29,6 +29,7 @@ export type StripeProduct = {
     shippable?: boolean,
     id?: string,
 }
+
 export type StripePrice = {
     active: boolean,
     billing_scheme: string,
@@ -116,4 +117,16 @@ export type Discount = {
     type: string,
     duration: string,
     message: string,
+}
+
+export type InventoryRecord = {
+    active?: boolean,
+    listingId?: string,
+    offerId?: string,
+    plantCategoryId?: number,
+    updatedDateTime: string,
+    updatedTimestamp: number,
+    id: string,
+    status?: string,
+    error?: string
 }

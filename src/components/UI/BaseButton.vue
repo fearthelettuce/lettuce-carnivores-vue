@@ -52,6 +52,7 @@ const props = defineProps({
 .info {
     background-color: #00A0E5;
     color: white;
+    border: none;
 }
 /* .secondary {
 

@@ -69,11 +69,11 @@
             </div>
         </div>
 
-        <BaseButton @click.prevent="addPhotos">Photos <span>({{ plant.photos.length }})</span></BaseButton>
+        <BaseButton @click.prevent="addPhotos" type="info">Photos <span>({{ plant.photos.length }})</span></BaseButton>
         <BaseButton v-if="plant.status === 'Delete'" type="danger" @click.prevent="$emit('deletePlant')" :disabled="plant.status !== 'Delete'">Delete</BaseButton>
-        <BaseButton @click.prevent="$emit('createEbayItem')" :disabled="plant.status === 'Sold'">Update eBay Item</BaseButton>
-        <BaseButton @click.prevent="$emit('listEbayOffer')" :disabled="plant.status === 'Sold'">List on eBay</BaseButton>
-        <BaseButton @click.prevent="$emit('deleteEbayItem')" type="danger" :disabled="plant.status === 'Sold'">Delete from eBay</BaseButton>
+        <BaseButton @click.prevent="$emit('createEbayItem')" :disabled="plant.status === 'Sold'">{{`${isListedOnEbay ? 'Update' : 'Create'} eBay Item`}}</BaseButton>
+        <BaseButton @click.prevent="$emit('listEbayOffer')" :disabled="plant.status === 'Sold' || isListedOnEbay">List on eBay</BaseButton>
+        <BaseButton @click.prevent="$emit('deleteEbayItem')" type="danger" :disabled="!isListedOnEbay">Delete from eBay</BaseButton>
 
     </form>
 </template>
@@ -87,7 +87,14 @@ import { formatDate} from '@/utils/utils'
 defineEmits(['triggerSave', 'deletePlant', 'createEbayItem', 'listEbayOffer', 'deleteEbayItem'])
 
 const plant = defineModel('plant', {type: Object as PropType<Plant>, required: true})
+const props = defineProps({
+    inventorySkus: {type: Array<string>},
+    showSoldArchived: {type: Boolean}
+})
 
+const isListedOnEbay = computed(() => {
+    return props.inventorySkus?.includes(plant.value.sku)
+})
 watch(
     () => plant.value,
     () =>{
@@ -100,6 +107,8 @@ watch(
     },
     { immediate: true }
 )
+
+
 
 const managePhotos = inject<Function>('managePhotos')
 

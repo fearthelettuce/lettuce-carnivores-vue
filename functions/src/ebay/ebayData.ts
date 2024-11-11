@@ -41,7 +41,7 @@ export async function createOrReplaceInventoryItem(token: string, sku: string, i
 
     const res = await axios(config).catch((e: any) => {console.error(e); return e})
     if( res && 'status' in res && res.status === 204) {
-        admin.firestore().collection('inventory').doc(sku).set({...getUpdateDateTime(), plantCategoryId}, {merge: true})
+        admin.firestore().collection('inventory').doc(sku).set({...getUpdateDateTime(), plantCategoryId, sku}, {merge: true})
         return {success: true}
     }
     if(res && 'response' in res && 'data' in res.response) {

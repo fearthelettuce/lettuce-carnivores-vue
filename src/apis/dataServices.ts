@@ -90,10 +90,14 @@ export async function findByProperty(collectionName: string, property: string, c
     return returnArr
 }
 
-export async function findAll<T>(collectionName: string) {
+export async function findAll<T>(collectionName: string, includeId: boolean = false) {
     const snap = await getDocs(collection(db, collectionName))
+    if(includeId) {
+       return snap.docs.map((doc) => {return {...doc.data() as T, id: doc.id} } )
+    }
     return snap.docs.map(doc => doc.data() as T)
 }
+
 
 
 export async function getPlantsFromFirestore (cartItems: CartItem[]): Promise<Plant[]> {

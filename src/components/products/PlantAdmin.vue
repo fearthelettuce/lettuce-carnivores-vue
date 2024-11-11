@@ -20,42 +20,46 @@
                         <PlantCategoryForm />
                     </div>
                 </Transition>
-                <button class="btn btn-secondary" @click="toggleExpand"> {{isExpanded ? 'Hide Form' : `Edit ${plantCategoryToEdit.name !== '' ? plantCategoryToEdit.name : 'Category'}`  }}</button>
-
+                <div>
+                    <BaseButton @click="toggleExpand" type="info"> {{isExpanded ? 'Hide Form' : `Edit ${plantCategoryToEdit.name !== '' ? plantCategoryToEdit.name : 'Category'}`  }}</BaseButton>
+                    <BaseButton @click="toggleArchived" type="info">{{showSoldArchived ? 'Hide' : 'Show'}} Archived/Sold</BaseButton>
+                </div>
             </div>
             <div class="mt-4">
                 <div v-for="(plant, index) in plantCategoryToEdit.plants" :key="index" >
-                    <hr style="margin-block: .4rem" />
-                    <div class="d-flex flex-row gap-1">
-                        <div class="up-down-arrows align-content-center text-center">
-                            <button
-                                class="btn px-1 py-0"
-                                v-if="index !== 0"
-                                @click="arrayMove(plantCategoryToEdit.plants,index,index-1)">
-                                <FontAwesome
-                                class="move-arrow"
-                                icon="caret-up" />
-                            </button>
-                            <button
-                                v-if="index !== plantCategoryToEdit.plants.length -1"
-                                class="btn px-1 py-0"
-                                @click="arrayMove(plantCategoryToEdit.plants,index,index+1)" >
-                                <FontAwesome
-                                class="move-arrow"
-                                icon="caret-down" />
-                            </button>
+                    <template v-if="displaySoldArchived(plant)">
+                        <hr style="margin-block: .4rem" />
+                        <div class="d-flex flex-row gap-1">
+                            <div class="up-down-arrows align-content-center text-center">
+                                <button
+                                    class="btn px-1 py-0"
+                                    v-if="index !== 0"
+                                    @click="arrayMove(plantCategoryToEdit.plants,index,index-1)">
+                                    <FontAwesome
+                                    class="move-arrow"
+                                    icon="caret-up" />
+                                </button>
+                                <button
+                                    v-if="index !== plantCategoryToEdit.plants.length -1"
+                                    class="btn px-1 py-0"
+                                    @click="arrayMove(plantCategoryToEdit.plants,index,index+1)" >
+                                    <FontAwesome
+                                    class="move-arrow"
+                                    icon="caret-down" />
+                                </button>
+                            </div>
+
+                            <PlantItemForm
+                                :plant
+                                :inventorySkus
+                                @triggerSave="saveCategory(plantCategoryToEdit)"
+                                @deletePlant="removePlant(index)"
+                                @createEbayItem="createEbayInventory(index)"
+                                @listEbayOffer="createEbayOffer(index)"
+                                @deleteEbayItem="deleteEbayItem(index)"
+                            />
                         </div>
-
-                        <PlantItemForm
-                            :plant
-                            @triggerSave="saveCategory(plantCategoryToEdit)"
-                            @deletePlant="removePlant(index)"
-                            @createEbayItem="createEbayInventory(index)"
-                            @listEbayOffer="createEbayOffer(index)"
-                            @deleteEbayItem="deleteEbayItem(index)"
-                        />
-
-                    </div>
+                    </template>
                 </div>
                 <div class="mt-5">
                     <button class="btn btn-primary" @click.prevent="addPlant(plantCategoryToEdit)">Add Plant Item</button>
@@ -102,15 +106,17 @@ import { getPhotoDownloadUrl } from '@/apis/fileServices'
 import { addOrReplaceEbayInventory } from '@/composables/useEbayUtils'
 import { toast } from 'vue3-toastify'
 import { useInventoryStore } from '@/stores/inventory'
+import type { Plant } from '@/types/Plant'
 
 const {fetchAllCategories, findPlantCategoryById, setCategoryToEdit, saveCategory, addPlant, getAvailablePlants, removePlant} = usePlantStore()
 const {plantCategories, plantCategoryToEdit, isSaving} = storeToRefs(usePlantStore())
 const route = useRoute()
-const { addUpdateEbayItem, listOnEbay, deleteItemFromEbay } = useInventoryStore()
-
+const { addUpdateEbayItem, listOnEbay, deleteItemFromEbay, getUpdatedInventory } = useInventoryStore()
+const { inventorySkus } = storeToRefs(useInventoryStore())
 onMounted(async () => {
     await fetchAllCategories()
     currentAvailablePlants.value = await fetchCurrentAvailablePlants()
+    await getUpdatedInventory()
     //TODO: find a way to change nav to exclude :id without messy custom logic, and then change this to === undefined or null
     if(route.params.id !== ":id" && route.params.id !== undefined) {
         const plantCategory = await findPlantCategoryById(route.params.id as string)
@@ -130,6 +136,15 @@ function toggleExpand () {
     isExpanded.value = !isExpanded.value
 }
 
+const showSoldArchived = ref(false)
+function toggleArchived() {
+    showSoldArchived.value = !showSoldArchived.value
+}
+function displaySoldArchived(plant: Plant) {
+    console.log(plant.status)
+    if(showSoldArchived.value) { return true}
+    return (plant.status !== 'Sold' && plant.status !== 'Archived')
+}
 function arrayMove(arr: Array<any>, fromIndex: number, toIndex: number) {
     if(toIndex > arr.length-1) {console.log('Unable to move in array, toIndex greater than arr.length. toIndex:' + toIndex + 'arr.length: ' + arr.length)}
     const ele = arr[fromIndex]
