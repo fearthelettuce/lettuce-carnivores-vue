@@ -16,7 +16,6 @@ export async function uploadFile(fileName: string, subfolder: string, file: File
 
 export async function deleteFile(photo: PhotoItem) {
     const storageRef = ref(storage, photo.path)
-    console.log(storageRef)
     if(!storageRef) {return {success: false, error: false, message: `Photo path ${photo.path} does not exist in Firebase`}}
     try {
         await deleteObject(storageRef)

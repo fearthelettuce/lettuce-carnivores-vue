@@ -19,7 +19,6 @@ export async function getNextSequentialId(collectionName: string, idFieldName: s
     let docs: Array<unknown> | undefined = []
     try {
         docs = await findAll(collectionName)
-        console.log(docs)
     } catch (err) {
         console.log(err)
         return err

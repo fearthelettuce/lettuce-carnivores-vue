@@ -72,3 +72,54 @@ export interface EbayAccessTokenFunctionResponse extends FunctionResponse {
 export type EbayEnvironment = 'SANDBOX' | 'PRODUCTION'
 
 export type GranularityLevel = 'Coarse' | 'Medium' | 'Fine'
+
+type EbayNotificationEvent = 'ItemListed' | 'ItemSold'
+export type EbayItemNotification = {
+    Body: {
+        GetItemResponse: EbayGetItemResponse
+    },
+    Header: {
+        RequesterCredentials: {
+            $: {},
+            NotificationSignature: {
+                $: {},
+                _: string
+            }
+        }
+    }
+}
+export type EbayGetItemResponse = {
+    Item: EbayItem,
+    NotificationEventName: EbayNotificationEvent,
+    Timestamp: string,
+    CorrelationId: number,
+    EIASToken: string,
+    Ack: string,
+    RecipientUserID: string,
+    Version: number,
+
+}
+
+type EbayItem = {
+    SKU: number,
+    Quantity: number,
+    Title: string,
+    StartPrice: {
+        $: {
+            currencyID: 'USD',
+        },
+        _: number
+    },
+    SellingStatus: {
+        BidCount: number,
+        CurrentPrice: {
+            $: {
+                currencyID: 'USD',
+            },
+            _: number
+        },
+        ListingStatus: string,
+        QuantitySold: number,
+    },
+    UUID: string,
+}

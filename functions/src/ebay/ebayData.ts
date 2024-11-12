@@ -88,7 +88,7 @@ export async function postEbayOffer(token: string, data: any, environment?: Ebay
 
 export async function publishOffer(token: string, offerId: string, environment?: EbayEnvironment) {
     if(!offerId) {
-        console.log('No offer ID')
+        error('No offer ID')
         return {success: false, message: 'No offer ID'}
     }
     const baseUrl = environment === 'SANDBOX' ? sandboxApiUrl : apiUrl
@@ -103,7 +103,7 @@ export async function publishOffer(token: string, offerId: string, environment?:
         }
     }
     const res = await axios(config).catch((e: any) => {
-        console.log(e.response.data.errors)
+        error(e.response.data.errors)
         return {success: false, message: e.data.errors[0]}
     })
 
@@ -126,7 +126,7 @@ export async function deleteEbayInventoryItem(sku: string) {
             'Authorization':`Bearer ${access_token}`,
         }
     }
-    const res = await axios.delete(url, config).catch((e) => {console.log(e)})
+    const res = await axios.delete(url, config).catch((e) => {error(e)})
     if(!res || !res?.status) { return {success: false}}
     if(res.status === 204) {
         return {success: true}

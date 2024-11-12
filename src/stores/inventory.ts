@@ -17,7 +17,6 @@ export const useInventoryStore = defineStore('inventory', () => {
         isLoading.value = false
 
         if(res && 'success' in res && res.success) {
-            console.log(res)
             return true
             //add ebay item to inventory refs
         }
@@ -28,7 +27,6 @@ export const useInventoryStore = defineStore('inventory', () => {
         isLoading.value = true
         const res = await postOffer(plantCategory, plant)
         isLoading.value = false
-        console.log(res )
         if(res && 'success' in res && res.success) {
             return true
             //add ebay item to inventory refs
@@ -49,9 +47,7 @@ export const useInventoryStore = defineStore('inventory', () => {
             inventoryItems.value = res
             const activeItems = res.filter(item => item.active !== false && item.status !== 'error' && !item.error)
             inventorySkus.value = activeItems.map(item => item.id)
-            console.log(inventorySkus.value)
         }
-        console.log(inventoryItems.value)
     }
     return {addUpdateEbayItem, listOnEbay, ebayTokenData, deleteItemFromEbay, getUpdatedInventory, inventoryItems, inventorySkus}
 })

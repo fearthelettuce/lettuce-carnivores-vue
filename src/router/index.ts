@@ -186,18 +186,6 @@ const routeData = [
       }
     },
     {
-      path: '/inventoryManagement',
-      name: 'inventoryManagement',
-      label: 'Inventory',
-      component: InventoryManagement,
-      meta: {
-        showInNav: true,
-        requiresLogin: true,
-        requiresLoginOrAnon: false,
-        requiresAdmin: true,
-      }
-    },
-    {
       path: '/ebayLoginSuccess',
       name: 'ebayLoginSuccess',
       label: 'Ebay Login Success',

@@ -12,7 +12,6 @@
                 outer-class="grid-col-2"
                 v-model="ebaySkuInput"
             />
-            <BaseButton @click="getInventoryBySku">Get Inventory</BaseButton>
         </div>
     </BaseContainer>
 </template>
@@ -29,7 +28,6 @@ const { ebayTokenData } = storeToRefs(useInventoryStore())
 
 async function accessToken() {
     const res = await getEbayAccessToken().catch(e => {console.error(e); return})
-    console.log(res)
 }
 
 async function ebayLogin() {
@@ -41,20 +39,8 @@ async function ebayLogin() {
     }
 }
 
-
 const ebaySkuInput = ref('')
-async function getInventoryBySku() {
-    // const res = await getInventoryItem(ebaySkuInput.value)
-    // console.log(res)
 
-}
-
-// async function deleteListing() {
-//     if(ebaySkuInput.value && ebaySkuInput.value.length > 3) {
-//         const res = await deleteEbayItem(ebaySkuInput.value)
-//         console.log(res)
-//     }
-// }
 </script>
 <style scoped>
 .actions {

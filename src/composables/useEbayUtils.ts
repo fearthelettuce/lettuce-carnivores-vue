@@ -70,7 +70,6 @@ export async function postOffer(plantCategory: PlantCategory, plant: Plant): Pro
         return {success: false, message: 'Unable to create offer'}
     }
     const res = await executeFunction<AppReturn>('createEbayOffer', {environment, data: offer})
-    console.log(res)
     if(res && res.success) {
         return {success: true}
     }

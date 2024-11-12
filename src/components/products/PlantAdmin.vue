@@ -120,7 +120,6 @@ onMounted(async () => {
     //TODO: find a way to change nav to exclude :id without messy custom logic, and then change this to === undefined or null
     if(route.params.id !== ":id" && route.params.id !== undefined) {
         const plantCategory = await findPlantCategoryById(route.params.id as string)
-        console.log(plantCategory)
         setCategoryToEdit(plantCategory)
     } else {
         setCategoryToEdit(null)
@@ -141,7 +140,6 @@ function toggleArchived() {
     showSoldArchived.value = !showSoldArchived.value
 }
 function displaySoldArchived(plant: Plant) {
-    console.log(plant.status)
     if(showSoldArchived.value) { return true}
     return (plant.status !== 'Sold' && plant.status !== 'Archived')
 }

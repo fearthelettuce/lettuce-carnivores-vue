@@ -1,10 +1,10 @@
 import admin from 'firebase-admin'
 import { onCall, type CallableRequest } from 'firebase-functions/v2/https';
 import { defineSecret } from 'firebase-functions/params'
-import type {  EbayAccessTokenRequest, EbayEnvironment, EbayInventoryRequest, EbayInventoryPostRequest, EbayOfferPostRequest, EbaySkuRequest } from '../types/Ebay';
+import type {  EbayAccessTokenRequest, EbayEnvironment, EbayInventoryRequest, EbayInventoryPostRequest, EbayOfferPostRequest, EbaySkuRequest, EbayItemNotification } from '../types/Ebay';
 import { submitAccessTokenRequest, generateUserConsentUrl, getAccessToken, updateUserAccessToken, getSkuFromEbayResponse } from './ebayService';
 import { getInventoryItems, createOrReplaceInventoryItem, postEbayOffer, publishOffer } from './ebayData';
-import { parseXmlResponse, unwrapResponse } from '../common';
+import { formatLocalDate, parseXmlResponse, unwrapResponse } from '../common';
 import { info, error } from 'firebase-functions/logger'
 import { onRequest } from 'firebase-functions/v2/https'
 import { updateEbayInventory, updateInventoryFromEbaySale } from '../inventory/inventoryService'
@@ -23,7 +23,7 @@ export const getEbayAccessToken = onCall({secrets: ['EBAY_CLIENT_ID', 'EBAY_SECR
     if(res.success && res.data && 'access_token' in res.data) {
         accessToken = res.data.access_token
     } else {
-        console.log(res.data)
+        error(res.data)
         return {success: false, error: true, message: 'Unable to get Access Token', errorDetails: res.data}
     }
     return unwrapResponse(res)
@@ -104,21 +104,30 @@ export const deleteEbayInventory = onCall(onCallOpts, async(request: EbaySkuRequ
 })
 
 export const ebayNotificationController = onRequest(async(req, res): Promise<any> => {
-    info(`Ebay notification headers`)
-    info(req.headers.soapaction)
-    const now = new Date().toISOString()
+    const now = new Date().toLocaleDateString('en-US', {
+        year: '2-digit',
+        month: '2-digit',
+        day: '2-digit',
+        timeZone: 'America/Chicago',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+    })
+    const formattedDate = now.replace(/\//g,'-')
+    info(`Ebay notification headers ${req.headers.soapaction} ${formattedDate}`)
     try {
-        const parsedBody = parseXmlResponse(req.body)
-        const sku = getSkuFromEbayResponse(parsedBody)
-            await admin.firestore().collection('ebayRequests').doc(now).set(parsedBody.Body)
-            if(sku && parsedBody.Body.GetItemResponse.NotificationEventName === 'ItemSold') {
-                info(`Received ItemSold event, updating inventory for SKU ${sku}`)
-                await updateInventoryFromEbaySale(sku.toString(), false)
-            }
+        const parsedRequest = parseXmlResponse(req.body) as EbayItemNotification
+        const sku = getSkuFromEbayResponse(parsedRequest)
+        const eventType = parsedRequest.Body.GetItemResponse.NotificationEventName
+        await admin.firestore().collection('ebayRequests').doc(`${formattedDate} - ${eventType}`).set(parsedRequest.Body)
+        if(sku && eventType === 'ItemSold') {
+            info(`Updating inventory for SKU ${sku} for eBay sale`)
+            await updateInventoryFromEbaySale(sku.toString(), false)
+        }
     } catch(e) {
         error(`Error handling notification`)
         error(e)
-        admin.firestore().collection('ebayRequests').doc(now).set({data: e})
+        admin.firestore().collection('ebayRequests').doc(formattedDate).set({data: e})
     }
     res.sendStatus(200)
     return

@@ -1,7 +1,7 @@
 import admin from 'firebase-admin'
 import axios from 'axios'
 import type {  FunctionResponse } from '../types/Functions'
-import type { EbayEnvironment, EbayAccessTokenFunctionResponse, EbayAccessTokenResponse, UserAccessTokenResponse, AccessTokenDBResponse } from '../types/Ebay'
+import type { EbayEnvironment, EbayAccessTokenFunctionResponse, EbayAccessTokenResponse, UserAccessTokenResponse, AccessTokenDBResponse, EbayItemNotification } from '../types/Ebay'
 import { authUrl, sandboxAuthUrl, apiUrl, sandboxApiUrl, RuNameProd, RuNameSandbox, prodScopes, sandboxScopes} from './ebayConstants'
 import { getUpdateDateTime } from '../common'
 import { debug, error } from 'firebase-functions/logger'
@@ -21,7 +21,7 @@ export async function submitAccessTokenRequest(environment: EbayEnvironment, cli
     }
     const res = await axios.post(url,body,{headers: headers})
     .catch((e) => {
-        console.log(e.response.data)
+        error(e.response.data)
         return {success: false, error: true, message: 'Unable to get access token', errorDetails: e.response.data, data: null}
     })
     return {success: true, error: false, message: 'Success', data: res.data as unknown as EbayAccessTokenResponse, errorDetails: null}
@@ -73,7 +73,7 @@ export async function updateUserAccessToken(
         }
     }
     const res = await axios.post(url,body,{headers: headers}).catch((e) => {
-        console.log(e)
+        error(e)
         return {success: false, error: true, message: 'Unable to get access token', errorDetails: e, data: null}
     })
     if(!res || !res.data) {
@@ -146,8 +146,6 @@ export async function getTokenData(): Promise<AccessTokenDBResponse | undefined>
 
 function buildAuthHeaders(clientId: string | undefined, clientSecret: string | undefined) {
     if(!clientId || !clientSecret) { return null }
-    console.log(clientId)
-    console.log(clientSecret)
     const authCredentials = Buffer.from(`${clientId}:${clientSecret}`).toString('base64')
     return {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -174,15 +172,13 @@ async function validateEbayNotification(data: any) {
 
 }
 
-export function getSkuFromEbayResponse(data: any) {
-    if(data && 'Body' in data  && 'GetItemResponse' in data.Body && 'Item' in data.Body.GetItemResponse) {
-        if( 'SKU' in data.Body.GetItemResponse.Item) {
-            return data.body.item.SKU
-        }
+export function getSkuFromEbayResponse(data: EbayItemNotification) {
+    let sku: string | undefined
+    try {
+        sku = data.Body.GetItemResponse.Item.SKU.toString()
+    } catch(e) {
         error('Unable to get SKU in getSkuFromEbayResponse')
-        debug(data)
-        return undefined
-
+        debug(data.Body.GetItemResponse.Item)
     }
-    return undefined
+    return sku
 }
