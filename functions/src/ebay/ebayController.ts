@@ -2,7 +2,7 @@ import admin from 'firebase-admin'
 import { onCall, type CallableRequest } from 'firebase-functions/v2/https';
 import { defineSecret } from 'firebase-functions/params'
 import type {  EbayAccessTokenRequest, EbayEnvironment, EbayInventoryRequest, EbayInventoryPostRequest, EbayOfferPostRequest, EbaySkuRequest, EbayItemNotification } from '../types/Ebay';
-import { submitAccessTokenRequest, generateUserConsentUrl, getAccessToken, updateUserAccessToken, getSkuFromEbayResponse } from './ebayService';
+import { submitAccessTokenRequest, generateUserConsentUrl, getAccessToken, updateUserAccessToken, getSkuFromEbayResponse, getEventTypeFromEbayResponse } from './ebayService';
 import { getInventoryItems, createOrReplaceInventoryItem, postEbayOffer, publishOffer } from './ebayData';
 import { formatLocalDate, parseXmlResponse, unwrapResponse } from '../common';
 import { info, error } from 'firebase-functions/logger'
@@ -118,16 +118,16 @@ export const ebayNotificationController = onRequest(async(req, res): Promise<any
     try {
         const parsedRequest = parseXmlResponse(req.body) as EbayItemNotification
         const sku = getSkuFromEbayResponse(parsedRequest)
-        const eventType = parsedRequest.Body.GetItemResponse.NotificationEventName
+        const eventType = getEventTypeFromEbayResponse(parsedRequest) ?? 'Unknown'
         await admin.firestore().collection('ebayRequests').doc(`${formattedDate} - ${eventType}`).set(parsedRequest.Body)
-        if(sku && eventType === 'ItemSold') {
+        if(sku && (eventType === 'ItemSold' || eventType === 'FixedPriceTransaction')) {
             info(`Updating inventory for SKU ${sku} for eBay sale`)
             await updateInventoryFromEbaySale(sku.toString(), false)
         }
     } catch(e) {
         error(`Error handling notification`)
         error(e)
-        admin.firestore().collection('ebayRequests').doc(formattedDate).set({data: e})
+        admin.firestore().collection('ebayRequests').doc(formattedDate).set({data: 'An error occurred, check logs'})
     }
     res.sendStatus(200)
     return

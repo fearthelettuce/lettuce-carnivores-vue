@@ -73,10 +73,11 @@ export type EbayEnvironment = 'SANDBOX' | 'PRODUCTION'
 
 export type GranularityLevel = 'Coarse' | 'Medium' | 'Fine'
 
-type EbayNotificationEvent = 'ItemListed' | 'ItemSold'
+type EbayNotificationEvent = 'ItemListed' | 'ItemSold' | 'FixedPriceTransaction'
 export type EbayItemNotification = {
     Body: {
-        GetItemResponse: EbayGetItemResponse
+        GetItemResponse?: EbayGetItemResponse,
+        GetItemTransactionsResponse?: EbayGetItemResponse,
     },
     Header: {
         RequesterCredentials: {
@@ -88,14 +89,15 @@ export type EbayItemNotification = {
         }
     }
 }
+
 export type EbayGetItemResponse = {
-    Item: EbayItem,
-    NotificationEventName: EbayNotificationEvent,
-    Timestamp: string,
+    Ack: string,
     CorrelationId: number,
     EIASToken: string,
-    Ack: string,
+    Item: EbayItem,
+    NotificationEventName: EbayNotificationEvent,
     RecipientUserID: string,
+    Timestamp: string,
     Version: number,
 
 }

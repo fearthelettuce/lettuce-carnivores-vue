@@ -175,10 +175,31 @@ async function validateEbayNotification(data: any) {
 export function getSkuFromEbayResponse(data: EbayItemNotification) {
     let sku: string | undefined
     try {
-        sku = data.Body.GetItemResponse.Item.SKU.toString()
+        if('GetItemResponse' in data.Body && data.Body.GetItemResponse) {
+            sku = data.Body.GetItemResponse.Item.SKU.toString()
+        }
+        if('GetItemTransactionsResponse' in data.Body && data.Body.GetItemTransactionsResponse) {
+            sku = data.Body.GetItemTransactionsResponse.Item.SKU.toString()
+        }
     } catch(e) {
         error('Unable to get SKU in getSkuFromEbayResponse')
-        debug(data.Body.GetItemResponse.Item)
+        debug(data.Body)
     }
     return sku
+}
+
+export function getEventTypeFromEbayResponse(data: EbayItemNotification) {
+    let eventType: string | undefined
+    try {
+        if('GetItemResponse' in data.Body && data.Body.GetItemResponse) {
+            eventType = data.Body.GetItemResponse.NotificationEventName
+        }
+        if('GetItemTransactionsResponse' in data.Body && data.Body.GetItemTransactionsResponse) {
+            eventType = data.Body.GetItemTransactionsResponse.NotificationEventName
+        }
+    } catch(e) {
+        error('Unable to get Event Type in getEventTypeFromEbayResponse')
+        debug(data.Body)
+    }
+    return eventType
 }
