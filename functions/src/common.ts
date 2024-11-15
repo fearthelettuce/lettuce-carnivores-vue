@@ -1,5 +1,4 @@
 import admin from 'firebase-admin'
-
 import { ParserOptions, parseString } from 'xml2js'
 import { debug, error} from 'firebase-functions/logger'
 import { parseBooleans, stripPrefix } from 'xml2js/lib/processors'
@@ -39,6 +38,7 @@ export async function getCategoryBySku(sku: string) {
             break
         }
     }
+    debug(`Found category ID ${categoryId} for SKU ${sku}`)
     return categoryId
 }
 

@@ -14,7 +14,6 @@ const PlantAdminView = () => import('@/views/PlantAdmin.vue')
 const AdminView = () => import('@/views/AdminView.vue')
 const GiveawayView = () => import('@/views/GiveawayView.vue')
 const EbayLoginSuccess = () => import('@/views/EbayLoginSuccess.vue')
-const InventoryManagement = () => import('@/views/InventoryManagementView.vue')
 const AdminPanel = () => import('@/views/AdminPanelView.vue')
 const routeData = [
     {

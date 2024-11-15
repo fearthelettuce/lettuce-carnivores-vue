@@ -11,7 +11,6 @@
         <FormKit
             type="text"
             label="SKU"
-
             v-model="plant.sku"
         />
         <FormKit
@@ -74,7 +73,6 @@
         <BaseButton @click.prevent="$emit('createEbayItem')" :disabled="plant.status === 'Sold'">{{`${isListedOnEbay ? 'Update' : 'Create'} eBay Item`}}</BaseButton>
         <BaseButton @click.prevent="$emit('listEbayOffer')" :disabled="plant.status === 'Sold' || isListedOnEbay">List on eBay</BaseButton>
         <BaseButton @click.prevent="$emit('deleteEbayItem')" type="danger" :disabled="!isListedOnEbay">Delete from eBay</BaseButton>
-
     </form>
 </template>
 

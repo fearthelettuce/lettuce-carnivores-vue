@@ -31,8 +31,8 @@ const props = defineProps({
     filter: brightness(105%);
 }
 .base-button:active {
-    box-shadow: 2px 3px darkslategray;
-    transform: translateY(3px);
+    box-shadow: inset 0px 0px 0px #c1c1c1;
+    outline: none;
 }
 .base-button:disabled {
     filter: brightness(75%);

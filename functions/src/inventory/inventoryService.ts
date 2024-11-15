@@ -3,7 +3,7 @@ import { deleteEbayInventoryItem } from '../ebay/ebayData'
 import type { Plant } from '../types/Plants'
 import { getCategoryBySku } from '../common'
 import { StripeLineItem } from '../types/Stripe'
-import { error } from 'firebase-functions/logger'
+import { debug, error } from 'firebase-functions/logger'
 
 export async function updateInventoryFromStripeSale(items: StripeLineItem[]) {
     for (const item of items) {
@@ -45,12 +45,13 @@ export async function updateEbayInventory(sku: string, deleteFromEbay: boolean) 
 }
 
 async function updateWebsiteInventory(sku: string, plantCategoryId?: string, quantity: number = 1) {
-    const categoryId = plantCategoryId ?? getCategoryBySku(sku)
+    debug(`Updating website inventory for sku: ${sku} category ${plantCategoryId} quantity ${quantity}`)
+    const categoryId = plantCategoryId ?? await getCategoryBySku(sku)
     const docRef = admin.firestore().doc(`plantCategories/${categoryId}`)
     const doc = await docRef.get()
     const plantCategory = doc?.data()
     if(!plantCategory) {
-        error(`Unable to get plantCategory data when updating website inventory for SKU ${sku}`)
+        error(`Unable to get plantCategory data when updating website inventory for SKU ${sku} category ${plantCategoryId}`)
         return false
     }
     const plantIndex = plantCategory.plants.findIndex((plant: Plant ) => plant.sku === sku)

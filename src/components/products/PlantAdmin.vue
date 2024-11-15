@@ -101,9 +101,6 @@ import PhotoUploadModal from '@/components/PhotoUploadModal.vue';
 import { type PhotoItem } from '@/types/Product';
 import { getCardName, getDisplayPrice, getCardPhoto } from '@/composables/useCardUtils';
 import { getAllPlants } from '@/apis/dataServices'
-import { createEbayInventoryItem } from '@/composables/buildEbayInventoryItem'
-import { getPhotoDownloadUrl } from '@/apis/fileServices'
-import { addOrReplaceEbayInventory } from '@/composables/useEbayUtils'
 import { toast } from 'vue3-toastify'
 import { useInventoryStore } from '@/stores/inventory'
 import type { Plant } from '@/types/Plant'
@@ -218,16 +215,16 @@ provide('managePhotos', managePhotos)
         margin-right: auto;
         margin-left: auto;
         padding-left: .5rem;
-        padding-right: .75rem;
+        padding-right: .1rem;
         display: grid;
         grid-template-columns: 1fr;
-        gap: 0 2rem;
+        gap: 0 .5rem;
     }
     .product-list {
         display: grid;
-        gap: .5rem;
+        gap: .2rem;
         grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-        margin: 2rem .5rem;
+        margin: 2rem .2rem;
     }
     .item-select {
         max-width: 95dvw;
@@ -237,12 +234,12 @@ provide('managePhotos', managePhotos)
     }
     .up-down-arrows {
         display: grid;
-        min-width: 1.5rem;
+        min-width: 1.2rem;
     }
     @media(min-width: 82rem) {
         .product-list {
             grid-template-columns: repeat(auto-fit, minmax(26rem, 1fr));
-            gap: 1rem;
+            gap: .5rem;
         }
     }
     .slide-up-enter-active,

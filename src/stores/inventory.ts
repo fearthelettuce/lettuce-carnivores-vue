@@ -1,3 +1,4 @@
+
 import { defineStore } from 'pinia'
 import { ref, type Ref } from 'vue'
 import type { AccessTokenDBResponse } from '@/types/Ebay'
@@ -28,15 +29,16 @@ export const useInventoryStore = defineStore('inventory', () => {
         const res = await postOffer(plantCategory, plant)
         isLoading.value = false
         if(res && 'success' in res && res.success) {
+            inventorySkus.value.push(plant.sku)
             return true
-            //add ebay item to inventory refs
         }
         return false
     }
 
     async function deleteItemFromEbay(sku: string) {
         const res = await deleteEbayItem(sku)
-        //delete ebay item from inventory refs
+        const index = inventorySkus.value.indexOf(sku)
+        inventorySkus.value.splice(index, 1)
         return res
     }
 
@@ -45,7 +47,7 @@ export const useInventoryStore = defineStore('inventory', () => {
         if(inventoryItems.value === undefined) {
             const res = await findAll<InventoryRecord>('inventory', true)
             inventoryItems.value = res
-            const activeItems = res.filter(item => item.active !== false && item.status !== 'error' && !item.error)
+            const activeItems = res.filter(item => item.active !== false && item.status !== 'error' && !item.error && item.listingId !== undefined)
             inventorySkus.value = activeItems.map(item => item.id)
         }
     }
