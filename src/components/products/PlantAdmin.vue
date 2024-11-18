@@ -97,7 +97,7 @@ import ItemSelect from '@/components/UI/ItemSelect.vue';
 import { usePlantStore } from '@/stores/plant';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router'
-import PhotoUploadModal from '@/components/PhotoUploadModal.vue';
+import PhotoUploadModal from '@/components/photo/PhotoUploadModal.vue';
 import { type PhotoItem } from '@/types/Product';
 import { getCardName, getDisplayPrice, getCardPhoto } from '@/composables/useCardUtils';
 import { getAllPlants } from '@/apis/dataServices'

@@ -1,0 +1,87 @@
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+$alignments: ('center', 'space-between', 'space-around', 'space-evenly', 'flex-start', 'flex-end');
+
+@each $align in $alignments {
+  .justify-#{$align} {
+    justify-content: #{$align};
+  }
+
+  .align-#{$align} {
+    align-items: #{$align};
+  }
+
+  .justify-items-#{$align} {
+    justify-items: #{$align};
+  }
+
+  .content-#{$align} {
+    align-content: #{$align};
+  }
+}
+
+$displayProps: (
+  'block',
+  'inline-block',
+  'inline',
+  'flex',
+  'grid',
+  'inline-flex',
+  'inline-grid',
+  'table',
+  'inline-table',
+  'list-item',
+  'none',
+  'contents'
+);
+
+@each $display in $displayProps {
+  .#{$display} {
+    display: #{$display};
+  }
+}
+
+.grid-col-1 {
+  grid-column: span 1;
+}
+.grid-col-2 {
+  grid-column: span 2;
+}
+
+.grid-col-3 {
+  grid-column: span 3;
+}
+
+.grid-col-4 {
+  grid-column: span 4;
+}
+
+.grid-col-5 {
+  grid-column: span 5;
+}
+
+.grid-col-10 {
+  grid-column: span 10;
+}
+
+$textAlignments: ('left', 'right', 'center', 'revert');
+
+@each $textAlign in $textAlignments {
+  .text-#{$textAlign} {
+    text-align: #{$textAlign};
+  }
+}

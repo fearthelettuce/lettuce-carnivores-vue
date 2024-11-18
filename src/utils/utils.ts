@@ -56,3 +56,10 @@ export const USDollar = new Intl.NumberFormat('en-US', {
     currency: 'USD',
     minimumFractionDigits: 2,
 });
+
+export function arrayMove(arr: Array<any>, fromIndex: number, toIndex: number) {
+    if(toIndex > arr.length-1) {console.log('Unable to move in array, toIndex greater than arr.length. toIndex:' + toIndex + 'arr.length: ' + arr.length)}
+    const ele = arr[fromIndex]
+    arr.splice(fromIndex,1)
+    arr.splice(toIndex, 0, ele)
+}

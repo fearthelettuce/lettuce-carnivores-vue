@@ -18,21 +18,4 @@ li {
   list-style: none;
 }
 
-
-.grid-col-2 {
-    grid-column: span 2;
-}
-.grid-col-3 {
-    grid-column: span 3;
-}
-.grid-col-4 {
-    grid-column: span 4;
-}
-.grid-col-5 {
-    grid-column: span 5;
-}
-.grid-col-10 {
-    grid-column: span 10;
-}
-
 </style>
