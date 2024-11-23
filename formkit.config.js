@@ -2,16 +2,14 @@ import { generateClasses } from '@formkit/themes'
 import { createAutoHeightTextareaPlugin } from '@formkit/addons'
 
 const config = {
-  plugins: [
-    createAutoHeightTextareaPlugin(),
-  ],
+  plugins: [createAutoHeightTextareaPlugin()],
   config: {
     classes: generateClasses({
       global: {
         outer: '$reset',
         input: 'form-control',
         label: 'form-label',
-        help: 'form-text'
+        help: 'form-text',
       },
 
       checkbox: {
@@ -21,11 +19,10 @@ const config = {
       },
       submit: {
         outer: '$reset mt-3',
-        input: '$reset btn btn-primary'
+        input: '$reset btn btn-primary',
       },
-    })
+    }),
   },
-
 }
 
 export default config

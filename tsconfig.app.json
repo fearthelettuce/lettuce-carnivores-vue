@@ -12,5 +12,6 @@
     "target": "ESNext",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "allowImportingTsExtensions": true,
+    "noErrorTruncation": true
   }
 }

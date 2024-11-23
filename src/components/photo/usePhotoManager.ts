@@ -57,7 +57,10 @@ export function usePhotoManager() {
   const isSaving = ref(false)
 
   async function uploadFiles(folder: string, photoArr: Ref<PhotoItem[]>) {
-    const photosToUpload = selectedFiles.value.filter((photo) => photo.file)
+    //upload seems to break if files are moved while awaiting upload.  Trying to create a local copy to see if
+    //moving files in the folder causes this
+    const photosToUpload = [...selectedFiles.value.filter((photo) => photo.file)]
+    // const photosToUpload = selectedFiles.value.filter((photo) => photo.file)
     if (photosToUpload.length === 0) {
       toast.warning('No files to upload')
       return

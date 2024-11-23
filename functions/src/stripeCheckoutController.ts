@@ -11,7 +11,7 @@ import {
 import Stripe from 'stripe'
 import type { Plant, PlantCategory } from './types/Plants'
 import { FunctionResponse } from './types/Functions'
-import { CartItem, Discount } from './types/Orders'
+import { BuyGetDiscount, CartItem, Discount, MultiPlantDiscount, SiteWideDiscount } from './types/Orders'
 import { type CustomerRecord } from './types/Users'
 import { StripeLineItem } from './types/Stripe'
 
@@ -160,7 +160,7 @@ async function buildStripeCart(cartItems: CartItem[]): Promise<FunctionResponse>
 }
 
 async function getDiscounts(line_items: StripeLineItem[]) {
-  const discountDocs = await getAllDocs<Discount>('discounts')
+  const discountDocs = await getAllDocs<MultiPlantDiscount | BuyGetDiscount | SiteWideDiscount>('discounts')
   if (!discountDocs || discountDocs.length === 0 || !line_items || line_items.length === 0) {
     return null
   }
@@ -172,7 +172,10 @@ async function getDiscounts(line_items: StripeLineItem[]) {
 
   const multiPlantDiscount = activeDiscounts.find((item) => item.type === 'multiplePlants')
   const cartQuantity = line_items.reduce((accumulator, item) => accumulator + item.quantity!, 0)
-  if (multiPlantDiscount && cartQuantity >= multiPlantDiscount.parameters.minimumQuantity) {
+  if(multiPlantDiscount && multiPlantDiscount.type === 'multiplePlants') {
+    if(cartQuantity >= multiPlantDiscount.parameters.minimumQuantity)
+  }
+  if (multiPlantDiscount && multiPlantDiscount.type === 'multiplePlants' && cartQuantity >= multiPlantDiscount.parameters.minimumQuantity) {
     stripeDiscounts.push({ coupon: multiPlantDiscount.id })
     discountValues.push(multiPlantDiscount)
   }
@@ -181,6 +184,11 @@ async function getDiscounts(line_items: StripeLineItem[]) {
   if (siteWideDiscount && siteWideDiscount.id !== null) {
     stripeDiscounts.push({ coupon: siteWideDiscount.id })
     discountValues.push(siteWideDiscount)
+  }
+  const buyGetDiscount = activeDiscounts.find((item) => item.type === 'buyGet')
+  if (buyGetDiscount && buyGetDiscount.id !== null) {
+    stripeDiscounts.push({ coupon: buyGetDiscount.id })
+    discountValues.push(buyGetDiscount)
   }
   return {
     stripeDiscounts: stripeDiscounts,
@@ -200,6 +208,32 @@ function calculateDiscounts(cartTotal: number, discountValues: Discount[]) {
     return acc + obj.amount_off
   }, 0)
   return percentageOffAmount + totalAmountOff
+}
+
+function calculateBuyGetDiscounts(cartItems: StripeLineItem[], discount: BuyGetDiscount) {
+  if(discount.type !== 'buyGet' || !discount.percent_off || !discount.parameters.buyX || !discount.parameters.getY ) {
+    return null
+  }
+  const sortedItems = cartItems.sort((a, b) => b.price_data.unit_amount - a.price_data.unit_amount)
+  console.log(sortedItems)
+  let totalDiscount = 0
+  const discountedItems: StripeLineItem[] = []
+  let buyCounter = 0
+  let discountCounter = 0
+  for(let i = 0; i < sortedItems.length; i++) {
+    buyCounter++
+    if(buyCounter === discount.parameters.buyX) {
+      discountCounter += discount.parameters.getY
+    }
+    if(discountCounter === 0) {
+      continue
+    }
+    buyCounter = 0
+    discountCounter --
+    const discountedAmount = sortedItems[i].price_data.unit_amount * discount.percent_off
+    totalDiscount += discountedAmount
+    discountedItems.push(sortedItems[i])
+  }
 }
 
 type PlantDetailsFromFirestoreRequest = {
