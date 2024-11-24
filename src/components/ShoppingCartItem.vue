@@ -1,0 +1,87 @@
+<template>
+<div>
+    <router-link :to="`/plants/${encodeURIComponent(item.categoryId)}/${item.sku}`" class="align-content-center">
+    <div class="cart-item-photo">
+        <img
+        :src="getImageUrl(item)"
+        :class="getImageUrl(item) == placeholderUrl ? 'placeholderImage' : 'cardImage'"
+        :alt="`An image of ${item.name}`"
+        />
+    </div>
+    </router-link>
+
+    <div class="item-info">
+    <div class="grid-col-2">
+        <router-link :to="`/plants/${encodeURIComponent(item.categoryId)}/${item.sku}`">{{ `${item.name}` }}</router-link>
+    </div>
+    <div class="my-1">Size: {{ item.size }}</div>
+    <div class="my-1" v-if="!item.isRepresentative">Specimen {{ item.sku }}</div>
+    <div class="quantity-input mt-2 input-group input-group-sm">
+        <span class="input-group-prepend">
+        <button type="button" class="btn btn-outline-light btn-number btn-sm" @click="decreaseQuantity(item)">
+            <FontAwesome class="text-light" icon="fa fa-minus"></FontAwesome>
+        </button>
+        </span>
+        <input type="text" class="form-control input-number text-center btn-sm" :value="item.quantity" />
+        <span class="input-group-append">
+        <button
+            type="button"
+            class="btn btn-outline-light btn-number btn-sm"
+            :disabled="item.quantity >= item.maxQuantity"
+            @click="increaseQuantity(item)"
+        >
+            <FontAwesome class="text-light" icon="fa fa-plus"></FontAwesome>
+        </button>
+        </span>
+    </div>
+    </div>
+
+    <div class="item-subtotal">
+        <div class="text-center">{{ USDollar.format(item.price * item.quantity) }}</div>
+    </div>
+</div>
+</template>
+
+<script setup lang="ts">
+import type { CartItem } from '@/types/Orders'
+import { getPhotoUrl, placeholderUrl } from '@/composables/usePhotoUtils'
+import { USDollar } from '@/utils/utils';
+import { useOrderStore } from '@/stores/order'
+
+const props = defineProps<{ item: CartItem }>()
+const emit = defineEmits(['cartItemsChanged'])
+const { getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession, validateCart, getCartDiscounts, getActiveDiscounts } =
+  useOrderStore()
+
+async function increaseQuantity(item: CartItem) {
+  await addItemToCart(item)
+  emit('cartItemsChanged')
+  //discounts.value = await getCartDiscounts()
+}
+
+async function decreaseQuantity(item: CartItem) {
+  if (item.quantity <= 1) {
+    await deleteItem(item)
+  } else {
+    removeItemFromCart(item, false)
+  }
+  emit('cartItemsChanged')
+  //discounts.value = await getCartDiscounts()
+}
+
+async function deleteItem(item: CartItem) {
+  removeItemFromCart(item, true)
+  emit('cartItemsChanged')
+  //discounts.value = await getCartDiscounts()
+}
+
+function getImageUrl(cartItem: CartItem) {
+  if (cartItem.photo && cartItem.photo.path) {
+    return getPhotoUrl(cartItem.photo.path, 256)
+  } else {
+    return getPhotoUrl(null)
+  }
+}
+
+
+</script>

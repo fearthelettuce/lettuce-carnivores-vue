@@ -10,7 +10,7 @@
     <div class="cart-grid" v-else>
       <div class="cart-item-container">
         <div v-for="item in cart.cartItems" :key="item.sku" class="cart-item">
-          <router-link :to="`/plants/${encodeURIComponent(item.categoryId)}/${item.sku}`" class="align-content-center">
+          <!-- <router-link :to="`/plants/${encodeURIComponent(item.categoryId)}/${item.sku}`" class="align-content-center">
             <div class="cart-item-photo">
               <img
                 :src="getImageUrl(item)"
@@ -48,7 +48,7 @@
 
           <div class="item-subtotal">
             <div class="text-center">{{ USDollar.format(item.price * item.quantity) }}</div>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="subtotal-container">
@@ -108,6 +108,7 @@ import { discountedShippingThreshold } from '@/constants/OrderConstants'
 import { useUserStore } from '@/stores/users'
 import { router } from '@/router'
 import { calculateBuyGetDiscounts } from '@/composables/useDiscountCalculator'
+import { USDollar } from '@/utils/utils';
 
 const { cart } = storeToRefs(useOrderStore())
 const { getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession, validateCart, getCartDiscounts, getActiveDiscounts } =
@@ -142,38 +143,33 @@ const isCheckoutLoading = computed(() => {
   return isLoading.value || isUserLoading
 })
 
-const USDollar = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-  minimumFractionDigits: 2,
-})
 
-async function increaseQuantity(item: CartItem) {
-  await addItemToCart(item)
-  discounts.value = await getCartDiscounts()
-}
+// async function increaseQuantity(item: CartItem) {
+//   await addItemToCart(item)
+//   discounts.value = await getCartDiscounts()
+// }
 
-async function decreaseQuantity(item: CartItem) {
-  if (item.quantity <= 1) {
-    await deleteItem(item)
-  } else {
-    removeItemFromCart(item, false)
-  }
-  discounts.value = await getCartDiscounts()
-}
+// async function decreaseQuantity(item: CartItem) {
+//   if (item.quantity <= 1) {
+//     await deleteItem(item)
+//   } else {
+//     removeItemFromCart(item, false)
+//   }
+//   discounts.value = await getCartDiscounts()
+// }
 
-async function deleteItem(item: CartItem) {
-  removeItemFromCart(item, true)
-  discounts.value = await getCartDiscounts()
-}
+// async function deleteItem(item: CartItem) {
+//   removeItemFromCart(item, true)
+//   discounts.value = await getCartDiscounts()
+// }
 
-function getImageUrl(cartItem: CartItem) {
-  if (cartItem.photo && cartItem.photo.path) {
-    return getPhotoUrl(cartItem.photo.path, 256)
-  } else {
-    return getPhotoUrl(null)
-  }
-}
+// function getImageUrl(cartItem: CartItem) {
+//   if (cartItem.photo && cartItem.photo.path) {
+//     return getPhotoUrl(cartItem.photo.path, 256)
+//   } else {
+//     return getPhotoUrl(null)
+//   }
+// }
 
 async function checkout() {
   await getCartErrors()
