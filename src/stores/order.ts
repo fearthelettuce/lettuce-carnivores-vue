@@ -4,9 +4,10 @@ import type{ BuyGetDiscount, CartItem, Discount, MultiPlantDiscount, ShoppingCar
 import { newShoppingCart } from '@/constants/OrderConstants'
 import { usePlantStore } from '@/stores/plant'
 import { type PlantCategory } from '@/types/Plant'
-import { useLocalStorage } from '@vueuse/core'
+import { notNullish, useLocalStorage } from '@vueuse/core'
 import {createStripeCheckoutSession} from '@/apis/stripe'
 import { findAll, getPlantsFromFirestore } from '@/apis/dataServices'
+import { calculateBuyGetDiscounts } from '@/composables/useDiscountCalculator'
 import { Timestamp } from 'firebase/firestore'
 
 export const useOrderStore = defineStore('order', () => {
@@ -78,6 +79,7 @@ export const useOrderStore = defineStore('order', () => {
     function resetCart () {
         if(cart && cart.value) {
             cart.value.cartItems.length = 0
+            applyDiscounts()
         }
     }
 
@@ -113,16 +115,47 @@ export const useOrderStore = defineStore('order', () => {
         })
         return errors
     }
-
-    async function getCartDiscounts () {
+    const activeDiscount: Ref<Discount | null> = ref(null)
+    const activeDiscountMessage: Ref<string | null> = ref(null)
+    async function applyDiscounts() {
         const discounts = await getDiscounts(cart.value)
-        if(!discounts || !discounts.discountValues) {
+        let bestDiscount = null
+        let bestDiscountMessage = null
+        if (!discounts || !discounts.discountValues) {
+            activeDiscount.value = bestDiscount
+            activeDiscountMessage.value = bestDiscountMessage
             return 0
         }
-        const totalPercentageOff = discounts.discountValues.reduce(function (acc, obj) { return acc + obj.percent_off; }, 0);
-        const percentageOffAmount = Math.round((cartTotal.value * totalPercentageOff / 100) *100)/100
-        const totalAmountOff = discounts.discountValues.reduce(function (acc, obj) { return acc + obj.amount_off; }, 0);
-        return percentageOffAmount + totalAmountOff
+        if (discounts?.discountValues.length === 1) {
+            bestDiscount = discounts.discountValues[0]
+        }
+
+        const buyGetDiscount = discounts.discountValues.find(discount => discount.type === 'buyGet') as BuyGetDiscount
+        if (buyGetDiscount) {
+            const discountDetails = calculateBuyGetDiscounts(cart.value.cartItems, buyGetDiscount)
+            activeDiscount.value = buyGetDiscount
+            activeDiscountMessage.value = discountDetails.message
+            return discountDetails.totalDiscount
+        }
+
+        let multiPlantAmountOff = 0
+        const multiPlantDiscount = discounts.discountValues.find(discount => discount.type === 'multiplePlants') as MultiPlantDiscount
+        if (multiPlantDiscount) {
+            if (cartItemCount.value >= multiPlantDiscount.parameters.minimumQuantity) {
+                discounts.discountValues.reduce(function (acc, obj) { return acc + obj.percent_off; }, 0);
+                multiPlantAmountOff = Math.round((cartTotal.value * multiPlantDiscount.percent_off / 100) * 100) / 100
+                bestDiscount = multiPlantDiscount
+                bestDiscountMessage = `Your order qualifies for a ${multiPlantDiscount.percent_off}% discount!`
+            } else {
+                bestDiscountMessage ??= multiPlantDiscount.message
+            }
+            
+        }
+        
+        
+        activeDiscount.value = bestDiscount
+        activeDiscountMessage.value = bestDiscountMessage
+        return Math.max(multiPlantAmountOff)
     }
 
     const discountDocs: Ref<Discount[] | undefined> = ref()
@@ -135,31 +168,27 @@ export const useOrderStore = defineStore('order', () => {
         return discountDocs.value.filter(item => item.valid && item.validThrough.toMillis() >= Timestamp.now().toMillis())
     }
 
-    async function getDiscounts(cart: ShoppingCart){
+    async function getDiscounts(cart: ShoppingCart) {
         const activeDiscounts = await getActiveDiscounts()
         if(!activeDiscounts || !cart.cartItems || cart.cartItems.length === 0) {
             return null
         }
 
-        const stripeDiscounts: {coupon: string}[] = []
         const discountValues: Discount[] = []
-
-        const multiPlantDiscount = activeDiscounts.find(item => item.type === 'multiplePlants') as MultiPlantDiscount
-        if(multiPlantDiscount && cartItemCount.value >= multiPlantDiscount.parameters.minimumQuantity) {
-            stripeDiscounts.push({coupon: multiPlantDiscount.id})
-            discountValues.push(multiPlantDiscount)
-        }
         const buyGetDiscount = activeDiscounts.find(item => item.type === 'buyGet') as BuyGetDiscount
         if (buyGetDiscount) {
             discountValues.push(buyGetDiscount)
         }
+        const multiPlantDiscount = activeDiscounts.find(item => item.type === 'multiplePlants') as MultiPlantDiscount
+        if (multiPlantDiscount && !buyGetDiscount) {
+            discountValues.push(multiPlantDiscount)
+        }
+        
         const siteWideDiscount = activeDiscounts.find(item => item.type === 'siteWide') as SiteWideDiscount
         if(siteWideDiscount && siteWideDiscount.id !== null) {
-            stripeDiscounts.push({coupon: siteWideDiscount.id})
             discountValues.push(siteWideDiscount)
         }
         return {
-            stripeDiscounts: stripeDiscounts,
             discountValues: discountValues
         }
     }
@@ -174,7 +203,9 @@ export const useOrderStore = defineStore('order', () => {
         startCheckoutSession,
         cartTotal,
         isLoading,
-        getCartDiscounts,
-        getActiveDiscounts
+        applyDiscounts,
+        getActiveDiscounts,
+        activeDiscount,
+        activeDiscountMessage
     }
 })

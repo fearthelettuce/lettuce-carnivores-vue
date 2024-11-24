@@ -17,10 +17,10 @@
       </div>
       <div class="subtotal-container">
         <div class="subtotal">
-          <div v-if="discounts > 0" class="subtotal-line">
+          <div v-if="totalDiscountAmount > 0" class="subtotal-line">
             <h3 class="m-0">Discount</h3>
             <h3 class="m-0">
-              {{ USDollar.format(-discounts) }}
+              {{ USDollar.format(-totalDiscountAmount) }}
             </h3>
           </div>
           <div class="subtotal-line">
@@ -30,16 +30,16 @@
             </h3>
           </div>
 
-          <div v-if="discounts === 0 && discountMessage !== null" class="d-flex flex-row justify-content-center gap-2 mx-4">
+          <div v-if="activeDiscountMessage !== null" class="d-flex flex-row justify-content-center gap-2 mx-4">
             <h5 class="center-message">
-              {{ discountMessage }}
+              {{ activeDiscountMessage }}
             </h5>
           </div>
 
           <div class="d-flex flex-row justify-content-center gap-2 mx-4">
             <h5 class="center-message">
               {{
-                cartTotal - discounts >= discountedShippingThreshold
+                cartTotal - totalDiscountAmount >= discountedShippingThreshold
                   ? `Free standard shipping on orders over $75!`
                   : `Add ${amountToQualifyForDiscountedShipping} to quality for free standard shipping.`
               }}
@@ -70,41 +70,31 @@ import { toast } from 'vue3-toastify'
 import { discountedShippingThreshold } from '@/constants/OrderConstants'
 import { useUserStore } from '@/stores/users'
 import { router } from '@/router'
-import { calculateBuyGetDiscounts } from '@/composables/useDiscountCalculator'
 import { USDollar } from '@/utils/utils';
 import ShoppingCartItem from './ShoppingCartItem.vue'
 
 const { cart } = storeToRefs(useOrderStore())
-const { getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession, validateCart, getCartDiscounts, getActiveDiscounts } =
-  useOrderStore()
+const { getCategoryBySku, startCheckoutSession, validateCart, applyDiscounts } = useOrderStore()
 const { cartTotal, isLoading } = storeToRefs(useOrderStore())
 const { loginAnonymously, isLoggedIn, isUserLoading, user } = useUserStore()
 
+
 const amountToQualifyForDiscountedShipping = computed(() => {
-  if (cartTotal.value - discounts.value >= discountedShippingThreshold) {
+  if (cartTotal.value - totalDiscountAmount.value >= discountedShippingThreshold) {
     return USDollar.format(0)
   } else {
-    return USDollar.format(discountedShippingThreshold - cartTotal.value + discounts.value)
+    return USDollar.format(discountedShippingThreshold - cartTotal.value + totalDiscountAmount.value)
   }
 })
 const cartSubtotal = computed(() => {
-  return cartTotal.value - discounts.value
+  return cartTotal.value - totalDiscountAmount.value
 })
-const discounts = ref(0)
-const availableDiscounts: Ref<Discount[]> = ref([])
-const multiPlantDiscount = computed(() => {
-  return getDiscountByType(availableDiscounts.value, 'multiplePlants')
-})
-const buyGetDiscount = computed(() => {
-  return  getDiscountByType(availableDiscounts.value, 'buyGet')
-})
-function getDiscountByType(arr: Discount[], type: string) {
-  return arr.find((discount) => discount.type === type)
-}
+const totalDiscountAmount = ref(0)
+
 onMounted(async () => {
   await getCartErrors()
-  discounts.value = await getCartDiscounts()
-  availableDiscounts.value = await getActiveDiscounts() ?? []
+  await updateDiscounts()
+  totalDiscountAmount.value = await applyDiscounts()
   cart.value.cartItems.forEach((item) => getCategoryBySku(item))
 })
 
@@ -112,16 +102,10 @@ const isCheckoutLoading = computed(() => {
   return isLoading.value || isUserLoading
 })
 
+const { activeDiscount, activeDiscountMessage } = storeToRefs(useOrderStore())
 async function updateDiscounts() {
-  discounts.value = await getCartDiscounts()
-  discountMessage.value = getBestDiscount()
+  totalDiscountAmount.value = await applyDiscounts()
 }
-
-const discountMessage: Ref<string| null> = ref(null)
-function getBestDiscount() {
-  return null
-}
-
 
 async function checkout() {
   await getCartErrors()
