@@ -11,6 +11,9 @@ importers:
       '@formkit/addons':
         specifier: ^1.6.9
         version: 1.6.9
+      '@formkit/themes':
+        specifier: ^1.6.9
+        version: 1.6.9
       '@formkit/vue':
         specifier: ^1.6.9
         version: 1.6.9(vue@3.5.13(typescript@5.7.2))

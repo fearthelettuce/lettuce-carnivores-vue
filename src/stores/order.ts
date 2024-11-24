@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, type Ref, ref } from 'vue'
-import type{ CartItem, Discount, ShoppingCart } from '@/types/Orders'
+import type{ BuyGetDiscount, CartItem, Discount, MultiPlantDiscount, ShoppingCart, SiteWideDiscount } from '@/types/Orders'
 import { newShoppingCart } from '@/constants/OrderConstants'
 import { usePlantStore } from '@/stores/plant'
 import { type PlantCategory } from '@/types/Plant'
@@ -144,13 +144,16 @@ export const useOrderStore = defineStore('order', () => {
         const stripeDiscounts: {coupon: string}[] = []
         const discountValues: Discount[] = []
 
-        const multiPlantDiscount = activeDiscounts.find(item => item.type === 'multiplePlants')
+        const multiPlantDiscount = activeDiscounts.find(item => item.type === 'multiplePlants') as MultiPlantDiscount
         if(multiPlantDiscount && cartItemCount.value >= multiPlantDiscount.parameters.minimumQuantity) {
             stripeDiscounts.push({coupon: multiPlantDiscount.id})
             discountValues.push(multiPlantDiscount)
         }
-
-        const siteWideDiscount = activeDiscounts.find(item => item.type === 'siteWide')
+        const buyGetDiscount = activeDiscounts.find(item => item.type === 'buyGet') as BuyGetDiscount
+        if (buyGetDiscount) {
+            discountValues.push(buyGetDiscount)
+        }
+        const siteWideDiscount = activeDiscounts.find(item => item.type === 'siteWide') as SiteWideDiscount
         if(siteWideDiscount && siteWideDiscount.id !== null) {
             stripeDiscounts.push({coupon: siteWideDiscount.id})
             discountValues.push(siteWideDiscount)

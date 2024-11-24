@@ -136,7 +136,6 @@ onMounted(async () => {
   discounts.value = await getCartDiscounts()
   availableDiscounts.value = await getActiveDiscounts()
   cart.value.cartItems.forEach((item) => getCategoryBySku(item))
-  console.log(calculateBuyGetDiscounts(cart.value.cartItems, { percent_off: 100 }))
 })
 
 const isCheckoutLoading = computed(() => {

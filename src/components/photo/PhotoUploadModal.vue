@@ -1,5 +1,5 @@
 <template>
-  <BaseDialog :open="open" class="bg-dark border-0 rounded p-0">
+  <BaseDialog :open class="bg-dark border-0 rounded p-0">
     <div class="photo-modal p-3">
       <header class="mb-2 border-0">
         <h5 class="modal-title text-light">Manage Photos</h5>

@@ -1,42 +1,31 @@
 <template>
-    <div
-        ref="expandImage"
-        id="expandImage"
-        class="modal fade"
-        tabindex="-1"
-        aria-hidden="true"
-    >
-        <div   
-            class="modal-dialog modal-xl modal-fullscreen-lg-down modal-dialog-centered"
-            @closeModal="state.expandImage.hide()"
-        >
+    <BaseDialog :open class="bg-dark border-0 rounded p-0" @click="toggleDialog">
             <div class="image-container">
                 <div class="image-hover-container">
-                    <button 
-                        type="button" 
-                        class="btn-close btn btn-lg" 
+                    <BaseButton 
+                        type="close" 
+                        class="close"
                         aria-label="Close"
                         data-bs-dismiss="modal"
                         @click="$emit('closeModal')" />
-                    <img :src="getPhotoUrl(photo?.path?.toString(), 1600)" :alt="imageAltText">
+                    <img :src="getPhotoUrl(photo?.path?.toString(), 1600)" :alt="`An an image of ${photo.name}`">
                 </div>
             </div>
-        </div>
-    </div>
+    </BaseDialog>
 </template>
 
 <script setup lang="ts">
-import { reactive, computed, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import type { PropType } from 'vue';
-import { Modal } from 'bootstrap'
+import BaseDialog from '@/components/UI/BaseDialog.vue'
 import type { PhotoItem } from '@/types/Product';
 import {getPhotoUrl} from '@/composables/usePhotoUtils'
 
-const state = reactive({
-    expandImage: Modal || null,
-})
-
-const props = defineProps({
+const open = ref(false)
+function toggleDialog() {
+  open.value = !open.value
+}
+defineProps({
     photo: {
         type: Object as PropType<PhotoItem>,
         required: true,
@@ -44,20 +33,9 @@ const props = defineProps({
 })
 
 defineExpose({
-    expandImage,
+    toggleDialog,
 })
 
-const imageAltText = computed(()=>{
-    return `An iamge of ${props.photo.name}`
-})
-
-onMounted(()=>{
-    state.expandImage = new Modal('#expandImage', {})
-})
-
-function expandImage() {
-    state.expandImage.show()
-}
 
 </script>
 
@@ -65,21 +43,21 @@ function expandImage() {
     .image-hover-container {
         display: flex;
         justify-content: center;
-        width: 100%;
+  
     }
     .image-container {
         position: relative;
-        margin: 0 1rem;
     }
     img {
-        max-height: 100%;
+        height: 94dvh;
         object-fit: cover;
         width: 100%;
+
     }
-    .btn-close{
+    .close{
         position: absolute;
         top: 0;
-        right: 0;
+        right: 1rem;
         margin: 0.5em 0.5em;
         cursor: pointer;
     }

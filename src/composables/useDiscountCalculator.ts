@@ -31,15 +31,15 @@ export function calculateBuyGetDiscounts(cartItems: CartItem[], discount: BuyGet
   let message = ``
   if (itemsBoughtCounter !== 0) {
     const itemsToQuality = buyX - itemsBoughtCounter
-    message = `Add ${itemsToQuality} more plant${itemsToQuality > 1 ? 's' : ''} to quality for `
+    message = `Add ${itemsToQuality} more plant${itemsToQuality > 1 ? 's' : ''} to quality for`
     if (discount.percent_off === 100) {
-      message = `${message} ${getY} free plant${getY > 1 ? 's' : ''}`
+      message = `${message} ${getY === 1 ? 'a' : getY} free plant${getY > 1 ? 's' : ''}`
     } else {
       message = `${message} ${getY}% off another plant`
     }
   }
-  if (discountedItemCounter > 0) {
-    message = `You quality for ${discountedItemCounter} free plant${discountedItemCounter > 1 ? 's' : ''}`
+  if (discountedItemCounter > 0 && itemsBoughtCounter === 0) {
+    message = `Your order qualifies for ${discountedItemCounter === 1 ? 'a' : discountedItemCounter} free plant${discountedItemCounter > 1 ? 's' : ''}! The next plant (of equal or lesser value) you add to your cart will be free!`
   }
   return {
     discountedItems: combineArray(discountedItems),
@@ -79,33 +79,3 @@ function combineArray<T extends ArrItem>(arr: T[]): T[] {
 
   return Object.values(combinedItems)
 }
-// export function calculateBuyGetDiscounts(cartItems: CartItem[], discount: BuyGetDiscount) {
-//   if (discount.type !== 'buyGet' || !discount.percent_off || !discount.parameters.buyX || !discount.parameters.getY) {
-//     return null
-//   }
-//   const buyX = discount.parameters.buyX
-//   const getY = discount.parameters.getY
-//   const sortedItems = cartItems.sort((a, b) => b.price - a.price)
-//   console.log(sortedItems)
-//   let totalDiscount = 0
-//   const discountedItems: CartItem[] = []
-//   let buyCounter = 0
-//   let discountCounter = 0
-//   for (let i = 0; i < sortedItems.length; i++) {
-//     buyCounter += cartItems[i].quantity
-//     if (buyCounter >= buyX) {
-//       const freeItemMultiplier = Math.floor(buyCounter / buyX)
-//       discountCounter += freeItemMultiplier * getY
-//       buyCounter -= freeItemMultiplier * buyX
-//     }
-//     if (discountCounter === 0) {
-//       continue
-//     }
-//     for (let y = 0; y < sortedItems[i].quantity; y++) {
-//       discountCounter--
-//       const discountedAmount = sortedItems[i].price * discount.percent_off
-//       totalDiscount += discountedAmount
-//       discountedItems.push(sortedItems[i])
-//     }
-//   }
-// }

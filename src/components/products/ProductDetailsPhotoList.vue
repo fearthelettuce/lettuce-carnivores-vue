@@ -52,7 +52,7 @@ function setSelectedPhoto(photo: PhotoItem) {
 }
 
 function showImageZoomModal() {
-    imageZoomModalRef.value?.expandImage()
+    imageZoomModalRef.value?.toggleDialog()
 }
 
 </script>

@@ -114,6 +114,7 @@ export interface Discount {
   validThrough: Timestamp
   duration: string
   message: string
+  type: 'multiplePlants' | 'buyGet' | 'siteWide'
 }
 
 export interface MultiPlantDiscount extends Discount {
