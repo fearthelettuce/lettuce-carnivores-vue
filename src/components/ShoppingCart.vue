@@ -9,47 +9,11 @@
 
     <div class="cart-grid" v-else>
       <div class="cart-item-container">
-        <div v-for="item in cart.cartItems" :key="item.sku" class="cart-item">
-          <!-- <router-link :to="`/plants/${encodeURIComponent(item.categoryId)}/${item.sku}`" class="align-content-center">
-            <div class="cart-item-photo">
-              <img
-                :src="getImageUrl(item)"
-                :class="getImageUrl(item) == placeholderUrl ? 'placeholderImage' : 'cardImage'"
-                :alt="`An image of ${item.name}`"
-              />
-            </div>
-          </router-link>
-
-          <div class="item-info">
-            <div class="grid-col-2">
-              <router-link :to="`/plants/${encodeURIComponent(item.categoryId)}/${item.sku}`">{{ `${item.name}` }}</router-link>
-            </div>
-            <div class="my-1">Size: {{ item.size }}</div>
-            <div class="my-1" v-if="!item.isRepresentative">Specimen {{ item.sku }}</div>
-            <div class="quantity-input mt-2 input-group input-group-sm">
-              <span class="input-group-prepend">
-                <button type="button" class="btn btn-outline-light btn-number btn-sm" @click="decreaseQuantity(item)">
-                  <FontAwesome class="text-light" icon="fa fa-minus"></FontAwesome>
-                </button>
-              </span>
-              <input type="text" class="form-control input-number text-center btn-sm" :value="item.quantity" />
-              <span class="input-group-append">
-                <button
-                  type="button"
-                  class="btn btn-outline-light btn-number btn-sm"
-                  :disabled="item.quantity >= item.maxQuantity"
-                  @click="increaseQuantity(item)"
-                >
-                  <FontAwesome class="text-light" icon="fa fa-plus"></FontAwesome>
-                </button>
-              </span>
-            </div>
-          </div>
-
-          <div class="item-subtotal">
-            <div class="text-center">{{ USDollar.format(item.price * item.quantity) }}</div>
-          </div> -->
-        </div>
+        <ShoppingCartItem 
+          v-for="item in cart.cartItems" 
+          :key="item.sku" 
+          :item @cart-items-changed="updateDiscounts"
+        />
       </div>
       <div class="subtotal-container">
         <div class="subtotal">
@@ -66,14 +30,14 @@
             </h3>
           </div>
 
-          <div v-if="discounts === 0 && multiPlantDiscount !== undefined" class="d-flex flex-row justify-content-center gap-2 mx-4">
-            <h5 class="shipping-message">
-              {{ multiPlantDiscount.message }}
+          <div v-if="discounts === 0 && discountMessage !== null" class="d-flex flex-row justify-content-center gap-2 mx-4">
+            <h5 class="center-message">
+              {{ discountMessage }}
             </h5>
           </div>
 
           <div class="d-flex flex-row justify-content-center gap-2 mx-4">
-            <h5 class="shipping-message">
+            <h5 class="center-message">
               {{
                 cartTotal - discounts >= discountedShippingThreshold
                   ? `Free standard shipping on orders over $75!`
@@ -101,14 +65,14 @@
 import { storeToRefs } from 'pinia'
 import { useOrderStore } from '@/stores/order'
 import { ref, type Ref, computed, onMounted } from 'vue'
-import type { CartItem, Discount } from '@/types/Orders'
-import { getPhotoUrl, placeholderUrl } from '@/composables/usePhotoUtils'
+import type { Discount } from '@/types/Orders'
 import { toast } from 'vue3-toastify'
 import { discountedShippingThreshold } from '@/constants/OrderConstants'
 import { useUserStore } from '@/stores/users'
 import { router } from '@/router'
 import { calculateBuyGetDiscounts } from '@/composables/useDiscountCalculator'
 import { USDollar } from '@/utils/utils';
+import ShoppingCartItem from './ShoppingCartItem.vue'
 
 const { cart } = storeToRefs(useOrderStore())
 const { getCategoryBySku, addItemToCart, removeItemFromCart, startCheckoutSession, validateCart, getCartDiscounts, getActiveDiscounts } =
@@ -127,15 +91,20 @@ const cartSubtotal = computed(() => {
   return cartTotal.value - discounts.value
 })
 const discounts = ref(0)
-const availableDiscounts: Ref<Discount[] | undefined> = ref(undefined)
+const availableDiscounts: Ref<Discount[]> = ref([])
 const multiPlantDiscount = computed(() => {
-  return availableDiscounts.value?.find((item) => item.type === 'multiplePlants')
+  return getDiscountByType(availableDiscounts.value, 'multiplePlants')
 })
-
+const buyGetDiscount = computed(() => {
+  return  getDiscountByType(availableDiscounts.value, 'buyGet')
+})
+function getDiscountByType(arr: Discount[], type: string) {
+  return arr.find((discount) => discount.type === type)
+}
 onMounted(async () => {
-  getCartErrors()
+  await getCartErrors()
   discounts.value = await getCartDiscounts()
-  availableDiscounts.value = await getActiveDiscounts()
+  availableDiscounts.value = await getActiveDiscounts() ?? []
   cart.value.cartItems.forEach((item) => getCategoryBySku(item))
 })
 
@@ -143,33 +112,16 @@ const isCheckoutLoading = computed(() => {
   return isLoading.value || isUserLoading
 })
 
+async function updateDiscounts() {
+  discounts.value = await getCartDiscounts()
+  discountMessage.value = getBestDiscount()
+}
 
-// async function increaseQuantity(item: CartItem) {
-//   await addItemToCart(item)
-//   discounts.value = await getCartDiscounts()
-// }
+const discountMessage: Ref<string| null> = ref(null)
+function getBestDiscount() {
+  return null
+}
 
-// async function decreaseQuantity(item: CartItem) {
-//   if (item.quantity <= 1) {
-//     await deleteItem(item)
-//   } else {
-//     removeItemFromCart(item, false)
-//   }
-//   discounts.value = await getCartDiscounts()
-// }
-
-// async function deleteItem(item: CartItem) {
-//   removeItemFromCart(item, true)
-//   discounts.value = await getCartDiscounts()
-// }
-
-// function getImageUrl(cartItem: CartItem) {
-//   if (cartItem.photo && cartItem.photo.path) {
-//     return getPhotoUrl(cartItem.photo.path, 256)
-//   } else {
-//     return getPhotoUrl(null)
-//   }
-// }
 
 async function checkout() {
   await getCartErrors()
@@ -201,44 +153,12 @@ async function getCartErrors() {
 </script>
 
 <style scoped lang="scss">
-.cart-item {
-  display: flex;
-  flex-direction: row;
-  margin: 1rem 0.5rem;
-}
-.cart-item-photo {
-  img {
-    width: 6rem;
-    height: 8rem;
-    object-fit: cover;
-    border-radius: 0.5rem;
-  }
-}
-.item-subtotal {
-  margin: 0 0.5rem 0 auto;
-}
-.item-footer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin: 0 1rem;
-}
-.item-details {
-  padding: 1rem;
-  margin: 0 1rem;
-}
-.item-info {
-  display: flex;
-  flex-direction: column;
-  margin: 0 0.8rem;
-}
-.shipping-message {
+
+.center-message {
   margin: 0.5rem 0;
   text-align: center;
 }
-.quantity-input {
-  width: 6rem;
-}
+
 .spinner-border {
   height: 1rem;
   width: 1rem;
@@ -299,29 +219,7 @@ async function getCartErrors() {
   border-radius: 1rem;
 }
 
-@media (min-width: 27rem) {
-  .cart-item-photo {
-    img {
-      width: 10rem;
-      height: 10rem;
-      object-fit: cover;
-    }
-  }
-  .item-info {
-    margin: 0.5rem 1rem 0.5rem 2rem;
-  }
-  .item-subtotal {
-    margin: 0.5rem 0.5rem 0 auto;
-  }
-}
 @media (min-width: 60rem) {
-  .cart-item-photo {
-    img {
-      width: 16rem;
-      height: 16rem;
-      object-fit: cover;
-    }
-  }
   .cart-item-container {
     padding: 1rem 1rem;
   }

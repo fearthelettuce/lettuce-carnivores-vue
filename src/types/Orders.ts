@@ -13,7 +13,8 @@ export type CartItem = Pick<Plant, 'id' | 'sku' | 'size' | 'isRepresentative' | 
     categoryId: PlantCategory['id']
     quantity: number
     maxQuantity: number
-    photo: PhotoItem
+    photo: PhotoItem,
+    priceAfterDiscount: number | null,
   }
 //export type StripeCartItem = StripeProduct & {quantity: number}
 

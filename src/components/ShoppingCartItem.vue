@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="cart-item">
     <router-link :to="`/plants/${encodeURIComponent(item.categoryId)}/${item.sku}`" class="align-content-center">
     <div class="cart-item-photo">
         <img
@@ -85,3 +85,67 @@ function getImageUrl(cartItem: CartItem) {
 
 
 </script>
+
+<style scoped lang="scss">
+
+  .cart-item {
+    display: flex;
+    flex-direction: row;
+    margin: 1rem 0.5rem;
+  }
+
+.cart-item-photo {
+  img {
+    width: 6rem;
+    height: 8rem;
+    object-fit: cover;
+    border-radius: 0.5rem;
+  }
+}
+
+.item-subtotal {
+  margin: 0 0.5rem 0 auto;
+}
+.item-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0 1rem;
+}
+.item-details {
+  padding: 1rem;
+  margin: 0 1rem;
+}
+.item-info {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0.8rem;
+}
+.quantity-input {
+  width: 6rem;
+}
+@media (min-width: 27rem) {
+  .cart-item-photo {
+    img {
+      width: 10rem;
+      height: 10rem;
+      object-fit: cover;
+    }
+  }
+  .item-info {
+    margin: 0.5rem 1rem 0.5rem 2rem;
+  }
+  .item-subtotal {
+    margin: 0.5rem 0.5rem 0 auto;
+  }
+}
+@media (min-width: 60rem) {
+  .cart-item-photo {
+    img {
+      width: 16rem;
+      height: 16rem;
+      object-fit: cover;
+    }
+  }
+}
+</style>
