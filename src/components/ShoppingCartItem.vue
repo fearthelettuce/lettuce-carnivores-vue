@@ -35,8 +35,12 @@
       </div>
     </div>
 
-    <div class="item-subtotal">
+    <div v-if="discountedPrice === undefined" class="item-subtotal">
         <div class="text-center">{{ USDollar.format(item.price * item.quantity) }}</div>
+    </div>
+    <div v-else class="item-subtotal">
+      <div class="text-center strikethrough">{{ USDollar.format(item.price * item.quantity) }}</div>
+      <div class="text-center">{{ USDollar.format(discountedPrice * item.quantity) }}</div>
     </div>
 </div>
 </template>
@@ -47,7 +51,7 @@ import { getPhotoUrl, placeholderUrl } from '@/composables/usePhotoUtils'
 import { USDollar } from '@/utils/utils';
 import { useOrderStore } from '@/stores/order'
 
-const props = defineProps<{ item: CartItem }>()
+const props = defineProps<{ item: CartItem, discountedPrice: number | undefined }>()
 const emit = defineEmits(['cartItemsChanged'])
 const { addItemToCart, removeItemFromCart } =  useOrderStore()
 
@@ -97,6 +101,10 @@ function getImageUrl(cartItem: CartItem) {
   }
 }
 
+.strikethrough {
+  text-decoration: line-through;
+  color: $medium-red;
+}
 .item-subtotal {
   margin: 0 0.5rem 0 auto;
 }

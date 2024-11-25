@@ -8,7 +8,8 @@
     "strict": true,
     "target": "ES2022",
     "esModuleInterop": true,
-    "noErrorTruncation": true,    
+    "noErrorTruncation": true,
+    "moduleResolution": "node"
   },
   "compileOnSave": true,
   "include": [

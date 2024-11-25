@@ -23,15 +23,12 @@ import { info, error } from 'firebase-functions/logger'
 import { onRequest } from 'firebase-functions/v2/https'
 import { updateEbayInventory, updateInventoryFromEbaySale } from '../inventory/inventoryService'
 
-const ebayClientId = process.env.EBAY_CLIENT_ID
-const ebayClientSecret = process.env.EBAY_SECRET_ID
-const onCallOpts = { secrets: ['EBAY_CLIENT_ID', 'EBAY_SECRET_ID'] }
 const environment: EbayEnvironment = 'PRODUCTION'
-let clientId: string
-let clientSecret: string
 let accessToken: string
 export const getEbayAccessToken = onCall(async (request: EbayAccessTokenRequest): Promise<any> => {
-  if (!setSecrets()) {
+  const clientId = process.env.EBAY_CLIENT_ID
+  const clientSecret = process.env.EBAY_SECRET_ID
+  if (!setSecrets() || !clientId || !clientSecret) {
     return { success: false, error: true, message: 'Unable to get clientId or clientSecret', errorDetails: {}, data: {} }
   }
 
@@ -46,14 +43,18 @@ export const getEbayAccessToken = onCall(async (request: EbayAccessTokenRequest)
 })
 
 export const getUserConsent = onCall(async (request: CallableRequest): Promise<any> => {
-  if (!setSecrets()) {
+  const clientId = process.env.EBAY_CLIENT_ID
+  const clientSecret = process.env.EBAY_SECRET_ID
+  if (!setSecrets() || !clientId || !clientSecret) {
     return { success: false, error: true, message: 'Unable to get clientId or clientSecret', errorDetails: {}, data: {} }
   }
   return generateUserConsentUrl(environment, clientId)
 })
 
 export const getUserAccessToken = onCall(async (request: EbayAccessTokenRequest): Promise<any> => {
-  if (!setSecrets()) {
+  const clientId = process.env.EBAY_CLIENT_ID
+  const clientSecret = process.env.EBAY_SECRET_ID
+  if (!setSecrets() || !clientId || !clientSecret) {
     return { success: false, error: true, message: 'Unable to get clientId or clientSecret', errorDetails: {}, data: {} }
   }
   const res = await updateUserAccessToken(clientId, clientSecret, request.data.authCode).catch((e) => {
@@ -64,7 +65,9 @@ export const getUserAccessToken = onCall(async (request: EbayAccessTokenRequest)
 })
 
 export const refreshUserAccessToken = onCall(async (request: EbayAccessTokenRequest): Promise<any> => {
-  if (!setSecrets()) {
+  const clientId = process.env.EBAY_CLIENT_ID
+  const clientSecret = process.env.EBAY_SECRET_ID
+  if (!setSecrets() || !clientId || !clientSecret) {
     return { success: false, message: 'Unable to get clientId or clientSecret' }
   }
   const res = await getAccessToken()
@@ -160,5 +163,7 @@ export const ebayNotificationController = onRequest(async (req, res): Promise<an
 })
 
 function setSecrets() {
-  return ebayClientId && ebayClientSecret
+  const clientId = process.env.EBAY_CLIENT_ID
+  const clientSecret = process.env.EBAY_SECRET_ID
+  return clientId && clientSecret
 }

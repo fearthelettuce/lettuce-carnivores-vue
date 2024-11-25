@@ -1,4 +1,4 @@
-import type { DiscountableItem, BuyGetDiscount } from '@/types/Orders'
+import type { BuyGetDiscount, DiscountableItem } from '../types/Orders'
 
 export function calculateBuyGetDiscounts(cartItems: DiscountableItem[], discount: BuyGetDiscount) {
   if (discount.type !== 'buyGet' || !discount.percent_off || !discount.parameters.buyX || !discount.parameters.getY) {
@@ -24,10 +24,9 @@ export function calculateBuyGetDiscounts(cartItems: DiscountableItem[], discount
   for (let item of sortedItems) {
     if (discountedItemCounter > 0) {
       discountedItemCounter--
+      discountedItems.push(item)
       const itemPrice = item?.price ?? item?.unit_amount ?? 0
-      const discountedPrice = itemPrice * (discount.percent_off / 100)
-      totalDiscount += discountedPrice
-      discountedItems.push({ ...item, priceAfterDiscount: (itemPrice - discountedPrice)})
+      totalDiscount += itemPrice * (discount.percent_off / 100)
       continue
     }
     itemsBoughtCounter++

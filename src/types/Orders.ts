@@ -14,7 +14,7 @@ export type CartItem = Pick<Plant, 'id' | 'sku' | 'size' | 'isRepresentative' | 
     quantity: number
     maxQuantity: number
     photo: PhotoItem,
-    priceAfterDiscount: number | null,
+    priceAfterDiscount?: number,
   }
 //export type StripeCartItem = StripeProduct & {quantity: number}
 
@@ -107,6 +107,14 @@ export type Order = {
   fullResponse: any
 }
 
+export type DiscountableItem = {
+  quantity: number,
+  id: string,
+  sku: string,
+  price: number,
+  unit_amount?: number,
+  priceAfterDiscount?: number
+}
 export interface Discount {
   id: string
   amount_off: number
@@ -148,3 +156,5 @@ export type InventoryRecord = {
   status?: string
   error?: string
 }
+
+

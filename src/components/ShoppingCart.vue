@@ -13,6 +13,7 @@
           v-for="item in cart.cartItems" 
           :key="item.sku" 
           :item @cart-items-changed="updateDiscounts"
+          :discountedPrice="getDiscountedPrice(item)"
         />
       </div>
       <div class="subtotal-container">
@@ -65,7 +66,7 @@
 import { storeToRefs } from 'pinia'
 import { useOrderStore } from '@/stores/order'
 import { ref, type Ref, computed, onMounted } from 'vue'
-import type { Discount } from '@/types/Orders'
+import type { CartItem, Discount } from '@/types/Orders'
 import { toast } from 'vue3-toastify'
 import { discountedShippingThreshold } from '@/constants/OrderConstants'
 import { useUserStore } from '@/stores/users'
@@ -73,7 +74,7 @@ import { router } from '@/router'
 import { USDollar } from '@/utils/utils';
 import ShoppingCartItem from './ShoppingCartItem.vue'
 
-const { cart } = storeToRefs(useOrderStore())
+const { cart, discountedItems } = storeToRefs(useOrderStore())
 const { getCategoryBySku, startCheckoutSession, validateCart, applyDiscounts } = useOrderStore()
 const { cartTotal, isLoading } = storeToRefs(useOrderStore())
 const { loginAnonymously, isLoggedIn, isUserLoading, user } = useUserStore()
@@ -102,9 +103,18 @@ const isCheckoutLoading = computed(() => {
   return isLoading.value || isUserLoading
 })
 
-const { activeDiscount, activeDiscountMessage } = storeToRefs(useOrderStore())
+const { activeDiscountMessage } = storeToRefs(useOrderStore())
 async function updateDiscounts() {
   totalDiscountAmount.value = await applyDiscounts()
+}
+
+function getDiscountedPrice(item: CartItem) {
+
+  const index = discountedItems.value?.findIndex(discountedItem => discountedItem.sku === item.sku)
+    
+  console.log(index)
+  if (index === -1 || index === undefined ||  discountedItems.value === null) { return undefined }
+  return discountedItems.value[index]?.priceAfterDiscount ?? undefined
 }
 
 async function checkout() {

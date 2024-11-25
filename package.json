@@ -13,8 +13,7 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier --write src/",
-    "preinstall": "npx only-allow pnpm"
+    "format": "prettier --write src/"
   },
   "dependencies": {
     "@formkit/addons": "^1.6.9",
@@ -24,6 +23,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.7.1",
     "@fortawesome/free-solid-svg-icons": "^6.7.1",
     "@fortawesome/vue-fontawesome": "^3.0.8",
+    "@google-cloud/functions-framework": "^3.4.2",
     "@popperjs/core": "^2.11.8",
     "@primevue/themes": "^4.2.3",
     "@vueuse/core": "^11.3.0",

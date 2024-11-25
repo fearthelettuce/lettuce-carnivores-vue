@@ -117,6 +117,7 @@ export const useOrderStore = defineStore('order', () => {
     }
     const activeDiscount: Ref<Discount | null> = ref(null)
     const activeDiscountMessage: Ref<string | null> = ref(null)
+    const discountedItems: Ref<CartItem[] | null> = ref(null)
     async function applyDiscounts() {
         const discounts = await getDiscounts(cart.value)
         let bestDiscount = null
@@ -124,6 +125,7 @@ export const useOrderStore = defineStore('order', () => {
         if (!discounts || !discounts.discountValues) {
             activeDiscount.value = bestDiscount
             activeDiscountMessage.value = bestDiscountMessage
+            discountedItems.value = null
             return 0
         }
         if (discounts?.discountValues.length === 1) {
@@ -135,6 +137,7 @@ export const useOrderStore = defineStore('order', () => {
             const discountDetails = calculateBuyGetDiscounts(cart.value.cartItems, buyGetDiscount)
             activeDiscount.value = buyGetDiscount
             activeDiscountMessage.value = discountDetails?.message ?? null
+            discountedItems.value = discountDetails?.discountedItems as CartItem[]
             return discountDetails?.totalDiscount ?? 0
         }
 
@@ -206,6 +209,7 @@ export const useOrderStore = defineStore('order', () => {
         applyDiscounts,
         getActiveDiscounts,
         activeDiscount,
-        activeDiscountMessage
+        activeDiscountMessage,
+        discountedItems
     }
 })

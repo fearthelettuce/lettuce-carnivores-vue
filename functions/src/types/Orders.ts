@@ -67,7 +67,9 @@ export interface Discount {
   valid: boolean
   validThrough: Timestamp
   duration: string
-  message: string
+  message: string,
+  type: 'multiplePlants' | 'buyGet' | 'siteWide'
+  stripeCoupon?: boolean,
 }
 
 export interface MultiPlantDiscount extends Discount {
@@ -87,4 +89,13 @@ export interface BuyGetDiscount extends Discount {
 
 export interface SiteWideDiscount extends Discount {
   type: 'siteWide'
+}
+
+export type DiscountableItem = {
+  quantity: number,
+  id: string,
+  sku: string,
+  price: number,
+  unit_amount?: number,
+  priceAfterDiscount?: number
 }

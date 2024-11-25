@@ -1,6 +1,6 @@
 import admin from 'firebase-admin'
 import { onCall, type CallableRequest } from 'firebase-functions/v2/https'
-import { getAllDocs } from './common'
+
 import {
   discountedShippingThreshold,
   discountedStandardShippingId,
@@ -14,7 +14,7 @@ import { FunctionResponse } from './types/Functions'
 import { BuyGetDiscount, CartItem, Discount, MultiPlantDiscount, SiteWideDiscount } from './types/Orders'
 import { type CustomerRecord } from './types/Users'
 import { StripeLineItem } from './types/Stripe'
-import { getDiscounts } from './stripe/stripeService'
+import { handleDiscounts } from './stripe/stripeService'
 
 interface CheckoutSessionRequest extends CallableRequest {
   data: {
@@ -35,6 +35,7 @@ export default onCall(async (request: CheckoutSessionRequest): Promise<FunctionR
   if (!uid || !request.auth || request.data.cart.length === 0) {
     return { success: false, error: true, message: 'Unable to create checkout session', errorDetails: null, data: null }
   }
+
   const checkoutSession = await buildCheckoutSession(
     request.data.cart,
     uid,
@@ -68,7 +69,8 @@ async function buildCheckoutSession(
   if (!stripeCart || !stripeCart.data) {
     return null
   }
-  const lineItems: StripeLineItem[] = (stripeCart.data as CartItem[]).map((item: CartItem) => {
+  const discountData = await handleDiscounts(stripeCart.data as unknown as CartItem[])
+  const lineItems: StripeLineItem[] = (discountData.cart as unknown as CartItem[]).map((item: CartItem) => {
     return {
       price_data: {
         currency: 'usd',
@@ -117,19 +119,21 @@ async function buildCheckoutSession(
         name: 'auto',
       })
   }
-
-  let discountAmount
-  const discounts = await getDiscounts(lineItems)
-  if (!discounts || !discounts.discountValues || discounts.stripeDiscounts.length === 0) {
-    discountAmount = 0
-  } else {
-    discountAmount = calculateDiscounts(cartTotal, discounts?.discountValues)
+  if (discountData.stripeCoupons.length > 0) {
+    session.discounts = discountData.stripeCoupons
   }
-  if (discounts && discountAmount > 0) {
-    session.discounts = discounts.stripeDiscounts
-  }
+  // let discountAmount
+  // const discounts = await getDiscounts(lineItems)
+  // if (!discounts || !discounts.discountValues || discounts.stripeDiscounts.length === 0) {
+  //   discountAmount = 0
+  // } else {
+  //   discountAmount = calculateDiscounts(cartTotal, discounts?.discountValues)
+  // }
+  // if (discounts && discountAmount > 0) {
+  //   session.discounts = discounts.stripeDiscounts
+  // }
 
-  if (cartTotal - discountAmount >= discountedShippingThreshold) {
+  if (cartTotal - discountData.totalCartDiscountedAmount >= discountedShippingThreshold) {
     session.shipping_options = [{ shipping_rate: discountedStandardShippingId }, { shipping_rate: discountedExpeditedShippingId }]
   } else {
     session.shipping_options = [{ shipping_rate: standardShippingId }, { shipping_rate: expeditedShippingId }]
@@ -197,45 +201,19 @@ async function buildStripeCart(cartItems: CartItem[]): Promise<FunctionResponse>
 //   }
 // }
 
-function calculateDiscounts(cartTotal: number, discountValues: Discount[]) {
-  if (!discountValues || discountValues.length === 0) {
-    return 0
-  }
-  const totalPercentageOff = discountValues.reduce(function (acc, obj) {
-    return acc + obj.percent_off
-  }, 0)
-  const percentageOffAmount = Math.round(((cartTotal * totalPercentageOff) / 100) * 100) / 100
-  const totalAmountOff = discountValues.reduce(function (acc, obj) {
-    return acc + obj.amount_off
-  }, 0)
-  return percentageOffAmount + totalAmountOff
-}
-
-function calculateBuyGetDiscounts(cartItems: StripeLineItem[], discount: BuyGetDiscount) {
-  if(discount.type !== 'buyGet' || !discount.percent_off || !discount.parameters.buyX || !discount.parameters.getY ) {
-    return null
-  }
-  const sortedItems = cartItems.sort((a, b) => b.price_data.unit_amount - a.price_data.unit_amount)
-  console.log(sortedItems)
-  let totalDiscount = 0
-  const discountedItems: StripeLineItem[] = []
-  let buyCounter = 0
-  let discountCounter = 0
-  for(let i = 0; i < sortedItems.length; i++) {
-    buyCounter++
-    if(buyCounter === discount.parameters.buyX) {
-      discountCounter += discount.parameters.getY
-    }
-    if(discountCounter === 0) {
-      continue
-    }
-    buyCounter = 0
-    discountCounter --
-    const discountedAmount = sortedItems[i].price_data.unit_amount * discount.percent_off
-    totalDiscount += discountedAmount
-    discountedItems.push(sortedItems[i])
-  }
-}
+// function calculateDiscounts(cartTotal: number, discountValues: Discount[]) {
+//   if (!discountValues || discountValues.length === 0) {
+//     return 0
+//   }
+//   const totalPercentageOff = discountValues.reduce(function (acc, obj) {
+//     return acc + obj.percent_off
+//   }, 0)
+//   const percentageOffAmount = Math.round(((cartTotal * totalPercentageOff) / 100) * 100) / 100
+//   const totalAmountOff = discountValues.reduce(function (acc, obj) {
+//     return acc + obj.amount_off
+//   }, 0)
+//   return percentageOffAmount + totalAmountOff
+// }
 
 type PlantDetailsFromFirestoreRequest = {
   collection: string

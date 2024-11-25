@@ -1,7 +1,56 @@
-export function getDiscounts() {
-    return []
+import admin from 'firebase-admin'
+import { getAllDocs } from '../common'
+import { BuyGetDiscount, CartItem, Discount, MultiPlantDiscount, SiteWideDiscount, DiscountableItem } from '../types/Orders'
+import { calculateBuyGetDiscounts } from './useDiscountCalculator'
+
+
+export async function handleDiscounts(cart: CartItem[]) {
+  const cartItemWithId = cart.map((item) => ({ ...item, id: item.sku }))
+  const activeDiscounts = await getActiveDiscounts()
+  return await applyItemDiscounts(cartItemWithId, activeDiscounts)
+
 }
 
-export function applyDiscounts() {
-    
+
+export async function getActiveDiscounts() {
+  const discountDocs = await getAllDocs<MultiPlantDiscount | BuyGetDiscount | SiteWideDiscount>('discounts')
+  if (!discountDocs || discountDocs.length === 0) {
+    return []
+  }
+  return discountDocs.filter(
+    (item) => item.valid && item.validThrough.toMillis() >= admin.firestore.Timestamp.now().toMillis(),
+  )
+}
+
+export async function applyItemDiscounts(cart: DiscountableItem[], discounts: Discount[]) {
+  if (cart.length === 0 || discounts.length === 0) { 
+    return { cart, stripeCoupons: [], totalCartDiscountedAmount: 0 }
+  }
+  const stripeCoupons: { coupon: string }[] = []
+  let totalCartDiscountedAmount = 0
+  let isBuyGetApplied = false
+  discounts.forEach((discount) => {
+    if (discount.type === 'buyGet') {
+      const buyGetDiscount = calculateBuyGetDiscounts(cart, discount as BuyGetDiscount)
+      if (buyGetDiscount?.isQualified) {
+        buyGetDiscount.discountedItems.forEach((discountedItem) => {
+          const index = cart.findIndex(item => item.sku === discountedItem.sku)
+          const price = cart[index].price ?? 0
+          cart[index].price = price * (100 - discount.percent_off)
+          isBuyGetApplied = true
+        })
+      }
+    }
+
+    if (discount.type === 'multiplePlants' && isBuyGetApplied === false) {
+      const multiPlantDiscount = discount as MultiPlantDiscount
+      const cartQuantity = cart.reduce((accumulator, item) => accumulator + item.quantity, 0)
+      const cartTotal = cart.reduce((accumulator, item) => accumulator + item.price, 0)
+      if (cartQuantity >= multiPlantDiscount.parameters.minimumQuantity) {
+        stripeCoupons.push({ coupon: multiPlantDiscount.id })
+        totalCartDiscountedAmount += Math.round(((cartTotal * discount.percent_off) / 100) * 100) / 100
+       } 
+    }
+  })
+  return { cart, stripeCoupons, totalCartDiscountedAmount }
 }
