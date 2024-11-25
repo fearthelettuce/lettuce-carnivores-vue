@@ -4,7 +4,7 @@ import type{ BuyGetDiscount, CartItem, Discount, MultiPlantDiscount, ShoppingCar
 import { newShoppingCart } from '@/constants/OrderConstants'
 import { usePlantStore } from '@/stores/plant'
 import { type PlantCategory } from '@/types/Plant'
-import { notNullish, useLocalStorage } from '@vueuse/core'
+import { useLocalStorage } from '@vueuse/core'
 import {createStripeCheckoutSession} from '@/apis/stripe'
 import { findAll, getPlantsFromFirestore } from '@/apis/dataServices'
 import { calculateBuyGetDiscounts } from '@/composables/useDiscountCalculator'
@@ -134,8 +134,8 @@ export const useOrderStore = defineStore('order', () => {
         if (buyGetDiscount) {
             const discountDetails = calculateBuyGetDiscounts(cart.value.cartItems, buyGetDiscount)
             activeDiscount.value = buyGetDiscount
-            activeDiscountMessage.value = discountDetails.message
-            return discountDetails.totalDiscount
+            activeDiscountMessage.value = discountDetails?.message ?? null
+            return discountDetails?.totalDiscount ?? 0
         }
 
         let multiPlantAmountOff = 0

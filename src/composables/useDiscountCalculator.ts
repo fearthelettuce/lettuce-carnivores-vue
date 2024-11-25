@@ -1,6 +1,12 @@
 import type { CartItem, BuyGetDiscount } from '@/types/Orders'
-
-export function calculateBuyGetDiscounts(cartItems: CartItem[], discount: BuyGetDiscount) {
+type DiscountableItem = {
+  quantity: number,
+  id: string,
+  sku: string,
+  price?: number,
+  unit_amount?: number
+}
+export function calculateBuyGetDiscounts(cartItems: DiscountableItem[], discount: BuyGetDiscount) {
   if (discount.type !== 'buyGet' || !discount.percent_off || !discount.parameters.buyX || !discount.parameters.getY) {
     return null
   }
@@ -8,9 +14,15 @@ export function calculateBuyGetDiscounts(cartItems: CartItem[], discount: BuyGet
   const getY = discount.parameters.getY
  
   const cartItemWithId = cartItems.map((item) => ({ ...item, id: item.sku }))
-  const sortedItems = spreadArray<CartItem>(cartItemWithId).sort((a, b) => b.price - a.price)
+  const sortedItems = spreadArray<DiscountableItem>(cartItemWithId)
+  if ('price' in sortedItems[0]) {
+    sortedItems.sort((a, b) => b.price! - a.price!)
+  }
+  if ('unit_amount' in sortedItems[0]) {
+    sortedItems.sort((a, b) => b.unit_amount! - a.unit_amount!)
+  }
   let totalDiscount = 0
-  const discountedItems: CartItem[] = []
+  const discountedItems: DiscountableItem[] = []
   let itemsBoughtCounter = 0
   let discountedItemCounter = 0
   let isQualified = false
@@ -19,7 +31,8 @@ export function calculateBuyGetDiscounts(cartItems: CartItem[], discount: BuyGet
     if (discountedItemCounter > 0) {
       discountedItemCounter--
       discountedItems.push(item)
-      totalDiscount += item.price * (discount.percent_off / 100)
+      const itemPrice = item?.price ?? item?.unit_amount ?? 0
+      totalDiscount += itemPrice * (discount.percent_off / 100)
       continue
     }
     itemsBoughtCounter++
