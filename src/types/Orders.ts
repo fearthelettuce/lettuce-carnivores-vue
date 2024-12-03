@@ -89,7 +89,7 @@ export type Order = {
   orderDate: Timestamp
   orderStatus: {
     carrier: 'UPS' | 'USPS' | 'FedEx' | 'LocalPickup'
-    status: 'Pending' | 'Shipped' | 'Shipping Scheduled' | 'Complete'
+    status: 'Processing' | 'Shipped' | 'Shipping Scheduled' | 'Complete'
     trackingNumber: string
   }
   shippingInfo: {

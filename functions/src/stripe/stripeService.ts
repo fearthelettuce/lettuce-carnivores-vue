@@ -35,8 +35,18 @@ export async function applyItemDiscounts(cart: DiscountableItem[], discounts: Di
       if (buyGetDiscount?.isQualified) {
         buyGetDiscount.discountedItems.forEach((discountedItem) => {
           const index = cart.findIndex(item => item.sku === discountedItem.sku)
-          const price = cart[index].price ?? 0
-          cart[index].price = price * (100 - discount.percent_off)
+          if (cart[index].quantity === 1) {
+            const price = cart[index].price ?? 0
+            cart[index].price = price * (100 - discount.percent_off)
+          } else {
+            const newCartItem = { ...cart[index] }
+            newCartItem.quantity = 1
+            newCartItem.price = cart[index].price * (100 - discount.percent_off)
+            newCartItem.sku = cart[index].sku + '-2'
+            cart[index].quantity--
+            
+            cart.push(newCartItem)
+          }
           isBuyGetApplied = true
         })
       }

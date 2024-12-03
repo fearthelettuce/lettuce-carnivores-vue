@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid mt-4">
+    <div class="flex justify-center column">
         <div class="button-container">
             <BaseButton v-for="component in adminComponents" :key="component.label" @click="setSelectedComponent(component)">{{ component.label }}</BaseButton>
         </div>
@@ -17,7 +17,9 @@
 import { ref, type Component } from 'vue';
 import GiveawayAdmin from '@/components/giveaway/GiveawayAdmin.vue'
 import BaseButton from '@/components/UI/BaseButton.vue'
-import InventoryManagement from '@/components/InventoryManagement.vue';
+import InventoryManagement from '@/components/InventoryManagement.vue'
+import OrderAdmin from '@/components/OrderAdmin.vue';
+import PlantInventory from '@/components/PlantInventory.vue';
 
 const selectedComponent = ref()
 
@@ -29,6 +31,14 @@ const adminComponents = [
     {
         label: 'Inventory Management',
         component: InventoryManagement
+    },
+    {
+        label: 'Order Admin',
+        component: OrderAdmin,
+    },
+    {
+        label: 'Plant Inventory List',
+        component: PlantInventory
     }
 ]
 
@@ -46,7 +56,7 @@ function setSelectedComponent (adminComponent: {label: string, component: Compon
 }
 
 .component-container {
-    margin: 0 10dvw;
+    margin: 0 3dvw;
 }
 
 @media (min-width: 40rem) {

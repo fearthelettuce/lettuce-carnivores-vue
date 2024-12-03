@@ -5,6 +5,7 @@
                 <AccordionHeader class="accordion-header" :pt="{toggleicon: {style:{ 'margin-left': 'auto', 'margin-right':'.6rem'}}}">
                     <div class="grid-span-2 order-number">Order {{ order.id }}</div>
                     <div class="grid-span-2">{{ formatFirebaseDate(order.orderDate) }}</div>
+                    <div v-if="isAdmin" class="grid-span-1">{{ order.lineItems.length }}</div>
                     <div class="grid-span-3 text-center">{{ order.orderStatus.status }}</div>
                 </AccordionHeader>
                 <AccordionContent class="my-1">

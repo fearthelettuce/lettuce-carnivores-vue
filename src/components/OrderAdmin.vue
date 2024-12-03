@@ -5,6 +5,7 @@
         <button class="btn btn-primary" @click="fetchOpenOrders">View Open Orders</button>
         <button class="btn btn-secondary" @click="findAllOrders">View All Orders</button>
     </div>
+    <OrderPickList :orders />
 </template>
 
 <script setup lang="ts">
@@ -14,6 +15,7 @@ import { toast } from 'vue3-toastify'
 import { sortNumerically } from '@/utils/utils'
 import OrdersList from '@/components/OrdersList.vue'
 import type { Order } from '@/types/Orders'
+import OrderPickList from './OrderPickList.vue';
 const orders: Ref<Order[]> = ref([])
 const isLoading = ref(false)
 onMounted(()=>{

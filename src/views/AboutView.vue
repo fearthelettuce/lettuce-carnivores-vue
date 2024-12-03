@@ -31,6 +31,7 @@
         <div>
             <h4>Terms of Service</h4>
             <p>Links to content on this site are welcome for educational or discussion purposes. Content requires prior permission to be copied to external systems.  Content may not be used for commercial uses without express written consent. Copyright Danger Lettuce Carnivores, LP 2024</p>
+            <p>While we do our best to represent our inventory and prices accurately, we reserve the right to cancel any order due to inventory or pricing errors.</p>
         </div>
 
     </div>

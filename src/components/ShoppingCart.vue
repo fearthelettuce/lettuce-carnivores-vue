@@ -12,8 +12,9 @@
         <ShoppingCartItem 
           v-for="item in cart.cartItems" 
           :key="item.sku" 
-          :item @cart-items-changed="updateDiscounts"
-          :discountedPrice="getDiscountedPrice(item)"
+          :item 
+          @cart-items-changed="updateDiscounts"
+          :discountedPrice="item.quantity === 1 ? getDiscountedPrice(item) : undefined"
         />
       </div>
       <div class="subtotal-container">
