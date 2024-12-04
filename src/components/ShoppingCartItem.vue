@@ -15,21 +15,21 @@
       </div>
       <div class="my-1">Size: {{ item.size }}</div>
       <div class="my-1" v-if="!item.isRepresentative">Specimen {{ item.sku }}</div>
-      <div class="quantity-input mt-2 input-group input-group-sm">
-          <span class="input-group-prepend">
-          <button type="button" class="btn btn-outline-light btn-number btn-sm" @click="decreaseQuantity(item)">
-              <FontAwesome class="text-light" icon="fa fa-minus"></FontAwesome>
+      <div class="quantity-input mt-2">
+          <span class="">
+          <button type="button" class="" @click="decreaseQuantity(item)">
+              <FontAwesome class="" icon="fa fa-minus"></FontAwesome>
           </button>
           </span>
-          <input type="text" class="form-control input-number text-center btn-sm" :value="item.quantity" />
-          <span class="input-group-append">
+          <input type="text" class="input-number" :value="item.quantity" />
+          <span class="">
           <button
               type="button"
-              class="btn btn-outline-light btn-number btn-sm"
+              class=""
               :disabled="item.quantity >= item.maxQuantity"
               @click="increaseQuantity(item)"
           >
-              <FontAwesome class="text-light" icon="fa fa-plus"></FontAwesome>
+              <FontAwesome class="" icon="fa fa-plus"></FontAwesome>
           </button>
           </span>
       </div>

@@ -55,12 +55,16 @@ const props = defineProps({
         color: white;
         border: none;
     }
-    /* .secondary {
-
+    .secondary {
+        background-color: gray;
+        color: black;
+        border: none;
     }
     .warning {
-
-    }  */
+        background-color: #FFBF46;
+        color: black;
+        border: none;
+    } 
     .danger {
         background-color: $medium-red;
         color: white;
@@ -75,6 +79,16 @@ const props = defineProps({
         border: 1px solid #9fdb50;
         background-color: #9fdb50;
         color: black;
+    }
+    .secondary-outline {
+        border: 1px solid gray;
+        color: inherit;
+        background-color: transparent;
+    }
+    .secondary-outline:hover {
+        border: 1px solid gray;
+        background-color: inherit;
+        color: inherit;
     }
     .checkout {
         background: linear-gradient(0.15turn,#FFBF46, #fccb72, #FFBF46);

@@ -1,12 +1,12 @@
 <template>
   <div class="flex-center column">
     <div class="arrow-button">
-      <button class="btn px-1 py-0" v-if="index !== 0" @click="$emit('move-up', index, index - 1)">
+      <button class="px-1 py-0" v-if="index !== 0" @click="$emit('move-up', index, index - 1)">
         <FontAwesome class="move-arrow" icon="caret-up" />
       </button>
     </div>
     <div class="arrow-button">
-      <button v-if="!isLast" class="btn px-1 py-0" @click="$emit('move-down', index, index + 1)">
+      <button v-if="!isLast" class="px-1 py-0" @click="$emit('move-down', index, index + 1)">
         <FontAwesome class="move-arrow" icon="caret-down" />
       </button>
     </div>
@@ -19,7 +19,7 @@
     <img class="imagePreview" :src="photoSrc(photo, 256)" />
   </div>
   <div class="flex align-center">
-    <div class="btn" @click="$emit('remove-photo', index)">
+    <div @click="$emit('remove-photo', index)">
       <FontAwesome icon="dumpster-fire" size="lg" style="color: #f29c07" />
     </div>
   </div>

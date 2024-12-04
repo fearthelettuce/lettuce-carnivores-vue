@@ -17,26 +17,26 @@
         </div>
 
         <div class="flex justify-evenly">
-          <button
+          <BaseButton
             v-for="plant in referencePlants"
             :key="plant.size"
-            class="btn px-4"
-            :class="selectedPlant?.sku == plant.sku ? 'btn-primary' : 'btn-outline-secondary text-body'"
+            class="px-4"
+            :type="selectedPlant?.sku == plant.sku ? 'primary' : 'secondary-outline'"
             @click="setSelectedPlant(plant)"
           >
             {{ plant.size }}
-          </button>
+          </BaseButton>
         </div>
         <div class="specimen-button-container">
-          <button
+          <BaseButton
             v-for="plant in specimenPlants"
             :key="plant.id"
-            class="btn px-4 specimen-button"
-            :class="selectedPlant?.sku === plant.sku ? 'btn-primary' : 'btn-outline-secondary text-body'"
+            class="px-4 specimen-button"
+            :type="selectedPlant?.sku === plant.sku ? 'primary' : 'secondary-outline'"
             @click="setSelectedPlant(plant)"
           >
             {{ `Specimen ${plant.id} - ${plant.size}` }}
-          </button>
+          </BaseButton>
         </div>
         <div v-if="daysSinceDivision && freshDivision?.isFreshDivision" class="mt-4">
           <p class="text-warning text-center">{{ freshDivision.message }}</p>
@@ -51,10 +51,10 @@
             <h5 class="m-0">{{ formattedPrice }}</h5>
           </div>
           <div v-if="availableForSale" class="flex flex-column justify-center">
-            <button class="btn btn-primary mx-auto" @click="addToCart" :disabled="selectedPlant === undefined">Add to Cart</button>
+            <BaseButton type="primary" class="mx-auto" @click="addToCart" :disabled="selectedPlant === undefined">Add to Cart</BaseButton>
           </div>
 
-          <button v-else class="btn btn-secondary" disabled>Out of Stock</button>
+          <BaseButton v-else type="secondary" disabled>Out of Stock</BaseButton>
         </div>
         <div v-show="selectedPlant === undefined" class="text-center text-warning mt-2">Please select a plant to add to cart</div>
         <div class="game-container" v-show="isGiveawayActive">

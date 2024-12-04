@@ -51,12 +51,12 @@
       </div>
       <footer class="footer-sticky">
         <div class="checkout-actions">
-          <button v-if="!isLoggedIn" class="btn btn-info btn-lg text-white" @click="router.push('/login')">Login</button>
+          <BaseButton v-if="!isLoggedIn" type="info" @click="router.push('/login')">Login</BaseButton>
 
-          <button class="checkout-button" @click.prevent="checkout" :disabled="cart.cartItems.length === 0 || isCheckoutLoading">
+          <BaseButton class="checkout-button" @click.prevent="checkout" :disabled="cart.cartItems.length === 0 || isCheckoutLoading">
             {{ isLoggedIn ? `Checkout` : `Checkout as Guest` }}
             <span class="spinner-border" role="status" v-show="isCheckoutLoading"></span>
-          </button>
+          </BaseButton>
         </div>
       </footer>
     </div>

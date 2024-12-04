@@ -5,22 +5,22 @@ const config = {
   plugins: [createAutoHeightTextareaPlugin()],
   config: {
     classes: generateClasses({
-      global: {
-        outer: '$reset',
-        input: 'form-control',
-        label: 'form-label',
-        help: 'form-text',
-      },
+      // global: {
+      //   outer: '$reset',
+      //   input: '',
+      //   label: '',
+      //   help: '',
+      // },
 
-      checkbox: {
-        outer: 'form-check',
-        label: 'form-check-label',
-        input: '$reset form-check-input',
-      },
-      submit: {
-        outer: '$reset mt-3',
-        input: '$reset btn btn-primary',
-      },
+      // checkbox: {
+      //   outer: '',
+      //   label: '',
+      //   input: '$reset',
+      // },
+      // submit: {
+      //   outer: '$reset mt-3',
+      //   input: '$reset',
+      // },
     }),
   },
 }

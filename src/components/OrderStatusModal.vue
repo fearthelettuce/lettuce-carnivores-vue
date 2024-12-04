@@ -5,9 +5,8 @@
                 <h4 class="modal-title">Order {{ order.id }}</h4>
                 <button 
                     type="button" 
-                    class="btn-close btn-close-white" 
+                    class="" 
                     aria-label="Close"
-                    data-bs-dismiss="modal"
                     @click="toggleModal"
                 ></button>
             </header>
@@ -115,3 +114,5 @@ header {
     box-sizing: border-box;
 }
 </style>
+
+<!-- TODO: Bootstrap replace close button -->

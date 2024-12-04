@@ -24,7 +24,6 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.1",
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@google-cloud/functions-framework": "^3.4.2",
-    "@popperjs/core": "^2.11.8",
     "@primevue/themes": "^4.2.3",
     "@vueuse/core": "^11.3.0",
     "axios": "^1.7.7",
