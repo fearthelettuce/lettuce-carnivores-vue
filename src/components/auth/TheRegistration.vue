@@ -1,25 +1,25 @@
 <template>
-    <div class="container border rounded p-4">
+    <div class="login-container">
         <h2 class="text-center">Create Account</h2>
-        <form>
-            <div class="form-group">
+        <form @submit.prevent>
+            <div class="gap-4">
                 <label for="registerEmail">Email</label>
-                <input type="email" class="form-control" id="registerEmail" v-model="registrationForm.email" required/>
+                <input type="email" class="mx-4" id="registerEmail" v-model="registrationForm.email" required/>
             </div>
-            <div class="form-group mt-3">
+            <div class=" mt-3">
                 <label for="registerPassword">Password</label>
-                <input type="password" class="form-control" id="registerPassword" v-model="registrationForm.password" required/>
+                <input type="password" class="mx-4" id="registerPassword" v-model="registrationForm.password" required/>
             </div>
-            <div class="form-group mt-3">
+            <div class="mt-3">
                 <label for="registerFirstName">First Name</label>
-                <input type="text" class="form-control" id="registerFirstName" v-model="registrationForm.firstName" required/>
+                <input type="text" class="mx-4" id="registerFirstName" v-model="registrationForm.firstName" required/>
             </div>
-            <div class="form-group mt-3">
+            <div class="mt-3">
                 <label for="registerLastName">Last Name</label>
-                <input type="text" class="form-control" id="registerLastName" v-model="registrationForm.lastName" required/>
+                <input type="text" class="mx-4" id="registerLastName" v-model="registrationForm.lastName" required/>
             </div>
-            <div class="d-flex justify-content-center mt-4">
-                <button class="btn btn-primary px-3" @click.prevent="register">Register</button>
+            <div class="flex justify-center mt-4">
+                <BaseButton @click.prevent="register">Register</BaseButton>
             </div>
         </form>
     </div>
@@ -70,3 +70,15 @@ const register = async () => {
 }
 
 </script>
+
+<style scoped>
+
+.login-container {
+    padding: 3rem;
+    border: 1px solid lightgray;
+    border-radius: .5rem;
+}
+</style>
+
+<!-- 
+TODO Bootstrap: Fix form styles -->

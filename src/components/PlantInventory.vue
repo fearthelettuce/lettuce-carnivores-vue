@@ -1,10 +1,11 @@
 <template>
   <div class="id-grid">
     <template v-for="plant in plants" :key="plant.sku">
-      <div class="align-content-center">{{ plant.sku }}</div>
-      <div class="align-content-center">{{ plant.size }}</div>
-      <div class="align-content-center">{{ plant.status }}</div>
-      <div class="align-content-center">{{ plant.name }}</div>
+      <div class="align-center">{{ plant.sku }}</div>
+      <div class="align-center">{{ plant.shelfLocation }}</div>
+      <div class="align-center">{{ plant.size }}</div>
+      <div class="align-center">{{ plant.status }}</div>
+      <div class="align-center">{{ plant.name }}</div>
 
       
     </template>
@@ -48,6 +49,6 @@ import { ref, type Ref, onMounted } from 'vue';
 <style lang="scss" scoped>
 .id-grid {
   display: grid;
-  grid-template-columns: 1fr 2fr 2fr 5fr;
+  grid-template-columns: 1fr 1fr 2fr 2fr 5fr;
 }
 </style>

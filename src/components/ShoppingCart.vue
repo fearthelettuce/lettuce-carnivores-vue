@@ -1,9 +1,9 @@
 <template>
-  <div v-if="cartErrors !== null" class="mx-5 alert alert-warning mb-3">
+  <div v-if="cartErrors !== null" class="mx-5 mb-3">
     {{ cartErrors }}
   </div>
-  <div class="container mb-3">
-    <div class="d-flex justify-content-center" v-if="cart.cartItems.length === 0">
+  <div class="mb-3">
+    <div class="flex justify-center" v-if="cart.cartItems.length === 0">
       <p>Cart is empty</p>
     </div>
 
@@ -32,13 +32,13 @@
             </h3>
           </div>
 
-          <div v-if="activeDiscountMessage !== null" class="d-flex flex-row justify-content-center gap-2 mx-4">
+          <div v-if="activeDiscountMessage !== null" class="flex row justify-center gap-2 mx-4">
             <h5 class="center-message">
               {{ activeDiscountMessage }}
             </h5>
           </div>
 
-          <div class="d-flex flex-row justify-content-center gap-2 mx-4">
+          <div class="flex row justify-center gap-2 mx-4">
             <h5 class="center-message">
               {{
                 cartTotal - totalDiscountAmount >= discountedShippingThreshold
@@ -49,7 +49,7 @@
           </div>
         </div>
       </div>
-      <footer class="footer sticky-bottom">
+      <footer class="footer-sticky">
         <div class="checkout-actions">
           <button v-if="!isLoggedIn" class="btn btn-info btn-lg text-white" @click="router.push('/login')">Login</button>
 
@@ -149,6 +149,11 @@ async function getCartErrors() {
 
 <style scoped lang="scss">
 
+.footer-sticky {
+  position: sticky;
+  // TODO: make it so that it pins to bottom, but also moves up if cart is small
+}
+
 .center-message {
   margin: 0.5rem 0;
   text-align: center;
@@ -220,3 +225,5 @@ async function getCartErrors() {
   }
 }
 </style>
+
+<!-- TODO: Bootstrap text color and btn -->

@@ -1,6 +1,6 @@
 <template>
 <div class="cart-item">
-    <router-link :to="`/plants/${encodeURIComponent(item.categoryId)}/${item.sku}`" class="align-content-center">
+    <router-link :to="`/plants/${encodeURIComponent(item.categoryId)}/${item.sku}`" class="align-center">
       <div class="cart-item-photo">
           <img
           :src="getImageUrl(item)"

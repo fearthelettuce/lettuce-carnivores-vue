@@ -1,12 +1,12 @@
 <template>
   <BaseContainer>
-    <section v-if="plantCategory" class="d-flex product-detail-section">
+    <section v-if="plantCategory" class="flex product-detail-section">
       <ProductDetailsPhotoList :photos="photosToDisplay" />
-      <article class="product-information d-flex align-content-center flex-column">
-        <div class="d-flex justify-content-center">
+      <article class="product-information flex content-center column">
+        <div class="flex justify-center">
           <h1 class="text-center">{{ plantCategory.name }}</h1>
         </div>
-        <div v-if="plantCategory.clone !== ''" class="d-flex flex-row justify-content-around">
+        <div v-if="plantCategory.clone !== ''" class="flex flex-row justify-space-around">
           <h3>Clone {{ plantCategory.clone }}</h3>
         </div>
 
@@ -16,7 +16,7 @@
           </p>
         </div>
 
-        <div class="d-flex justify-content-evenly">
+        <div class="flex justify-evenly">
           <button
             v-for="plant in referencePlants"
             :key="plant.size"
@@ -46,11 +46,11 @@
           <small>{{ plantTypeDescription }}</small>
         </div>
         <hr class="my-4" />
-        <div class="d-flex flex-row justify-content-evenly">
-          <div class="align-content-center">
+        <div class="flex flex-row justify-space-evenly">
+          <div class="content-center">
             <h5 class="m-0">{{ formattedPrice }}</h5>
           </div>
-          <div v-if="availableForSale" class="d-flex flex-column justify-contents-center">
+          <div v-if="availableForSale" class="flex flex-column justify-center">
             <button class="btn btn-primary mx-auto" @click="addToCart" :disabled="selectedPlant === undefined">Add to Cart</button>
           </div>
 
@@ -306,3 +306,8 @@ const freshDivision = computed(() => {
   }
 }
 </style>
+
+<!-- 
+TODO Bootstrap: Replace text-warning color
+Replace button styles CRITICAL
+-->

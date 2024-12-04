@@ -5,11 +5,11 @@
             <img :src="cardImageUrl" :class="cardImageUrl == placeholderUrl ? 'placeholderImage': 'cardImage'" :alt="`An image of ${name}`" />
         </router-link>
         </figure>
-        <header class="card-title my-0 justify-content-center align-items-center">
-            <h5 class="text-primary text-center align-content-center card-name m-0">{{ name }}</h5>
+        <header class="card-title">
+            <h5 class="text-center content-center card-name">{{ name }}</h5>
         </header>
-        <footer class="card-footer d-flex flex-row">
-            <div class="d-flex align-items-center text-primary">
+        <footer class="card-footer">
+            <div class="flex align-center">
                 {{ formattedPrice }}
             </div>
             <BaseButton type="primary" size="normal" @click="$router.push(link)">View Details</BaseButton>
@@ -48,7 +48,7 @@ const USDollar = new Intl.NumberFormat('en-US', {
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 .card {
     display: flex;
@@ -86,8 +86,9 @@ img {
 .card-title {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    margin: .5rem;
+    justify-content: center;
+    align-items: center;
+    margin: .5rem .2rem;
 }
 
 .card-name {
@@ -96,13 +97,17 @@ img {
     overflow: hidden;
     text-overflow: ellipsis;
     word-wrap: break-word;
+    color: $primary;
 }
 
 .card-footer {
-    padding: 18px;
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
     overflow: hidden;
     display: flex;
     justify-content: space-around;
+    color: $primary;
 }
 
 @media(min-width > 60rem) {

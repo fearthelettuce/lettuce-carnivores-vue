@@ -29,8 +29,8 @@
                 <div v-for="(plant, index) in plantCategoryToEdit.plants" :key="index" >
                     <template v-if="displaySoldArchived(plant)">
                         <hr style="margin-block: .4rem" />
-                        <div class="d-flex flex-row gap-1">
-                            <div class="up-down-arrows align-content-center text-center">
+                        <div class="flex flex-row gap-1">
+                            <div class="up-down-arrows align-center text-center">
                                 <button
                                     class="btn px-1 py-0"
                                     v-if="index !== 0"
@@ -267,3 +267,5 @@ provide('managePhotos', managePhotos)
         }
     }
 </style>
+
+<!-- TODO: Bootstrap update buttons -->

@@ -1,28 +1,25 @@
 <template>
-    <div class="container border rounded p-4">
+    <div class="login-container">
         <h2 class="text-center">Login</h2>
         <form>
-            <div class="form-group">
+            <div class="">
                 <label for="loginEmail">Email</label>
-                <input type="email" class="form-control" placeholder="email" id="loginEmail" v-model="loginEmail" />       
+                <input type="email" class="mx-4" placeholder="email" id="loginEmail" v-model="loginEmail" />       
             </div>
 
-            <div class="form-group mt-3">
+            <div class="mt-3">
                 <label for="loginPassword">Password</label>
-                <input type="password" class="form-control" placeholder="password" id="loginPassword" v-model="loginPassword" />             
+                <input type="password" class="mx-4" placeholder="password" id="loginPassword" v-model="loginPassword" />             
             </div>
-            <div class="d-flex justify-content-around mt-4">
-                <div><button class="btn btn-primary px-4" @click.prevent="login">Login</button></div>
+            <div class="flex justify-space-around mt-4">
+                <div><BaseButton @click.prevent="login">Login</BaseButton></div>
                 
                 <div>
-                    <button class="btn btn-outline-link" @click.prevent="resetPassword">Trouble signing in?</button>
+                    <BaseButton type="info" @click.prevent="resetPassword">Trouble signing in?</BaseButton>
                 </div>
             </div>
         </form>
         <hr class="my-4"/>
-        <!-- <div class="d-flex justify-content-center">
-            <ProviderLogin />
-        </div> -->
     </div>
 </template>
 
@@ -77,4 +74,12 @@ function areInputsValid() {
 
 <style scoped>
 
+.login-container {
+    padding: 3rem;
+    border: 1px solid lightgray;
+    border-radius: .5rem;
+}
+
 </style>
+<!-- 
+TODO Bootstrap: Fix form styles -->

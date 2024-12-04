@@ -3,7 +3,7 @@
     <div class="photo-modal p-3">
       <header class="mb-2 border-0">
         <h5 class="modal-title text-light">Manage Photos</h5>
-        <div class="text-info align-content-center">Photos will take ~30s to load after uploading</div>
+        <div class="text-info align-center">Photos will take ~30s to load after uploading</div>
         <button type="button" class="btn-close btn-close-white" aria-label="Close" data-bs-dismiss="modal" @click="toggleModal"></button>
       </header>
       <main class="modal-body photo-items-grid">
@@ -45,10 +45,10 @@
           />
           <div v-if="selectedFiles.length !== 0" class="d-inline-block mx-3 text-light">{{ selectedFiles.length }} files selected</div>
         </div>
-        <div class="d-flex flex-row gap-2">
-          <button type="button" class="btn btn-primary" @click="upload" :disabled="selectedFiles.length === 0 || isSaving">
+        <div class="flex flex-row gap-2">
+          <BaseButton type="button" @click="upload" :disabled="selectedFiles.length === 0 || isSaving" :loading="isSaving">
             Upload <span v-if="isSaving" class="spinner-border"></span>
-          </button>
+          </BaseButton>
           <button
             type="button"
             class="btn btn-info"
@@ -205,3 +205,5 @@ footer {
   transform: translateY(30px);
 }
 </style>
+<!-- 
+TODO Bootstrap update form and buttons -->
