@@ -40,11 +40,21 @@
 
           <div class="d-flex flex-row justify-content-center gap-2 mx-4">
             <h5 class="center-message">
-              {{
-                cartTotal - totalDiscountAmount >= discountedShippingThreshold
-                  ? `Free standard shipping on orders over $75!`
-                  : `Add ${amountToQualifyForDiscountedShipping} to quality for free standard shipping.`
-              }}
+              <template v-if="!isColdWeatherShippingActive">
+                {{
+                  cartTotal - totalDiscountAmount >= discountedShippingThreshold
+                    ? `Free standard shipping on orders over $${discountedShippingThreshold}!`
+                    : `Add ${amountToQualifyForDiscountedShipping} to quality for free standard shipping.`
+                }}
+              </template>
+              
+              <template v-else>
+                {{
+                  cartTotal - totalDiscountAmount >= discountedShippingThreshold
+                    ? `Free winter shipping on orders over $${discountedShippingThreshold}!`
+                    : `Add ${amountToQualifyForDiscountedShipping} to quality for free winter shipping.`
+                }}
+              </template>
             </h5>
           </div>
         </div>
@@ -67,13 +77,14 @@
 import { storeToRefs } from 'pinia'
 import { useOrderStore } from '@/stores/order'
 import { ref, type Ref, computed, onMounted } from 'vue'
-import type { CartItem, Discount } from '@/types/Orders'
+import type { CartItem } from '@/types/Orders'
 import { toast } from 'vue3-toastify'
 import { discountedShippingThreshold } from '@/constants/OrderConstants'
 import { useUserStore } from '@/stores/users'
 import { router } from '@/router'
 import { USDollar } from '@/utils/utils';
 import ShoppingCartItem from './ShoppingCartItem.vue'
+import { isColdWeatherShippingActive } from '@/constants/OrderConstants'
 
 const { cart, discountedItems } = storeToRefs(useOrderStore())
 const { getCategoryBySku, startCheckoutSession, validateCart, applyDiscounts } = useOrderStore()

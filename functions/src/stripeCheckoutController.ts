@@ -7,6 +7,10 @@ import {
   discountedExpeditedShippingId,
   standardShippingId,
   expeditedShippingId,
+  isColdWeatherShippingActive,
+  coldWeatherShippingId,
+  discountedColdWeatherShippingId,
+
 } from './constants/stripeConstants'
 import Stripe from 'stripe'
 import type { Plant, PlantCategory } from './types/Plants'
@@ -122,21 +126,14 @@ async function buildCheckoutSession(
   if (discountData.stripeCoupons.length > 0) {
     session.discounts = discountData.stripeCoupons
   }
-  // let discountAmount
-  // const discounts = await getDiscounts(lineItems)
-  // if (!discounts || !discounts.discountValues || discounts.stripeDiscounts.length === 0) {
-  //   discountAmount = 0
-  // } else {
-  //   discountAmount = calculateDiscounts(cartTotal, discounts?.discountValues)
-  // }
-  // if (discounts && discountAmount > 0) {
-  //   session.discounts = discounts.stripeDiscounts
-  // }
 
-  if (cartTotal - discountData.totalCartDiscountedAmount >= discountedShippingThreshold) {
-    session.shipping_options = [{ shipping_rate: discountedStandardShippingId }, { shipping_rate: discountedExpeditedShippingId }]
+  const isQualifiedForDiscountedShipping = cartTotal - discountData.totalCartDiscountedAmount >= discountedShippingThreshold
+  if (isColdWeatherShippingActive) {
+    session.shipping_options = [{ shipping_rate: isQualifiedForDiscountedShipping ? discountedColdWeatherShippingId : coldWeatherShippingId }]
   } else {
-    session.shipping_options = [{ shipping_rate: standardShippingId }, { shipping_rate: expeditedShippingId }]
+    session.shipping_options = isQualifiedForDiscountedShipping ?
+      [{ shipping_rate: discountedStandardShippingId }, { shipping_rate: discountedExpeditedShippingId }] :
+      [{ shipping_rate: standardShippingId }, { shipping_rate: expeditedShippingId }]
   }
 
   return session

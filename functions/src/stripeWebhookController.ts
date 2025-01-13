@@ -3,7 +3,7 @@ import { error, log } from 'firebase-functions/logger'
 import { onRequest } from 'firebase-functions/v2/https'
 import { StripeLineItem } from './types/Stripe'
 import Stripe from 'stripe'
-import { discountedStandardShippingId, standardShippingId } from './constants/stripeConstants'
+import { discountedStandardShippingId, standardShippingId, coldWeatherShippingId, discountedColdWeatherShippingId } from './constants/stripeConstants'
 import { getNextSequentialId } from './common'
 import { updateInventoryFromStripeSale } from './inventory/inventoryService'
 import { Filter } from 'firebase-admin/firestore'
@@ -51,6 +51,9 @@ async function fulfillCheckout(data: Stripe.Checkout.Session) {
   let shippingType
   if (selectedShipping === standardShippingId || selectedShipping === discountedStandardShippingId) {
     shippingType = 'Standard'
+  }
+  if (selectedShipping === coldWeatherShippingId || selectedShipping === discountedColdWeatherShippingId) {
+    shippingType = 'Cold Weather'
   } else {
     shippingType = 'Expedited'
   }

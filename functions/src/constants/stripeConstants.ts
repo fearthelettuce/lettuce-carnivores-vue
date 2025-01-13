@@ -1,8 +1,12 @@
-const discountedShippingThreshold = 7500
+const standardFreeShippingThreshold = 7500
+const coldWeatherFreeShippingThreshold = 20000
 
-const standardShippingId = 'shr_1PhcE1HlHApXEku9jEjOnRY5'
-const expeditedShippingId = 'shr_1PhcIRHlHApXEku9VDJcMwh1'
-const discountedStandardShippingId = 'shr_1PhcE6HlHApXEku9pLjd8otH'
-const discountedExpeditedShippingId = 'shr_1PhcDxHlHApXEku9w5lwzzhi'
+export const isColdWeatherShippingActive = true
+export const discountedShippingThreshold = isColdWeatherShippingActive ? coldWeatherFreeShippingThreshold : standardFreeShippingThreshold
 
-export {discountedShippingThreshold, discountedStandardShippingId, discountedExpeditedShippingId, standardShippingId, expeditedShippingId}
+export const standardShippingId = 'shr_1PhcE1HlHApXEku9jEjOnRY5'
+export const expeditedShippingId = 'shr_1PhcIRHlHApXEku9VDJcMwh1'
+export const discountedStandardShippingId = 'shr_1PhcE6HlHApXEku9pLjd8otH'
+export const discountedExpeditedShippingId = 'shr_1PhcDxHlHApXEku9w5lwzzhi'
+export const coldWeatherShippingId = 'shr_1QgwacHlHApXEku9NOmO8GBA'
+export const discountedColdWeatherShippingId = 'shr_1Qgwb2HlHApXEku9geKIWtCT'
