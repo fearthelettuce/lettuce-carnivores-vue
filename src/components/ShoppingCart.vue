@@ -40,11 +40,21 @@
 
           <div class="flex row justify-center gap-2 mx-4">
             <h5 class="center-message">
-              {{
-                cartTotal - totalDiscountAmount >= discountedShippingThreshold
-                  ? `Free standard shipping on orders over $75!`
-                  : `Add ${amountToQualifyForDiscountedShipping} to quality for free standard shipping.`
-              }}
+              <template v-if="!isColdWeatherShippingActive">
+                {{
+                  cartTotal - totalDiscountAmount >= discountedShippingThreshold
+                    ? `Free standard shipping on orders over $75!`
+                    : `Add ${amountToQualifyForDiscountedShipping} to quality for free standard shipping.`
+                }}
+              </template>
+              
+              <template v-else>
+                {{
+                  cartTotal - totalDiscountAmount >= discountedShippingThreshold
+                    ? `Free winter shipping on orders over $200!`
+                    : `Add ${amountToQualifyForDiscountedShipping} to quality for free winter shipping.`
+                }}
+              </template>
             </h5>
           </div>
         </div>
@@ -74,6 +84,7 @@ import { useUserStore } from '@/stores/users'
 import { router } from '@/router'
 import { USDollar } from '@/utils/utils';
 import ShoppingCartItem from './ShoppingCartItem.vue'
+import { isColdWeatherShippingActive } from '@/constants/OrderConstants'
 
 const { cart, discountedItems } = storeToRefs(useOrderStore())
 const { getCategoryBySku, startCheckoutSession, validateCart, applyDiscounts } = useOrderStore()

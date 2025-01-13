@@ -3,4 +3,5 @@ export const newShoppingCart: ShoppingCart = {
     cartItems: [],
 }
 
-export const discountedShippingThreshold = 75
+export const discountedShippingThreshold = 200
+export const isColdWeatherShippingActive = true

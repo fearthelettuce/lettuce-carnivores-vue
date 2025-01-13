@@ -1,4 +1,4 @@
-const discountedShippingThreshold = 7500
+const discountedShippingThreshold = 20000
 
 const standardShippingId = 'shr_1PhcE1HlHApXEku9jEjOnRY5'
 const expeditedShippingId = 'shr_1PhcIRHlHApXEku9VDJcMwh1'
