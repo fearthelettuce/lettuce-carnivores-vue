@@ -24,6 +24,7 @@ import { useOrderStore } from '@/stores/order';
 import { useUserStore } from '@/stores/users';
 import { storeToRefs } from 'pinia'
 import { isColdWeatherShippingActive } from '@/constants/OrderConstants'
+
 const {user} = storeToRefs(useUserStore())
 const { resetCart } = useOrderStore()
 

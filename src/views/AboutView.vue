@@ -20,7 +20,8 @@
             <h4>Delayed Shipping Policy</h4>
             <p>I am happy to accommodate reasonable delayed shipping requests.  Ideally, please contact us before you make your purchase, but as with cancellations, I will make an attempt up until the time the shipping label is created. </p>
             <h4>Shipping</h4>
-            <p>Plants are shipped within 2 business days.</p>
+            <p>Most of the year, plants are shipped within 2 business days. It can take longer to process orders following large sales, such as after Black Friday</p>
+            <p><strong>Cold weather shipping</strong> - if temperatures dip below 25F in your area, or ours, shipping will be planned to avoid very cold temperatures which could delay shipping by days or weeks.  The live arrival guarantee does apply to these orders and a heat pack and insulation will be included when necessary. If temperatures are very cold for an extended duration, we will contact you to discuss options or you can reach out to us via email or Instagram</p>
             <h4>Exports</h4>
             <p>Live plants are sold in the US only and cannot be exported.  Orders placed with a shipping address outside the US will be cancelled.</p>
         </div>
