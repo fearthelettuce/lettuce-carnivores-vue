@@ -1,11 +1,27 @@
-@import '@/assets/scss/colors';
-
-/* Bootstrap overrides */
-$primary: $brand-primary;
+$primary: #9fdb50;
 $info: #00A0E5;
-$dark: $dark-bg;
+$dark: #44403b;
+
 $font-family-sans-serif: "Arial", Arial, Helvitica, sans-serif;
 $zindex-dropdown: 1025 !default;
-$body-bg: $dark-bg;
+$body-bg: #44403b;
 $body-color: #e1dcbd;
 $modal-content-bg: #525252;
+$brand-primary: #9fdb50;
+$better-hyperlink-blue: #2989b3;
+$dark-bg: #44403b;
+$accent-bg: #0b5a11;
+$yellow-color: #f6d73c;
+$info: #00A0E5;
+
+
+$light-green: #E4FDE1;
+$medium-green: #8ACB88;
+$dark-green: #648381;
+$dark-gray: #575761;
+$accent-orange: #FFBF46;
+$some-blue: #3581B8;
+$dark-red: #C05746;
+$medium-red: #e44034;
+$medium-orange: #CF5C36;
+$hyperlink-blue: #2989b3;
