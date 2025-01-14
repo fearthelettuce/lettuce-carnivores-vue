@@ -1,7 +1,8 @@
 <template>
     <div class="flex justify-center column">
         <div class="button-container">
-            <BaseButton v-for="component in adminComponents" :key="component.label" @click="setSelectedComponent(component)">{{ component.label }}</BaseButton>
+            <BaseButton v-for="component in adminComponents" :key="component.label"
+                @click="setSelectedComponent(component)">{{ component.label }}</BaseButton>
         </div>
         <div class="component-container">
             <component v-if="selectedComponent !== undefined" :is="selectedComponent" />
@@ -13,7 +14,7 @@
 
 </template>
 
-<script setup  lang="ts">
+<script setup lang="ts">
 import { ref, type Component } from 'vue';
 import GiveawayAdmin from '@/components/giveaway/GiveawayAdmin.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
@@ -42,13 +43,12 @@ const adminComponents = [
     }
 ]
 
-function setSelectedComponent (adminComponent: {label: string, component: Component}) {
+function setSelectedComponent(adminComponent: { label: string, component: Component }) {
     selectedComponent.value = adminComponent.component
 }
 </script>
 
 <style scoped>
-
 .button-container {
     display: flex;
     flex-direction: column;
@@ -61,9 +61,9 @@ function setSelectedComponent (adminComponent: {label: string, component: Compon
 
 @media (min-width: 40rem) {
     .button-container {
-    display: flex;
-    flex-direction: row;
-    gap: .25rem;
-}
+        display: flex;
+        flex-direction: row;
+        gap: .25rem;
+    }
 }
 </style>

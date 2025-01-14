@@ -1,26 +1,24 @@
 <template>
     <section class="align-center">
-        <div v-if="props.photos.length === 0" class="text-center text-warning"> <h3>No photos to display :(</h3></div>
+        <div v-if="props.photos.length === 0" class="text-center text-warning">
+            <h3>No photos to display :(</h3>
+        </div>
         <div v-else class="photo-grid">
-            <figure
-                v-for="photo of props.photos"
-                :key=photo.path.toString()
-                @click="setSelectedPhoto(photo)"
-                @mouseover="setSelectedPhoto(photo)"
-                class="photo-list-item">
+            <figure v-for="photo of props.photos" :key=photo.path.toString() @click="setSelectedPhoto(photo)"
+                @mouseover="setSelectedPhoto(photo)" class="photo-list-item">
                 <img :src="getPhotoUrl(photo.path.toString())">
             </figure>
             <figure class="selected-image" @click="showImageZoomModal"><img :src="displayPhoto"></figure>
         </div>
     </section>
-    <ImageZoomModal v-if="props.photos.length !== 0" ref="imageZoomModalRef" :photo="state.selectedPhoto"/>
+    <ImageZoomModal v-if="props.photos.length !== 0" ref="imageZoomModalRef" :photo="state.selectedPhoto" />
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, watch } from 'vue';
 import ImageZoomModal from '@/components/ui/ImageZoomModal.vue';
-import type { PhotoItem,  } from '@/types/Product';
-import {getPhotoUrl} from '@/composables/usePhotoUtils'
+import type { PhotoItem, } from '@/types/Product';
+import { getPhotoUrl } from '@/composables/usePhotoUtils'
 
 const props = defineProps<{
     photos: Array<PhotoItem>,
@@ -35,13 +33,13 @@ const displayPhoto = computed(() => {
 })
 
 const imageZoomModalRef = ref<InstanceType<typeof ImageZoomModal> | null>(null)
-watch(() => props.photos,() => {
-    if(props.photos) {
+watch(() => props.photos, () => {
+    if (props.photos) {
         state.selectedPhoto = props.photos[0]
     }
 })
 onMounted(() => {
-    if(props.photos) {
+    if (props.photos) {
         state.selectedPhoto = props.photos[0]
     }
 })
@@ -63,29 +61,35 @@ img {
     height: 100%;
     width: 100%;
 }
+
 figure {
     margin: 0;
 }
+
 .photo-grid {
     display: grid;
     gap: 1rem;
     grid-template-columns: 1fr 1fr 1fr;
     grid-auto-rows: 15dvh;
 }
+
 .selected-image {
     grid-row: 1 / 5;
     grid-column: 1 / 4;
     order: 1;
-    img{
+
+    img {
         height: 100%;
-        object-fit:cover;
+        object-fit: cover;
         border-radius: 1rem;
     }
 }
+
 .photo-list-item {
     grid-row: span 1 / auto;
     grid-column: span 1 / auto;
-    img{
+
+    img {
         object-fit: cover;
         border-radius: 1rem;
     }
@@ -96,11 +100,13 @@ figure {
         grid-template-columns: 2fr 5fr;
         grid-auto-rows: 28dvh;
     }
+
     .selected-image {
         grid-row: 1 / 4;
         grid-column: 2 / auto;
-        img{
-            object-fit:contain;
+
+        img {
+            object-fit: contain;
         }
     }
 }
