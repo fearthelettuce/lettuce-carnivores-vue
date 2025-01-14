@@ -43,7 +43,7 @@
               <template v-if="!isColdWeatherShippingActive">
                 {{
                   cartTotal - totalDiscountAmount >= discountedShippingThreshold
-                    ? `Free standard shipping on orders over $75!`
+                    ? `Free standard shipping on orders over $${discountedShippingThreshold}!`
                     : `Add ${amountToQualifyForDiscountedShipping} to quality for free standard shipping.`
                 }}
               </template>
@@ -51,7 +51,7 @@
               <template v-else>
                 {{
                   cartTotal - totalDiscountAmount >= discountedShippingThreshold
-                    ? `Free winter shipping on orders over $200!`
+                    ? `Free winter shipping on orders over $${discountedShippingThreshold}!`
                     : `Add ${amountToQualifyForDiscountedShipping} to quality for free winter shipping.`
                 }}
               </template>
@@ -77,7 +77,7 @@
 import { storeToRefs } from 'pinia'
 import { useOrderStore } from '@/stores/order'
 import { ref, type Ref, computed, onMounted } from 'vue'
-import type { CartItem, Discount } from '@/types/Orders'
+import type { CartItem } from '@/types/Orders'
 import { toast } from 'vue3-toastify'
 import { discountedShippingThreshold } from '@/constants/OrderConstants'
 import { useUserStore } from '@/stores/users'
