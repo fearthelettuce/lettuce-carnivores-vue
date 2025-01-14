@@ -20,9 +20,9 @@ app.use(Vue3Toastify, {
   theme: 'colored',
 } as ToastContainerOptions)
 
-import BaseSpinner from '@/components/UI/BaseSpinner.vue'
-import BaseContainer from '@/components/UI/BaseContainer.vue'
-import BaseButton from './components/UI/BaseButton.vue'
+import BaseSpinner from '@/components/ui/BaseSpinner.vue'
+import BaseContainer from '@/components/ui/BaseContainer.vue'
+import BaseButton from '@/components/ui/BaseButton.vue'
 app.component('BaseSpinner', BaseSpinner)
 app.component('BaseContainer', BaseContainer)
 app.component('BaseButton', BaseButton)

@@ -53,7 +53,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import BaseDialog from '@/components/UI/BaseDialog.vue';
+import BaseDialog from '@/components/ui/BaseDialog.vue';
 import type { Order } from '@/types/Orders'
 import { saveItem } from '@/apis/dataServices'
 import { toast } from 'vue3-toastify';

@@ -16,7 +16,7 @@
 <script setup  lang="ts">
 import { ref, type Component } from 'vue';
 import GiveawayAdmin from '@/components/giveaway/GiveawayAdmin.vue'
-import BaseButton from '@/components/UI/BaseButton.vue'
+import BaseButton from '@/components/ui/BaseButton.vue'
 import InventoryManagement from '@/components/InventoryManagement.vue'
 import OrderAdmin from '@/components/OrderAdmin.vue';
 import PlantInventory from '@/components/PlantInventory.vue';

@@ -93,7 +93,7 @@ import { ref, onMounted, provide, type Ref} from 'vue';
 import ProductCard from '@/components/products/ProductCard.vue';
 import PlantCategoryForm from '@/components/products/PlantCategoryForm.vue';
 import PlantItemForm from '@/components/products/PlantItemForm.vue';
-import ItemSelect from '@/components/UI/ItemSelect.vue';
+import ItemSelect from '@/components/ui/ItemSelect.vue';
 import { usePlantStore } from '@/stores/plant';
 import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router'

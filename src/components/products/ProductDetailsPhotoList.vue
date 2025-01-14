@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted, watch } from 'vue';
-import ImageZoomModal from '@/components/UI/ImageZoomModal.vue';
+import ImageZoomModal from '@/components/ui/ImageZoomModal.vue';
 import type { PhotoItem,  } from '@/types/Product';
 import {getPhotoUrl} from '@/composables/usePhotoUtils'
 

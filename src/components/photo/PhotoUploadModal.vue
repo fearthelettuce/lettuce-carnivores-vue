@@ -72,7 +72,7 @@
 <script setup lang="ts">
 import { ref, type PropType, toRefs, onBeforeUnmount } from 'vue'
 import type { PhotoItem } from '@/types/Product'
-import BaseDialog from '@/components/UI/BaseDialog.vue'
+import BaseDialog from '@/components/ui/BaseDialog.vue'
 import DragUpload from '@/components/photo/DragUpload.vue'
 import PhotoPreviewItem from './PhotoPreviewItem.vue'
 import { arrayMove } from '@/utils/utils'
