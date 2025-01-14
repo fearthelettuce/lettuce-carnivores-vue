@@ -12,12 +12,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { getEbayAccessToken, getUserConsent } from '@/composables/useEbayUtils'
 import { toast } from 'vue3-toastify'
 import { useInventoryStore } from '@/stores/inventory'
 import { storeToRefs } from 'pinia'
-import { updateDocId } from '@/apis/dataServices'
 
 let environment = 'PRODUCTION'
 const { ebayTokenData } = storeToRefs(useInventoryStore())

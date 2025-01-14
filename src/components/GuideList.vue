@@ -1,5 +1,5 @@
 <template>
-    <main class="container-fluid guide-container">
+    <main class="guide-container">
         <GuideCard 
             v-for="(value, name, index) in guideData.genus"
             :key="name" 

@@ -1,6 +1,6 @@
 <template>
 
-    <section class="d-flex flex-row justify-content-around">
+    <section class="row justify-around">
         <p v-if="profile">{{ profile?.name.firstName + ' ' + profile?.name.lastName }}</p>
         <p v-if="profile">{{ profile?.contactInformation.email }}</p>
     </section>

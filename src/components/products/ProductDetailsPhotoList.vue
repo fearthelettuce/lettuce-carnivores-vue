@@ -1,5 +1,5 @@
 <template>
-    <section class="align-content-center">
+    <section class="align-center">
         <div v-if="props.photos.length === 0" class="text-center text-warning"> <h3>No photos to display :(</h3></div>
         <div v-else class="photo-grid">
             <figure
@@ -105,3 +105,5 @@ figure {
     }
 }
 </style>
+
+<!-- TODO: Bootstrap update text color -->

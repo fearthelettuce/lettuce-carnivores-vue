@@ -11,9 +11,7 @@
                 <AccordionContent class="my-1">
                         <div class="shipping-info my-3">
                             <h5>Shipping</h5>
-
-                            <div class="d-flex flex-row flex-wrap justify-content-around gap-2">
-
+                            <div class="flex justify-space-around gap-2">
                                 <div class="ms-3">
                                     <div>{{ order.shippingInfo.name }}</div>
                                     <div>{{ order.shippingInfo.address.line1 }}</div>
@@ -29,8 +27,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <button v-if="isAdmin" @click="openOrderStatusModal(order)" :key="order.id" class="btn btn-info">Update Status</button>
-
+                                    <BaseButton v-if="isAdmin" @click="openOrderStatusModal(order)" :key="order.id" type="info">Update Status</BaseButton>
                                 </div>
                             </div>
                         </div>

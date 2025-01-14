@@ -60,7 +60,7 @@
             <FormKit
                 type="checkbox"
                 label="Representative"
-                outer-class="flex-2 align-content-center"
+                outer-class="flex-2 align-center"
                 v-model="plant.isRepresentative"
             />
             <div>

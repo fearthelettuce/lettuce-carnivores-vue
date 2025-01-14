@@ -3,8 +3,8 @@
     <div class="photo-modal p-3">
       <header class="mb-2 border-0">
         <h5 class="modal-title text-light">Manage Photos</h5>
-        <div class="text-info align-content-center">Photos will take ~30s to load after uploading</div>
-        <button type="button" class="btn-close btn-close-white" aria-label="Close" data-bs-dismiss="modal" @click="toggleModal"></button>
+        <div class="text-info align-center">Photos will take ~30s to load after uploading</div>
+        <button type="button" class="" aria-label="Close" data-bs-dismiss="modal" @click="toggleModal"></button>
       </header>
       <main class="modal-body photo-items-grid">
         <template v-for="(photo, index) of photos" :key="photo.name">
@@ -32,7 +32,7 @@
       </DragUpload>
       <footer class="bg-dark">
         <div class="">
-          <label for="formFile" class="btn btn-primary" :disabled="isSaving"> Select Files </label>
+          <!-- <label for="formFile" class="" :disabled="isSaving"> Select Files </label>
           <input
             ref="fileSelectElement"
             class="form-control"
@@ -42,31 +42,27 @@
             accept="capture=camera,image/*"
             multiple
             :disabled="isSaving"
-          />
+          /> -->
           <div v-if="selectedFiles.length !== 0" class="d-inline-block mx-3 text-light">{{ selectedFiles.length }} files selected</div>
         </div>
-        <div class="d-flex flex-row gap-2">
-          <button type="button" class="btn btn-primary" @click="upload" :disabled="selectedFiles.length === 0 || isSaving">
+        <div class="flex flex-row gap-2">
+          <BaseButton type="button" @click="upload" :disabled="selectedFiles.length === 0 || isSaving" :loading="isSaving">
             Upload <span v-if="isSaving" class="spinner-border"></span>
-          </button>
-          <button
-            type="button"
-            class="btn btn-info"
+          </BaseButton>
+          <BaseButton
             @click="reloadImages"
             data-bs-dismiss="modal"
             :disabled="isSaving || photos.length === 0"
           >
             Reload Images
-          </button>
-          <button
-            type="button"
-            class="btn btn-secondary"
+          </BaseButton>
+          <BaseButton
             @click="toggleModal"
             data-bs-dismiss="modal"
             :disabled="selectedFiles.length !== 0"
           >
             Close
-          </button>
+          </BaseButton>
         </div>
       </footer>
     </div>
@@ -205,3 +201,5 @@ footer {
   transform: translateY(30px);
 }
 </style>
+<!-- 
+TODO Bootstrap update form and buttons -->

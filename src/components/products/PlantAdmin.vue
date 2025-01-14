@@ -29,10 +29,10 @@
                 <div v-for="(plant, index) in plantCategoryToEdit.plants" :key="index" >
                     <template v-if="displaySoldArchived(plant)">
                         <hr style="margin-block: .4rem" />
-                        <div class="d-flex flex-row gap-1">
-                            <div class="up-down-arrows align-content-center text-center">
+                        <div class="flex flex-row gap-1">
+                            <div class="up-down-arrows align-center text-center">
                                 <button
-                                    class="btn px-1 py-0"
+                                    class="px-1 py-0"
                                     v-if="index !== 0"
                                     @click="arrayMove(plantCategoryToEdit.plants,index,index-1)">
                                     <FontAwesome
@@ -41,7 +41,7 @@
                                 </button>
                                 <button
                                     v-if="index !== plantCategoryToEdit.plants.length -1"
-                                    class="btn px-1 py-0"
+                                    class="px-1 py-0"
                                     @click="arrayMove(plantCategoryToEdit.plants,index,index+1)" >
                                     <FontAwesome
                                     class="move-arrow"
@@ -62,8 +62,8 @@
                     </template>
                 </div>
                 <div class="mt-5">
-                    <button class="btn btn-primary" @click.prevent="addPlant(plantCategoryToEdit)">Add Plant Item</button>
-                    <button class="btn btn-primary ms-4" @click.prevent="save">Save <span class="spinner-border" role="status" v-show="isSaving"></span></button>
+                    <BaseButton @click.prevent="addPlant(plantCategoryToEdit)">Add Plant Item</BaseButton>
+                    <BaseButton class="ms-4" @click.prevent="save">Save <span class="spinner-border" role="status" v-show="isSaving"></span></BaseButton>
                 </div>
             </div>
         </div>
@@ -267,3 +267,5 @@ provide('managePhotos', managePhotos)
         }
     }
 </style>
+
+<!-- TODO: Bootstrap update buttons -->

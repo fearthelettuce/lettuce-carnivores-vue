@@ -61,7 +61,7 @@ defineExpose({
         margin: 0.5em 0.5em;
         cursor: pointer;
     }
-    .btn-close:hover{
+    .close:hover{
         cursor: pointer;
 
     }

@@ -5,5 +5,4 @@ export const newShoppingCart: ShoppingCart = {
 const standardFreeShippingThreshold = 75
 const coldWeatherFreeShippingThreshold = 200
 export const isColdWeatherShippingActive = true
-
 export const discountedShippingThreshold = isColdWeatherShippingActive ? coldWeatherFreeShippingThreshold : standardFreeShippingThreshold

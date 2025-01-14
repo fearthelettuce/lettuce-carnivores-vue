@@ -15,7 +15,7 @@
                     <h5 class="modal-title"><slot name="title"></slot></h5>
                     <button 
                     type="button" 
-                    class="btn-close" 
+                    class="close-button" 
                     aria-label="Close"
                     @click="hideModal"
                     ></button>
@@ -25,7 +25,7 @@
                     <slot name="body"></slot>
                 </div>
                 <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-secondary" @click="hideModal">Close</button>
+                    <BaseButton type="secondary" @click="hideModal">Close</BaseButton>
                     <slot name="modalAction"></slot>
 
                 </div>
@@ -70,14 +70,14 @@ function hideModal() {
 
 <style scoped>
    
-    .btn-close{
+    .close-button{
         position: absolute;
         top: 0;
         right: 0;
         padding: 1em 2em;
         cursor: pointer;
     }
-    .btn-close:hover{
+    .close-button:hover{
         cursor: pointer;
     }
 </style>
