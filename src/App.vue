@@ -9,7 +9,7 @@
 </script>
 
 <style lang="scss">
-@import '@/assets/scss/main';
+@use '@/assets/scss/main.scss';
 a {
     text-decoration: none;
 }
