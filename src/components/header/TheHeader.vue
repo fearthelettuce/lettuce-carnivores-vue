@@ -5,14 +5,13 @@
         <NavigationMenu class="flex justify-start items-start">
           <NavigationMenuList class="flex justify-start gap-4 flex-row">
             <NavigationMenuItem v-for="item in allowedNavLinks" :key="item.name">
-              <NavigationMenuLink :to="item.path" @click="collapseNavbar">{{ item.label }}</NavigationMenuLink>
+              <NavigationMenuLink @click="collapseNavbar">
+                <Button variant="ghost">
 
-              <!-- <router-link
-                :to="props.to"
-                class="nav-link text-light"
-                @click="$emit('collapseNavbar')"
-            >{{ props.label }}</router-link> -->
-
+                  <router-link :to="item.path" class="nav-link text-light"
+                    @click="$emit('collapseNavbar')">{{ item.label }}</router-link>
+                </Button>
+              </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
@@ -31,13 +30,14 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from '@/components/ui/navigation-menu'
+import { Button } from '@/components/ui/button'
 import { computed } from 'vue';
 import { navData } from '@/router/index'
 import { useUserStore } from '@/stores/users';
 import { useOrderStore } from '@/stores/order';
 import { storeToRefs } from 'pinia'
 
-
+//https://www.twblocks.com/blocks/headers/header1
 
 const { cartItemCount } = storeToRefs(useOrderStore())
 
