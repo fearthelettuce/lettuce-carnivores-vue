@@ -71,11 +71,11 @@
     </div>
   </div>
 </nav>
-
+<h2 class="text-cyan-400 dark:text-red-400">Bananannananana</h2>
 </template>
 
 <script setup lang="ts">
-import { FwbNavbar, FwbNavbarCollapse, FwbNavbarLink} from 'flowbite-vue'
+
 </script>
 
 <style lang="scss">
