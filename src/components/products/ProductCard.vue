@@ -56,10 +56,11 @@ const USDollar = new Intl.NumberFormat('en-US', {
     filter: brightness(110%);   
     border-radius: 2em;
     overflow:hidden;
-    margin: 0 1rem;
+    margin: 1rem;
     max-width: 45rem;
     justify-content: space-between;
-}
+    background: linear-gradient(0.58turn, hsl(87, 15%, 90%), hsl(87, 2%, 95%), hsl(87, 12%, 82%), hsl(87, 2%, 95%), hsl(87, 50%, 82%));
+    box-shadow: #d6d3d1 4px 4px 12px 6px;}
 
 img {
     display: block;
@@ -97,7 +98,7 @@ img {
     overflow: hidden;
     text-overflow: ellipsis;
     word-wrap: break-word;
-    color: $primary;
+
 }
 
 .card-footer {
@@ -107,7 +108,7 @@ img {
     overflow: hidden;
     display: flex;
     justify-content: space-around;
-    color: $primary;
+
 }
 
 @media(min-width > 60rem) {

@@ -45,10 +45,7 @@
 
 <script setup lang="ts">
 import { nextTick, type Ref, ref } from 'vue'
-import Accordion from 'primevue/accordion'
-import AccordionHeader from 'primevue/accordionheader'
-import AccordionPanel from 'primevue/accordionpanel'
-import AccordionContent from 'primevue/accordioncontent'
+
 import OrderStatusModal from '@/components/OrderStatusModal.vue'
 import type { Order } from '@/types/Orders'
 import { USDollar, formatFirebaseDate } from '@/utils/utils';

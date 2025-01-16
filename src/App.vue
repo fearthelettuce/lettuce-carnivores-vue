@@ -10,6 +10,9 @@ import TheHeader from './components/header/TheHeader.vue';
 
 <style lang="scss">
 @use '@/assets/scss/main.scss';
+html {
+  background: $light-bg !important;
+}
 a {
     text-decoration: none;
 }
