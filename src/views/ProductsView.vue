@@ -1,8 +1,6 @@
 <template>
-    <div class="">
-        <ProductFilters />
-        <PlantList />
-    </div>
+    <!-- <ProductFilters /> -->
+    <PlantList />
 </template>
 
 <script setup lang="ts">

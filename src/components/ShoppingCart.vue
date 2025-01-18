@@ -2,75 +2,74 @@
   <div v-if="cartErrors !== null" class="mx-5 mb-3">
     {{ cartErrors }}
   </div>
-  <div class="mb-3">
-    <div class="flex justify-center" v-if="cart.cartItems.length === 0">
-      <p>Cart is empty</p>
-    </div>
-
-    <div class="cart-grid" v-else>
-      <div class="cart-item-container">
-        <ShoppingCartItem 
-          v-for="item in cart.cartItems" 
-          :key="item.sku" 
-          :item 
-          @cart-items-changed="updateDiscounts"
-          :discountedPrice="item.quantity === 1 ? getDiscountedPrice(item) : undefined"
-        />
-      </div>
-      <div class="subtotal-container">
-        <div class="subtotal">
-          <div v-if="totalDiscountAmount > 0" class="subtotal-line">
-            <h3 class="m-0">Discount</h3>
-            <h3 class="m-0">
-              {{ USDollar.format(-totalDiscountAmount) }}
-            </h3>
-          </div>
-          <div class="subtotal-line">
-            <h3 class="m-0">Subtotal</h3>
-            <h3 class="m-0">
-              {{ USDollar.format(cartSubtotal) }}
-            </h3>
-          </div>
-
-          <div v-if="activeDiscountMessage !== null" class="flex row justify-center gap-2 mx-4">
-            <h5 class="center-message">
-              {{ activeDiscountMessage }}
-            </h5>
-          </div>
-
-          <div class="flex row justify-center gap-2 mx-4">
-            <h5 class="center-message">
-              <template v-if="!isColdWeatherShippingActive">
-                {{
-                  cartTotal - totalDiscountAmount >= discountedShippingThreshold
-                    ? `Free standard shipping on orders over $${discountedShippingThreshold}!`
-                    : `Add ${amountToQualifyForDiscountedShipping} to quality for free standard shipping.`
-                }}
-              </template>
-              
-              <template v-else>
-                {{
-                  cartTotal - totalDiscountAmount >= discountedShippingThreshold
-                    ? `Free winter shipping on orders over $${discountedShippingThreshold}!`
-                    : `Add ${amountToQualifyForDiscountedShipping} to quality for free winter shipping.`
-                }}
-              </template>
-            </h5>
-          </div>
-        </div>
-      </div>
-      <footer class="footer-sticky">
-        <div class="checkout-actions">
-          <BaseButton v-if="!isLoggedIn" type="info" @click="router.push('/login')">Login</BaseButton>
-
-          <BaseButton class="checkout-button" @click.prevent="checkout" :disabled="cart.cartItems.length === 0 || isCheckoutLoading">
-            {{ isLoggedIn ? `Checkout` : `Checkout as Guest` }}
-            <span class="spinner-border" role="status" v-show="isCheckoutLoading"></span>
-          </BaseButton>
-        </div>
-      </footer>
-    </div>
+  <div class="flex justify-center" v-if="cart.cartItems.length === 0">
+    <p>Cart is empty</p>
   </div>
+
+  <div class="cart-grid" v-else>
+    <div class="cart-item-container">
+      <ShoppingCartItem 
+        v-for="item in cart.cartItems" 
+        :key="item.sku" 
+        :item 
+        @cart-items-changed="updateDiscounts"
+        :discountedPrice="item.quantity === 1 ? getDiscountedPrice(item) : undefined"
+      />
+    </div>
+    <div class="subtotal-container">
+      <div class="subtotal">
+        <div v-if="totalDiscountAmount > 0" class="subtotal-line">
+          <h3 class="m-0">Discount</h3>
+          <h3 class="m-0">
+            {{ USDollar.format(-totalDiscountAmount) }}
+          </h3>
+        </div>
+        <div class="subtotal-line">
+          <h3 class="m-0">Subtotal</h3>
+          <h3 class="m-0">
+            {{ USDollar.format(cartSubtotal) }}
+          </h3>
+        </div>
+
+        <div v-if="activeDiscountMessage !== null" class="flex row justify-center gap-2 mx-4">
+          <h5 class="center-message">
+            {{ activeDiscountMessage }}
+          </h5>
+        </div>
+
+        <div class="flex row justify-center gap-2 mx-4">
+          <h5 class="center-message">
+            <template v-if="!isColdWeatherShippingActive">
+              {{
+                cartTotal - totalDiscountAmount >= discountedShippingThreshold
+                  ? `Free standard shipping on orders over $${discountedShippingThreshold}!`
+                  : `Add ${amountToQualifyForDiscountedShipping} to quality for free standard shipping.`
+              }}
+            </template>
+            
+            <template v-else>
+              {{
+                cartTotal - totalDiscountAmount >= discountedShippingThreshold
+                  ? `Free winter shipping on orders over $${discountedShippingThreshold}!`
+                  : `Add ${amountToQualifyForDiscountedShipping} to quality for free winter shipping.`
+              }}
+            </template>
+          </h5>
+        </div>
+      </div>
+    </div>
+    <footer class="footer-sticky">
+      <div class="checkout-actions">
+        <BaseButton v-if="!isLoggedIn" type="info" @click="router.push('/login')">Login</BaseButton>
+
+        <BaseButton class="checkout-button" @click.prevent="checkout" :disabled="cart.cartItems.length === 0 || isCheckoutLoading">
+          {{ isLoggedIn ? `Checkout` : `Checkout as Guest` }}
+          <span class="spinner-border" role="status" v-show="isCheckoutLoading"></span>
+        </BaseButton>
+      </div>
+    </footer>
+  </div>
+
 </template>
 
 <script setup lang="ts">
@@ -230,7 +229,11 @@ async function getCartErrors() {
   border-radius: 1rem;
 }
 
-@media (min-width: 60rem) {
+@media (min-width: 85rem) {
+  .cart-grid {
+    margin: auto;
+    max-width: 70dvw;
+  }
   .cart-item-container {
     padding: 1rem 1rem;
   }

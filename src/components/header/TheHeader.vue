@@ -16,7 +16,7 @@
             <Button variant="default" @click="closeMobileMenu" class="loginButton">Login</Button>
           </router-link>
           <div class="right-container">
-            <Button variant="ghost">New!</Button>
+            <!-- <Button variant="ghost">Updates</Button> -->
 
             <div class="cart" @click="closeMobileMenu">
               <router-link to="/cart">
@@ -47,7 +47,7 @@
         </div>
         <nav class="justify-start items-center gap-4">
           <Sheet v-model:open="isOpen">
-            <SheetContent side="left" class="mobile-menu-sheet">
+            <SheetContent side="left" class="mobile-menu-sheet p-0 bg-background border-none">
               <div class="mobile-menu">
                 <div v-for="item in allowedNavLinks" :key="item.name" class="mobile-nav-link">
                   <Button variant="ghost" class="p-6 text-xl">
@@ -71,12 +71,6 @@
 
 <script setup lang='ts'>
 import { type Ref } from 'vue'
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-} from '@/components/ui/navigation-menu'
 import {
   Sheet,
   SheetContent,
@@ -233,27 +227,11 @@ header {
 
 @media(min-width: 600px) {
   .header-container {
+    padding-block: 0.1rem;
     padding-inline: 2.5rem;
   }
   .logo {
     font-size: clamp(1.75rem, 3vw, 2.75rem);
-  }
-}
-@media(min-width: 30rem) {
-
-  // .hamburger-icon-container {
-  //   display: none;
-  // }
-  .shop-button {
-    display: flex;
-  }
-
-  .nav-menu {
-    display: none;
-  }
-
-  .loginButton {
-    display: none;
   }
 }
 </style>

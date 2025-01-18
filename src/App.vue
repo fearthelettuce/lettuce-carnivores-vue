@@ -27,6 +27,9 @@ li {
 main {
   margin-block: 1rem;
 }
+main:first-child {
+  margin: auto;
+} 
 .page-container {
   margin: auto;
   width: 96dvw;
