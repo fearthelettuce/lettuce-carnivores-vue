@@ -1,15 +1,15 @@
 <template>
     <article class="card">
-       <figure class="mb-2"> 
+       <figure> 
         <router-link :to="link">
             <img :src="cardImageUrl" :class="cardImageUrl == placeholderUrl ? 'placeholderImage': 'cardImage'" :alt="`An image of ${name}`" />
         </router-link>
         </figure>
         <header class="card-title">
-            <h5 class="text-center content-center card-name">{{ name }}</h5>
+            <h5 class="card-name">{{ name }}</h5>
         </header>
         <footer class="card-footer">
-            <div class="flex align-center">
+            <div class="price">
                 {{ formattedPrice }}
             </div>
             <BaseButton type="primary" size="normal" @click="$router.push(link)">View Details</BaseButton>
@@ -67,6 +67,13 @@ img {
     height: 25em;
     object-fit: cover;
 }
+figure {
+    margin-bottom: .5rem;
+}
+h5 {
+    text-align: center;
+    align-content: center;
+}
 .cardImage{
     width: 100%;
 }
@@ -100,7 +107,10 @@ img {
     word-wrap: break-word;
 
 }
-
+.price {
+    display: flex;
+    align-items: center;
+}
 .card-footer {
     display: flex;
     flex-direction: row;

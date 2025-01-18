@@ -35,7 +35,14 @@
   text-decoration: none;
 }
 
-$alignments: ('center', 'space-between', 'space-around', 'space-evenly', 'flex-start', 'flex-end');
+$alignments: (
+  'center',
+  'space-between',
+  'space-around',
+  'space-evenly',
+  'flex-start',
+  'flex-end'
+);
 
 @each $align in $alignments {
   .justify-#{$align} {
@@ -79,6 +86,7 @@ $displayProps: (
 .grid-col-1 {
   grid-column: span 1;
 }
+
 .grid-col-2 {
   grid-column: span 2;
 }
@@ -125,68 +133,70 @@ $sizeMap: (
 );
 
 @each $key, $value in $sizeMap {
-    .m-#{$key} {
-      margin: #{$value};
-    }
+  .m-#{$key} {
+    margin: #{$value};
+  }
 
-    .mx-#{$key} {
-      margin-left: #{$value};
-      margin-right: #{$value};
-    }
+  .mx-#{$key} {
+    margin-left: #{$value};
+    margin-right: #{$value};
+  }
 
-    .my-#{$key} {
-      margin-top: #{$value};
-      margin-bottom: #{$value};
+  .my-#{$key} {
+    margin-top: #{$value};
+    margin-bottom: #{$value};
 
-    }
+  }
 
-    .ml-#{$key} {
-      margin-left: #{$value};
-    }
+  .ml-#{$key} {
+    margin-left: #{$value};
+  }
 
-    .mr-#{$key} {
-      margin-right: #{$value};
-    }
+  .mr-#{$key} {
+    margin-right: #{$value};
+  }
 
-    .mb-#{$key} {
-      margin-bottom: #{$value};
-    }
+  .mb-#{$key} {
+    margin-bottom: #{$value};
+  }
 
-    .mt-#{$key} {
-      margin-top: #{$value};
-    }
+  .mt-#{$key} {
+    margin-top: #{$value};
+  }
 
-    .p-#{$key} {
-      padding: #{$value};
-    }
+  .p-#{$key} {
+    padding: #{$value};
+  }
 
-    .px-#{$key} {
-      padding-left: #{$value};
-      padding-right: #{$value};
-    }
+  .px-#{$key} {
+    padding-left: #{$value};
+    padding-right: #{$value};
+  }
 
-    .py-#{$key} {
-      padding-top: #{$value};
-      padding-bottom: #{$value};
-    }
+  .py-#{$key} {
+    padding-top: #{$value};
+    padding-bottom: #{$value};
+  }
 
-    .pl-#{$key} {
-      padding-left: #{$value};
-    }
+  .pl-#{$key} {
+    padding-left: #{$value};
+  }
 
-    .pr-#{$key} {
-      padding-right: #{$value};
-    }
+  .pr-#{$key} {
+    padding-right: #{$value};
+  }
 
-    .pb-#{$key} {
-      padding-bottom: #{$value};
-    }
+  .pb-#{$key} {
+    padding-bottom: #{$value};
+  }
 
-    .pt-#{$key} {
-      padding-top: #{$value};
-    }
+  .pt-#{$key} {
+    padding-top: #{$value};
+  }
 
-    .gap-#{$key} {
-      gap: #{$value};
-    }
-  };
+  .gap-#{$key} {
+    gap: #{$value};
+  }
+}
+
+;

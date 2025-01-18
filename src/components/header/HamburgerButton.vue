@@ -32,7 +32,7 @@ import { computed, ref } from 'vue'
 
 .hamburger {
   --button-color: #333;
-  transform: scale(1.1);
+  transform: scale(1.25);
 }
 
 .hamburger .line {

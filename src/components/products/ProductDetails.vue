@@ -1,20 +1,13 @@
 <template>
-  <BaseContainer>
-    <section v-if="plantCategory" class="flex product-detail-section">
-      <ProductDetailsPhotoList :photos="photosToDisplay" />
-      <article class="product-information flex content-center column">
-        <div class="flex justify-center">
-          <h1 class="text-center">{{ plantCategory.name }}</h1>
-        </div>
-        <div v-if="plantCategory.clone !== ''" class="flex flex-row justify-space-around">
-          <h3>Clone {{ plantCategory.clone }}</h3>
-        </div>
 
-        <div>
-          <p class="text-center my-4" :class="hideDescription ? '' : 'description-one-line'" @click="toggleHideDescription">
-            {{ plantCategory.description }}
-          </p>
-        </div>
+    <section v-if="plantCategory" class="product-detail-section">
+      <ProductDetailsPhotoList :photos="photosToDisplay" />
+      <article class="product-information">
+        <h1>{{ plantCategory.name }}</h1>
+        <h3 v-if="plantCategory.clone !== ''">Clone {{ plantCategory.clone }}</h3>
+        <p class="description" :class="hideDescription ? '' : 'description-one-line'" @click="toggleHideDescription">
+          {{ plantCategory.description }}
+        </p>
 
         <div class="flex justify-evenly">
           <BaseButton
@@ -65,7 +58,7 @@
     <section v-else>
       <BaseSpinner />
     </section>
-  </BaseContainer>
+
 </template>
 
 <script setup lang="ts">
@@ -257,12 +250,19 @@ const freshDivision = computed(() => {
 
 <style scoped>
 .product-detail-section {
+  display: flex;
   flex-direction: column;
   justify-content: space-around;
   margin: 0 2rem 2rem;
 }
 .product-information {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin: 0 1rem;
+}
+.description {
+  margin-block: 1rem;
 }
 .specimen-button-container {
   display: grid;

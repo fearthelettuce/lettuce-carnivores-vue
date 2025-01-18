@@ -1,60 +1,49 @@
 <template>
-  <header class="w-full .sticky top-0 py-2 bg-background">
-    <div class="header-container relative mx-auto flex gap-4 flex-row lg:grid lg:grid-cols-3 items-center">
-      <div class="flex flex-row">
-        <Button class="hamburger-icon-container" variant="ghost" @click="toggleMobileMenu">
-          <HamburgerButton :isOpen />
-        </Button>
+  <header class="w-full sticky z-50 top-0 py-2 bg-background">
+    <div class="header-container">
+      <Button class="hamburger-icon-container" variant="ghost" @click="toggleMobileMenu">
+        <HamburgerButton :isOpen />
+      </Button>
+    
+      <div class="logo text-lime-500 dark:text-lime-600">
+        <router-link to="/">Danger Lettuce</router-link>
       </div>
-      <router-link to="/">
-        <div class="logo text-lime-500 dark:text-lime-600">Danger Lettuce</div>
-      </router-link>
-      <NavigationMenu class="nav-menu">
-        <NavigationMenuList class="flex justify-start gap-4 flex-row">
-          <NavigationMenuItem v-for="item in allowedNavLinks" :key="item.name">
-            <NavigationMenuLink>
-              <Button variant="ghost">
-                <router-link :to="item.path" class="text-lg nav-link">{{ item.label }}</router-link>
-              </Button>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-        </NavigationMenuList>
 
-      </NavigationMenu>
       <div class="flex flex-row justify-end">
 
         <div class="flex flex-row align-center gap-4">
           <router-link to="/login" v-if="!userStore.isLoggedIn">
             <Button variant="default" @click="closeMobileMenu" class="loginButton">Login</Button>
           </router-link>
+          <div class="right-container">
+            <Button variant="ghost">New!</Button>
 
-          <Button v-else @click="handleLogout" class="loginButton">Logout</Button>
-          <div class="cart" @click="closeMobileMenu">
-            <router-link to="/cart">
-              <div>
-                <div class="cart-container">
-                  <svg class="icon" stroke-width="1.5" viewBox="0 0 24 24" fill="none"
-                    xmlns="http://www.w3.org/2000/svg" color="#000000">
-                    <path
-                      d="M19.5 22C20.3284 22 21 21.3284 21 20.5C21 19.6716 20.3284 19 19.5 19C18.6716 19 18 19.6716 18 20.5C18 21.3284 18.6716 22 19.5 22Z"
-                      fill="#000000" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    </path>
-                    <path
-                      d="M9.5 22C10.3284 22 11 21.3284 11 20.5C11 19.6716 10.3284 19 9.5 19C8.67157 19 8 19.6716 8 20.5C8 21.3284 8.67157 22 9.5 22Z"
-                      fill="#000000" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    </path>
-                    <path d="M5 4H22L20 15H7L5 4ZM5 4C4.83333 3.33333 4 2 2 2" stroke="#000000" stroke-width="1.5"
-                      stroke-linecap="round" stroke-linejoin="round"></path>
-                    <path d="M20 15H7H5.23077C3.44646 15 2.5 15.7812 2.5 17C2.5 18.2188 3.44646 19 5.23077 19H19.5"
-                      stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                  </svg>
-                  <span
-                    class="absolute -top-2 -right-2 translate-middle w-5 h-5 leading-normal rounded-full flex justify-center items-center rounded-full bg-red-600 text-white">{{ cartItemCount }}</span>
+            <div class="cart" @click="closeMobileMenu">
+              <router-link to="/cart">
+                <div>
+                  <div class="cart-container">
+                    <svg class="icon" stroke-width="1.5" viewBox="0 0 24 24" fill="none"
+                      xmlns="http://www.w3.org/2000/svg" color="#000000">
+                      <path
+                        d="M19.5 22C20.3284 22 21 21.3284 21 20.5C21 19.6716 20.3284 19 19.5 19C18.6716 19 18 19.6716 18 20.5C18 21.3284 18.6716 22 19.5 22Z"
+                        fill="#000000" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      </path>
+                      <path
+                        d="M9.5 22C10.3284 22 11 21.3284 11 20.5C11 19.6716 10.3284 19 9.5 19C8.67157 19 8 19.6716 8 20.5C8 21.3284 8.67157 22 9.5 22Z"
+                        fill="#000000" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      </path>
+                      <path d="M5 4H22L20 15H7L5 4ZM5 4C4.83333 3.33333 4 2 2 2" stroke="#000000" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round"></path>
+                      <path d="M20 15H7H5.23077C3.44646 15 2.5 15.7812 2.5 17C2.5 18.2188 3.44646 19 5.23077 19H19.5"
+                        stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    <span
+                      class="absolute -top-1 -right-2 translate-middle w-5 h-5 leading-normal rounded-full flex justify-center items-center rounded-full bg-red-600 text-white">{{ cartItemCount }}</span>
+                  </div>
                 </div>
-              </div>
-            </router-link>
+              </router-link>
+            </div>
           </div>
-
         </div>
         <nav class="justify-start items-center gap-4">
           <Sheet v-model:open="isOpen">
@@ -139,26 +128,33 @@ header {
 }
 
 .header-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   flex-direction: row;
   justify-content: space-between;
   border: 2px solid black;
   border-radius: 3rem;
-  width: 90dvw;
-  padding-block: .5rem;
-  padding-inline: 1.5rem;
+  padding-block: .3rem;
+  padding-inline: 1.25rem;
+  margin: auto;
+  align-items: center;
 
 }
 
 .logo {
   font-weight: bold;
-  font-size: clamp(1.25rem, 2vw, 3rem);
+  font-size: clamp(1.2rem, 2.5vw, 2.75rem);
   font-family: 'Carter One', cursive;
 }
 
 .logo-link {
   text-decoration: none;
   cursor: pointer;
+}
+
+.right-container {
+  display: flex;
+  flex-direction: row;
 }
 
 .nav-menu {
@@ -227,7 +223,22 @@ header {
   margin: 0;
   filter: invert(100%) sepia(1%) saturate(2215%) hue-rotate(175deg) brightness(7%) contrast(102%);
 }
+@media(min-width: 400px) {
+  .header-container {
+    padding-block: .55rem;
+    padding-inline: 1.2rem;
+    grid-template-columns: 1fr 2fr 1fr;
+  }
+}
 
+@media(min-width: 600px) {
+  .header-container {
+    padding-inline: 2.5rem;
+  }
+  .logo {
+    font-size: clamp(1.75rem, 3vw, 2.75rem);
+  }
+}
 @media(min-width: 30rem) {
 
   // .hamburger-icon-container {

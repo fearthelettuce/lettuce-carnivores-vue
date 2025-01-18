@@ -6,12 +6,12 @@
         <div class="text-info align-center">Photos will take ~30s to load after uploading</div>
         <button type="button" class="" aria-label="Close" data-bs-dismiss="modal" @click="toggleModal"></button>
       </header>
-      <main class="modal-body photo-items-grid">
+      <div class="modal-body photo-items-grid">
         <template v-for="(photo, index) of photos" :key="photo.name">
           <PhotoPreviewItem :photo :index :isLast="index === photos.length" @move-up="move" @move-down="move"
             @remove-photo="(i) => removePhoto(i, photo)" />
         </template>
-      </main>
+      </div>
       <DragUpload @files-dropped="filesDropped" #default="{ dropZoneActive }">
         <label class="drag-area" :class="dropZoneActive ? 'highlight' : ''">
           <span v-if="dropZoneActive">

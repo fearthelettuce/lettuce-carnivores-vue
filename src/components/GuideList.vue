@@ -1,12 +1,12 @@
 <template>
-    <main class="guide-container">
+    <div class="guide-container">
         <GuideCard 
             v-for="(value, name, index) in guideData.genus"
             :key="name" 
             :care-data="value"
             :alt-style="index % 2 !== 0 ? true : false" 
         />
-    </main>
+    </div>
 </template>
 <script setup lang="ts">
 import GuideCard from '@/components/GuideCard.vue'

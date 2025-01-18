@@ -5,7 +5,7 @@
                 <h4 class="modal-title">Order {{ order.id }}</h4>
                 <button type="button" class="" aria-label="Close" @click="toggleModal"></button>
             </header>
-            <main class="modal-container">
+            <div class="modal-container">
                 <div class="shipping-address">
                     <h5>Shipping Address</h5>
                     <div>{{ order.shippingInfo.name }}</div>
@@ -23,7 +23,7 @@
 
                 </FormKit>
 
-            </main>
+            </div>
         </div>
     </BaseDialog>
 </template>
