@@ -1,5 +1,5 @@
 <template>
-    <section class="align-center">
+    <!-- <section class="align-center">
         <div v-if="props.photos.length === 0" class="text-center text-warning">
             <h3>No photos to display :(</h3>
         </div>
@@ -10,7 +10,44 @@
             </figure>
             <figure class="selected-image" @click="showImageZoomModal"><img :src="displayPhoto"></figure>
         </div>
-    </section>
+    </section> -->
+
+<div class="w-full sm:w-auto">
+    <Carousel
+      class="relative w-full max-w-xs"
+      @init-api="(val) => emblaMainApi = val"
+    >
+      <CarouselContent class="photo-content">
+        <CarouselItem v-for="(photo, index) of props.photos" :key=photo.path.toString()>
+          <div class="p-1">
+            <Card>
+              <CardContent class="flex aspect-square items-center justify-center p-6">
+                <img class="selected-photo" :src="getPhotoUrl(photo.path.toString())">
+              </CardContent>
+            </Card>
+          </div>
+        </CarouselItem>
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
+
+    <Carousel
+      class="relative w-full max-w-xs"
+      @init-api="(val) => emblaThumbnailApi = val"
+    >
+      <CarouselContent class="flex gap-1 ml-0 justify-space-evenly">
+        <CarouselItem v-for="(photo, index) of props.photos" :key=photo.path.toString() class="pl-0 basis-1/4 cursor-pointer" @click="onThumbClick(index)">
+          <div class="p-1" :class="index === selectedIndex ? '' : 'opacity-50'">
+
+                <img :src="getPhotoUrl(photo.path.toString())">
+
+          </div>
+        </CarouselItem>
+      </CarouselContent>
+    </Carousel>
+  </div>
+
     <ImageZoomModal v-if="props.photos.length !== 0" ref="imageZoomModalRef" :photo="state.selectedPhoto" />
 </template>
 
@@ -19,6 +56,41 @@ import { ref, reactive, computed, onMounted, watch } from 'vue';
 import ImageZoomModal from '@/components/ui/ImageZoomModal.vue';
 import type { PhotoItem, } from '@/types/Product';
 import { getPhotoUrl } from '@/composables/usePhotoUtils'
+import {
+  Carousel,
+  type CarouselApi,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel'
+import { watchOnce } from '@vueuse/core'
+
+const emblaMainApi = ref<CarouselApi>()
+const emblaThumbnailApi = ref<CarouselApi>()
+const selectedIndex = ref(0)
+
+function onSelect() {
+  if (!emblaMainApi.value || !emblaThumbnailApi.value)
+    return
+  selectedIndex.value = emblaMainApi.value.selectedScrollSnap()
+  emblaThumbnailApi.value.scrollTo(emblaMainApi.value.selectedScrollSnap())
+}
+
+function onThumbClick(index: number) {
+  if (!emblaMainApi.value || !emblaThumbnailApi.value)
+    return
+  emblaMainApi.value.scrollTo(index)
+}
+
+watchOnce(emblaMainApi, (emblaMainApi) => {
+  if (!emblaMainApi)
+    return
+
+  onSelect()
+  emblaMainApi.on('select', onSelect)
+  emblaMainApi.on('reInit', onSelect)
+})
 
 const props = defineProps<{
     photos: Array<PhotoItem>,
@@ -56,6 +128,10 @@ function showImageZoomModal() {
 </script>
 
 <style scoped>
+.selected-photo {
+    height: 60dvh;
+    min-width: 50rem;
+}
 img {
     display: block;
     height: 100%;
@@ -65,6 +141,8 @@ img {
 figure {
     margin: 0;
 }
+
+
 
 .photo-grid {
     display: grid;
