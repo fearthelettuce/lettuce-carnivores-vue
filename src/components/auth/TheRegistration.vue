@@ -72,11 +72,18 @@ const register = async () => {
 </script>
 
 <style scoped>
-
+h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: .5rem;
+}
 .login-container {
+    display: flex;
+    flex-direction: column;
     padding: 3rem;
     border: 1px solid lightgray;
     border-radius: .5rem;
+    max-width: 30rem;
 }
 </style>
 

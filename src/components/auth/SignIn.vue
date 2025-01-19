@@ -12,11 +12,11 @@
                 <input type="password" class="mx-4" placeholder="password" id="loginPassword" v-model="loginPassword" />             
             </div>
             <div class="flex justify-space-around mt-4">
-                <div><BaseButton @click.prevent="login">Login</BaseButton></div>
-                
                 <div>
                     <BaseButton type="info" @click.prevent="resetPassword">Trouble signing in?</BaseButton>
                 </div>
+                <div><BaseButton @click.prevent="login">Login</BaseButton></div>
+                
             </div>
         </form>
         <hr class="my-4"/>
@@ -73,11 +73,18 @@ function areInputsValid() {
 
 
 <style scoped>
-
+h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: .5rem;
+}
 .login-container {
+    display: flex;  
+    flex-direction: column;
     padding: 3rem;
     border: 1px solid lightgray;
     border-radius: .5rem;
+    max-width: 30rem;
 }
 
 </style>
