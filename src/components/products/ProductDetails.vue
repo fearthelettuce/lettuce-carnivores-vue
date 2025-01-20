@@ -1,63 +1,61 @@
 <template>
+  <section v-if="plantCategory" class="product-detail-section">
+    <ProductDetailsPhotoList :photos="photosToDisplay" />
+    <article class="product-information">
+      <h1>{{ plantCategory.name }}</h1>
+      <h3 v-if="plantCategory.clone !== ''">Clone {{ plantCategory.clone }}</h3>
+      <p class="description" :class="hideDescription ? '' : 'description-one-line'" @click="toggleHideDescription">
+        {{ plantCategory.description }}
+      </p>
 
-    <section v-if="plantCategory" class="product-detail-section">
-      <ProductDetailsPhotoList :photos="photosToDisplay" />
-      <article class="product-information">
-        <h1>{{ plantCategory.name }}</h1>
-        <h3 v-if="plantCategory.clone !== ''">Clone {{ plantCategory.clone }}</h3>
-        <p class="description" :class="hideDescription ? '' : 'description-one-line'" @click="toggleHideDescription">
-          {{ plantCategory.description }}
-        </p>
-
-        <div class="flex justify-evenly">
-          <BaseButton
-            v-for="plant in referencePlants"
-            :key="plant.size"
-            class="px-4"
-            :type="selectedPlant?.sku == plant.sku ? 'primary' : 'secondary-outline'"
-            @click="setSelectedPlant(plant)"
-          >
-            {{ plant.size }}
-          </BaseButton>
+      <div class="flex justify-evenly">
+        <BaseButton
+          v-for="plant in referencePlants"
+          :key="plant.size"
+          class="px-4"
+          :type="selectedPlant?.sku == plant.sku ? 'primary' : 'secondary-outline'"
+          @click="setSelectedPlant(plant)"
+        >
+          {{ plant.size }}
+        </BaseButton>
+      </div>
+      <div class="specimen-button-container">
+        <BaseButton
+          v-for="plant in specimenPlants"
+          :key="plant.id"
+          class="px-4 specimen-button"
+          :type="selectedPlant?.sku === plant.sku ? 'primary' : 'secondary-outline'"
+          @click="setSelectedPlant(plant)"
+        >
+          {{ `Specimen ${plant.id} - ${plant.size}` }}
+        </BaseButton>
+      </div>
+      <div v-if="daysSinceDivision && freshDivision?.isFreshDivision" class="mt-4">
+        <p class="text-warning text-center">{{ freshDivision.message }}</p>
+      </div>
+      <div v-if="selectedPlant !== undefined" class="mt-4">
+        <h5 class="mb-3">{{ plantTypeLabel }}</h5>
+        <small>{{ plantTypeDescription }}</small>
+      </div>
+      <hr class="my-4" />
+      <div class="flex flex-row justify-space-evenly">
+        <div class="content-center">
+          <h5 class="m-0">{{ formattedPrice }}</h5>
         </div>
-        <div class="specimen-button-container">
-          <BaseButton
-            v-for="plant in specimenPlants"
-            :key="plant.id"
-            class="px-4 specimen-button"
-            :type="selectedPlant?.sku === plant.sku ? 'primary' : 'secondary-outline'"
-            @click="setSelectedPlant(plant)"
-          >
-            {{ `Specimen ${plant.id} - ${plant.size}` }}
-          </BaseButton>
+        <div v-if="availableForSale" class="flex flex-column justify-center">
+          <BaseButton type="primary" class="mx-auto" @click="addToCart" :disabled="selectedPlant === undefined">Add to Cart</BaseButton>
         </div>
-        <div v-if="daysSinceDivision && freshDivision?.isFreshDivision" class="mt-4">
-          <p class="text-warning text-center">{{ freshDivision.message }}</p>
-        </div>
-        <div v-if="selectedPlant !== undefined" class="mt-4">
-          <h5 class="mb-3">{{ plantTypeLabel }}</h5>
-          <small>{{ plantTypeDescription }}</small>
-        </div>
-        <hr class="my-4" />
-        <div class="flex flex-row justify-space-evenly">
-          <div class="content-center">
-            <h5 class="m-0">{{ formattedPrice }}</h5>
-          </div>
-          <div v-if="availableForSale" class="flex flex-column justify-center">
-            <BaseButton type="primary" class="mx-auto" @click="addToCart" :disabled="selectedPlant === undefined">Add to Cart</BaseButton>
-          </div>
-
-          <BaseButton v-else type="secondary" disabled>Out of Stock</BaseButton>
-        </div>
-        <div v-show="selectedPlant === undefined" class="text-center text-warning mt-2">Please select a plant to add to cart</div>
-        <div class="game-container" v-show="isGiveawayActive">
-          <HalloweenGameCard />
-        </div>
-      </article>
-    </section>
-    <section v-else>
-      <BaseSpinner />
-    </section>
+        <BaseButton v-else type="secondary" disabled>Out of Stock</BaseButton>
+      </div>
+      <div v-show="selectedPlant === undefined" class="text-center text-warning mt-2">Please select a plant to add to cart</div>
+      <div class="game-container" v-show="isGiveawayActive">
+        <HalloweenGameCard />
+      </div>
+    </article>
+  </section>
+  <section v-else>
+    <BaseSpinner />
+  </section>
 
 </template>
 

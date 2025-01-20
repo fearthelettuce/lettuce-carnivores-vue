@@ -1,15 +1,72 @@
-export interface Product {
-    id: number,
+export interface ProductCategory {
+    id: string,
+    type: 'plant' | 'supplies',
+    category: string,
     name: string,
-    price?: number,
-    isForSale: boolean,
-    quantity: number,
-    isDiscountable?: boolean,
-    photos: Array<PhotoItem>,
     description: string,
-    category?: string,
-    plantId?: number | undefined,
+    status: 'active' | 'inactive' | 'archived',
+    photos: Array<PhotoItem>,
+    isDiscountable?: boolean,
+    tags: string[],
+    createdDate: Date,
+    dateUpdated: Date,
+    isBestSeller: boolean,
 }
+export interface PlantCategory extends ProductCategory {
+    type: 'plant',
+    speciesHybrid: '' | 'Species' | 'Hybrid',
+    source?: string,
+}
+export interface Product {
+    sku: string,
+    quantity: number,
+    productCategoryId: string,
+    productCategoryName: string,
+    photos: Array<PhotoItem>,
+    age: string,
+    shipping: 'potted' | 'bare-root',
+    createdDate: Date,
+    updatedDate: Date,
+}
+
+export interface Plant {
+    clone: string,
+    size: PotSize
+}
+
+export type PotSize =
+    '' |
+    '2.5"' |
+    '3" deep' |
+    '3.5"' |
+    '3.5" deep' |
+    '4" deep' |
+    '4.5" deep' |
+    '5" deep' |
+    'Bare Root' |
+    'Specimen' |
+    'Bundle - 2 sm' |
+    'Bundle - 3 sm' |
+    'Bundle - 2 lg' |
+    'Bundle - 3 lg'
+// Product Category:
+//   - type: plant, supply
+//     - category: Heli, Nep, pots, fertilizer, growingMedia
+
+// Sort
+//   - Name(alpha)
+//   - Price($ - $$$)(calc - SKUs)
+//   - Best Selling
+//     - Date Updated(calc - SKUs)
+
+// Filters
+//   - By Product Type
+//     - Product Type Specific Filters
+//       - Plant
+//       - Genus
+//       - Experience
+//       - Age(Fresh division, Recent division, Established divisions, Specimen, Immature)
+
 
 export type PhotoItem = {
     name: string,
@@ -28,7 +85,7 @@ export enum PhotoTypes {
 }
 
 export type ProductFilters = {
-    [key: string] : any
+    [key: string]: any
 }
 
 export type PhotoSizes = 256 | 512 | 960 | 1600

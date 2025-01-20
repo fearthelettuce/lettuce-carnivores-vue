@@ -12,9 +12,9 @@
         </div>
     </section> -->
 
-<div class="w-full sm:w-auto">
+  <div class="carousel-container">
     <Carousel
-      class="relative w-full max-w-xs"
+      class="w-full"
       @init-api="(val) => emblaMainApi = val"
     >
       <CarouselContent class="photo-content">
@@ -22,33 +22,27 @@
           <div class="p-1">
             <Card>
               <CardContent class="flex aspect-square items-center justify-center p-6">
-                <img class="selected-photo" :src="getPhotoUrl(photo.path.toString())">
+                <img :src="getPhotoUrl(photo.path.toString())">
               </CardContent>
             </Card>
           </div>
         </CarouselItem>
       </CarouselContent>
       <CarouselPrevious />
-      <CarouselNext />
+      <CarouselNext /> 
     </Carousel>
-
-    <Carousel
-      class="relative w-full max-w-xs"
-      @init-api="(val) => emblaThumbnailApi = val"
-    >
+    <Carousel class="" @init-api="(val) => emblaThumbnailApi = val">
       <CarouselContent class="flex gap-1 ml-0 justify-space-evenly">
         <CarouselItem v-for="(photo, index) of props.photos" :key=photo.path.toString() class="pl-0 basis-1/4 cursor-pointer" @click="onThumbClick(index)">
           <div class="p-1" :class="index === selectedIndex ? '' : 'opacity-50'">
-
-                <img :src="getPhotoUrl(photo.path.toString())">
-
+            <img :src="getPhotoUrl(photo.path.toString())">
           </div>
         </CarouselItem>
       </CarouselContent>
     </Carousel>
   </div>
 
-    <ImageZoomModal v-if="props.photos.length !== 0" ref="imageZoomModalRef" :photo="state.selectedPhoto" />
+  <ImageZoomModal v-if="props.photos.length !== 0" ref="imageZoomModalRef" :photo="state.selectedPhoto" />
 </template>
 
 <script setup lang="ts">
@@ -128,10 +122,14 @@ function showImageZoomModal() {
 </script>
 
 <style scoped>
-.selected-photo {
+.carousel-container {
+  width: 100%;
+  /* max-height: 90dvh; */
+}
+/* .selected-photo {
     height: 60dvh;
     min-width: 50rem;
-}
+} */
 img {
     display: block;
     height: 100%;
@@ -174,6 +172,11 @@ figure {
 }
 
 @media (min-width: 60rem) {
+  .carousel-container {
+    width: 90%; 
+    margin-left: auto;
+    margin-right: 5rem;
+  }
     .photo-grid {
         grid-template-columns: 2fr 5fr;
         grid-auto-rows: 28dvh;
@@ -189,5 +192,3 @@ figure {
     }
 }
 </style>
-
-<!-- TODO: Bootstrap update text color -->
