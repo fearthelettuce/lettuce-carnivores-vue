@@ -250,14 +250,12 @@ const freshDivision = computed(() => {
 .product-detail-section {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  margin: 0 2rem 2rem;
+  justify-content: center;
+  max-width: 140rem;
 }
 .photo-section {
   display: flex;
   flex-direction: column;
-  height: 70dvh;
-  width: 70dvh;
 }
 .product-information {
   display: flex;
@@ -295,13 +293,15 @@ const freshDivision = computed(() => {
   }
 }
 
-@media (min-width: 80rem) {
+@media (min-width: 60rem) {
   .product-detail-section {
     flex-direction: row;
-    margin: 0 5dvw 1rem;
+  }
+  .photo-section {
+    height: 80dvh;
   }
   .product-information {
-    max-width: 30rem;
+    max-width: 40rem;
     margin-left: 2rem;
   }
 
@@ -310,8 +310,3 @@ const freshDivision = computed(() => {
   }
 }
 </style>
-
-<!-- 
-TODO Bootstrap: Replace text-warning color
-Replace button styles CRITICAL
--->

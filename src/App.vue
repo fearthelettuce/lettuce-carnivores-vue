@@ -25,11 +25,12 @@ li {
   list-style: none;
 }
 main {
+  display: flex;
+  justify-content: center;
   margin-block: 1rem;
+  margin-inline: 2dvw;
+  
 }
-main:first-child {
-  margin: auto;
-} 
 .page-container {
   margin: auto;
   width: 96dvw;

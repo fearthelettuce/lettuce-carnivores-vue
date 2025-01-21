@@ -11,16 +11,16 @@
 
   <div class="embla-thumbs">
     <div class="embla-thumbs__viewport">
+      <div class="arrow-button">Back</div>
       <div class="embla-thumbs__container">
-        <div class="arrow-button">Back</div>
         <div v-for="photo in photos" :key="`${photo.path}-thumb`" 
         class="embla-thumbs__slide" :class="true ?  'embla-thumbs__slide--selected' : ''">
           <button type="button" class="embla-thumbs__slide__button">
               <img class="embla__thumbs__image" :src="getPhotoUrl(photo.path, 256)" />
           </button>
         </div>
-        <div class="arrow-button">Onward</div>
       </div>
+      <div class="arrow-button">Onward</div>
     </div>
   </div>
 
@@ -58,12 +58,13 @@ import { getPhotoUrl } from '@/composables/usePhotoUtils';
 }
 .embla {
   margin: auto;
-  --slide-height: 19rem;
+  --slide-height: 50rem;
   --slide-spacing: 1rem;
   --slide-size: 100%;
 }
 .embla__viewport {
   overflow: hidden;
+  width: 100%;
 }
 .embla__container {
   display: flex;
@@ -71,7 +72,7 @@ import { getPhotoUrl } from '@/composables/usePhotoUtils';
   align-items: center;
   touch-action: pan-y pinch-zoom;
   margin-left: calc(var(--slide-spacing) * -1);
-  width: 50rem;
+
 }
 .embla__slide {
   transform: translate3d(0, 0, 0);
@@ -86,8 +87,7 @@ import { getPhotoUrl } from '@/composables/usePhotoUtils';
   align-items: center;
   justify-content: center;
   user-select: none;
-  width: 70dvh;
-  height: 70dvh;
+  width: 100%;
 }
 .embla-thumbs {
   --thumbs-slide-spacing: 0.8rem;
@@ -96,19 +96,22 @@ import { getPhotoUrl } from '@/composables/usePhotoUtils';
 }
 .embla-thumbs__viewport {
   overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 .embla-thumbs__container {
   display: flex;
   flex-direction: row;
   margin-left: calc(var(--thumbs-slide-spacing) * -1);
-  width: 50rem;
+  width: 100%;
 }
 .embla-thumbs__slide {
   flex: 0 0 22%;
   min-width: 0;
   padding-left: var(--thumbs-slide-spacing);
 }
-@media (min-width: 576px) {
+/* @media (min-width: 576px) {
   .embla-thumbs__slide {
     flex: 0 0 15%;
   }
@@ -138,6 +141,6 @@ import { getPhotoUrl } from '@/composables/usePhotoUtils';
 }
 .embla-thumbs__slide--selected .embla-thumbs__slide__number {
   color: var(--text-body);
-}
+} */
 
 </style>
