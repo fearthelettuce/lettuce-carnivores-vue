@@ -1,6 +1,6 @@
 <template>
   <section v-if="plantCategory" class="product-detail-section">
-    <ProductDetailsPhotoList :photos="photosToDisplay" />
+    <PhotoCarousel class="photo-section" :photos="photosToDisplay" />
     <article class="product-information">
       <h1>{{ plantCategory.name }}</h1>
       <h3 v-if="plantCategory.clone !== ''">Clone {{ plantCategory.clone }}</h3>
@@ -71,7 +71,7 @@ import { formattedDate } from '@/utils/utils'
 import HalloweenGameCard from '@/components/giveaway/HalloweenGameCard.vue'
 import { storeToRefs } from 'pinia'
 import { useGiveawayStore } from '@/stores/giveaway'
-
+import PhotoCarousel from '../ui/PhotoCarousel.vue'
 const { isGiveawayActive } = storeToRefs(useGiveawayStore())
 
 const route = useRoute()
@@ -252,6 +252,12 @@ const freshDivision = computed(() => {
   flex-direction: column;
   justify-content: space-around;
   margin: 0 2rem 2rem;
+}
+.photo-section {
+  display: flex;
+  flex-direction: column;
+  height: 70dvh;
+  width: 70dvh;
 }
 .product-information {
   display: flex;

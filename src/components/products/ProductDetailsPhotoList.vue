@@ -22,7 +22,7 @@
           <div class="p-1">
             <Card>
               <CardContent class="flex aspect-square items-center justify-center p-6">
-                <img :src="getPhotoUrl(photo.path.toString())">
+                <img class="display-photo" :src="getPhotoUrl(photo.path.toString(), 960)">
               </CardContent>
             </Card>
           </div>
@@ -31,7 +31,7 @@
       <CarouselPrevious />
       <CarouselNext /> 
     </Carousel>
-    <Carousel class="" @init-api="(val) => emblaThumbnailApi = val">
+    <Carousel class="w-full d-block" @init-api="(val) => emblaThumbnailApi = val">
       <CarouselContent class="flex gap-1 ml-0 justify-space-evenly">
         <CarouselItem v-for="(photo, index) of props.photos" :key=photo.path.toString() class="pl-0 basis-1/4 cursor-pointer" @click="onThumbClick(index)">
           <div class="p-1" :class="index === selectedIndex ? '' : 'opacity-50'">
@@ -50,14 +50,14 @@ import { ref, reactive, computed, onMounted, watch } from 'vue';
 import ImageZoomModal from '@/components/ui/ImageZoomModal.vue';
 import type { PhotoItem, } from '@/types/Product';
 import { getPhotoUrl } from '@/composables/usePhotoUtils'
-import {
-  Carousel,
-  type CarouselApi,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@/components/ui/carousel'
+// import {
+//   Carousel,
+//   type CarouselApi,
+//   CarouselContent,
+//   CarouselItem,
+//   CarouselNext,
+//   CarouselPrevious,
+// } from '@/components/ui/carousel'
 import { watchOnce } from '@vueuse/core'
 
 const emblaMainApi = ref<CarouselApi>()
@@ -123,20 +123,25 @@ function showImageZoomModal() {
 
 <style scoped>
 .carousel-container {
-  width: 100%;
-  /* max-height: 90dvh; */
+  width: 50rem;
+  height: 50rem;
+
 }
 /* .selected-photo {
     height: 60dvh;
     min-width: 50rem;
 } */
-img {
+ /* .display-photo {
+  max-width: 70dvh;
+  max-height: 70dvh;
+ } */
+/* img {
     display: block;
     height: 100%;
     width: 100%;
-}
+} */
 
-figure {
+/* figure {
     margin: 0;
 }
 
@@ -169,7 +174,7 @@ figure {
         object-fit: cover;
         border-radius: 1rem;
     }
-}
+} */
 
 @media (min-width: 60rem) {
   .carousel-container {
