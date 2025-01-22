@@ -35,6 +35,7 @@ onMounted(async () => {
         gap: .5rem;
         grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
         width: 100%;
+        margin-bottom: 3rem;
     }
 
     @media(min-width: 82rem) {
