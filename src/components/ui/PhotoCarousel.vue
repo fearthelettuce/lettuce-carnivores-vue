@@ -10,8 +10,8 @@
   </div>
 
   <div class="embla-thumbs">
+    <div class="arrow-button">Back</div>
     <div class="embla-thumbs__viewport">
-      <div class="arrow-button">Back</div>
       <div class="embla-thumbs__container">
         <div v-for="photo in photos" :key="`${photo.path}-thumb`" 
         class="embla-thumbs__slide" :class="true ?  'embla-thumbs__slide--selected' : ''">
@@ -20,8 +20,8 @@
           </button>
         </div>
       </div>
-      <div class="arrow-button">Onward</div>
     </div>
+    <div class="arrow-button">Onward</div>
   </div>
 
 
@@ -82,7 +82,7 @@ import { getPhotoUrl } from '@/composables/usePhotoUtils';
 }
 .embla__slide__image {
   box-shadow: inset 0 0 0 0.2rem var(--detail-medium-contrast);
-  border-radius: 1.8rem;
+  border-radius: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -93,12 +93,12 @@ import { getPhotoUrl } from '@/composables/usePhotoUtils';
   --thumbs-slide-spacing: 0.8rem;
   --thumbs-slide-height: 6rem;
   margin-top: var(--thumbs-slide-spacing);
-}
-.embla-thumbs__viewport {
-  overflow: hidden;
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+.embla-thumbs__viewport {
+  overflow: hidden;
 }
 .embla-thumbs__container {
   display: flex;
