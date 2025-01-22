@@ -1,27 +1,27 @@
 <template>
-<div class="embla" ref="emblaRef">
-  <div class="embla__viewport">
-
+<div class="embla">
+  <div class="embla__viewport" ref="emblaRef">
     <div class="embla__container">
-      <div v-for="photo in photos" :key="photo.path" class="embla__slide">
-        <img class="embla__slide__image" :src="getPhotoUrl(photo.path, 960)" />
+      <div v-for="(photo, index) in photos" :key="photo.path" class="embla__slide">
+        <img class="display-image" :src="getPhotoUrl(photo.path, 960)" />
       </div>
     </div>
   </div>
 
   <div class="embla-thumbs">
-    <div class="arrow-button">Back</div>
+    <button class="arrow-button" @click="back"><ArrowLeft /></button>
     <div class="embla-thumbs__viewport">
       <div class="embla-thumbs__container">
-        <div v-for="photo in photos" :key="`${photo.path}-thumb`" 
-        class="embla-thumbs__slide" :class="true ?  'embla-thumbs__slide--selected' : ''">
-          <button type="button" class="embla-thumbs__slide__button">
-              <img class="embla__thumbs__image" :src="getPhotoUrl(photo.path, 256)" />
+        <div v-for="(photo, index) in photos" :key="`${photo.path}-thumb`" 
+        class="embla-thumbs__slide" :class="index === selectedIndex ?  'embla-thumbs__slide--selected' : ''">
+          <button type="button" class="embla-thumbs__slide__button" @click="scrollTo(index)">
+              <img class="thumb-image" :src="getPhotoUrl(photo.path, 256)" />
           </button>
         </div>
       </div>
     </div>
-    <div class="arrow-button">Onward</div>
+    <button class="arrow-button" @click="next"><ArrowRight /></button>
+
   </div>
 
 
@@ -30,72 +30,77 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import { ref, defineProps, watch } from 'vue';
 import type { PhotoItem } from '@/types/Product'
 import emblaCarouselVue from 'embla-carousel-vue'
 import { getPhotoUrl } from '@/composables/usePhotoUtils';
+import ArrowLeft from '@/assets/icons/ArrowLeft.vue';
+import ArrowRight from '@/assets/icons/ArrowRight.vue';
   const props = defineProps<{photos: Array<PhotoItem>}>()
-  const [emblaRef] = emblaCarouselVue()
+  const [emblaRef, emblaApi] = emblaCarouselVue({ loop: true })
+  const selectedIndex = ref(0)
+  watch(() => props.photos, () => {
+    scrollTo(0, true)
+  })
+  function scrollTo(index: number, jump: boolean = false) {
+    emblaApi.value!.scrollTo(index)
+    selectedIndex.value = index
+  }
+  function back() {
+    emblaApi.value?.scrollPrev()
+    selectedIndex.value = emblaApi.value!.selectedScrollSnap()
+  }
+  function next() {
+    emblaApi.value?.scrollNext()
+    selectedIndex.value = emblaApi.value!.selectedScrollSnap()
+  }
 </script>
 
-<style scoped>
-
-/* .embla {
-    overflow: hidden;
-  }
-  .embla__container {
-    display: flex;
-  }
-  .embla__slide {
-    flex: 0 0 100%;
-    min-width: 0;
-  } */
-
+<style scoped lang="scss">
 .arrow-button {
-  width: 5rem;
+  padding: .4rem;
   display: flex;
   align-items: center;
 }
 .embla {
   margin: auto;
-  --slide-height: 50rem;
   --slide-spacing: 1rem;
   --slide-size: 100%;
 }
 .embla__viewport {
   overflow: hidden;
   width: 100%;
+	box-shadow: 0px -1px 10px 3px $light-gray;
+	border-radius: 1.8rem;
 }
 .embla__container {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   touch-action: pan-y pinch-zoom;
   margin-left: calc(var(--slide-spacing) * -1);
-
 }
 .embla__slide {
   transform: translate3d(0, 0, 0);
-  flex: 0 0 var(--slide-size);
-  min-width: 0;
   padding-left: var(--slide-spacing);
+  flex: 0 0 100%;
+  min-width: 0;
 }
-.embla__slide__image {
-  box-shadow: inset 0 0 0 0.2rem var(--detail-medium-contrast);
-  border-radius: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  user-select: none;
-  width: 100%;
+.display-image {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border-radius: 1.8rem;
+	object-fit: cover;
+	box-shadow: 0px 5px 4px 2px $light-gray;
 }
 .embla-thumbs {
-  --thumbs-slide-spacing: 0.8rem;
+  --thumbs-slide-spacing: 0.5rem;
   --thumbs-slide-height: 6rem;
   margin-top: var(--thumbs-slide-spacing);
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-evenly;
 }
 .embla-thumbs__viewport {
   overflow: hidden;
@@ -107,9 +112,23 @@ import { getPhotoUrl } from '@/composables/usePhotoUtils';
   width: 100%;
 }
 .embla-thumbs__slide {
-  flex: 0 0 22%;
+  display: flex;
+	height: var(--thumbs-slide-height);
+	justify-content: center;
   min-width: 0;
   padding-left: var(--thumbs-slide-spacing);
+  opacity: 45%;
+  transition: opacity 1s;
+}
+.thumb-image {
+	border-radius: .5rem;
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.embla-thumbs__slide:hover {
+  opacity: 80%;
 }
 /* @media (min-width: 576px) {
   .embla-thumbs__slide {
@@ -138,9 +157,23 @@ import { getPhotoUrl } from '@/composables/usePhotoUtils';
   justify-content: center;
   height: var(--thumbs-slide-height);
   width: 100%;
-}
-.embla-thumbs__slide--selected .embla-thumbs__slide__number {
-  color: var(--text-body);
 } */
+.embla-thumbs__slide--selected {
+  opacity: 100% !important;
+}
+@media(min-width: 50rem) {
+	.embla-thumbs {
+		--thumbs-slide-spacing: 0.8rem;
+		--thumbs-slide-height: 10rem;
+		margin-top: var(--thumbs-slide-spacing);
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-around;
+	}
+	.arrow-button {
+		padding: 2rem;
+	}
+}
 
 </style>

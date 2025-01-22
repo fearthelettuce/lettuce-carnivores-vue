@@ -60,11 +60,13 @@ const USDollar = new Intl.NumberFormat('en-US', {
     max-width: 45rem;
     justify-content: space-between;
     background: linear-gradient(0.58turn, hsl(87, 15%, 90%), hsl(87, 2%, 95%), hsl(87, 12%, 82%), hsl(87, 2%, 95%), hsl(87, 50%, 82%));
-    box-shadow: #d6d3d1 4px 4px 12px 6px;}
+    box-shadow: 0px -1px 10px 3px $light-gray;
+}
 
 img {
     display: block;
-    height: 25em;
+    height: 100%;
+    width: 100%;
     object-fit: cover;
 }
 figure {

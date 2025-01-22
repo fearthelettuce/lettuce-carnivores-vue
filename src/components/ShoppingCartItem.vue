@@ -85,9 +85,8 @@ function getImageUrl(cartItem: CartItem) {
   .cart-item {
     display: flex;
     flex-direction: row;
-    margin-block: 1rem;
     align-items: center;
-    gap: .4rem;
+    gap: .5rem;
   }
 
   .cart-item-photo {

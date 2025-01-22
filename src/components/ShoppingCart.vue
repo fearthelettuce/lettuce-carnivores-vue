@@ -178,10 +178,6 @@ async function getCartErrors() {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  background: var(--bs-body-bg);
-  filter: brightness(85%);
-  padding: 0.5rem 0.5rem;
-  border-radius: 0.6rem;
 }
 .subtotal {
   display: flex;
@@ -232,7 +228,7 @@ async function getCartErrors() {
 @media (min-width: 85rem) {
   .cart-grid {
     margin: auto;
-    max-width: 70dvw;
+    max-width: 120rem;
   }
   .cart-item-container {
     padding: 1rem 1rem;

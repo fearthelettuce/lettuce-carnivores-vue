@@ -3,7 +3,7 @@
     <PhotoCarousel class="photo-section" :photos="photosToDisplay" />
     <article class="product-information">
       <h1>{{ plantCategory.name }}</h1>
-      <h3 v-if="plantCategory.clone !== ''">Clone {{ plantCategory.clone }}</h3>
+      <h2 v-if="plantCategory.clone !== ''">Clone {{ plantCategory.clone }}</h2>
       <p class="description" :class="hideDescription ? '' : 'description-one-line'" @click="toggleHideDescription">
         {{ plantCategory.description }}
       </p>
@@ -34,19 +34,19 @@
         <p class="text-warning text-center">{{ freshDivision.message }}</p>
       </div>
       <div v-if="selectedPlant !== undefined" class="mt-4">
-        <h5 class="mb-3">{{ plantTypeLabel }}</h5>
+        <h2 class="mb-3">{{ plantTypeLabel }}</h2>
         <small>{{ plantTypeDescription }}</small>
       </div>
       <hr class="my-4" />
-      <div class="flex flex-row justify-space-evenly">
+      <footer>
         <div class="content-center">
-          <h5 class="m-0">{{ formattedPrice }}</h5>
+          <h2>{{ formattedPrice }}</h2>
         </div>
         <div v-if="availableForSale" class="flex flex-column justify-center">
           <BaseButton type="primary" class="mx-auto" @click="addToCart" :disabled="selectedPlant === undefined">Add to Cart</BaseButton>
         </div>
         <BaseButton v-else type="secondary" disabled>Out of Stock</BaseButton>
-      </div>
+      </footer>
       <div v-show="selectedPlant === undefined" class="text-center text-warning mt-2">Please select a plant to add to cart</div>
       <div class="game-container" v-show="isGiveawayActive">
         <HalloweenGameCard />
@@ -64,7 +64,6 @@ import { ref, onMounted, computed, type Ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { usePlantStore } from '@/stores/plant'
 import { useOrderStore } from '@/stores/order'
-import ProductDetailsPhotoList from '@/components/products/ProductDetailsPhotoList.vue'
 import { toast } from 'vue3-toastify'
 import type { PlantCategory, Plant } from '@/types/Plant'
 import { formattedDate } from '@/utils/utils'
@@ -230,9 +229,9 @@ const freshDivision = computed(() => {
   const formattedPropagationDate = formattedDate(selectedPlant.value.propagationDate)
   if (plantCategory.value.genus === 'Heliamphora') {
     return {
-      isFreshDivision: daysSinceDivision.value < 35,
+      isFreshDivision: daysSinceDivision.value < 45,
       message: `This is division was taken on ${formattedPropagationDate} and may not yet be rooted or established.
-        We've had good success in shipping fresh divisions and our live arrival guarantee does apply. However, un-rooted divisions need extra attention
+        We've had good success in shipping recent divisions and our live arrival guarantee does apply. However, un-rooted divisions need extra attention
         and therefore are not recommended for beginners. \nFresh divisions may be shipped bare-root, depending on the plant, to ensure the plant arrives safely.`,
     }
   }
@@ -247,15 +246,23 @@ const freshDivision = computed(() => {
 </script>
 
 <style scoped>
+h1 {
+  font-size: 1.5rem;
+}
+h2 {
+  font-size: 1.25rem;
+}
+
 .product-detail-section {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 140rem;
+  max-width: 120rem;
 }
 .photo-section {
   display: flex;
   flex-direction: column;
+  max-width: 80dvh;
 }
 .product-information {
   display: flex;
@@ -276,6 +283,7 @@ const freshDivision = computed(() => {
 }
 
 .description-one-line {
+  max-width: 30ch;
   height: 1.5rem;
   overflow: hidden;
   white-space: nowrap;
@@ -286,6 +294,11 @@ const freshDivision = computed(() => {
   display: flex;
   justify-content: center;
   padding: 2rem 0;
+}
+footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 @media (min-width: 30rem) {
   .specimen-button {

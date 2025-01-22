@@ -123,7 +123,7 @@ header {
 
 .header-container {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 2fr 1fr;
   flex-direction: row;
   justify-content: space-between;
   border: 2px solid black;
@@ -132,7 +132,6 @@ header {
   padding-inline: 1.25rem;
   margin: auto;
   align-items: center;
-
 }
 
 .logo {
@@ -202,6 +201,7 @@ header {
 .cart {
   align-items: center;
   justify-content: center;
+  transform: scale(.8);
 }
 
 .cart-container {
@@ -229,9 +229,13 @@ header {
   .header-container {
     padding-block: 0.1rem;
     padding-inline: 2.5rem;
+    grid-template-columns: 1fr 2fr 1fr;
   }
   .logo {
     font-size: clamp(1.75rem, 3vw, 2.75rem);
+  }
+  .cart {
+    transform: scale(1.0);
   }
 }
 </style>
