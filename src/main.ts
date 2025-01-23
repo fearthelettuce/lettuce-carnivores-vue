@@ -4,13 +4,6 @@ const app = createApp(App)
 import '@/assets/index.css'
 import { createPinia } from 'pinia'
 app.use(createPinia())
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/free-solid-svg-icons';
-import { far } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-library.add(fas);
-library.add(far);
-app.component('FontAwesome', FontAwesomeIcon)
 
 import Vue3Toastify, { type ToastContainerOptions } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css';
@@ -36,9 +29,8 @@ app.use(plugin, defaultConfig({
 }))
 
 import { useUserStore } from '@/stores/users.js'
-const userStore = useUserStore()
 
 import { router } from '@/router'
-userStore.initializeAuthListener().then(() => {
+useUserStore().initializeAuthListener().then(() => {
   app.use(router).mount('#app')
 })

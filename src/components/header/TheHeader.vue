@@ -1,12 +1,12 @@
 <template>
   <header class="w-full sticky z-50 top-0 py-2 bg-background">
     <div class="header-container">
-      <Button class="hamburger-icon-container" variant="ghost" @click="toggleMobileMenu">
+      <Button class="hamburger-icon-container hover:bg-opacity-0" variant="ghost" @click="toggleMobileMenu">
         <HamburgerButton :isOpen />
       </Button>
     
-      <div class="logo text-lime-500 dark:text-lime-600">
-        <router-link to="/">Danger Lettuce</router-link>
+      <div class="logo">
+        <router-link class="logo-text" to="/">Danger Lettuce</router-link>
       </div>
 
       <div class="flex flex-row justify-end">
@@ -16,8 +16,6 @@
             <Button variant="default" @click="closeMobileMenu" class="loginButton">Login</Button>
           </router-link>
           <div class="right-container">
-            <!-- <Button variant="ghost">Updates</Button> -->
-
             <div class="cart" @click="closeMobileMenu">
               <router-link to="/cart">
                 <div>
@@ -47,7 +45,7 @@
         </div>
         <nav class="justify-start items-center gap-4">
           <Sheet v-model:open="isOpen">
-            <SheetContent side="left" class="mobile-menu-sheet p-0 bg-background border-none">
+            <SheetContent side="left" class="mobile-menu-sheet p-0 bg-primary border-none">
               <div class="mobile-menu">
                 <div v-for="item in allowedNavLinks" :key="item.name" class="mobile-nav-link">
                   <Button variant="ghost" class="p-6 text-xl">
@@ -132,14 +130,21 @@ header {
   padding-inline: 1.25rem;
   margin: auto;
   align-items: center;
+  background: $navbar-bg;
 }
 
 .logo {
   font-weight: bold;
   font-size: clamp(1.2rem, 2.5vw, 2.75rem);
   font-family: 'Carter One', cursive;
+  color: $cream;
 }
-
+.logo-text {
+  text-shadow: 3px 2px 1px $medium-red;
+  // color: transparent;
+  // background-clip: text;
+  // background-image: $navbar-bg;
+}
 .logo-link {
   text-decoration: none;
   cursor: pointer;
@@ -167,7 +172,7 @@ header {
 }
 
 .mobile-menu-sheet {
-  background-color: red;
+  background-color: $navbar-bg;
 }
 
 .mobile-menu:first-child {
@@ -233,6 +238,9 @@ header {
   }
   .logo {
     font-size: clamp(1.75rem, 3vw, 2.75rem);
+  }
+  .logo-text {
+  text-shadow: 4px 4px 1px $medium-red;
   }
   .cart {
     transform: scale(1.0);

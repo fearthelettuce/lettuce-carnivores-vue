@@ -16,22 +16,33 @@ export interface PlantCategory extends ProductCategory {
     type: 'plant',
     speciesHybrid: '' | 'Species' | 'Hybrid',
     source?: string,
+    genus: string,
+    clone: string,
+    
+
 }
 export interface Product {
     sku: string,
-    quantity: number,
-    productCategoryId: string,
-    productCategoryName: string,
+    quantity: number | null,
+    productCategoryId: string | null,
+    productCategoryData: ProductCategory | null,
+    size: string,
+    price: number | null,
+    status: string,
     photos: Array<PhotoItem>,
-    age: string,
-    shipping: 'potted' | 'bare-root',
     createdDate: Date,
     updatedDate: Date,
+    isDiscountable: boolean,
 }
 
-export interface Plant {
-    clone: string,
-    size: PotSize
+export interface Plant extends Product {
+    additionalInformation: {
+        propagationDate?: Date | string,
+        shipping?: string | null,
+        ageGroup: string | null,
+        isSpecimen: boolean,
+        shelfLocation: string,
+    }
 }
 
 export type PotSize =
@@ -74,14 +85,7 @@ export type PhotoItem = {
     originalFilename: string,
     path: string,
     date: Date,
-}
-
-export enum PhotoTypes {
-    Primary = 'primary',
-    Card = 'card',
-    Additional = 'additional',
-    Upper = 'upper',
-    Lower = 'lower',
+    sizes: number[]
 }
 
 export type ProductFilters = {
