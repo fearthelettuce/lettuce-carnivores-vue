@@ -44,6 +44,9 @@ importers:
       embla-carousel-vue:
         specifier: ^8.5.2
         version: 8.5.2(vue@3.5.13(typescript@5.7.3))
+      lucide-vue-next:
+        specifier: ^0.474.0
+        version: 0.474.0(vue@3.5.13(typescript@5.7.3))
       pinia:
         specifier: ^2.3.0
         version: 2.3.0(typescript@5.7.3)(vue@3.5.13(typescript@5.7.3))
@@ -2575,6 +2578,11 @@ packages:
 
   lru-memoizer@2.3.0:
     resolution: {integrity: sha512-GXn7gyHAMhO13WSKrIiNfztwxodVsP8IoZ3XfrJV4yH2x0/OeTO/FIaAHTY5YekdGgW94njfuKmyyt1E0mR6Ug==}
+
+  lucide-vue-next@0.474.0:
+    resolution: {integrity: sha512-bQaSBjfJ33xiPQCxCf4JD3rcUgZFgWZzxSY8SScNa4Mcq2vWGlbvQx6icTL1UXRqsxzfoT13RXawePSmgg4iWw==}
+    peerDependencies:
+      vue: '>=3.0.1'
 
   magic-string@0.30.13:
     resolution: {integrity: sha512-8rYBO+MsWkgjDSOvLomYnzhdwEG51olQ4zL5KXnNJWV5MNmrb4rTZdrtkhxjnD/QyZUqR/Z/XDsUs/4ej2nx0g==}
@@ -6486,6 +6494,10 @@ snapshots:
     dependencies:
       lodash.clonedeep: 4.5.0
       lru-cache: 6.0.0
+
+  lucide-vue-next@0.474.0(vue@3.5.13(typescript@5.7.3)):
+    dependencies:
+      vue: 3.5.13(typescript@5.7.3)
 
   magic-string@0.30.13:
     dependencies:

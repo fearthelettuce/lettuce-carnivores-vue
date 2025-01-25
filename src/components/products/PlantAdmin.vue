@@ -31,11 +31,11 @@
                             <div class="up-down-arrows align-center text-center">
                                 <button class="px-1 py-0" v-if="index !== 0"
                                     @click="arrayMove(plantCategoryToEdit.plants, index, index - 1)">
-                                    <FontAwesome class="move-arrow" icon="caret-up" />
+                                    <ThickArrowUp class="move-arrow" icon="caret-up" />
                                 </button>
                                 <button v-if="index !== plantCategoryToEdit.plants.length - 1" class="px-1 py-0"
                                     @click="arrayMove(plantCategoryToEdit.plants, index, index + 1)">
-                                    <FontAwesome class="move-arrow" icon="caret-down" />
+                                    <ThickArrowDown class="move-arrow" icon="caret-down" />
                                 </button>
                             </div>
 
@@ -81,6 +81,8 @@ import { getAllPlants } from '@/apis/dataServices'
 import { toast } from 'vue3-toastify'
 import { useInventoryStore } from '@/stores/inventory'
 import type { Plant } from '@/types/Plant'
+import ThickArrowUp from '@/assets/icons/ThickArrowUp.vue';
+import ThickArrowDown from '@/assets/icons/ThickArrowDown.vue';
 
 const { fetchAllCategories, findPlantCategoryById, setCategoryToEdit, saveCategory, addPlant, getAvailablePlants, removePlant } = usePlantStore()
 const { plantCategories, plantCategoryToEdit, isSaving } = storeToRefs(usePlantStore())

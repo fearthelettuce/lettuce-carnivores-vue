@@ -8,13 +8,15 @@
 
   <div class="cart-grid" v-else>
     <div class="cart-item-container">
-      <ShoppingCartItem 
-        v-for="item in cart.cartItems" 
-        :key="item.sku" 
-        :item 
-        @cart-items-changed="updateDiscounts"
-        :discountedPrice="item.quantity === 1 ? getDiscountedPrice(item) : undefined"
-      />
+      <TransitionGroup name="cart-list">
+        <ShoppingCartItem 
+          v-for="item in cart.cartItems" 
+          :key="item.sku" 
+          :item 
+          @cart-items-changed="updateDiscounts"
+          :discountedPrice="item.quantity === 1 ? getDiscountedPrice(item) : undefined"
+        />
+      </TransitionGroup>
     </div>
     <div class="subtotal-container">
       <div class="subtotal">
@@ -75,7 +77,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useOrderStore } from '@/stores/order'
-import { ref, type Ref, computed, onMounted } from 'vue'
+import { ref, type Ref, computed, onMounted, TransitionGroup } from 'vue'
 import type { CartItem } from '@/types/Orders'
 import { toast } from 'vue3-toastify'
 import { discountedShippingThreshold } from '@/constants/OrderConstants'
@@ -225,6 +227,14 @@ async function getCartErrors() {
   border-radius: 1rem;
 }
 
+.cart-list-enter-active, .cart-list-leave-active {
+  transition: all 0.5s ease;
+}
+
+.cart-list-enter, .cart-list-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
+}
 @media (min-width: 85rem) {
   .cart-grid {
     margin: auto;

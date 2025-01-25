@@ -16,9 +16,9 @@
 
       <NumberField>
         <NumberFieldContent class="quantity-input">
-          <NumberFieldDecrement @click="decreaseQuantity(item)"/>
+          <NumberFieldDecrement class="quantity-action" @click="decreaseQuantity(item)"/>
           <NumberFieldInput :value="item.quantity" />
-          <NumberFieldIncrement @click="increaseQuantity(item)" :disabled="item.quantity >= item.maxQuantity"/>
+          <NumberFieldIncrement class="quantity-action" @click="increaseQuantity(item)" :disabled="item.quantity >= item.maxQuantity"/>
         </NumberFieldContent>
       </NumberField>
 
@@ -125,6 +125,11 @@ function getImageUrl(cartItem: CartItem) {
   }
   .quantity-input {
     width: 7rem;
+    border: 1px solid $bg-contrast;
+    border-radius: .5rem;
+  }
+  .quantity-action:hover {
+    filter: brightness(110%);
   }
 
   @media (min-width: 27rem) {
