@@ -3,7 +3,7 @@ import { toast } from 'vue3-toastify'
 import { uploadFile } from '@/apis/fileServices'
 import type { PhotoItem } from '@/types/Product'
 import { deletePhoto } from '@/apis/fileServices'
-
+import { photoResolutions } from '@/constants/constants'
 export type SelectedFile = {
   file?: File
   tempUrl: string
@@ -77,6 +77,7 @@ export function usePhotoManager() {
           path: res.filePath,
           originalFilename: photo.originalName,
           date: new Date(),
+          resolutions: photoResolutions,
         })
 
         fileUploadCounter++

@@ -2,12 +2,12 @@
   <div class="flex-center column">
     <div class="arrow-button">
       <button class="px-1 py-0" v-if="index !== 0" @click="$emit('move-up', index, index - 1)">
-        <FontAwesome class="move-arrow" icon="caret-up" />
+        <ThickArrowUp class="move-arrow" icon="caret-up" />
       </button>
     </div>
     <div class="arrow-button">
       <button v-if="!isLast" class="px-1 py-0" @click="$emit('move-down', index, index + 1)">
-        <FontAwesome class="move-arrow" icon="caret-down" />
+        <ThickArrowDown class="move-arrow" icon="caret-down" />
       </button>
     </div>
   </div>
@@ -20,7 +20,7 @@
   </div>
   <div class="flex align-center">
     <div @click="$emit('remove-photo', index)">
-      <FontAwesome icon="dumpster-fire" size="lg" style="color: #f29c07" />
+      <TrashcanIcon icon="dumpster-fire" size="lg" style="color: #f29c07" />
     </div>
   </div>
 </template>
@@ -30,6 +30,9 @@ import { type PropType } from 'vue'
 import type { PhotoItem } from '@/types/Product'
 import type { SelectedFile } from './usePhotoManager'
 import { getPhotoUrl, type AllowedSizes } from '@/composables/usePhotoUtils'
+import ThickArrowUp from '@/assets/icons/ThickArrowUp.vue'
+import ThickArrowDown from '@/assets/icons/ThickArrowDown.vue'
+import TrashcanIcon from '@/assets/icons/TrashcanIcon.vue'
 
 const emit = defineEmits(['move-up', 'move-down', 'remove-photo'])
 defineProps({

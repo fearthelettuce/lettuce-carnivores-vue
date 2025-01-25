@@ -85,7 +85,7 @@ export type PhotoItem = {
     originalFilename: string,
     path: string,
     date: Date,
-    sizes: number[]
+    resolutions: number[],
 }
 
 export type ProductFilters = {
