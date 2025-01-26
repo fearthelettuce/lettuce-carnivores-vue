@@ -1,3 +1,4 @@
+import type { PhotoItem } from "./Product"
 export type PlantCategory = {
     name: string,
     genus: string,
@@ -46,12 +47,3 @@ export type PotSize =
     'Bundle - 3 sm' |
     'Bundle - 2 lg' |
     'Bundle - 3 lg'
-
-
-type PhotoItem = {
-    name: string,
-    folder: string,
-    originalFilename: string,
-    path: string,
-    date: Date,
-}

@@ -1,25 +1,23 @@
 <template>
     <div class="login-container">
         <h2 class="text-center">Login</h2>
-        <form>
+        <form @submit.prevent>
             <div class="">
-                <label for="loginEmail">Email</label>
-                <input type="email" class="mx-4" placeholder="email" id="loginEmail" v-model="loginEmail" />       
+                <Label for="loginEmail">Email</Label>
+                <Input type="email" class="" placeholder="email" id="loginEmail" v-model="loginEmail" />       
             </div>
 
             <div class="mt-3">
-                <label for="loginPassword">Password</label>
-                <input type="password" class="mx-4" placeholder="password" id="loginPassword" v-model="loginPassword" />             
+                <Label for="loginPassword">Password</Label>
+                <Input type="password" class="" placeholder="password" id="loginPassword" v-model="loginPassword" />             
             </div>
-            <div class="flex justify-space-around mt-4">
+            <div class="action-container">
                 <div>
                     <BaseButton type="info" @click.prevent="resetPassword">Trouble signing in?</BaseButton>
                 </div>
                 <div><BaseButton @click.prevent="login">Login</BaseButton></div>
-                
             </div>
         </form>
-        <hr class="my-4"/>
     </div>
 </template>
 
@@ -28,6 +26,9 @@ import { ref } from 'vue';
 import { useUserStore } from '@/stores/users'
 import { router } from '@/router/index'
 import { toast } from 'vue3-toastify'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+
 //import ProviderLogin from '@/components/auth/ProviderLogin.vue';
 
 const { loginWithGoogle, logInUser } = useUserStore()
@@ -72,21 +73,32 @@ function areInputsValid() {
 </script>
 
 
-<style scoped>
+<style scoped lang="scss">
 h2 {
     text-align: center;
     font-size: 1.5rem;
-    margin-bottom: .5rem;
 }
+
 .login-container {
     display: flex;  
     flex-direction: column;
-    padding: 3rem;
-    border: 1px solid lightgray;
+    padding: 2rem;
+    border: 2px solid $bg-contrast;
     border-radius: .5rem;
-    max-width: 30rem;
 }
 
+.action-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+    margin-block: 1rem;
+}
+
+@media(min-width: 30rem) {
+    .login-container {
+        padding: 2rem 4rem;
+    }
+}
 </style>
 <!-- 
 TODO Bootstrap: Fix form styles -->

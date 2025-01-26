@@ -52,12 +52,12 @@
                 </div>
             </div>
         </div>
-        <div class="product-list">
+        <!-- <div class="product-list">
             <ProductCard :name="getCardName(plantCategoryToEdit)"
                 :price="getDisplayPrice(plantCategoryToEdit, getAvailablePlants(plantCategoryToEdit))"
                 :link="`/plants/${encodeURIComponent(plantCategoryToEdit.id !== '' ? plantCategoryToEdit.id : 0)}`"
                 :photoUrl="getCardPhoto(plantCategoryToEdit)" class="product-card" />
-        </div>
+        </div> -->
     </div>
 
     <PhotoUploadModal v-if="plantCategoryToEdit !== undefined" :photos="photoModalArr" :storageFolder="photoModalFolder"
@@ -248,11 +248,11 @@ provide('managePhotos', managePhotos)
     margin-left: 1rem;
 }
 
-@media(min-width: 62rem) {
+/* @media(min-width: 62rem) {
     .layout {
         grid-template-columns: 5fr 1fr;
     }
-}
+} */
 </style>
 
 <!-- TODO: Bootstrap update buttons -->

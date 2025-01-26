@@ -1,11 +1,12 @@
 <template>
-  <div v-if="cartErrors !== null" class="mx-5 mb-3">
-    {{ cartErrors }}
-  </div>
-  <div class="flex justify-center" v-if="cart.cartItems.length === 0">
+  <div class="cart-layout">
+    <div v-if="cartErrors !== null" class="cart-errors">
+      {{ cartErrors }}
+    </div>
+  <div class="" v-if="cart.cartItems.length === 0">
     <p>Cart is empty</p>
   </div>
-
+  
   <div class="cart-grid" v-else>
     <div class="cart-item-container">
       <TransitionGroup name="cart-list">
@@ -32,7 +33,7 @@
             {{ USDollar.format(cartSubtotal) }}
           </h3>
         </div>
-
+        
         <div v-if="activeDiscountMessage !== null" class="flex row justify-center gap-2 mx-4">
           <h5 class="center-message">
             {{ activeDiscountMessage }}
@@ -44,15 +45,15 @@
             <template v-if="!isColdWeatherShippingActive">
               {{
                 cartTotal - totalDiscountAmount >= discountedShippingThreshold
-                  ? `Free standard shipping on orders over $${discountedShippingThreshold}!`
-                  : `Add ${amountToQualifyForDiscountedShipping} to quality for free standard shipping.`
+                ? `Free standard shipping on orders over $${discountedShippingThreshold}!`
+                : `Add ${amountToQualifyForDiscountedShipping} to quality for free standard shipping.`
               }}
             </template>
             
             <template v-else>
               {{
                 cartTotal - totalDiscountAmount >= discountedShippingThreshold
-                  ? `Free winter shipping on orders over $${discountedShippingThreshold}!`
+                ? `Free winter shipping on orders over $${discountedShippingThreshold}!`
                   : `Add ${amountToQualifyForDiscountedShipping} to quality for free winter shipping.`
               }}
             </template>
@@ -63,8 +64,8 @@
     <footer class="footer-sticky">
       <div class="checkout-actions">
         <BaseButton v-if="!isLoggedIn" type="info" @click="router.push('/login')">Login</BaseButton>
-
-        <BaseButton class="checkout-button" @click.prevent="checkout" :disabled="cart.cartItems.length === 0 || isCheckoutLoading">
+        
+        <BaseButton type="checkout" @click.prevent="checkout" :disabled="cart.cartItems.length === 0 || isCheckoutLoading">
           {{ isLoggedIn ? `Checkout` : `Checkout as Guest` }}
           <span class="spinner-border" role="status" v-show="isCheckoutLoading"></span>
         </BaseButton>
@@ -72,6 +73,7 @@
     </footer>
   </div>
 
+</div>
 </template>
 
 <script setup lang="ts">
@@ -90,8 +92,8 @@ import { isColdWeatherShippingActive } from '@/constants/OrderConstants'
 const { cart, discountedItems } = storeToRefs(useOrderStore())
 const { getCategoryBySku, startCheckoutSession, validateCart, applyDiscounts } = useOrderStore()
 const { cartTotal, isLoading } = storeToRefs(useOrderStore())
-const { loginAnonymously, isLoggedIn, isUserLoading, user } = useUserStore()
-
+const { loginAnonymously  } = useUserStore()
+const { isLoggedIn, user, isUserLoading } = storeToRefs(useUserStore())
 
 const amountToQualifyForDiscountedShipping = computed(() => {
   if (cartTotal.value - totalDiscountAmount.value >= discountedShippingThreshold) {
@@ -113,7 +115,7 @@ onMounted(async () => {
 })
 
 const isCheckoutLoading = computed(() => {
-  return isLoading.value || isUserLoading
+  return isLoading.value
 })
 
 const { activeDiscountMessage } = storeToRefs(useOrderStore())
@@ -160,7 +162,10 @@ async function getCartErrors() {
 </script>
 
 <style scoped lang="scss">
-
+.cart-layout {
+  display: flex;
+  flex-direction: column;
+}
 .footer-sticky {
   position: sticky;
   // TODO: make it so that it pins to bottom, but also moves up if cart is small
@@ -198,30 +203,30 @@ async function getCartErrors() {
   flex-direction: column;
   margin-bottom: 2rem;
 }
-.checkout-button {
-  border-radius: 0.5rem;
-  background: linear-gradient(0.15turn, #ffbf46, #fccb72, #ffbf46);
-  padding: 0.5rem 1.25rem;
-  border: none;
-  color: black;
-  font-size: 1.25rem;
-  font-weight: 500;
-  cursor: pointer;
-  box-shadow: 0 0 2px darkslategray;
-}
-.checkout-button:hover {
-  filter: brightness(105%);
-}
-.checkout-button:active {
-  box-shadow: 2px 3px darkslategray;
-  transform: translateY(4px);
-}
+// .checkout-button {
+//   border-radius: 0.5rem;
+//   background: linear-gradient(0.15turn, #ffbf46, #fccb72, #ffbf46);
+//   padding: 0.5rem 1.25rem;
+//   border: none;
+//   color: black;
+//   font-size: 1.25rem;
+//   font-weight: 500;
+//   cursor: pointer;
+//   box-shadow: 0 0 2px darkslategray;
+// }
+// .checkout-button:hover {
+//   filter: brightness(105%);
+// }
+// .checkout-button:active {
+//   box-shadow: 2px 3px darkslategray;
+//   transform: translateY(4px);
+// }
 .checkout-actions {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  background: linear-gradient(0.4turn, #9fdb50, #a1c181, #9fdb50);
+  background: $navbar-bg;
   //background: linear-gradient(0.4turn, #9fdb50, #ebf8e1, #3f87a6);
   padding: 0.6rem 0;
   border-radius: 1rem;

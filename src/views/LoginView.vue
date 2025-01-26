@@ -21,7 +21,7 @@ import TheRegistration from '@/components/auth/TheRegistration.vue';
     @media (min-width: 60rem) {
         .login-layout {
             flex-direction: row;
-            align-items: start;
+            gap: 5rem;
         }
     }
 </style>

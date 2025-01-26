@@ -6,7 +6,7 @@
         </router-link>
         </figure>
         <header class="card-title">
-            <h5 class="card-name">{{ name }}</h5>
+            <h5 class="card-name" @click="$router.push(link)">{{ name }}</h5>
         </header>
         <footer class="card-footer">
             <div class="price">
@@ -27,6 +27,7 @@ const props = defineProps<{
     price: number | string,
     link: string,
     photoUrl: string | undefined | null,
+    bgColor: string,
 }>()
 const cardImageUrl = computed(() => {
     return getPhotoUrl(props.photoUrl ?? null)
@@ -73,8 +74,10 @@ figure {
     margin-bottom: .5rem;
 }
 h5 {
+    font-size: 1.2rem;
     text-align: center;
     align-content: center;
+    padding-inline: 1.5rem;
 }
 .cardImage{
     width: 100%;

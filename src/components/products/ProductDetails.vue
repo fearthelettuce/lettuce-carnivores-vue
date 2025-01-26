@@ -128,7 +128,7 @@ async function fetchData() {
 const selectedPlant: Ref<Plant | undefined> = ref()
 
 function setSelectedPlant(plant: Plant | undefined) {
-  if (plant === undefined || plant.sku === selectedPlant.value?.sku) {
+  if (plant === undefined) {
     selectedPlant.value = undefined
     return
   } else {

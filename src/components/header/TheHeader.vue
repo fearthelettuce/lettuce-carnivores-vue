@@ -136,14 +136,13 @@ header {
 .logo {
   font-weight: bold;
   font-size: clamp(1.2rem, 2.5vw, 2.75rem);
-  margin-bottom: .5rem;
   font-family: 'Carter One', cursive;
   color: $cream;
 
 }
 .logo-text {
   text-shadow: 3px 2px 1px $medium-red;
-  text-box: trim-both cap alphabetic;
+  // text-box: trim-both cap alphabetic;
   // color: transparent;
   // background-clip: text;
   // background-image: $navbar-bg;
@@ -175,7 +174,7 @@ header {
 }
 
 .mobile-menu-sheet {
-  background-color: $navbar-bg;
+  background-color: $primary;
 }
 
 .mobile-menu:first-child {
