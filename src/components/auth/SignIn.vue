@@ -4,12 +4,12 @@
         <form @submit.prevent>
             <div class="">
                 <Label for="loginEmail">Email</Label>
-                <Input type="email" class="" placeholder="email" id="loginEmail" v-model="loginEmail" />       
+                <Input type="email" class="" placeholder="" id="loginEmail" v-model="loginEmail" />       
             </div>
 
             <div class="mt-3">
                 <Label for="loginPassword">Password</Label>
-                <Input type="password" class="" placeholder="password" id="loginPassword" v-model="loginPassword" />             
+                <Input type="password" class="" placeholder="" id="loginPassword" v-model="loginPassword" />             
             </div>
             <div class="action-container">
                 <div>

@@ -1,10 +1,11 @@
 <template>
     <div class="product-list">
-        <ProductCard v-for="category in filteredCategories" 
+        <ProductCard v-for="(category, index) in filteredCategories" 
             :name="getCardName(category)"
             :price="getDisplayPrice(category, getAvailablePlants(category))"
             :link="`/plants/${encodeURIComponent(category.id)}`"
             :photoUrl="getCardPhoto(category)"
+            :index
             />
     </div>
 </template>
