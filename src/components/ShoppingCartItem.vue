@@ -83,9 +83,11 @@ function getImageUrl(cartItem: CartItem) {
 <style scoped lang="scss">
 
   .cart-item {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 2fr 3fr 1fr;
+
     align-items: center;
+
     gap: .5rem;
   }
 

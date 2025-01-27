@@ -93,8 +93,9 @@ import ArrowRight from '@/assets/icons/ArrowRight.vue';
     transform: translate3d(0, 0, 0);
     padding-left: var(--slide-spacing);
     flex: 0 0 100%;
-    min-width: 0;
+    min-width: 100%;
     height: 100dvw;
+
   }
   .display-image {
     display: block;
@@ -156,11 +157,13 @@ import ArrowRight from '@/assets/icons/ArrowRight.vue';
     }
     .embla__slide {
       height: 50dvh;
+      width: 50dvh;
     }
   }
   @media(min-width: 50rem) {
     .embla__slide {
       height: 70dvh;
+      width: 70dvh;
     }
   }
 

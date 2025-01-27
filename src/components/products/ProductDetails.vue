@@ -70,7 +70,7 @@ import { formattedDate } from '@/utils/utils'
 import HalloweenGameCard from '@/components/giveaway/HalloweenGameCard.vue'
 import { storeToRefs } from 'pinia'
 import { useGiveawayStore } from '@/stores/giveaway'
-import PhotoCarousel from '../ui/PhotoCarousel.vue'
+import PhotoCarousel from '../photo/PhotoCarousel.vue'
 const { isGiveawayActive } = storeToRefs(useGiveawayStore())
 
 const route = useRoute()
@@ -82,7 +82,7 @@ const { addItemToCart } = useOrderStore()
 const { findPlantCategoryById, getAvailablePlants } = usePlantStore()
 
 onMounted(async () => {
-  if(route.query.showHidden === 'true') {showHidden.value = true} 
+  if('showHidden' in route.query || 'showhidden' in route.query) {showHidden.value = true}
   await fetchData()
   plants.value = getAvailablePlants(plantCategory.value, showHidden.value)
   setSelectedPlant(plants.value[0])

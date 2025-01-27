@@ -34,10 +34,24 @@ onMounted(async () => {
     .product-list {
         display: grid;
         gap: 2rem;
-        grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+        grid-template-columns: 1fr;
         width: 100%;
         margin-bottom: 3rem;
     }
-
+    @media (min-width: 20rem) {
+        .product-list {
+            grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+        }
+    }
+    @media (min-width: 60rem) {
+        .product-list {
+            grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+        }
+    }
+    @media (min-width: 105rem) {
+        .product-list {
+            grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
+        }
+    }
 
 </style>

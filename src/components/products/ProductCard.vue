@@ -85,31 +85,23 @@ const gradientColor = computed(() => {
         flex-direction: column;
         border-radius: 2em;
         overflow:hidden;
-        max-width: 45rem;
         justify-content: space-between;
         filter: brightness(105%);   
-        // background: linear-gradient(0.23turn, v-bind(gradientColor), $light-cream, $light-cream, $light-cream, v-bind(gradientColor));
-        // background: radial-gradient(ellipse farthest-side at center, $cream, v-bind(gradientColor));
         box-shadow: 0px -1px 8px 2px $bg-contrast;
     }
-    // .card-details {
-    //     background-color: linear-gradient(.4turn, v-bind(gradientColor), $light-cream, $light-cream, $light-cream);
-    // }
  
     figure:hover, .card:hover, .card-details:hover {
-        // .card-details {
-        //     transition: background-position 0.5s;
-        // }
         .background-color {
             background-position: 0 0;
         }
-
     }
+
     .position-0 {
         .background-color {
             background-position: 0 0;
         }
     }
+
     .background-color {
         background: inherit;
         background-image: linear-gradient(to right, v-bind(gradientColor), $light-cream);
@@ -117,22 +109,19 @@ const gradientColor = computed(() => {
         background-size: 300% 100%;
         background-position: 100% 0;
     }
+
     img {
         display: block;
         height: 100%;
         width: 100%;
         object-fit: cover;
-        filter: brightness(110%);
-        color: #20eacc;
     }
+
     h5 {
         font-size: 1.2rem;
         text-align: center;
         align-content: center;
         padding-inline: 1.5rem;
-    }
-    .cardImage{
-        width: 100%;
     }
 
     .placeholderImage {
