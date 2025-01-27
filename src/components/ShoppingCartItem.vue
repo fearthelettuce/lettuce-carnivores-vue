@@ -1,38 +1,27 @@
 <template>
 <div class="cart-item">
-    <router-link :to="`/plants/${encodeURIComponent(item.categoryId)}/${item.sku}`" class="align-center">
-      <div class="cart-item-photo">
+  <div class="cart-item-photo">
+        <router-link :to="`/plants/${encodeURIComponent(item.categoryId)}/${item.sku}`" >
           <img
           :src="getImageUrl(item)"
           :class="getImageUrl(item) == placeholderUrl ? 'placeholderImage' : 'cardImage'"
           :alt="`An image of ${item.name}`"
           />
+        </router-link>
       </div>
-    </router-link>
     <div class="item-info">
-      <div class="grid-col-2">
-          <router-link :to="`/plants/${encodeURIComponent(item.categoryId)}/${item.sku}`">{{ `${item.name}` }}</router-link>
-      </div>
-      <div class="my-1">Size: {{ item.size }}</div>
-      <div class="my-1" v-if="!item.isRepresentative">Specimen {{ item.sku }}</div>
-      <div class="quantity-input mt-2">
-          <span class="">
-          <button type="button" class="" @click="decreaseQuantity(item)">
-              <FontAwesome class="" icon="fa fa-minus"></FontAwesome>
-          </button>
-          </span>
-          <input type="text" class="input-number" :value="item.quantity" />
-          <span class="">
-          <button
-              type="button"
-              class=""
-              :disabled="item.quantity >= item.maxQuantity"
-              @click="increaseQuantity(item)"
-          >
-              <FontAwesome class="" icon="fa fa-plus"></FontAwesome>
-          </button>
-          </span>
-      </div>
+      <div class="align-left">{{ `${item.name}` }}</div>   
+      <div>Size: {{ item.size }}</div>
+      <div v-if="!item.isRepresentative">Specimen {{ item.sku }}</div>
+
+      <NumberField>
+        <NumberFieldContent class="quantity-input">
+          <NumberFieldDecrement class="quantity-action" @click="decreaseQuantity(item)"/>
+          <NumberFieldInput :value="item.quantity" />
+          <NumberFieldIncrement class="quantity-action" @click="increaseQuantity(item)" :disabled="item.quantity >= item.maxQuantity"/>
+        </NumberFieldContent>
+      </NumberField>
+
     </div>
 
     <div v-if="discountedPrice === undefined" class="item-subtotal">
@@ -50,6 +39,13 @@ import type { CartItem } from '@/types/Orders'
 import { getPhotoUrl, placeholderUrl } from '@/composables/usePhotoUtils'
 import { USDollar } from '@/utils/utils';
 import { useOrderStore } from '@/stores/order'
+import {
+  NumberField,
+  NumberFieldContent,
+  NumberFieldDecrement,
+  NumberFieldIncrement,
+  NumberFieldInput,
+} from '@/components/ui/number-field'
 
 const props = defineProps<{ item: CartItem, discountedPrice: number | undefined }>()
 const emit = defineEmits(['cartItemsChanged'])
@@ -89,65 +85,81 @@ function getImageUrl(cartItem: CartItem) {
   .cart-item {
     display: flex;
     flex-direction: row;
-    margin: 1rem 0.5rem;
+    align-items: center;
+    gap: .5rem;
   }
 
-.cart-item-photo {
-  img {
-    width: 6rem;
-    height: 8rem;
-    object-fit: cover;
-    border-radius: 0.5rem;
-  }
-}
-
-.strikethrough {
-  text-decoration: line-through;
-  color: $medium-red;
-}
-.item-subtotal {
-  margin: 0 0.5rem 0 auto;
-}
-.item-footer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin: 0 1rem;
-}
-.item-details {
-  padding: 1rem;
-  margin: 0 1rem;
-}
-.item-info {
-  display: flex;
-  flex-direction: column;
-  margin: 0 0.8rem;
-}
-.quantity-input {
-  width: 6rem;
-}
-@media (min-width: 27rem) {
   .cart-item-photo {
     img {
-      width: 10rem;
-      height: 10rem;
+      width: 6rem;
+      height: 8rem;
       object-fit: cover;
+      border-radius: 0.5rem;
     }
+  }
+
+  .strikethrough {
+    text-decoration: line-through;
+    color: $medium-red;
+  }
+  .align-left {
+    text-align: left;
+  }
+
+  .item-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0 1rem;
+  }
+
+  .item-details {
+    padding: 1rem;
+    margin: 0 1rem;
   }
   .item-info {
-    margin: 0.5rem 1rem 0.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: .1rem;
   }
-  .item-subtotal {
-    margin: 0.5rem 0.5rem 0 auto;
+  .quantity-input {
+    width: 7rem;
+    border: 1px solid $bg-contrast;
+    border-radius: .5rem;
   }
-}
-@media (min-width: 60rem) {
-  .cart-item-photo {
-    img {
-      width: 15rem;
-      height: 15rem;
-      object-fit: cover;
+  .quantity-action:hover {
+    filter: brightness(110%);
+  }
+
+  @media (min-width: 27rem) {
+    .cart-item-photo {
+      img {
+        width: 10rem;
+        height: 10rem;
+        object-fit: cover;
+      }
+    }
+    .item-info {
+      margin: 0.5rem
+    }
+    .item-subtotal {
+      margin: 0.5rem 0.5rem 0 auto;
     }
   }
-}
+  @media (min-width: 60rem) {
+    .cart-item-photo {
+      img {
+        width: 15rem;
+        height: 15rem;
+        object-fit: cover;
+      }
+    }
+    .cart-item {
+      gap: .75rem;
+    }
+    .item-info {
+      gap: .5rem;
+    }
+  }
 </style>

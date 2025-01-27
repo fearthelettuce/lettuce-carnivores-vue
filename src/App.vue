@@ -1,21 +1,45 @@
 <template>
-  <TheHeader />
-  <RouterView />
+  <div class="page-container">
+    <TheHeader />
+    <main>
+      <RouterView />
+    </main>
+  </div>
 </template>
 
 <script setup lang="ts">
-  import { RouterView } from 'vue-router'
-  import TheHeader from '@/components/header/TheHeader.vue';
+import { RouterView } from 'vue-router'
+import TheHeader from './components/header/TheHeader.vue';
 </script>
 
 <style lang="scss">
-@use '@/assets/scss/main.scss';
-a {
-    text-decoration: none;
-}
+  @use '@/assets/scss/main.scss';
+  a {
+      text-decoration: none;
+  }
 
-li {
-  list-style: none;
-}
+  li {
+    list-style: none;
+  }
+
+  main {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+    padding-inline: 2dvw;
+    width: 100%;
+  }
+
+  .page-container {
+    margin: auto;
+    width: 96dvw;
+  }
+
+  @media(min-width: 425px) {
+    .page-container  {
+      width: 90dvw;
+    }
+  }
 
 </style>

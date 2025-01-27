@@ -1,6 +1,7 @@
 import type { PlantCategory, Plant } from "@/types/Plant"
 import type { PhotoItem } from "@/types/Product"
 
+export const photoResolutions = [256,512,960,1600]
 export const sizeList = [
     {label: '', value: '',},
     {label: '2.5"', value: '2.5"'},
@@ -125,5 +126,5 @@ export const newPlant: Plant = {
     photos: [],
     plantCategoryId: '',
     shelfLocation: '',
-    dateListedForSale: undefined
+    dateListedForSale: null
 }

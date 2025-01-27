@@ -53,11 +53,13 @@
             type="textarea"
             label="Description"
             outer-class="description"
+            rows="2"
+            style="height: auto; width: 90%; border-radius: .75rem;"
             v-model="plantCategoryToEdit.description"
         />
     </form>
     <section class="form-actions">
-        <BaseButton type="danger" @click.prevent="confirmDelete" :disabled="!plantCategoryToEdit.id || plantCategoryToEdit.status !== 'Archived'">
+        <BaseButton type="danger" @click.prevent="deleteProduct" :disabled="!plantCategoryToEdit.id || plantCategoryToEdit.status !== 'Archived'">
             Delete Plant<span class="spinner-border" role="status" v-if="isSaving"></span>
         </BaseButton>
         <BaseButton type="secondary" @click.prevent="setCategoryToEdit(null)">
@@ -70,22 +72,6 @@
             Save<span class="spinner-border" role="status" v-if="isSaving"></span>
         </BaseButton>
     </section>
-
-    <BaseModal ref="confirmDeleteModalRef">
-        <template #title>Are you sure?</template>
-            <template #body>
-                <div>Are you sure you want to delete this product?<br><br> {{ plantCategoryToEdit.name }}({{ plantCategoryToEdit.id }})</div>
-            </template>
-            <template #modalAction>
-                <BaseButton
-                type="danger"
-                @click="deleteProduct"
-                >
-                Delete
-                </BaseButton>
-            </template>
-    </BaseModal>
-
 </template>
 
 <script setup lang="ts">
@@ -94,7 +80,6 @@ import { toast } from 'vue3-toastify'
 import { usePlantStore } from '@/stores/plant';
 import { storeToRefs } from 'pinia';
 import { genusListArr, statusListArr, speciesHybridArr, experienceList } from '@/constants/constants';
-import BaseModal from '@/components/UI/BaseModal.vue'
 
 const {saveCategory, setCategoryToEdit, deleteCategoryById } = usePlantStore()
 const {plantCategoryToEdit, isSaving} = storeToRefs(usePlantStore())
@@ -105,19 +90,12 @@ watch(() => plantCategoryToEdit.value,() =>{
     }
 })
 
-const confirmDeleteModalRef = ref<InstanceType<typeof BaseModal> | null>(null)
-
-function confirmDelete() {
-    //TODO add logic to check if any active plants, show in modal?
-    confirmDeleteModalRef.value?.showModal()
-}
 
 async function deleteProduct() {
     if (plantCategoryToEdit.value.id) {
         const res = await deleteCategoryById(plantCategoryToEdit.value.id).catch(err => console.error(err))
         if (res && res.success) {
             toast.success(res.message)
-            confirmDeleteModalRef.value?.hideModal()
         } else {
             if(res && res.message) {
                 toast.error(res.message)
@@ -164,6 +142,9 @@ function addPhotos() {
     .description {
         grid-column: span 3;
     }
+    .full-width {
+        width: 100%;
+    }
 
     @media(min-width: 45rem) {
         .plant-admin-form {
@@ -172,16 +153,11 @@ function addPhotos() {
         .form-actions {
             flex-wrap: nowrap;
         }
-        .description {
-        grid-column: span 4;
-    }
+
     }
     @media(min-width: 120rem) {
         .plant-admin-form {
             grid-template-columns: repeat(10, 1fr);
         }
-        .description {
-        grid-column: span 6;
-    }
     }
 </style>

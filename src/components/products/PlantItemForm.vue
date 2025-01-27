@@ -144,11 +144,12 @@ watch(() => plant.value.id, () => {
         grid-template-columns: repeat(auto-fit, minmax(16ch, 1fr));
         gap: .4rem;
         align-items: center;
-
     }
+
     .min-size {
         min-width: 8ch;
     }
+    
     .flex-1 {
         display: flex;
         flex: 1;

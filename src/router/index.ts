@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '@/stores/users'
 import ProductsView from '@/views/ProductsView.vue'
-import ShoppingCart from '@/components/ShoppingCart.vue'
-import CheckoutComplete from '@/views/CheckoutComplete.vue'
+const ShoppingCart = () => import('@/components/ShoppingCart.vue')
+const CheckoutComplete = () => import('@/views/CheckoutComplete.vue')
 const ProductDetailView = () => import( '@/views/ProductDetailView.vue')
 const AboutView = () => import('@/views/AboutView.vue')
 const CareGuideView = () => import('@/views/CareGuideView.vue')
@@ -44,6 +44,7 @@ const routeData = [
       name: 'productDetails',
       label: 'Products Details',
       component: ProductDetailView,
+      props: (route: any) => ({ query: route.query.showHidden}),
       meta: {
         showInNav: false,
         requiresLogin: false,

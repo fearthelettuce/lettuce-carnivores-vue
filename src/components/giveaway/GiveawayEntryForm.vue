@@ -87,7 +87,7 @@ async function submitHandler() {
 
 </script>
 
-<style>
+<style scoped>
     .form-container {
         border: 2px solid salmon;
         border-radius: 2rem;

@@ -1,15 +1,15 @@
 <template>
     <article class="guide-card">
         <section class="text-section" :class="altStyle ? 'alt-style' : ''">
-            <header class="article-header flex justify-center">
-                <h2 class="m-0">{{ careData.label }} Care</h2>
+            <header class="article-header">
+                <h2>{{ careData.label }} Care</h2>
             </header>
             <ul class="care-guide">
                 <li 
                     v-for="item in careItems"
                     :key="item.label"
                     class="text-item" 
-                    :class="altStyle ? 'justify-space-between' : ''"
+                    :class="altStyle ? 'space-between' : ''"
                 >
                     <div class="icon-with-label" :class="altStyle ? 'alt-style' : ''">
                         <img 
@@ -102,9 +102,13 @@ const careItems = [
 </script>
 
 <style scoped>
-
+h2 {
+    font-size: 1.5rem;
+}
 p,
 ul {
+    text-align: justify;
+    text-justify: inter-word;
     margin: .25em .37em;
     padding: 0;
 }
@@ -113,7 +117,7 @@ ul {
     display: flex;
     flex-direction: column;
     /* flex-wrap: nowrap; */
-    background-color: rgb(46, 46, 46);
+    /* background-color: rgb(46, 46, 46); */
     border-radius: 1.5rem;
     overflow: hidden;
     padding: 0;
@@ -138,7 +142,7 @@ ul {
 }
 
 .humidity-icon {
-    filter: invert(81%) sepia(12%) saturate(1026%) hue-rotate(167deg) brightness(600%) contrast(98%);
+    filter: invert(81%) sepia(12%) saturate(1026%) hue-rotate(167deg) brightness(100%) contrast(98%);
 }
 
 .icon-with-label {
@@ -154,7 +158,7 @@ ul {
     padding: 0;
     margin-bottom: .1em;
     display: flex;
-    color: rgb(216, 227, 196);
+    /* color: rgb(216, 227, 196); */
 }
 
 .text-item {
@@ -163,7 +167,9 @@ ul {
     margin: .7em 0;
     list-style-type: none;
 }
-
+.space-between {
+    justify-content: space-between;
+}
 
 .image-section {
     display: block;
@@ -214,6 +220,10 @@ ul {
     flex-direction: column;
 }
 
+.article-header {
+    display: flex;
+    justify-content: center;
+}
 
 @media (min-width: 1150px) {
     .order-one {

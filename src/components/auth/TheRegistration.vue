@@ -2,23 +2,23 @@
     <div class="login-container">
         <h2 class="text-center">Create Account</h2>
         <form @submit.prevent>
-            <div class="gap-4">
-                <label for="registerEmail">Email</label>
-                <input type="email" class="mx-4" id="registerEmail" v-model="registrationForm.email" required/>
+            <div>
+                <Label for="registerEmail">Email</Label>
+                <Input type="email" id="registerEmail" v-model="registrationForm.email" required/>
             </div>
-            <div class=" mt-3">
-                <label for="registerPassword">Password</label>
-                <input type="password" class="mx-4" id="registerPassword" v-model="registrationForm.password" required/>
+            <div>
+                <Label for="registerPassword">Password</Label>
+                <Input type="password" id="registerPassword" v-model="registrationForm.password" required/>
             </div>
-            <div class="mt-3">
-                <label for="registerFirstName">First Name</label>
-                <input type="text" class="mx-4" id="registerFirstName" v-model="registrationForm.firstName" required/>
+            <div>
+                <Label for="registerFirstName">First Name</Label>
+                <Input type="text" id="registerFirstName" v-model="registrationForm.firstName" required/>
             </div>
-            <div class="mt-3">
-                <label for="registerLastName">Last Name</label>
-                <input type="text" class="mx-4" id="registerLastName" v-model="registrationForm.lastName" required/>
+            <div>
+                <Label for="registerLastName">Last Name</Label>
+                <Input type="text" id="registerLastName" v-model="registrationForm.lastName" required/>
             </div>
-            <div class="flex justify-center mt-4">
+            <div class="action-container">
                 <BaseButton @click.prevent="register">Register</BaseButton>
             </div>
         </form>
@@ -30,14 +30,16 @@ import { reactive } from 'vue';
 import { useUserStore } from '@/stores/users'
 import { router } from '@/router/index'
 import { toast } from 'vue3-toastify'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 const userStore = useUserStore()
 
 const registrationForm = reactive({
-    email: null,
-    password: null,
-    firstName: null,
-    lastName: null,
+    email: '',
+    password: '',
+    firstName: '',
+    lastName: '',
 })
 
 const register = async () => {
@@ -71,12 +73,31 @@ const register = async () => {
 
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: .5rem;
+}
 .login-container {
-    padding: 3rem;
-    border: 1px solid lightgray;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    border: 2px solid $bg-contrast;
     border-radius: .5rem;
+}
+
+.action-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+    margin-block: 1rem;
+}
+
+@media(min-width: 30rem) {
+    .login-container {
+        padding: 2rem 4rem;
+    }
 }
 </style>
 

@@ -1,9 +1,7 @@
 <template>
-    <div class="container mt-4">
-        <div class="row gx-2">
-            <SignIn class="col-lg-5 col-md-12 mb-5"/>
-            <TheRegistration class="col-lg-5 col-md-12 mb-5"/>
-        </div>
+    <div class="login-layout">
+        <SignIn />
+        <TheRegistration/>
     </div>
 </template>
 
@@ -11,3 +9,19 @@
 import SignIn from '@/components/auth/SignIn.vue'
 import TheRegistration from '@/components/auth/TheRegistration.vue';
 </script>
+
+<style scoped>
+    .login-layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3rem;
+    }
+    @media (min-width: 60rem) {
+        .login-layout {
+            flex-direction: row;
+            gap: 5rem;
+        }
+    }
+</style>

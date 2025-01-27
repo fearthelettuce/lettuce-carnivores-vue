@@ -50,10 +50,10 @@
              /> -->
         </div>
 
-        <div class="mt-3">
+        <!-- <div class="mt-3">
             <BaseButton type="primary-outline" size="small" @click="isHidden = !isHidden">{{`${isHidden ? 'Show' : 'Hide'} Filters`}}</BaseButton>
 
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -61,7 +61,6 @@
 import { ref, onMounted } from 'vue'
 import { genusList, statusList, experienceList, otherFiltersList} from '@/constants/constants'
 import { usePlantStore } from '@/stores/plant';
-import MultiSelect from 'primevue/multiselect'
 import { storeToRefs } from 'pinia'
 
 const isHidden = ref(false)

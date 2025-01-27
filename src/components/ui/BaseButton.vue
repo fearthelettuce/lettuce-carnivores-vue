@@ -46,7 +46,7 @@ const props = defineProps({
     }
 
     .primary {
-        background-color: #9fdb50;
+        background-color: $primary;
         color: black;
         border: none;
     }

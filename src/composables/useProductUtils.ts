@@ -26,7 +26,7 @@ export async function saveProductUtil(product: Product | Plant, collectionName: 
         //TODO convert to toRaw
         if(res?.success) {
             const productDetails = JSON.parse(JSON.stringify( res?.documentDetails))
-            const productIndex = productList?.findIndex(item => item.id === productDetails.id)
+            const productIndex = productList?.findIndex(item => item.sku === productDetails.id)
             if (productList && productIndex !== null && productIndex !== undefined && productIndex > -1) {
                 productList.splice(productIndex, 1, productDetails)
             } else {

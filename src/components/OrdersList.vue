@@ -1,17 +1,17 @@
 <template>
     <div class="order-container">
-        <Accordion value="0">
-            <AccordionPanel v-for="order of props.orders" :key="order.id" :value="order.id.toString()">
-                <AccordionHeader class="accordion-header" :pt="{toggleicon: {style:{ 'margin-left': 'auto', 'margin-right':'.6rem'}}}">
+        <Accordion type="single" class="w-full" collapsible :default-value="'0'">
+            <AccordionItem v-for="order of props.orders" :key="order.id" :value="order.id.toString()">
+                <AccordionTrigger class="accordion-header" :pt="{toggleicon: {style:{ 'margin-left': 'auto', 'margin-right':'.6rem'}}}">
                     <div class="grid-span-2 order-number">Order {{ order.id }}</div>
                     <div class="grid-span-2">{{ formatFirebaseDate(order.orderDate) }}</div>
                     <div v-if="isAdmin" class="grid-span-1">{{ order.lineItems.length }}</div>
                     <div class="grid-span-3 text-center">{{ order.orderStatus.status }}</div>
-                </AccordionHeader>
+                </AccordionTrigger>
                 <AccordionContent class="my-1">
                         <div class="shipping-info my-3">
-                            <h5>Shipping</h5>
-                            <div class="flex justify-space-around gap-2">
+                            <h5 class="my-3 text-lg">Shipping</h5>
+                            <div class="flex justify-around gap-2">
                                 <div class="ms-3">
                                     <div>{{ order.shippingInfo.name }}</div>
                                     <div>{{ order.shippingInfo.address.line1 }}</div>
@@ -33,11 +33,11 @@
                         </div>
                         <hr />
                         <div class="item-details my-3">
-                            <h5>Products</h5>
+                            <h5 class="my-3 text-lg">Products</h5>
                             <OrderDetails :order :isAdmin />
                         </div>
                 </AccordionContent>
-            </AccordionPanel>
+            </AccordionItem>
         </Accordion>
     </div>
     <OrderStatusModal v-if="selectedOrder !== undefined" :order="selectedOrder" ref="orderStatusModal" />
@@ -45,10 +45,7 @@
 
 <script setup lang="ts">
 import { nextTick, type Ref, ref } from 'vue'
-import Accordion from 'primevue/accordion'
-import AccordionHeader from 'primevue/accordionheader'
-import AccordionPanel from 'primevue/accordionpanel'
-import AccordionContent from 'primevue/accordioncontent'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import OrderStatusModal from '@/components/OrderStatusModal.vue'
 import type { Order } from '@/types/Orders'
 import { USDollar, formatFirebaseDate } from '@/utils/utils';
@@ -69,7 +66,7 @@ const columnCount = props.isAdmin ? 7 : 6
 
 <style scoped>
 .order-container {
-    max-width: 100rem;
+    min-width: 90dvw;
     margin: auto;
 }
 .item-grid {
@@ -107,8 +104,11 @@ const columnCount = props.isAdmin ? 7 : 6
 .justify-right{
     text-align: end;
 }
-p-accordionheader-toggle-icon {
-        margin-left: auto;
 
+@media(min-width: 50rem) {
+    .order-container {
+        min-width: 42rem;
     }
+}
+
 </style>

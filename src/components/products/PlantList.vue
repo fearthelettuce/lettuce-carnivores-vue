@@ -1,12 +1,13 @@
 <template>
-    <main class="product-list">
-        <ProductCard v-for="category in filteredCategories" 
+    <div class="product-list">
+        <ProductCard v-for="(category, index) in filteredCategories" 
             :name="getCardName(category)"
             :price="getDisplayPrice(category, getAvailablePlants(category))"
             :link="`/plants/${encodeURIComponent(category.id)}`"
             :photoUrl="getCardPhoto(category)"
+            :index
             />
-    </main>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -32,16 +33,11 @@ onMounted(async () => {
 <style scoped>
     .product-list {
         display: grid;
-        gap: .5rem;
+        gap: 2rem;
         grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-        margin: 1rem .5rem;
+        width: 100%;
+        margin-bottom: 3rem;
     }
 
-    @media(min-width: 82rem) {
-        .product-list {
-            grid-template-columns: repeat(auto-fit, minmax(26rem, 1fr));
-            gap: 1rem;
-            margin: 1rem 6rem;
-        }
-    }
+
 </style>

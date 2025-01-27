@@ -1,192 +1,202 @@
-.flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+// .flex-center {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// }
 
-.flex-row {
-  display: flex;
-  flex-direction: row;
-}
+// .flex-row {
+//   display: flex;
+//   flex-direction: row;
+// }
 
-.flex-column {
-  display: flex;
-  flex-direction: column;
-}
+// .flex-column {
+//   display: flex;
+//   flex-direction: column;
+// }
 
-.column {
-  display: flex;
-  flex-direction: column;
-}
+// .column {
+//   display: flex;
+//   flex-direction: column;
+// }
 
-.text-center {
-  text-align: center;
-}
+// .text-center {
+//   text-align: center;
+// }
 
-.w-100 {
-  width: 100%;
-}
+// .w-100 {
+//   width: 100%;
+// }
 
-.h-100 {
-  height: 100%;
-}
+// .h-100 {
+//   height: 100%;
+// }
 
-.text-decoration-none {
-  text-decoration: none;
-}
+// .text-decoration-none {
+//   text-decoration: none;
+// }
 
-$alignments: ('center', 'space-between', 'space-around', 'space-evenly', 'flex-start', 'flex-end');
+// $alignments: (
+//   'center',
+//   'space-between',
+//   'space-around',
+//   'space-evenly',
+//   'flex-start',
+//   'flex-end'
+// );
 
-@each $align in $alignments {
-  .justify-#{$align} {
-    justify-content: #{$align};
-  }
+// @each $align in $alignments {
+//   .justify-#{$align} {
+//     justify-content: #{$align};
+//   }
 
-  .align-#{$align} {
-    align-items: #{$align};
-  }
+//   .align-#{$align} {
+//     align-items: #{$align};
+//   }
 
-  .justify-items-#{$align} {
-    justify-items: #{$align};
-  }
+//   .justify-items-#{$align} {
+//     justify-items: #{$align};
+//   }
 
-  .content-#{$align} {
-    align-content: #{$align};
-  }
-}
+//   .content-#{$align} {
+//     align-content: #{$align};
+//   }
+// }
 
-$displayProps: (
-  'block',
-  'inline-block',
-  'inline',
-  'flex',
-  'grid',
-  'inline-flex',
-  'inline-grid',
-  'table',
-  'inline-table',
-  'list-item',
-  'none',
-  'contents'
-);
+// $displayProps: (
+//   'block',
+//   'inline-block',
+//   'inline',
+//   'flex',
+//   'grid',
+//   'inline-flex',
+//   'inline-grid',
+//   'table',
+//   'inline-table',
+//   'list-item',
+//   'none',
+//   'contents'
+// );
 
-@each $display in $displayProps {
-  .#{$display} {
-    display: #{$display};
-  }
-}
+// @each $display in $displayProps {
+//   .#{$display} {
+//     display: #{$display};
+//   }
+// }
 
-.grid-col-1 {
-  grid-column: span 1;
-}
-.grid-col-2 {
-  grid-column: span 2;
-}
+// .grid-col-1 {
+//   grid-column: span 1;
+// }
 
-.grid-col-3 {
-  grid-column: span 3;
-}
+// .grid-col-2 {
+//   grid-column: span 2;
+// }
 
-.grid-col-4 {
-  grid-column: span 4;
-}
+// .grid-col-3 {
+//   grid-column: span 3;
+// }
 
-.grid-col-5 {
-  grid-column: span 5;
-}
+// .grid-col-4 {
+//   grid-column: span 4;
+// }
 
-.grid-col-10 {
-  grid-column: span 10;
-}
+// .grid-col-5 {
+//   grid-column: span 5;
+// }
 
-$textAlignments: (
-  'left',
-  'right',
-  'center',
-  'revert'
-);
+// .grid-col-10 {
+//   grid-column: span 10;
+// }
 
-@each $textAlign in $textAlignments {
-  .text-#{$textAlign} {
-    text-align: #{$textAlign};
-  }
-}
+// $textAlignments: (
+//   'left',
+//   'right',
+//   'center',
+//   'revert'
+// );
 
-$sizeMap: (
-  0: 0rem,
-  1: .25rem,
-  2: .5rem,
-  4: .75rem,
-  5: 1.25rem,
-  6: 1.5rem,
-  7: 1.75rem,
-  8: 2rem,
-  auto: auto
-);
+// @each $textAlign in $textAlignments {
+//   .text-#{$textAlign} {
+//     text-align: #{$textAlign};
+//   }
+// }
 
-@each $key, $value in $sizeMap {
-    .m-#{$key} {
-      margin: #{$value};
-    }
+// $sizeMap: (
+//   0: 0rem,
+//   1: .25rem,
+//   2: .5rem,
+//   4: .75rem,
+//   5: 1.25rem,
+//   6: 1.5rem,
+//   7: 1.75rem,
+//   8: 2rem,
+//   auto: auto
+// );
 
-    .mx-#{$key} {
-      margin-left: #{$value};
-      margin-right: #{$value};
-    }
+// @each $key, $value in $sizeMap {
+//   .m-#{$key} {
+//     margin: #{$value};
+//   }
 
-    .my-#{$key} {
-      margin-top: #{$value};
-      margin-bottom: #{$value};
+//   .mx-#{$key} {
+//     margin-left: #{$value};
+//     margin-right: #{$value};
+//   }
 
-    }
+//   .my-#{$key} {
+//     margin-top: #{$value};
+//     margin-bottom: #{$value};
 
-    .ml-#{$key} {
-      margin-left: #{$value};
-    }
+//   }
 
-    .mr-#{$key} {
-      margin-right: #{$value};
-    }
+//   .ml-#{$key} {
+//     margin-left: #{$value};
+//   }
 
-    .mb-#{$key} {
-      margin-bottom: #{$value};
-    }
+//   .mr-#{$key} {
+//     margin-right: #{$value};
+//   }
 
-    .mt-#{$key} {
-      margin-top: #{$value};
-    }
+//   .mb-#{$key} {
+//     margin-bottom: #{$value};
+//   }
 
-    .p-#{$key} {
-      padding: #{$value};
-    }
+//   .mt-#{$key} {
+//     margin-top: #{$value};
+//   }
 
-    .px-#{$key} {
-      padding-left: #{$value};
-      padding-right: #{$value};
-    }
+//   .p-#{$key} {
+//     padding: #{$value};
+//   }
 
-    .py-#{$key} {
-      padding-top: #{$value};
-      padding-bottom: #{$value};
-    }
+//   .px-#{$key} {
+//     padding-left: #{$value};
+//     padding-right: #{$value};
+//   }
 
-    .pl-#{$key} {
-      padding-left: #{$value};
-    }
+//   .py-#{$key} {
+//     padding-top: #{$value};
+//     padding-bottom: #{$value};
+//   }
 
-    .pr-#{$key} {
-      padding-right: #{$value};
-    }
+//   .pl-#{$key} {
+//     padding-left: #{$value};
+//   }
 
-    .pb-#{$key} {
-      padding-bottom: #{$value};
-    }
+//   .pr-#{$key} {
+//     padding-right: #{$value};
+//   }
 
-    .pt-#{$key} {
-      padding-top: #{$value};
-    }
+//   .pb-#{$key} {
+//     padding-bottom: #{$value};
+//   }
 
-    .gap-#{$key} {
-      gap: #{$value};
-    }
-  };
+//   .pt-#{$key} {
+//     padding-top: #{$value};
+//   }
+
+//   .gap-#{$key} {
+//     gap: #{$value};
+//   }
+// }
+
+// ;

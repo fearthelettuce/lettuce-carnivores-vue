@@ -1,11 +1,13 @@
 <template>
-    <OrdersList v-if="orders.length > 0" :orders :isAdmin="true" />
-    <div v-else>No orders to display</div>
-    <div class="row gap-2 mt-4 justify-space-around">
-        <BaseButton @click="fetchOpenOrders">View Open Orders</BaseButton>
-        <BaseButton type="info" @click="findAllOrders">View All Orders</BaseButton>
+    <div class="layout">
+        <OrdersList v-if="orders.length > 0" :orders :isAdmin="true" />
+        <div v-else>No orders to display</div>
+        <div class="row gap-2 mt-4 justify-space-around">
+            <BaseButton @click="fetchOpenOrders">View Open Orders</BaseButton>
+            <BaseButton type="info" @click="findAllOrders">View All Orders</BaseButton>
+        </div>
+        <OrderPickList :orders />
     </div>
-    <OrderPickList :orders />
 </template>
 
 <script setup lang="ts">
@@ -47,3 +49,11 @@ async function findAllOrders() {
 }
 
 </script>
+
+<style scoped>
+    .layout {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+</style>
