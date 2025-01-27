@@ -6,18 +6,12 @@
         <div class="text-info align-center">Photos will take ~30s to load after uploading</div>
         <button type="button" class="" aria-label="Close" data-bs-dismiss="modal" @click="toggleModal"></button>
       </header>
-      <main class="modal-body photo-items-grid">
+      <div class="modal-body photo-items-grid">
         <template v-for="(photo, index) of photos" :key="photo.name">
-          <PhotoPreviewItem
-            :photo
-            :index
-            :isLast="index === photos.length"
-            @move-up="move"
-            @move-down="move"
-            @remove-photo="(i) => removePhoto(i, photo)"
-          />
+          <PhotoPreviewItem :photo :index :isLast="index === photos.length" @move-up="move" @move-down="move"
+            @remove-photo="(i) => removePhoto(i, photo)" />
         </template>
-      </main>
+      </div>
       <DragUpload @files-dropped="filesDropped" #default="{ dropZoneActive }">
         <label class="drag-area" :class="dropZoneActive ? 'highlight' : ''">
           <span v-if="dropZoneActive">
@@ -32,35 +26,18 @@
       </DragUpload>
       <footer class="bg-dark">
         <div class="">
-          <!-- <label for="formFile" class="" :disabled="isSaving"> Select Files </label>
-          <input
-            ref="fileSelectElement"
-            class="form-control"
-            type="file"
-            id="formFile"
-            @change="onFilesSelected($event)"
-            accept="capture=camera,image/*"
-            multiple
-            :disabled="isSaving"
-          /> -->
-          <div v-if="selectedFiles.length !== 0" class="d-inline-block mx-3 text-light">{{ selectedFiles.length }} files selected</div>
+          <div v-if="selectedFiles.length !== 0" class="d-inline-block mx-3 text-light">{{ selectedFiles.length }} files
+            selected</div>
         </div>
         <div class="flex flex-row gap-2">
-          <BaseButton type="button" @click="upload" :disabled="selectedFiles.length === 0 || isSaving" :loading="isSaving">
+          <BaseButton type="button" @click="upload" :disabled="selectedFiles.length === 0 || isSaving"
+            :loading="isSaving">
             Upload <span v-if="isSaving" class="spinner-border"></span>
           </BaseButton>
-          <BaseButton
-            @click="reloadImages"
-            data-bs-dismiss="modal"
-            :disabled="isSaving || photos.length === 0"
-          >
+          <BaseButton @click="reloadImages" data-bs-dismiss="modal" :disabled="isSaving || photos.length === 0">
             Reload Images
           </BaseButton>
-          <BaseButton
-            @click="toggleModal"
-            data-bs-dismiss="modal"
-            :disabled="selectedFiles.length !== 0"
-          >
+          <BaseButton @click="toggleModal" data-bs-dismiss="modal" :disabled="selectedFiles.length !== 0">
             Close
           </BaseButton>
         </div>
@@ -72,7 +49,7 @@
 <script setup lang="ts">
 import { ref, type PropType, toRefs, onBeforeUnmount } from 'vue'
 import type { PhotoItem } from '@/types/Product'
-import BaseDialog from '@/components/UI/BaseDialog.vue'
+import BaseDialog from '@/components/ui/BaseDialog.vue'
 import DragUpload from '@/components/photo/DragUpload.vue'
 import PhotoPreviewItem from './PhotoPreviewItem.vue'
 import { arrayMove } from '@/utils/utils'
@@ -124,12 +101,14 @@ async function upload() {
 input[type='file'] {
   display: none;
 }
+
 header {
   display: flex;
   justify-content: space-between;
   margin: 0 1.5rem 0;
   box-sizing: border-box;
 }
+
 footer {
   display: flex;
   padding-top: 1rem;
@@ -137,22 +116,21 @@ footer {
   box-sizing: border-box;
 }
 
-.imagePreview {
-  height: 16em;
-}
-
 .hide {
   display: none;
 }
+
 .photo-modal {
   min-width: 50rem;
   overflow: none;
 }
+
 .modal-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
+
 .modal-footer--sticky {
   position: sticky;
   bottom: 0;
@@ -164,7 +142,7 @@ footer {
   display: grid;
   grid-template-columns: 1fr 4fr 4fr 1fr;
   gap: 1rem 0;
-  height: 75dvh;
+  height: 65dvh;
   overflow-y: auto;
   min-height: 20rem;
 }
@@ -176,10 +154,13 @@ footer {
   height: 10rem;
   border: 2px solid lightgray;
   border-radius: 0.5rem;
+  cursor: pointer;
 }
+
 .highlight {
   backdrop-filter: brightness(135%);
 }
+
 .spinner-border {
   height: 1rem;
   width: 1rem;

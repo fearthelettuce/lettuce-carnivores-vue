@@ -33,8 +33,14 @@ export const usePlantStore = defineStore('plant', () => {
         isSaving.value = true
         setDateListed(plantCategory)
         try {
-            await saveItem(collectionName, plantCategory)
-            toast.success('Saved')
+            const res = await saveItem(collectionName, plantCategory)
+            if(res?.success) {
+                toast.success('Saved')
+            } else {
+                console.log(res?.errorDetails)
+                console.log(plantCategory)
+                toast.error((res as any).errorDetails.message)
+            }
         } catch(e: any) {
             throw new Error(e.toString())
         } finally {
@@ -47,8 +53,10 @@ export const usePlantStore = defineStore('plant', () => {
     function setDateListed(plantCategory: PlantCategory) {
         const now = new Date()
         plantCategory.plants.forEach(plant => {
-            if(plant.status === 'In Stock' && plant.dateListedForSale === undefined) {
+            if(plant.status === 'In Stock' && !plant.dateListedForSale) {
                 plant.dateListedForSale = now
+            } else {
+                plant.dateListedForSale = null
             }
         })
     }
@@ -120,18 +128,19 @@ export const usePlantStore = defineStore('plant', () => {
         sortAlphabetically(availableCategories, 'name')
         return availableCategories
     }
-    const getAvailablePlants = (category: PlantCategory | undefined) => {
+    const getAvailablePlants = (category: PlantCategory | undefined, includeHidden?: boolean) => {
         if(category === undefined) {return []}
         const selectedStatuses = productFilters.value.status.items.map(status => status.value)
         const selectedOther = productFilters.value.other.items.map(item => item.value)
-        const visiblePlants = category.plants.filter(plant =>
+        let visiblePlants = category.plants.filter(plant =>
             plant.quantity > 0 &&
-            plant.status !== 'Hidden' &&
             plant.status !== 'Archived' &&
             plant.status !== 'Sold' &&
             plant.price > 0
         )
-
+        if(includeHidden) {
+            selectedStatuses.push('Hidden')
+        }
         let filteredPlants = visiblePlants
         filteredPlants = filteredPlants.filter(plant => selectedStatuses.includes(plant.status))
         filteredPlants = filteredPlants.filter(plant => selectedOther.includes('Specimen') ? true : plant.isRepresentative )
@@ -159,7 +168,7 @@ export const usePlantStore = defineStore('plant', () => {
                 quantity: 1,
                 photos: [],
                 plantCategoryId: plantCategory.id,
-                shelfLocation: lastPlant.shelfLocation,
+                shelfLocation: lastPlant.shelfLocation ?? '',
                 dateListedForSale: undefined
 
             })

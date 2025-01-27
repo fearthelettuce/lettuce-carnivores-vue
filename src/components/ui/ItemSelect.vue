@@ -24,9 +24,8 @@ import {type PropType } from 'vue';
     const model = defineModel({type: Object as PropType<T>})
     const props = defineProps<{
         options: T[],
-        label: string,
-        id: string,
-        includeCreate?: boolean,
+        label?: string,
+        id: string
     }>();
 
 

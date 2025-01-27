@@ -130,7 +130,6 @@ export async function getAllPlants() {
 export async function updateDocId(collectionName: string, oldDocId: string, newDocId: string) {
   const docRef = doc(db, collectionName, oldDocId.toString())
   const snap = await getDoc(docRef)
-  debugger
   const newDocRef = doc(db, collectionName, newDocId)
   const res = await setDoc(newDocRef, { ...snap.data() })
   return

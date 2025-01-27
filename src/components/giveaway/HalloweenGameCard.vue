@@ -212,7 +212,7 @@ const { isGameComplete, isGameActive, beenRickRolled } = storeToRefs(useGiveaway
 
 </script>
 
-<style>
+<style scoped>
     .game-card {
         width: 20rem;
         display: flex;

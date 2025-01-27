@@ -103,7 +103,7 @@ export const useOrderStore = defineStore('order', () => {
         let errors = ''
         cart.value.cartItems.forEach((item, index) => {
             const dbPlant = plantData.find((plant) => plant.sku === item.sku)
-            if(!dbPlant || dbPlant.status !== 'In Stock' || dbPlant.quantity === 0) {
+            if(!dbPlant || ['In Stock', 'Hidden'].includes(dbPlant.status) === false || dbPlant.quantity === 0) {
                 cart.value.cartItems.splice(index, 1)
                 errors = errors + `${item.name} - ${item.sku}: this item is no longer available and has been removed from your cart.\n`
                 return

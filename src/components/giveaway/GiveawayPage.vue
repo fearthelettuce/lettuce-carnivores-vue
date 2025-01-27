@@ -1,5 +1,4 @@
 <template>
-    <BaseContainer>
         <div v-if="!isGiveawayActive" class="giveaway-banner">
             {{ giveawayBannerMessage }}
         </div>
@@ -35,7 +34,7 @@
             </div>
             <component :is="activeGame" class="game" />
         </div>
-    </BaseContainer>
+
 
 </template>
 

@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import type { PropType } from 'vue';
-import BaseDialog from '@/components/UI/BaseDialog.vue'
+import BaseDialog from '@/components/ui/BaseDialog.vue'
 import type { PhotoItem } from '@/types/Product';
 import {getPhotoUrl} from '@/composables/usePhotoUtils'
 

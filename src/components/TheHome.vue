@@ -1,7 +1,7 @@
 <template>
     <div class="hero-container">
         <div class="hero-image" :style="{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(${theBackgroundImage})`}">
-            <main class="hero-content">
+            <div class="hero-content">
                 <section class="hero-text">
                     <h1 class="hero-name">Danger Lettuce</h1>
                     <h2 class="hero-subtitle">Carnivorous Plants</h2>
@@ -11,7 +11,7 @@
                         <!-- <router-link to="recommendations" class="hero-link">Recommend</router-link> -->
                     </nav>
                 </section>
-            </main>
+            </div>
         </div>
     </div>
 </template>

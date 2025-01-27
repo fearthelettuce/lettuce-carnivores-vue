@@ -1,8 +1,6 @@
 <template>
-    <div class="container-fluid">
-        <ProductFilters />
-        <PlantList />
-    </div>
+    <!-- <ProductFilters /> -->
+    <PlantList />
 </template>
 
 <script setup lang="ts">
