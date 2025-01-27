@@ -3,12 +3,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-
-
+import { ref, type Ref} from 'vue';
 import type { Product, Plant, ProductCategory } from '@/types/Product';
+
 const productType = ref('plant')
-const productData: Product[] = ref([])
+const productData: Ref<Product[]> = ref([])
 const now = new Date()
 function addNewRow(quantity: number = 1) {
   productData.value.push({...newProduct})
@@ -30,8 +29,8 @@ const defaultPlantData: Plant = {
   ...newProduct,
   additionalInformation: {
         propagationDate: '',
-        shipping: null,
-        ageGroup: null,
+        shipping: '',
+        ageGroup: '',
         isSpecimen: false,
         shelfLocation: '',
     }

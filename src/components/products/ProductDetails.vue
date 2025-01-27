@@ -260,18 +260,19 @@ h2 {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 120rem;
+  align-items: center;
+  max-width: 140rem;
 }
 .photo-section {
   display: flex;
   flex-direction: column;
-  max-width: 80dvh;
 }
 .product-information {
   display: flex;
   flex-direction: column;
   justify-content: center;
   margin: 0 1rem;
+  max-width: 30rem;
 }
 .description {
   margin-block: 1rem;
@@ -286,7 +287,7 @@ h2 {
 }
 
 .description-one-line {
-  max-width: 30ch;
+  max-width: 40ch;
   height: 1.5rem;
   overflow: hidden;
   white-space: nowrap;
@@ -313,16 +314,22 @@ footer {
   .product-detail-section {
     flex-direction: row;
   }
-  .photo-section {
-    height: 80dvh;
-  }
   .product-information {
-    max-width: 40rem;
+    max-width: 20rem;
     margin-left: 2rem;
   }
-
+  .photo-section {
+    width: 80dvh;
+  }
   .specimen-button {
     flex: 1 1 auto;
+  }
+}
+
+@media (min-width: 60rem) {
+  .product-information {
+    max-width: 35rem;
+    margin-left: 2rem;
   }
 }
 </style>

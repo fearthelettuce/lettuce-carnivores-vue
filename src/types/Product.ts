@@ -38,7 +38,7 @@ export interface Product {
 export interface Plant extends Product {
     additionalInformation: {
         propagationDate?: Date | string,
-        shipping?: string,
+        shipping: string,
         ageGroup: string,
         isSpecimen: boolean,
         shelfLocation: string,

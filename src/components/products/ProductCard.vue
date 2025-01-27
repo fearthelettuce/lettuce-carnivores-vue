@@ -1,11 +1,11 @@
 <template>
-    <article class="card">
+    <article class="card" :class="applyBg">
        <figure> 
         <router-link :to="link">
             <img :src="cardImageUrl" :class="cardImageUrl == placeholderUrl ? 'placeholderImage': 'cardImage'" :alt="`An image of ${name}`" />
         </router-link>
         </figure>
-        <div class="card-details">
+        <div class="card-details background-color" ref="card" >
             <header class="card-title">
                 <h5 class="card-name" @click="$router.push(link)">{{ name }}</h5>
             </header>
@@ -22,8 +22,11 @@
 
 <script setup lang="ts">
 
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import {getPhotoUrl, placeholderUrl} from '@/composables/usePhotoUtils'
+import { useIntersectionObserver, useWindowSize } from '@vueuse/core';
+
+
 const props = defineProps<{
     name: string,
     price: number | string,
@@ -40,8 +43,21 @@ const formattedPrice = computed(() => {
     } else {
         return props.price || '-'
     }
-    
 })
+const { width } = useWindowSize()
+const applyBg = computed(() => {
+    if(width.value > 450) return ''
+    if(cardIsVisible.value) return 'position-0'
+})
+const card = ref()
+const cardIsVisible = ref(false)
+const { stop } = useIntersectionObserver(
+  card,
+  ([entry], observerElement) => {
+    cardIsVisible.value = entry?.isIntersecting || false
+  },
+)
+
 //TODO: Move USDollar to composables
 const USDollar = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -71,14 +87,36 @@ const gradientColor = computed(() => {
         overflow:hidden;
         max-width: 45rem;
         justify-content: space-between;
+        filter: brightness(105%);   
         // background: linear-gradient(0.23turn, v-bind(gradientColor), $light-cream, $light-cream, $light-cream, v-bind(gradientColor));
         // background: radial-gradient(ellipse farthest-side at center, $cream, v-bind(gradientColor));
         box-shadow: 0px -1px 8px 2px $bg-contrast;
     }
-    .card-details {
-        background: linear-gradient(.3turn, $light-cream, v-bind(gradientColor));
-    }
+    // .card-details {
+    //     background-color: linear-gradient(.4turn, v-bind(gradientColor), $light-cream, $light-cream, $light-cream);
+    // }
+ 
+    figure:hover, .card:hover, .card-details:hover {
+        // .card-details {
+        //     transition: background-position 0.5s;
+        // }
+        .background-color {
+            background-position: 0 0;
+        }
 
+    }
+    .position-0 {
+        .background-color {
+            background-position: 0 0;
+        }
+    }
+    .background-color {
+        background: inherit;
+        background-image: linear-gradient(to right, v-bind(gradientColor), $light-cream 50%);
+        transition: background-position 1.7s;
+        background-size: 200% 100%;
+        background-position: 100% 0;
+    }
     img {
         display: block;
         height: 100%;
@@ -143,14 +181,10 @@ const gradientColor = computed(() => {
 
     }
 
-    @media(min-width > 60rem) {
-        .card {
-            display: flex;
-            flex-direction: column;
-            filter: brightness(110%);   
-            border-radius: 2em;
-            overflow:hidden;
-            margin: 0;
+    @media(min-width: 55rem) {
+        .background-color {
+            background-image: linear-gradient(to right, v-bind(gradientColor), v-bind(gradientColor), $light-cream 75%);
+            transition: background-position 1.7s;
         }
     }
 

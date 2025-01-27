@@ -27,7 +27,7 @@ export async function removePhotoUtil(item: Product | Plant | PlantCategory, pho
     if(!item || !photoToRemove || !item.photos) return {success: false, error: true, message: 'Unable to find photo or product'}
     const photoIndex = item.photos.findIndex((ele: PhotoItem) => ele.path === photoToRemove.path)
     item.photos.splice(photoIndex, 1)
-    if(item.id) {
+    if(('id' in item && item.id) || ('sku' in item && item.sku)) {
         try {
             const res = await deleteFile(photoToRemove)
             return res

@@ -2,7 +2,7 @@
     <div class="admin-layout">
         <OrdersList v-if="orders.length > 0" :orders :isAdmin="true" />
         <div v-else>No orders to display</div>
-        <div class="row gap-2 mt-4 justify-space-around">
+        <div class="flex row gap-4 mt-4 justify-center">
             <BaseButton @click="fetchOpenOrders">View Open Orders</BaseButton>
             <BaseButton type="info" @click="findAllOrders">View All Orders</BaseButton>
         </div>
