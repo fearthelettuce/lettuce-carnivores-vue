@@ -80,7 +80,7 @@ export type Order = {
           clone: string
           size: string
           isRepresentative: boolean
-          shelfLocation?: string
+          shelfLocation: string | null
           dateListedForSale?: Date
         }
       }

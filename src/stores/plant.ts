@@ -168,7 +168,7 @@ export const usePlantStore = defineStore('plant', () => {
                 quantity: 1,
                 photos: [],
                 plantCategoryId: plantCategory.id,
-                shelfLocation: lastPlant.shelfLocation,
+                shelfLocation: lastPlant.shelfLocation ?? '',
                 dateListedForSale: undefined
 
             })

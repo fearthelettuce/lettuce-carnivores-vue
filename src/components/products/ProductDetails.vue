@@ -203,7 +203,7 @@ async function addToCart() {
       photo: selectedPlant.value.photos[0],
       size: selectedPlant.value.size,
       isRepresentative: selectedPlant.value.isRepresentative,
-      shelfLocation: selectedPlant.value?.shelfLocation,
+      shelfLocation: selectedPlant.value.shelfLocation,
       dateListedForSale: selectedPlant.value?.dateListedForSale,
     })
 

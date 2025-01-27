@@ -126,5 +126,5 @@ export const newPlant: Plant = {
     photos: [],
     plantCategoryId: '',
     shelfLocation: '',
-    dateListedForSale: undefined
+    dateListedForSale: null
 }

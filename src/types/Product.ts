@@ -41,7 +41,7 @@ export interface Plant extends Product {
         shipping?: string | null,
         ageGroup: string | null,
         isSpecimen: boolean,
-        shelfLocation: string,
+        shelfLocation: string | null,
     }
 }
 
