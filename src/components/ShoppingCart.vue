@@ -246,7 +246,10 @@ async function getCartErrors() {
 @media (min-width: 85rem) {
   .cart-grid {
     margin: auto;
-    max-width: 120rem;
+    width: 40dvw;
+  }
+  .cart-item {
+    gap: 2rem;
   }
   .cart-item-container {
     padding: 1rem 1rem;
