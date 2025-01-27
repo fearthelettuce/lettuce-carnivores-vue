@@ -34,7 +34,7 @@
         <div class="subtotal-line">
           <h3 class="m-0">Subtotal</h3>
           <h3 class="m-0">
-            {{ USDollar.format(cartSubtotal) }}
+            {{ `${USDollar.format(cartSubtotal)} ${!freeShipping ? '+ shipping' : ''}` }}
           </h3>
         </div>
         
@@ -48,7 +48,7 @@
           <h5 class="center-message">
             <template v-if="!isColdWeatherShippingActive">
               {{
-                cartTotal - totalDiscountAmount >= discountedShippingThreshold
+                freeShipping
                 ? `Free standard shipping on orders over $${discountedShippingThreshold}!`
                 : `Add ${amountToQualifyForDiscountedShipping} to quality for free standard shipping.`
               }}
@@ -56,7 +56,7 @@
             
             <template v-else>
               {{
-                cartTotal - totalDiscountAmount >= discountedShippingThreshold
+                freeShipping
                 ? `Free winter shipping on orders over $${discountedShippingThreshold}!`
                   : `Add ${amountToQualifyForDiscountedShipping} to quality for free winter shipping.`
               }}
@@ -107,6 +107,9 @@ const amountToQualifyForDiscountedShipping = computed(() => {
   } else {
     return USDollar.format(discountedShippingThreshold - cartTotal.value + totalDiscountAmount.value)
   }
+})
+const freeShipping = computed(() => {
+  return cartTotal.value - totalDiscountAmount.value >= discountedShippingThreshold
 })
 const cartSubtotal = computed(() => {
   return cartTotal.value - totalDiscountAmount.value

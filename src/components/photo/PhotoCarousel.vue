@@ -80,7 +80,7 @@ import ArrowRight from '@/assets/icons/ArrowRight.vue';
   .embla__viewport {
     overflow: hidden;
     width: 100%;
-    box-shadow: 0px -1px 10px 3px $light-gray;
+    box-shadow: 0px -1px 10px 3px $bg-contrast;
     border-radius: 1.8rem;
   }
   .embla__container {
@@ -88,13 +88,15 @@ import ArrowRight from '@/assets/icons/ArrowRight.vue';
     align-items: flex-start;
     touch-action: pan-y pinch-zoom;
     margin-left: calc(var(--slide-spacing) * -1);
+
   }
   .embla__slide {
     transform: translate3d(0, 0, 0);
     padding-left: var(--slide-spacing);
     flex: 0 0 100%;
-    min-width: 100%;
-    height: 100dvw;
+    // min-width: 0;
+    // height: 100dvw;
+    max-height: 90dvw;
 
   }
   .display-image {
@@ -128,6 +130,7 @@ import ArrowRight from '@/assets/icons/ArrowRight.vue';
     padding-left: var(--thumbs-slide-spacing);
     opacity: 45%;
     transition: opacity 1s;
+    max-height: 10dvh;
   }
   .thumb-image {
     border-radius: .5rem;
@@ -156,14 +159,26 @@ import ArrowRight from '@/assets/icons/ArrowRight.vue';
       padding: 2rem;
     }
     .embla__slide {
-      height: 50dvh;
-      width: 50dvh;
+      max-height: 40rem;
+
     }
   }
-  @media(min-width: 50rem) {
+  @media(min-width: 60rem) {
     .embla__slide {
-      height: 70dvh;
-      width: 70dvh;
+      max-height: 40rem;
+    }
+  }
+  @media(min-width: 80rem) {
+    .embla__slide {
+      max-height: 75dvh;
+    }
+  }
+  @media(min-width: 100rem) {
+    .embla__slide {
+      max-height: 75dvh;
+    }
+    .display-image {
+      object-fit: cover;
     }
   }
 

@@ -1,5 +1,5 @@
 const standardFreeShippingThreshold = 7500
-const coldWeatherFreeShippingThreshold = 20000
+const coldWeatherFreeShippingThreshold = 15000
 
 export const isColdWeatherShippingActive = true
 export const discountedShippingThreshold = isColdWeatherShippingActive ? coldWeatherFreeShippingThreshold : standardFreeShippingThreshold

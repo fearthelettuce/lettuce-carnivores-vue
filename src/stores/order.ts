@@ -29,16 +29,19 @@ export const useOrderStore = defineStore('order', () => {
         const cartIndex = cart?.value.cartItems.findIndex(cartItem => cartItem.sku === item.sku)
         if(cart && cartIndex !== undefined) {
             const {plant} = await getCategoryBySku(item)
+            if(!plant?.isRepresentative && cartIndex !== -1) {
+                return {success: true, message: 'That item is already in your cart'}
+            }
             if(!plant|| plant.quantity === 0) {
                 return {success: false, message: 'Unable to add to cart, quantity not available'}
             }
             if(cartIndex === -1) {
                 cart.value.cartItems.push(item)
-                return {success: true}
+                return {success: true, message: 'Added to cart!'}
             }
             if (cart?.value.cartItems[cartIndex].quantity < plant.quantity) {
                 cart.value.cartItems[cartIndex].quantity ++
-                return {success: true}
+                return {success: true, message: 'Added to cart!'}
             } else {
                 return {success: false, message: 'Unable to add to cart, quantity not available'}
             }
