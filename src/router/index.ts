@@ -44,6 +44,7 @@ const routeData = [
       name: 'productDetails',
       label: 'Products Details',
       component: ProductDetailView,
+      props: (route: any) => ({ query: route.query.showHidden}),
       meta: {
         showInNav: false,
         requiresLogin: false,

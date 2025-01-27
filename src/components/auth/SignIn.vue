@@ -42,6 +42,7 @@ async function login () {
     }
     try {
         const loginSuccess = await logInUser(loginEmail.value, loginPassword.value)
+        
         if(!loginSuccess) {
             toast.error('Login unsuccessful, please try again')
             return

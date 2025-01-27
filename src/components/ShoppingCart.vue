@@ -1,7 +1,11 @@
 <template>
   <div class="cart-layout">
     <div v-if="cartErrors !== null" class="cart-errors">
-      {{ cartErrors }}
+      <Alert class="bg-stone-100 border-2 border-red-400">
+        <AlertDescription class="text-red-400">
+          {{ cartErrors }}
+        </AlertDescription>
+      </Alert>
     </div>
   <div class="" v-if="cart.cartItems.length === 0">
     <p>Cart is empty</p>
@@ -88,12 +92,14 @@ import { router } from '@/router'
 import { USDollar } from '@/utils/utils';
 import ShoppingCartItem from './ShoppingCartItem.vue'
 import { isColdWeatherShippingActive } from '@/constants/OrderConstants'
+import Alert from './ui/alert/Alert.vue'
+import AlertDescription from './ui/alert/AlertDescription.vue'
 
 const { cart, discountedItems } = storeToRefs(useOrderStore())
 const { getCategoryBySku, startCheckoutSession, validateCart, applyDiscounts } = useOrderStore()
 const { cartTotal, isLoading } = storeToRefs(useOrderStore())
 const { loginAnonymously  } = useUserStore()
-const { isLoggedIn, user, isUserLoading } = storeToRefs(useUserStore())
+const { isLoggedIn, user } = storeToRefs(useUserStore())
 
 const amountToQualifyForDiscountedShipping = computed(() => {
   if (cartTotal.value - totalDiscountAmount.value >= discountedShippingThreshold) {
@@ -124,10 +130,7 @@ async function updateDiscounts() {
 }
 
 function getDiscountedPrice(item: CartItem) {
-
   const index = discountedItems.value?.findIndex(discountedItem => discountedItem.sku === item.sku)
-    
-  console.log(index)
   if (index === -1 || index === undefined ||  discountedItems.value === null) { return undefined }
   return discountedItems.value[index]?.priceAfterDiscount ?? undefined
 }

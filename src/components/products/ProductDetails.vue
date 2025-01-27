@@ -75,15 +75,18 @@ const { isGiveawayActive } = storeToRefs(useGiveawayStore())
 
 const route = useRoute()
 const plantCategory: Ref<PlantCategory | undefined> = ref()
+const plants: Ref<Plant[]> = ref([])
+const showHidden = ref(false)
 const { addItemToCart } = useOrderStore()
-
+// const props = defineProps<{showHidden: boolean, required: false,}>()
 const { findPlantCategoryById, getAvailablePlants } = usePlantStore()
 
 onMounted(async () => {
+  if(route.query.showHidden === 'true') {showHidden.value = true} 
   await fetchData()
-  const availablePlants = getAvailablePlants(plantCategory.value)
-  setSelectedPlant(availablePlants[0])
-  if (route.params.sku !== undefined) {
+  plants.value = getAvailablePlants(plantCategory.value, showHidden.value)
+  setSelectedPlant(plants.value[0])
+  if (route.params.sku !== '') {
     const skuArr = plantCategory.value?.plants.map((plant) => plant.sku)
     if (skuArr && skuArr.includes(route.params.sku as string)) {
       setSelectedPlant(plantCategory.value?.plants.find((plant) => plant.sku === route.params.sku))
@@ -151,7 +154,7 @@ const photosToDisplay = computed(() => {
 })
 
 const referencePlants = computed(() => {
-  return getAvailablePlants(plantCategory.value)
+  return plants.value
     .filter((plant) => plant.isRepresentative)
     .sort(function (a, b) {
       const textA = a.size.toUpperCase()
@@ -161,7 +164,7 @@ const referencePlants = computed(() => {
 })
 
 const specimenPlants = computed(() => {
-  return getAvailablePlants(plantCategory.value)
+  return plants.value
     .filter((plant) => !plant.isRepresentative)
     .sort(function (a, b) {
       const textA = a.id

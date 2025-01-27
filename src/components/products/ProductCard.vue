@@ -48,10 +48,11 @@ const USDollar = new Intl.NumberFormat('en-US', {
 });
 
 const gradientColor = computed(() => {
-    const remainder = props.index % 5
+    const remainder = props.index % 6
     const plusOne = remainder + 1
     // if(props.index === 0) return '#80d80e'
-    if(plusOne % 5 === 0) return '#7758e8'
+    if(plusOne % 6 === 0) return '#20eacc'
+    if(plusOne % 5 === 0) return '#aa93fc'
     if(plusOne % 4 === 0) return '#ff6949'
     if(plusOne % 3 === 0) return '#006b90'
     if(plusOne % 2 === 0) return '#FFBF46'
@@ -80,6 +81,7 @@ const gradientColor = computed(() => {
         width: 100%;
         object-fit: cover;
         filter: brightness(110%);
+        color: #20eacc;
     }
     figure {
         margin-bottom: .5rem;
