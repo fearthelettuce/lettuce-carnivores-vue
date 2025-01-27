@@ -1,5 +1,5 @@
 <template>
-  <header class="w-full sticky z-50 top-0 py-2 bg-background">
+  <header class="w-full sticky top-0 z-50 bg-background">
     <div class="header-container">
       <Button class="hamburger-icon-container hover:bg-opacity-0" variant="ghost" @click="toggleMobileMenu">
         <HamburgerButton :isOpen />
@@ -117,11 +117,12 @@ function handleLogout() {
 <style scoped lang='scss'>
 header {
   width: 100%;
+  padding-top: .5rem;
 }
 
 .header-container {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 1fr 4fr 1fr;
   flex-direction: row;
   justify-content: space-between;
   border: 2px solid black;
@@ -135,7 +136,7 @@ header {
 
 .logo {
   font-weight: bold;
-  font-size: clamp(1.2rem, 2.5vw, 2.75rem);
+  font-size: clamp(1.5rem, 2.5vw, 2.75rem);
   font-family: 'Carter One', cursive;
   color: $cream;
 
@@ -226,9 +227,11 @@ header {
 }
 @media(min-width: 400px) {
   .header-container {
-    padding-block: .55rem;
-    padding-inline: 1.2rem;
-    grid-template-columns: 1fr 2fr 1fr;
+    padding-block: .1rem;
+    padding-inline: 1rem;
+  }
+  .logo {
+    font-size: clamp(1.75rem, 3vw, 2.75rem);
   }
 }
 
@@ -238,9 +241,7 @@ header {
     padding-inline: 2.5rem;
     grid-template-columns: 1fr 2fr 1fr;
   }
-  .logo {
-    font-size: clamp(1.75rem, 3vw, 2.75rem);
-  }
+
   .logo-text {
   text-shadow: 4px 4px 1px $medium-red;
   }

@@ -1,19 +1,15 @@
 <template>
-    <div class="my-2 ms-5">{{ `Total Inv: ${currentAvailablePlants.totalAvailable} ---
+    <div>{{ `Total Inv: ${currentAvailablePlants.totalAvailable} ---
     Heli Count : ${currentAvailablePlants.heliCount} ---
     Heli Varieties: ${currentAvailablePlants.heliVarieties}
     `}}</div>
     <div class="layout">
-
         <div>
-            <ItemSelect :options="plantCategories" v-model="plantCategoryToEdit" class="item-select" id="selectProduct"
-                label="Select a product to edit" :includeCreate="true" />
-            <div class="mt-4">
-                <Transition name="slide-up">
-                    <div v-if="isExpanded">
-                        <PlantCategoryForm />
-                    </div>
-                </Transition>
+            <ItemSelect :options="plantCategories" v-model="plantCategoryToEdit" class="item-select" id="selectProduct" />
+            <div>
+                <div v-if="isExpanded">
+                    <PlantCategoryForm />
+                </div>
                 <div>
                     <BaseButton @click="toggleExpand" type="info">
                         {{ isExpanded ? 'Hide Form' : `Edit ${plantCategoryToEdit.name !== '' ? plantCategoryToEdit.name : 'Category'}` }}
@@ -23,7 +19,7 @@
                     </BaseButton>
                 </div>
             </div>
-            <div class="mt-4">
+            <div class="">
                 <div v-for="(plant, index) in plantCategoryToEdit.plants" :key="index">
                     <template v-if="displaySoldArchived(plant)">
                         <hr style="margin-block: .4rem" />
@@ -52,12 +48,6 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="product-list">
-            <ProductCard :name="getCardName(plantCategoryToEdit)"
-                :price="getDisplayPrice(plantCategoryToEdit, getAvailablePlants(plantCategoryToEdit))"
-                :link="`/plants/${encodeURIComponent(plantCategoryToEdit.id !== '' ? plantCategoryToEdit.id : 0)}`"
-                :photoUrl="getCardPhoto(plantCategoryToEdit)" class="product-card" />
-        </div> -->
     </div>
 
     <PhotoUploadModal v-if="plantCategoryToEdit !== undefined" :photos="photoModalArr" :storageFolder="photoModalFolder"
@@ -208,7 +198,7 @@ provide('managePhotos', managePhotos)
 }
 
 .item-select {
-    max-width: 95dvw;
+    width: 90%;
 }
 
 .product-card {

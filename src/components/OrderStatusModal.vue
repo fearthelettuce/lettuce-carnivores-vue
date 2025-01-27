@@ -1,9 +1,9 @@
 <template>
-    <BaseDialog :open="open" class="bg-dark border-0 rounded p-0">
+    <BaseDialog :open="open" class="border-0 rounded p-0">
         <div class="order-modal p-3">
-            <header class="mb-2 border-0">
+            <header class="">
                 <h4 class="modal-title">Order {{ order.id }}</h4>
-                <button type="button" class="" aria-label="Close" @click="toggleModal"></button>
+                <BaseButton type="close" class="close-button" aria-label="Close" @click="toggleModal" />
             </header>
             <div class="modal-container">
                 <div class="shipping-address">
@@ -15,13 +15,28 @@
                         {{ `${order.shippingInfo.address.city} ${order.shippingInfo.address.state} ${order.shippingInfo.address.postal_code}` }}
                     </div>
                 </div>
-                <FormKit type="form" id="order-status" submit-label="Save" @submit="saveOrder" class="tracking-form">
+                <form class="status-form" @submit.prevent>
+                    <div>
+                        <Label for="status">Status</Label>
+                        <Input type="text" id="status" label="Name" outer-class="grid-col-2" v-model="order.orderStatus.status" />
+                    </div>
+                    <div>
+                        <Label for="tracking">Tracking</Label>
+                        <Input type="text" id="tracking" label="Tracking Number" outer-class="grid-col-2" v-model="order.orderStatus.trackingNumber" />
+                    </div>
+                    <div>
+                        <Label for="carrier">Carrier</Label>
+                        <Input type="text" id="carrier" outer-class="grid-col-2" v-model="order.orderStatus.carrier" />
+                    </div>
+                    <BaseButton @click="saveOrder">Save</BaseButton>
+                </form>
+                <!-- <FormKit type="form" id="order-status" submit-label="Save" @submit="saveOrder" class="tracking-form">
                     <FormKit type="text" label="Name" outer-class="grid-col-2" v-model="order.orderStatus.status" />
                     <FormKit type="text" label="Tracking Number" outer-class="grid-col-2"
                         v-model="order.orderStatus.trackingNumber" />
                     <FormKit type="text" label="Carrier" outer-class="grid-col-2" v-model="order.orderStatus.carrier" />
 
-                </FormKit>
+                </FormKit> -->
 
             </div>
         </div>
@@ -34,6 +49,7 @@ import BaseDialog from '@/components/ui/BaseDialog.vue';
 import type { Order } from '@/types/Orders'
 import { saveItem } from '@/apis/dataServices'
 import { toast } from 'vue3-toastify';
+import Input from '@/components/ui/input/Input.vue';
 const props = defineProps<{ order: Order }>()
 
 const isSaving = ref(false)
@@ -62,7 +78,8 @@ function toggleModal() {
 }
 </script>
 
-<style>
+<style scoped>
+
 .modal-container {
     display: flex;
     gap: 2rem;
@@ -72,7 +89,22 @@ function toggleModal() {
     min-width: 16rem;
     max-width: 90dvw;
     overflow: none;
-
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    margin-block: 1rem;
+    box-sizing: border-box;
+}
+.close-button {
+    top: 2px;
+    right: 24px;
+}
+.status-form > div {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    margin-block: .5rem;
+    align-items: center;
 }
 
 .shipping-address {
@@ -88,12 +120,7 @@ function toggleModal() {
     margin-top: 0 !important;
 }
 
-header {
-    display: flex;
-    justify-content: space-between;
-    margin: 0 1.5rem 0;
-    box-sizing: border-box;
-}
+
 </style>
 
 <!-- TODO: Bootstrap replace close button -->

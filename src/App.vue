@@ -13,33 +13,33 @@ import TheHeader from './components/header/TheHeader.vue';
 </script>
 
 <style lang="scss">
-@use '@/assets/scss/main.scss';
-html {
-  // background: $light-bg !important;
-}
-a {
-    text-decoration: none;
-}
-
-li {
-  list-style: none;
-}
-main {
-  display: flex;
-  justify-content: center;
-  margin-block: 1rem;
-  margin-inline: 2dvw;
-  
-}
-.page-container {
-  margin: auto;
-  width: 96dvw;
-}
-
-@media(min-width: 425px) {
-  .page-container  {
-    width: 90dvw;
+  @use '@/assets/scss/main.scss';
+  a {
+      text-decoration: none;
   }
-}
+
+  li {
+    list-style: none;
+  }
+
+  main {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+    padding-inline: 2dvw;
+    width: 100%;
+  }
+
+  .page-container {
+    margin: auto;
+    width: 96dvw;
+  }
+
+  @media(min-width: 425px) {
+    .page-container  {
+      width: 90dvw;
+    }
+  }
 
 </style>

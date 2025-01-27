@@ -5,15 +5,17 @@
             <img :src="cardImageUrl" :class="cardImageUrl == placeholderUrl ? 'placeholderImage': 'cardImage'" :alt="`An image of ${name}`" />
         </router-link>
         </figure>
-        <header class="card-title">
-            <h5 class="card-name" @click="$router.push(link)">{{ name }}</h5>
-        </header>
-        <footer class="card-footer">
-            <div class="price">
-                {{ formattedPrice }}
-            </div>
-            <BaseButton type="primary" size="normal" @click="$router.push(link)">View Details</BaseButton>
-        </footer>
+        <div class="card-details">
+            <header class="card-title">
+                <h5 class="card-name" @click="$router.push(link)">{{ name }}</h5>
+            </header>
+            <footer class="card-footer">
+                <div class="price">
+                    {{ formattedPrice }}
+                </div>
+                <BaseButton type="primary" size="normal" @click="$router.push(link)">View Details</BaseButton>
+            </footer>
+        </div>
         
     </article>
 </template>
@@ -67,12 +69,14 @@ const gradientColor = computed(() => {
         flex-direction: column;
         border-radius: 2em;
         overflow:hidden;
-        margin: 1rem;
         max-width: 45rem;
         justify-content: space-between;
         // background: linear-gradient(0.23turn, v-bind(gradientColor), $light-cream, $light-cream, $light-cream, v-bind(gradientColor));
-        background: radial-gradient($light-cream 45%, v-bind(gradientColor));
+        // background: radial-gradient(ellipse farthest-side at center, $cream, v-bind(gradientColor));
         box-shadow: 0px -1px 8px 2px $bg-contrast;
+    }
+    .card-details {
+        background: linear-gradient(.3turn, $light-cream, v-bind(gradientColor));
     }
 
     img {
@@ -82,9 +86,6 @@ const gradientColor = computed(() => {
         object-fit: cover;
         filter: brightness(110%);
         color: #20eacc;
-    }
-    figure {
-        margin-bottom: .5rem;
     }
     h5 {
         font-size: 1.2rem;
@@ -115,6 +116,7 @@ const gradientColor = computed(() => {
         justify-content: center;
         align-items: center;
         margin: .5rem .2rem;
+        cursor: pointer;
     }
 
     .card-name {
@@ -128,6 +130,7 @@ const gradientColor = computed(() => {
     .price {
         display: flex;
         align-items: center;
+        font-size: 1.2rem;
     }
     .card-footer {
         display: flex;

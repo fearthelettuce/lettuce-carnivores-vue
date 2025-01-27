@@ -53,6 +53,8 @@
             type="textarea"
             label="Description"
             outer-class="description"
+            rows="2"
+            style="height: auto; width: 90%; border-radius: .75rem;"
             v-model="plantCategoryToEdit.description"
         />
     </form>
@@ -140,6 +142,9 @@ function addPhotos() {
     .description {
         grid-column: span 3;
     }
+    .full-width {
+        width: 100%;
+    }
 
     @media(min-width: 45rem) {
         .plant-admin-form {
@@ -148,16 +153,11 @@ function addPhotos() {
         .form-actions {
             flex-wrap: nowrap;
         }
-        .description {
-        grid-column: span 4;
-    }
+
     }
     @media(min-width: 120rem) {
         .plant-admin-form {
             grid-template-columns: repeat(10, 1fr);
         }
-        .description {
-        grid-column: span 6;
-    }
     }
 </style>

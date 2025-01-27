@@ -33,16 +33,11 @@ onMounted(async () => {
 <style scoped>
     .product-list {
         display: grid;
-        gap: .5rem;
+        gap: 2rem;
         grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
         width: 100%;
         margin-bottom: 3rem;
     }
 
-    @media(min-width: 82rem) {
-        .product-list {
-            grid-template-columns: repeat(auto-fit, minmax(26rem, 1fr));
-            gap: 1rem;
-        }
-    }
+
 </style>

@@ -11,7 +11,7 @@
 import PlantAdmin from '@/components/products/PlantAdmin.vue';
 </script>
 
-<style>
+<style scoped>
     @media(min-width: 62rem) {
         .plant-admin {
             margin: 0 2rem;

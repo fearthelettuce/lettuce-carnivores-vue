@@ -1,5 +1,5 @@
 <template>
-    <div class="flex justify-center column">
+    <div class="admin-panel-layout">
         <div class="button-container">
             <BaseButton v-for="component in adminComponents" :key="component.label"
                 @click="setSelectedComponent(component)">{{ component.label }}</BaseButton>
@@ -49,6 +49,12 @@ function setSelectedComponent(adminComponent: { label: string, component: Compon
 </script>
 
 <style scoped>
+.admin-panel-layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 .button-container {
     display: flex;
     flex-direction: column;
