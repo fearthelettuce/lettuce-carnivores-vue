@@ -112,9 +112,9 @@ const gradientColor = computed(() => {
     }
     .background-color {
         background: inherit;
-        background-image: linear-gradient(to right, v-bind(gradientColor), $light-cream 50%);
-        transition: background-position 1.7s;
-        background-size: 200% 100%;
+        background-image: linear-gradient(to right, v-bind(gradientColor), $light-cream);
+        transition: background-position 2.5s;
+        background-size: 300% 100%;
         background-position: 100% 0;
     }
     img {
@@ -181,11 +181,15 @@ const gradientColor = computed(() => {
 
     }
 
-    @media(min-width: 55rem) {
+    @media(min-width: 35rem) {
         .background-color {
             background-image: linear-gradient(to right, v-bind(gradientColor), v-bind(gradientColor), $light-cream 75%);
-            transition: background-position 1.7s;
+            transition: background-position 1.3s;
         }
     }
-
+    @media(prefers-reduced-motion) {
+        .background-color {
+            transition: none;
+        }
+    }
 </style>
