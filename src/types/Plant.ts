@@ -26,7 +26,7 @@ export type Plant = {
     photos: PhotoItem[],
     plantCategoryId: string,
     shelfLocation?: string,
-    dateListedForSale?: Date | undefined,
+    dateListedForSale?: Date | undefined | null
 }
 export interface PlantWithCategoryDetails extends Plant {
     name: string,

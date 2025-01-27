@@ -93,7 +93,7 @@ export function usePhotoManager() {
   }
 
   function reloadImages() {
-    const imageDomElements = document.querySelectorAll('.imagePreview') as unknown as HTMLImageElement[]
+    const imageDomElements = document.querySelectorAll('.image-preview') as unknown as HTMLImageElement[]
     imageDomElements.forEach((ele) => {
       const currentSource = ele.src
       ele.src = ''

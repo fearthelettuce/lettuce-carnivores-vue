@@ -26,17 +26,6 @@
       </DragUpload>
       <footer class="bg-dark">
         <div class="">
-          <!-- <label for="formFile" class="" :disabled="isSaving"> Select Files </label>
-          <input
-            ref="fileSelectElement"
-            class="form-control"
-            type="file"
-            id="formFile"
-            @change="onFilesSelected($event)"
-            accept="capture=camera,image/*"
-            multiple
-            :disabled="isSaving"
-          /> -->
           <div v-if="selectedFiles.length !== 0" class="d-inline-block mx-3 text-light">{{ selectedFiles.length }} files
             selected</div>
         </div>
@@ -127,10 +116,6 @@ footer {
   box-sizing: border-box;
 }
 
-.imagePreview {
-  height: 16em;
-}
-
 .hide {
   display: none;
 }
@@ -157,7 +142,7 @@ footer {
   display: grid;
   grid-template-columns: 1fr 4fr 4fr 1fr;
   gap: 1rem 0;
-  height: 75dvh;
+  height: 65dvh;
   overflow-y: auto;
   min-height: 20rem;
 }
@@ -169,6 +154,7 @@ footer {
   height: 10rem;
   border: 2px solid lightgray;
   border-radius: 0.5rem;
+  cursor: pointer;
 }
 
 .highlight {

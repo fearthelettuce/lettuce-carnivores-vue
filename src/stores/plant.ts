@@ -33,8 +33,14 @@ export const usePlantStore = defineStore('plant', () => {
         isSaving.value = true
         setDateListed(plantCategory)
         try {
-            await saveItem(collectionName, plantCategory)
-            toast.success('Saved')
+            const res = await saveItem(collectionName, plantCategory)
+            if(res?.success) {
+                toast.success('Saved')
+            } else {
+                console.log(res?.errorDetails)
+                console.log(plantCategory)
+                toast.error((res as any).errorDetails.message)
+            }
         } catch(e: any) {
             throw new Error(e.toString())
         } finally {
@@ -47,8 +53,10 @@ export const usePlantStore = defineStore('plant', () => {
     function setDateListed(plantCategory: PlantCategory) {
         const now = new Date()
         plantCategory.plants.forEach(plant => {
-            if(plant.status === 'In Stock' && plant.dateListedForSale === undefined) {
+            if(plant.status === 'In Stock' && !plant.dateListedForSale) {
                 plant.dateListedForSale = now
+            } else {
+                plant.dateListedForSale = null
             }
         })
     }

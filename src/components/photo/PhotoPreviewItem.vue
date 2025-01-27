@@ -16,7 +16,7 @@
   </div>
 
   <div class="flex-column-center">
-    <img class="imagePreview" :src="photoSrc(photo, 256)" />
+    <img class="image-preview" :src="photoSrc(photo, 256)" />
   </div>
   <div class="flex-column-center">
     <div @click="$emit('remove-photo', index)">
@@ -68,5 +68,10 @@ function photoSrc(photo: PhotoItem | SelectedFile, size: AllowedSizes = 256) {
 }
 .arrow-button {
   min-width: 1rem;
+}
+.image-preview {
+  height: 20dvh;
+  width: 100%;
+  object-fit: cover;
 }
 </style>
