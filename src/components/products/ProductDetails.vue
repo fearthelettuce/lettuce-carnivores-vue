@@ -208,7 +208,7 @@ async function addToCart() {
     })
 
     if (res && res.success === true) {
-      toast.success('Added to cart!')
+      toast.success(res.message)
     } else {
       if (res && res.message) {
         toast.error(res.message)
@@ -266,6 +266,7 @@ h2 {
 .photo-section {
   display: flex;
   flex-direction: column;
+  width: 90dvw;
 }
 .product-information {
   display: flex;
@@ -309,27 +310,41 @@ footer {
     flex-basis: auto;
   }
 }
-
+@media (min-width: 50rem) {
+  .photo-section {
+    width: 40rem;
+  }
+}
 @media (min-width: 60rem) {
   .product-detail-section {
     flex-direction: row;
   }
   .product-information {
-    max-width: 20rem;
+    max-width: 25dvw;
     margin-left: 2rem;
   }
   .photo-section {
-    width: 80dvh;
+    width: 40rem;
   }
   .specimen-button {
     flex: 1 1 auto;
   }
 }
 
-@media (min-width: 60rem) {
+@media(min-width: 80rem) {
+  .photo-section {
+    width: 75dvh;
+  }
   .product-information {
     max-width: 35rem;
     margin-left: 2rem;
   }
 }
+
+@media (min-width: 100rem) {
+  .photo-section {
+    width: 75dvh;
+  }
+}
+
 </style>

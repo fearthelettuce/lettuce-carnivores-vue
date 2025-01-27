@@ -118,6 +118,7 @@ function handleLogout() {
 header {
   width: 100%;
   padding-top: .5rem;
+  min-height: 4rem;
 }
 
 .header-container {

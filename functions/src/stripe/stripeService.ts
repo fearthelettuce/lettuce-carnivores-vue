@@ -8,7 +8,6 @@ export async function handleDiscounts(cart: CartItem[]) {
   const cartItemWithId = cart.map((item) => ({ ...item, id: item.sku }))
   const activeDiscounts = await getActiveDiscounts()
   return await applyItemDiscounts(cartItemWithId, activeDiscounts)
-
 }
 
 
@@ -37,7 +36,9 @@ export async function applyItemDiscounts(cart: DiscountableItem[], discounts: Di
           const index = cart.findIndex(item => item.sku === discountedItem.sku)
           if (cart[index].quantity === 1) {
             const price = cart[index].price ?? 0
-            cart[index].price = price * (100 - discount.percent_off)
+            const discountedPrice = price * (100 - discount.percent_off)
+            cart[index].price = discountedPrice
+            totalCartDiscountedAmount += price - discountedPrice
           } else {
             const newCartItem = { ...cart[index] }
             newCartItem.quantity = 1

@@ -26,7 +26,7 @@ import TheHeader from './components/header/TheHeader.vue';
     display: flex;
     justify-content: center;
     margin-top: 1.5rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     padding-inline: 2dvw;
     width: 100%;
   }
