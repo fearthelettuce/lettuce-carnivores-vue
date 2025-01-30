@@ -90,7 +90,8 @@ export const useOrderStore = defineStore('order', () => {
         isLoading.value = true
         try{
             const session = await createStripeCheckoutSession(cart.value.cartItems)
-            return {success: true, error: false, message: `Success`, data: session.data.data}
+            //@ts-ignore
+            return {success: true, error: false, message: `Success`, data: session.data}
         } catch (e: any) {
             console.error(e)
             return {success: false, error: true, message: `Unable to create checkout session`}

@@ -144,7 +144,7 @@ async function checkout() {
     toast.error('Some items are no longer available, please review cart and try again')
     return
   }
-  if (!user || user === null) {
+  if (!user.value || user.value === null) {
     await loginAnonymously()
   }
   if (cart.value.cartItems.length > 0) {
