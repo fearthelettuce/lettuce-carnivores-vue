@@ -116,7 +116,7 @@ async function buildCheckoutSession(
     line_items: lineItems,
   }
   if (stripeCustomer && stripeCustomer.stripeId !== '') {
-    ;(session.customer = stripeCustomer.stripeId),
+    (session.customer = stripeCustomer.stripeId),
       (session.customer_update = {
         shipping: 'auto',
         address: 'auto',

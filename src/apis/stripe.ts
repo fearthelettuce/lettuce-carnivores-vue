@@ -5,6 +5,7 @@ import { connectFunctionsEmulator, getFunctions, httpsCallable } from 'firebase/
 import { type CartItem } from '@/types/Orders';
 import { findDocById } from './dataServices'
 import { useUserStore } from '@/stores/users'
+import { executeFunction } from '@/utils/useFirebaseFunctions';
 
 export async function getActiveProducts() {
     const q = query(collection(db, 'products'),
@@ -32,19 +33,31 @@ export async function createStripeCheckoutSession(cart: CartItem[]){
     if(user && user.uid) {
         stripeCustomer = await findDocById('customers', user.uid)
     }
-    const functions = getFunctions()
-    //connectFunctionsEmulator(functions,'127.0.0.1', 5001)
-    const createCheckoutSession: Function = httpsCallable(functions, 'stripeCheckoutController')
-    const res = await createCheckoutSession({
-        cart: cart,
-        returnUrl: `${window.location.origin}/checkoutComplete`,
-        cancelUrl:`${window.location.origin}/cart`,
-        stripeCustomer: stripeCustomer,
-    }).catch((e: any) => {console.error(e); return {
+    const res = await executeFunction(
+        'stripeCheckoutController', {
+            cart: cart,
+            returnUrl: `${window.location.origin}/checkoutComplete`,
+            cancelUrl:`${window.location.origin}/cart`,
+            stripeCustomer: stripeCustomer,
+        }).catch((e: any) => {console.error(e); return {
         success: false,
         error: true,
         errorDetails: e,
         message: 'Error when trying to create Stripe checkout session'}
     })
+    // const functions = getFunctions()
+    // //connectFunctionsEmulator(functions,'127.0.0.1', 5001)
+    // const createCheckoutSession: Function = httpsCallable(functions, 'stripeCheckoutController')
+    // const res = await createCheckoutSession({
+    //     cart: cart,
+    //     returnUrl: `${window.location.origin}/checkoutComplete`,
+    //     cancelUrl:`${window.location.origin}/cart`,
+    //     stripeCustomer: stripeCustomer,
+    // }).catch((e: any) => {console.error(e); return {
+    //     success: false,
+    //     error: true,
+    //     errorDetails: e,
+    //     message: 'Error when trying to create Stripe checkout session'}
+    // })
     return res
 }

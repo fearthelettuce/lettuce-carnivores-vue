@@ -2,9 +2,7 @@
     <form @submit.prevent v-if="!hasEmailBeenSent">
         <h4 class="">Enter your email</h4>
         <p>If the email matches a registered account, you will receive an email in a minute or two.</p>
-        
             <Input type="email" class="form-input" placeholder="email" id="loginEmail" v-model="loginEmail" />
-        
         <div class="my-4">
             <BaseButton @click.prevent="resetPassword">Reset Password</BaseButton>
         </div>
@@ -25,6 +23,7 @@ const loginEmail = ref("")
 const hasEmailBeenSent = ref(false)
 
 async function resetPassword () {
+    debugger
     const res = await userStore.requestPasswordReset(loginEmail.value)
     if(res && res.success) {
         hasEmailBeenSent.value = true
