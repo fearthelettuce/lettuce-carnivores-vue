@@ -1,7 +1,7 @@
 import admin from 'firebase-admin'
 import axios from 'axios'
 import type {  FunctionResponse } from '../types/Functions'
-import type { EbayEnvironment, EbayAccessTokenFunctionResponse, EbayAccessTokenResponse, UserAccessTokenResponse, AccessTokenDBResponse, EbayItemNotification } from '../types/Ebay'
+import type { EbayEnvironment, EbayAccessTokenFunctionResponse, EbayAccessTokenResponse, UserAccessTokenResponse, AccessTokenDBResponse, EbayItemNotification, EbayGetItemResponse, EbayItem } from '../types/Ebay'
 import { authUrl, sandboxAuthUrl, apiUrl, sandboxApiUrl, RuNameProd, RuNameSandbox, prodScopes, sandboxScopes} from './ebayConstants'
 import { getUpdateDateTime } from '../common'
 import { debug, error } from 'firebase-functions/logger'
@@ -186,6 +186,22 @@ export function getSkuFromEbayResponse(data: EbayItemNotification) {
         debug(data.Body)
     }
     return sku
+}
+
+export function getFieldFromEbayItemResponse(data: EbayItemNotification, fieldName: keyof EbayItem) {
+    let field: string | undefined
+    try {
+        if('GetItemResponse' in data.Body && data.Body.GetItemResponse && fieldName in data.Body.GetItemResponse.Item) {
+            field = data.Body.GetItemResponse.Item[fieldName].toString()
+        }
+        if('GetItemTransactionsResponse' in data.Body && data.Body.GetItemTransactionsResponse && fieldName in data.Body.GetItemTransactionsResponse.Item) {
+            field = data.Body.GetItemTransactionsResponse.Item[fieldName].toString()
+        }
+    } catch(e) {
+        error(`Unable to get field ${fieldName} from getFieldFromEbayItemResponse`)
+        debug(data.Body)
+    }
+    return field
 }
 
 export function getEventTypeFromEbayResponse(data: EbayItemNotification) {
