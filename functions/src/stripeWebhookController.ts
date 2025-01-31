@@ -103,7 +103,8 @@ async function fulfillCheckout(data: Stripe.Checkout.Session) {
     .catch((e: any) => {
       log(e)
     })
-  await updateInventoryFromStripeSale(lineItems)
+  const soldNote = `Order ${orderNumber.toString()} -  Stripe ID ${data.id}`
+  await updateInventoryFromStripeSale(lineItems, soldNote)
   return true
 }
 

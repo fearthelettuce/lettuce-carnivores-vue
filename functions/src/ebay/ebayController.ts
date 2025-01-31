@@ -16,6 +16,7 @@ import {
   updateUserAccessToken,
   getSkuFromEbayResponse,
   getEventTypeFromEbayResponse,
+  getFieldFromEbayItemResponse,
 } from './ebayService'
 import { getInventoryItems, createOrReplaceInventoryItem, postEbayOffer, publishOffer } from './ebayData'
 import { parseXmlResponse, unwrapResponse } from '../common'
@@ -151,7 +152,9 @@ export const ebayNotificationController = onRequest(async (req, res): Promise<an
     await admin.firestore().collection('ebayRequests').doc(`${formattedDate} - ${eventType}`).set(parsedRequest.Body)
     if (sku && (eventType === 'ItemSold' || eventType === 'FixedPriceTransaction')) {
       info(`Updating inventory for SKU ${sku} for eBay sale`)
-      await updateInventoryFromEbaySale(sku.toString(), false)
+      const itemId = getFieldFromEbayItemResponse(parsedRequest, 'ItemId')
+      const soldNote = `Ebay Sale Item ID ${itemId?.toString()}`
+      await updateInventoryFromEbaySale(sku.toString(), soldNote, false)
     }
   } catch (e) {
     error(`Error handling notification`)

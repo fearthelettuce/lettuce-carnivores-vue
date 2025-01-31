@@ -1,21 +1,21 @@
 import admin from 'firebase-admin'
 import { deleteEbayInventoryItem } from '../ebay/ebayData'
 import type { Plant } from '../types/Plants'
-import { getCategoryBySku } from '../common'
+import { getCategoryBySku, getUpdateDateTime } from '../common'
 import { StripeLineItem } from '../types/Stripe'
 import { debug, error } from 'firebase-functions/logger'
 
-export async function updateInventoryFromStripeSale(items: StripeLineItem[]) {
+export async function updateInventoryFromStripeSale(items: StripeLineItem[], soldNote: string) {
   for (const item of items) {
     debug(`Updating inventory for ${item.price_data.product_data.metadata.sku}`)
     const productData = item.price_data.product_data.metadata
     await updateEbayInventory(productData.sku, true)
-    await updateWebsiteInventory(productData.sku, productData.categoryId, item.quantity)
+    await updateWebsiteInventory(productData.sku, soldNote, productData.categoryId, item.quantity)
   }
   return
 }
 
-export async function updateInventoryFromEbaySale(sku: string, deleteFromEbay: boolean = true) {
+export async function updateInventoryFromEbaySale(sku: string, soldNote: string, deleteFromEbay: boolean = true) {
   const skus: string[] = []
   if (sku.includes(',')) {
     skus.concat(sku.split(','))
@@ -27,7 +27,7 @@ export async function updateInventoryFromEbaySale(sku: string, deleteFromEbay: b
     const data = (await docRef.get()).data()
     const plantCategory = data?.plantCategory ?? undefined
     await updateEbayInventory(sku, deleteFromEbay)
-    await updateWebsiteInventory(sku, plantCategory)
+    await updateWebsiteInventory(sku, soldNote, plantCategory)
   }
   return
 }
@@ -53,12 +53,13 @@ export async function updateEbayInventory(sku: string, deleteFromEbay: boolean) 
   return true
 }
 
-async function updateWebsiteInventory(sku: string, plantCategoryId?: string, quantity: number = 1) {
+async function updateWebsiteInventory(sku: string, soldNote: string, plantCategoryId?: string, quantity: number = 1) {
   debug(`Updating website inventory for sku: ${sku} category ${plantCategoryId} quantity ${quantity}`)
   const categoryId = plantCategoryId ?? (await getCategoryBySku(sku))
   const docRef = admin.firestore().doc(`plantCategories/${categoryId}`)
   const doc = await docRef.get()
   const plantCategory = doc?.data()
+  const { updatedDateTime } = getUpdateDateTime()
   if (!plantCategory) {
     error(`Unable to get plantCategory data when updating website inventory for SKU ${sku} category ${plantCategoryId}`)
     return false
@@ -68,6 +69,11 @@ async function updateWebsiteInventory(sku: string, plantCategoryId?: string, qua
   if (plant.quantity === 1 || quantity > plant.quantity) {
     plantCategory.plants[plantIndex].status = 'Sold'
     plantCategory.plants[plantIndex].quantity = 0
+    const priorSoldNotes = plantCategory.plants[plantIndex].soldNotes ?? ''
+    const newNotes = `${updatedDateTime} - ${soldNote}`
+    priorSoldNotes === '' ? plantCategory.plants[plantIndex].soldNotes = newNotes : 
+    plantCategory.plants[plantIndex].soldNotes = `${priorSoldNotes} ---------- ${newNotes} ` 
+    plantCategory.plants[plantIndex].soldTimestamp = updatedDateTime
   } else {
     plantCategory.plants[plantIndex].quantity = plant.quantity - quantity
   }

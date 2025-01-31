@@ -102,10 +102,15 @@ export type EbayGetItemResponse = {
 
 }
 
-type EbayItem = {
+export type EbayItem = {
     SKU: number,
     Quantity: number,
     Title: string,
+    ItemId: number,
+    ListingDetails: {
+        EndTime: string,
+        StartTime: string,
+    }
     StartPrice: {
         $: {
             currencyID: 'USD',
