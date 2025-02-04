@@ -9,6 +9,7 @@
       <FormKit type="text" label="Ebay SKU" outer-class="grid-col-2" v-model="ebaySkuInput" />
     </div>
   </BaseContainer>
+  <InventoryGrid />
 </template>
 
 <script setup lang="ts">
@@ -17,6 +18,7 @@ import { getEbayAccessToken, getUserConsent } from '@/composables/useEbayUtils'
 import { toast } from 'vue3-toastify'
 import { useInventoryStore } from '@/stores/inventory'
 import { storeToRefs } from 'pinia'
+import InventoryGrid from './InventoryGrid.vue'
 
 let environment = 'PRODUCTION'
 const { ebayTokenData } = storeToRefs(useInventoryStore())

@@ -26,9 +26,12 @@ importers:
       '@vueuse/core':
         specifier: ^11.3.0
         version: 11.3.0(vue@3.5.13(typescript@5.7.3))
-      ag-grid-vue:
-        specifier: ^31.3.4
-        version: 31.3.4(vue-property-decorator@9.1.2(vue-class-component@7.2.6(vue@3.5.13(typescript@5.7.3)))(vue@3.5.13(typescript@5.7.3)))(vue@3.5.13(typescript@5.7.3))
+      ag-grid-community:
+        specifier: ^33.0.4
+        version: 33.0.4
+      ag-grid-vue3:
+        specifier: ^33.0.4
+        version: 33.0.4(vue@3.5.13(typescript@5.7.3))
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.49)
@@ -1388,14 +1391,16 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
-  ag-grid-community@31.3.4:
-    resolution: {integrity: sha512-jOxQO86C6eLnk1GdP24HB6aqaouFzMWizgfUwNY5MnetiWzz9ZaAmOGSnW/XBvdjXvC5Fpk3gSbvVKKQ7h9kBw==}
+  ag-charts-types@11.0.4:
+    resolution: {integrity: sha512-K/Mi7FXvSCoABLSrqQ70k1QrIL5R6RNCt2NAppOxMEir+DVFPqKZtghruobc2MGVUUKkT9MCn6Dun+fL6yZjfA==}
 
-  ag-grid-vue@31.3.4:
-    resolution: {integrity: sha512-fB+PqaYuyyis1DzGnIeCPZvlc19NfIwA+C/9kmLzVCwUW6Iovp0MT5J5sD3S+kEVKsztWzgVyKQ7DxhMsEGPtg==}
+  ag-grid-community@33.0.4:
+    resolution: {integrity: sha512-iBD8g8bNIl95w9CzCQpDid+eTdmOoT39204sPUOhE9eE50vfoDHIaF5U4fRYQHbLsT4bwbXfQYdsqBAOLJL24w==}
+
+  ag-grid-vue3@33.0.4:
+    resolution: {integrity: sha512-aqAd+xGMbi/nnWGhaclKBjHa1NbIpIqVdAUE+hHyGHGD2a6KK3zftPL2TokrBkWCEhKbseHz1blVNT1q67O3nQ==}
     peerDependencies:
-      vue: '>= 2.2 <= 2.5.17 || >= 2.5.20'
-      vue-property-decorator: ^7.2.0 || ^8.0.0 || ^9.1.2
+      vue: ^3.5.0
 
   agent-base@6.0.2:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
@@ -3499,11 +3504,6 @@ packages:
   vscode-uri@3.0.8:
     resolution: {integrity: sha512-AyFQ0EVmsOZOlAnxoFOGOq1SQDWAB7C6aqMGS23svWAllfOaxbuFvcT8D1i8z3Gyn8fraVeZNNmN6e9bxxXkKw==}
 
-  vue-class-component@7.2.6:
-    resolution: {integrity: sha512-+eaQXVrAm/LldalI272PpDe3+i4mPis0ORiMYxF6Ae4hyuCh15W8Idet7wPUEs4N4YptgFHGys4UrgNQOMyO6w==}
-    peerDependencies:
-      vue: ^2.0.0
-
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
     engines: {node: '>=12'}
@@ -3520,12 +3520,6 @@ packages:
     engines: {node: ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: '>=6.0.0'
-
-  vue-property-decorator@9.1.2:
-    resolution: {integrity: sha512-xYA8MkZynPBGd/w5QFJ2d/NM0z/YeegMqYTphy7NJQXbZcuU6FC6AOdUAcy4SXP+YnkerC6AfH+ldg7PDk9ESQ==}
-    peerDependencies:
-      vue: '*'
-      vue-class-component: '*'
 
   vue-router@4.5.0:
     resolution: {integrity: sha512-HDuk+PuH5monfNuY+ct49mNmkCRK4xJAV9Ts4z9UFc4rzdDnxQLyCMGGc8pKhZhHTVzfanpNwB/lwqevcBwI4w==}
@@ -5087,13 +5081,16 @@ snapshots:
 
   acorn@8.14.0: {}
 
-  ag-grid-community@31.3.4: {}
+  ag-charts-types@11.0.4: {}
 
-  ag-grid-vue@31.3.4(vue-property-decorator@9.1.2(vue-class-component@7.2.6(vue@3.5.13(typescript@5.7.3)))(vue@3.5.13(typescript@5.7.3)))(vue@3.5.13(typescript@5.7.3)):
+  ag-grid-community@33.0.4:
     dependencies:
-      ag-grid-community: 31.3.4
+      ag-charts-types: 11.0.4
+
+  ag-grid-vue3@33.0.4(vue@3.5.13(typescript@5.7.3)):
+    dependencies:
+      ag-grid-community: 33.0.4
       vue: 3.5.13(typescript@5.7.3)
-      vue-property-decorator: 9.1.2(vue-class-component@7.2.6(vue@3.5.13(typescript@5.7.3)))(vue@3.5.13(typescript@5.7.3))
 
   agent-base@6.0.2:
     dependencies:
@@ -7464,10 +7461,6 @@ snapshots:
 
   vscode-uri@3.0.8: {}
 
-  vue-class-component@7.2.6(vue@3.5.13(typescript@5.7.3)):
-    dependencies:
-      vue: 3.5.13(typescript@5.7.3)
-
   vue-demi@0.14.10(vue@3.5.13(typescript@5.7.3)):
     dependencies:
       vue: 3.5.13(typescript@5.7.3)
@@ -7484,11 +7477,6 @@ snapshots:
       semver: 7.6.3
     transitivePeerDependencies:
       - supports-color
-
-  vue-property-decorator@9.1.2(vue-class-component@7.2.6(vue@3.5.13(typescript@5.7.3)))(vue@3.5.13(typescript@5.7.3)):
-    dependencies:
-      vue: 3.5.13(typescript@5.7.3)
-      vue-class-component: 7.2.6(vue@3.5.13(typescript@5.7.3))
 
   vue-router@4.5.0(vue@3.5.13(typescript@5.7.3)):
     dependencies:
