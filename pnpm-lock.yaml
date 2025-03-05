@@ -27,11 +27,11 @@ importers:
         specifier: ^11.3.0
         version: 11.3.0(vue@3.5.13(typescript@5.7.3))
       ag-grid-community:
-        specifier: ^33.0.4
-        version: 33.0.4
+        specifier: ^33.1.1
+        version: 33.1.1
       ag-grid-vue3:
-        specifier: ^33.0.4
-        version: 33.0.4(vue@3.5.13(typescript@5.7.3))
+        specifier: ^33.1.1
+        version: 33.1.1(vue@3.5.13(typescript@5.7.3))
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.49)
@@ -1391,14 +1391,14 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
-  ag-charts-types@11.0.4:
-    resolution: {integrity: sha512-K/Mi7FXvSCoABLSrqQ70k1QrIL5R6RNCt2NAppOxMEir+DVFPqKZtghruobc2MGVUUKkT9MCn6Dun+fL6yZjfA==}
+  ag-charts-types@11.1.1:
+    resolution: {integrity: sha512-bRmUcf5VVhEEekhX8Vk0NSwa8Te8YM/zchjyYKR2CX4vDYiwoohM1Jg9RFvbIhVbLC1S6QrPEbx5v2C6RDfpSA==}
 
-  ag-grid-community@33.0.4:
-    resolution: {integrity: sha512-iBD8g8bNIl95w9CzCQpDid+eTdmOoT39204sPUOhE9eE50vfoDHIaF5U4fRYQHbLsT4bwbXfQYdsqBAOLJL24w==}
+  ag-grid-community@33.1.1:
+    resolution: {integrity: sha512-CNubIro0ipj4nfQ5WJPG9Isp7UI6MMDvNzrPdHNf3W+IoM8Uv3RUhjEn7xQqpQHuu6o/tMjrqpacipMUkhzqnw==}
 
-  ag-grid-vue3@33.0.4:
-    resolution: {integrity: sha512-aqAd+xGMbi/nnWGhaclKBjHa1NbIpIqVdAUE+hHyGHGD2a6KK3zftPL2TokrBkWCEhKbseHz1blVNT1q67O3nQ==}
+  ag-grid-vue3@33.1.1:
+    resolution: {integrity: sha512-H8X7OBsTPwKOuofqPwnbzLAHaTjHbT6E168wOCMkn2MKGe90jbSP5dnSjE+EhCOhv/qixrFFR+d/gbywBltE/w==}
     peerDependencies:
       vue: ^3.5.0
 
@@ -5081,15 +5081,15 @@ snapshots:
 
   acorn@8.14.0: {}
 
-  ag-charts-types@11.0.4: {}
+  ag-charts-types@11.1.1: {}
 
-  ag-grid-community@33.0.4:
+  ag-grid-community@33.1.1:
     dependencies:
-      ag-charts-types: 11.0.4
+      ag-charts-types: 11.1.1
 
-  ag-grid-vue3@33.0.4(vue@3.5.13(typescript@5.7.3)):
+  ag-grid-vue3@33.1.1(vue@3.5.13(typescript@5.7.3)):
     dependencies:
-      ag-grid-community: 33.0.4
+      ag-grid-community: 33.1.1
       vue: 3.5.13(typescript@5.7.3)
 
   agent-base@6.0.2:

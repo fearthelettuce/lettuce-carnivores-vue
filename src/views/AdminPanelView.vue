@@ -6,7 +6,6 @@
         </div>
         <div class="component-container">
             <component v-if="selectedComponent !== undefined" :is="selectedComponent" />
-
         </div>
 
 
@@ -15,14 +14,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Component } from 'vue';
+import { shallowRef, type Component } from 'vue';
 import GiveawayAdmin from '@/components/giveaway/GiveawayAdmin.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import InventoryManagement from '@/components/InventoryManagement.vue'
-import OrderAdmin from '@/components/OrderAdmin.vue';
-import PlantInventory from '@/components/PlantInventory.vue';
+import OrderAdmin from '@/components/OrderAdmin.vue'
+import PlantInventory from '@/components/PlantInventory.vue'
+import ProductAdminForm from '@/components/products/ProductAdminForm.vue'
 
-const selectedComponent = ref()
+const selectedComponent = shallowRef()
 
 const adminComponents = [
     {
@@ -40,6 +40,10 @@ const adminComponents = [
     {
         label: 'Plant Inventory List',
         component: PlantInventory
+    },
+    {
+        label: 'Product Admin Grid',
+        component: ProductAdminForm
     }
 ]
 

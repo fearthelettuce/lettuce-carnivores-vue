@@ -115,6 +115,7 @@ const gradientColor = computed(() => {
         height: 100%;
         width: 100%;
         object-fit: cover;
+        aspect-ratio: 1 / 1;
     }
 
     h5 {
