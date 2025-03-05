@@ -1,10 +1,11 @@
 <template>
-
+  <ProductAdminGrid />
 </template>
 
 <script setup lang="ts">
 import { ref, type Ref} from 'vue';
 import type { Product, Plant, ProductCategory } from '@/types/Product';
+import ProductAdminGrid from '@/components/ProductAdminGrid.vue';
 
 const productType = ref('plant')
 const productData: Ref<Product[]> = ref([])
