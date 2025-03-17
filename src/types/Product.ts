@@ -4,40 +4,36 @@ export interface ProductCategory {
     category: string,
     name: string,
     description: string,
-    status: 'active' | 'inactive' | 'archived',
+    status: 'active' | 'inactive' | 'hidden' | 'archived',
     photos: Array<PhotoItem>,
-    isDiscountable?: boolean,
+    isDiscountable?: boolean | null,
     tags: string[],
     createdDate: Date,
     dateUpdated: Date,
-    isBestSeller: boolean,
 }
 export interface PlantCategory extends ProductCategory {
     type: 'plant',
     speciesHybrid: '' | 'Species' | 'Hybrid',
-    source?: string,
+    source: string | null,
     genus: string,
     clone: string,
-    
-
 }
 export interface Product {
     sku: string,
     quantity: number | null,
     productCategoryId: string | null,
-    productCategoryData: ProductCategory | null,
-    size: string,
     price: number | null,
-    status: string,
+    status: 'active' | 'inactive' | 'hidden' | 'archived',
     photos: Array<PhotoItem>,
     createdDate: Date,
     updatedDate: Date,
-    isDiscountable: boolean,
+    isDiscountable?: boolean | null,
 }
 
 export interface Plant extends Product {
+    size: string | null,
     additionalInformation: {
-        propagationDate?: Date | string,
+        propagationDate: Date | string | null,
         shipping: string,
         ageGroup: string,
         isSpecimen: boolean,
