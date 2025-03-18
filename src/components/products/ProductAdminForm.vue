@@ -17,17 +17,16 @@ const newProduct: Product = {
   sku: '',
   quantity: 1,
   productCategoryId: null,
-  productCategoryData: null,
-  size: '',
   price: null,
   photos: [],
-  status: '',
+  status: 'active',
   createdDate: now,
   updatedDate: now,
   isDiscountable: true,
 }
 const defaultPlantData: Plant = {
   ...newProduct,
+  size: null,
   additionalInformation: {
         propagationDate: '',
         shipping: '',
