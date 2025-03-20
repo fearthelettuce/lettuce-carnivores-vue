@@ -11,7 +11,10 @@ export const sizeList = [
     {label: '4" deep', value: '4" deep'},
     {label: '4.5" deep', value: '4.5" deep'},
     {label: '5" deep', value: '5" deep'},
-    {label: 'Bare Root', value: 'Bare Root'}
+    { label: 'Bare Root', value: 'Bare Root' },
+    { label: 'Snack Bag', value: 'Snack Bag' },
+    { label: 'Sandwich Bag', value: 'Sandwich Bag' },
+    { label: 'Quart Bag', value: 'Quart Bag' },
 ]
 
 export const genusListArr = ['', 'Heliamphora', 'Nepenthes', 'Cephalotus', 'Other']
@@ -30,7 +33,7 @@ export const genusList = [
     {label:'Heliamphora', value: 'Heliamphora', hidden: false},
     {label:'Nepenthes', value: 'Nepenthes', hidden: false},
     {label:'Cephalotus', value: 'Cephalotus', hidden: false},
-    {label:'Other', value: 'Other', hidden: true},
+    {label:'Other', value: 'Other', hidden: false},
 ]
 export const statusList = [
     {label:'', value: false, hidden: true},

@@ -30,8 +30,8 @@ importers:
         specifier: ^6.13.0
         version: 6.13.1
       stripe:
-        specifier: ^16.2.0
-        version: 16.12.0
+        specifier: ^17.7.0
+        version: 17.7.0
       xml2js:
         specifier: ^0.6.2
         version: 0.6.2
@@ -2676,8 +2676,8 @@ packages:
     resolution: {integrity: sha512-0fk9zBqO67Nq5M/m45qHCJxylV/DhBlIOVExqgOMiCCrzrhU6tCibRXNqE3jwJLftzE9SNuZtYbpzcO+i9FiKw==}
     engines: {node: '>=14.16'}
 
-  stripe@16.12.0:
-    resolution: {integrity: sha512-H7eFVLDxeTNNSn4JTRfL2//LzCbDrMSZ+2q1c7CanVWgK2qIW5TwS+0V7N9KcKZZNpYh/uCqK0PyZh/2UsaAtQ==}
+  stripe@17.7.0:
+    resolution: {integrity: sha512-aT2BU9KkizY9SATf14WhhYVv2uOapBWX0OFWF4xvcj1mPaNotlSc2CsxpS4DS46ZueSppmCF5BX1sNYBtwBvfw==}
     engines: {node: '>=12.*'}
 
   strnum@1.0.5:
@@ -6306,7 +6306,7 @@ snapshots:
 
   strip-json-comments@5.0.1: {}
 
-  stripe@16.12.0:
+  stripe@17.7.0:
     dependencies:
       '@types/node': 22.9.3
       qs: 6.13.1

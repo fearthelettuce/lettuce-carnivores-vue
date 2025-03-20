@@ -106,6 +106,7 @@ import ArrowRight from '@/assets/icons/ArrowRight.vue';
     border-radius: 1.8rem;
     object-fit: cover;
     box-shadow: 0px 5px 4px 2px $light-gray;
+    aspect-ratio: 1/1;
   }
   .embla-thumbs {
     --thumbs-slide-spacing: 0.5rem;
@@ -138,6 +139,7 @@ import ArrowRight from '@/assets/icons/ArrowRight.vue';
     width: 100%;
     height: 100%;
     object-fit: cover;
+    aspect-ratio: 1/1;
   }
   .embla-thumbs__slide:hover {
     opacity: 80%;

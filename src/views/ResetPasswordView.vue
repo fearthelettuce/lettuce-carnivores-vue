@@ -23,7 +23,6 @@ const loginEmail = ref("")
 const hasEmailBeenSent = ref(false)
 
 async function resetPassword () {
-    debugger
     const res = await userStore.requestPasswordReset(loginEmail.value)
     if(res && res.success) {
         hasEmailBeenSent.value = true

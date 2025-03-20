@@ -10,6 +10,8 @@ import {
   isColdWeatherShippingActive,
   coldWeatherShippingId,
   discountedColdWeatherShippingId,
+  mossShippingCategoryId,
+  mossShippingId,
 
 } from './constants/stripeConstants'
 import Stripe from 'stripe'
@@ -126,16 +128,8 @@ async function buildCheckoutSession(
   if (discountData.stripeCoupons.length > 0) {
     session.discounts = discountData.stripeCoupons
   }
-
   const isQualifiedForDiscountedShipping = cartTotal - discountData.totalCartDiscountedAmount >= discountedShippingThreshold
-  if (isColdWeatherShippingActive) {
-    session.shipping_options = [{ shipping_rate: isQualifiedForDiscountedShipping ? discountedColdWeatherShippingId : coldWeatherShippingId }]
-  } else {
-    session.shipping_options = isQualifiedForDiscountedShipping ?
-      [{ shipping_rate: discountedStandardShippingId }, { shipping_rate: discountedExpeditedShippingId }] :
-      [{ shipping_rate: standardShippingId }, { shipping_rate: expeditedShippingId }]
-  }
-
+  session.shipping_options = createShippingOptions({isQualifiedForDiscountedShipping, cartItems: stripeCart.data as CartItem[]})
   return session
 }
 
@@ -229,4 +223,17 @@ async function getPlantDetailsFromFirestore(request: PlantDetailsFromFirestoreRe
     }
   }
   return plants
+}
+
+function createShippingOptions(data: { isQualifiedForDiscountedShipping: boolean, cartItems: CartItem[] }) {
+  if (isColdWeatherShippingActive) {
+    return [{ shipping_rate: data.isQualifiedForDiscountedShipping ? discountedColdWeatherShippingId : coldWeatherShippingId }]
+  }
+  if (data.cartItems.length === 1 && data.cartItems[0].categoryId.toString() == mossShippingCategoryId.toString()) {
+    return [{ shipping_rate: mossShippingId }]
+  } 
+ 
+  return data.isQualifiedForDiscountedShipping ?
+    [{ shipping_rate: discountedStandardShippingId }, { shipping_rate: discountedExpeditedShippingId }] :
+    [{ shipping_rate: standardShippingId }, { shipping_rate: expeditedShippingId }]
 }
