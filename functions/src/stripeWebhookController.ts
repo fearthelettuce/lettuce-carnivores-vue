@@ -3,7 +3,7 @@ import { error, log } from 'firebase-functions/logger'
 import { onRequest } from 'firebase-functions/v2/https'
 import { StripeLineItem } from './types/Stripe'
 import Stripe from 'stripe'
-import { discountedStandardShippingId, standardShippingId, coldWeatherShippingId, discountedColdWeatherShippingId } from './constants/stripeConstants'
+import { discountedStandardShippingId, standardShippingId, coldWeatherShippingId, discountedColdWeatherShippingId, expeditedShippingId, discountedExpeditedShippingId } from './constants/stripeConstants'
 import { getNextSequentialId } from './common'
 import { updateInventoryFromStripeSale } from './inventory/inventoryService'
 import { Filter } from 'firebase-admin/firestore'
@@ -47,16 +47,9 @@ async function fulfillCheckout(data: Stripe.Checkout.Session) {
     return false
   }
   const lineItems = checkoutSession.data()!.lineItems as StripeLineItem[]
-  const selectedShipping = data.shipping_cost?.shipping_rate
-  let shippingType
-  if (selectedShipping === standardShippingId || selectedShipping === discountedStandardShippingId) {
-    shippingType = 'Standard'
-  }
-  if (selectedShipping === coldWeatherShippingId || selectedShipping === discountedColdWeatherShippingId) {
-    shippingType = 'Cold Weather'
-  } else {
-    shippingType = 'Expedited'
-  }
+
+  const shippingType = getShippingType('shipping_rate' in data ? data.shipping_rate :  data.shipping_cost?.shipping_rate)
+
   const orderNumber = await getNextSequentialId('orders')
   if (typeof orderNumber !== 'number') {
     error(`Unable to get next order ID`)
@@ -115,4 +108,23 @@ async function isDuplicateCall(id: string) {
     .where(Filter.where('checkoutSessionId', '==', id))
   const snap = await query.get()
   return snap.docs.length !== 0
+}
+
+//@ts-ignore - stripe api seems to have changed, maybe types not working?
+function getShippingType(shippingRateObject: Stripe.Checkout.Session['shipping_rate']) {
+  switch (shippingRateObject.id) { 
+    case coldWeatherShippingId:
+    case discountedColdWeatherShippingId:
+      return 'Cold Weather'
+    case expeditedShippingId:
+    case discountedExpeditedShippingId:
+      return 'Expedited'
+    case standardShippingId:
+    case discountedStandardShippingId:
+      return 'Standard'
+    default:
+      console.error(`Unknown shipping ID ${shippingRateObject.id}`)
+      return 'Standard'
+  }
+
 }
