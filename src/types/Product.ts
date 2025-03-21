@@ -1,7 +1,7 @@
 export interface ProductCategory {
     id: string,
-    type: 'plant' | 'supplies',
-    category: string,
+    category: 'plant' | 'supplies' | '',
+    subCategory: string,
     name: string,
     description: string,
     status: 'active' | 'inactive' | 'hidden' | 'archived',
@@ -18,6 +18,7 @@ export interface PlantCategory extends ProductCategory {
     genus: string,
     clone: string,
 }
+
 export interface Product {
     sku: string,
     quantity: number | null,
@@ -30,6 +31,10 @@ export interface Product {
     isDiscountable?: boolean | null,
 }
 
+export interface ExtendedProduct extends Product {
+    categoryData: ProductCategory
+}
+
 export interface Plant extends Product {
     size: string | null,
     additionalInformation: {
@@ -39,6 +44,10 @@ export interface Plant extends Product {
         isSpecimen: boolean,
         shelfLocation: string,
     }
+}
+
+export interface ExtendedPlant extends Plant {
+    categoryData: PlantCategory
 }
 
 export type PotSize =

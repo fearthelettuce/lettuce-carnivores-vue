@@ -142,7 +142,7 @@ export const useUserStore = defineStore('user', {
     async fetchUserDetails(userId: string) {
       if(!userId) return
       try {
-        const res = await findDocById('users',userId)
+        const res = await findDocById<{ profile: Profile, roles: { (key: string): boolean }[] }>('users', userId)
         if(res) {
             this.userRoles = res.roles
             this.profile = res.profile

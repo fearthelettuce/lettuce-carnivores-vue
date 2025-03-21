@@ -2,23 +2,23 @@ import { collection, doc, getDoc, getDocs, query, where, deleteDoc, setDoc, type
 import type { PlantCategory, Plant, PlantWithCategoryDetails } from '@/types/Plant'
 import type { CartItem } from '@/types/Orders'
 import { db } from '@/apis/firebase'
+import { toast } from 'vue3-toastify/index'
 
 export function parseJSON(jsonData: JSON) {
-  let results
   try {
-    const data = JSON.parse(JSON.stringify(jsonData))
-    results = data
+    return JSON.parse(JSON.stringify(jsonData))
   } catch (error) {
     console.log(error)
     return
   }
-  return results
 }
 
-export async function getNextSequentialId(collectionName: string, idFieldName: string = 'id', startingValue = 1000) {
+export async function getNextSequentialId(collectionName: string, idKeyName: string = 'id', startingValue = 1000) {
   let docs: Array<unknown> | undefined = []
   try {
-    docs = await findAll(collectionName)
+    const res = await findAll(collectionName)
+    if (Array.isArray(res) === false) return null;
+    docs = res
   } catch (err) {
     console.log(err)
     return err
@@ -26,56 +26,87 @@ export async function getNextSequentialId(collectionName: string, idFieldName: s
   let nextSequentialId: number
   if (docs) {
     nextSequentialId = await docs
-      .reduce((acc: number, doc: any) => (acc = acc > doc[idFieldName] ? acc : doc[idFieldName]), startingValue)
+      .reduce((acc: number, doc: any) => (acc = acc > doc[idKeyName] ? acc : doc[idKeyName]), startingValue)
       .valueOf()
     nextSequentialId++
   } else {
     return { success: false, error: true, message: 'Unable to get next ID' }
-    // return startingValue + 1
   }
   return nextSequentialId
 }
 
-export async function saveItem(collectionName: string, obj: any) {
+export async function saveItem(collectionName: string, obj: any, idKey: string = 'id') {
   if (obj == null || typeof obj !== 'object') {
-    return { success: false, message: `Invalid object ${obj.toString()}` }
+    return { success: false, message: `Invalid object ${JSON.stringify(obj)}` }
   }
 
-  if (!Object.prototype.hasOwnProperty.call(obj, 'id') || !obj.id) {
+  if (!Object.prototype.hasOwnProperty.call(obj, idKey) || !obj[idKey]) {
     try {
-      const nextId = await getNextSequentialId(collectionName, 'id')
+      const nextId = await getNextSequentialId(collectionName, idKey)
       if (typeof nextId === 'number') {
-        obj.id = nextId
+        obj[idKey] = nextId
       }
     } catch (e) {
       console.error(e)
-      return
+      return { success: false, errorDetails: e, message: 'Unable to get nextId for collection' }
     }
   }
   try {
-    const res = await setDoc(doc(db, collectionName, obj.id.toString()), { ...obj })
-    return { success: true, error: false, message: 'Saved successfully', errorDetails: null, documentDetails: obj }
+    await setDoc(doc(db, collectionName, obj.id.toString()), { ...obj })
+    return { success: true, message: 'Saved successfully', data: obj }
   } catch (err) {
     console.log(err)
-    return { success: false, error: true, message: 'Unable to save', errorDetails: err, documentDetails: obj }
+    return { success: false, error: true, message: 'Unable to save', errorDetails: err, data: obj }
   }
 }
 
-export async function deleteItem(collectionName: string, id: number | string) {
-  0
+export async function saveObjectUpdateArray<T>(data: { collectionName: string, obj: Partial<T>, objArr: Array<T>, idKey?: keyof T }) {
+  const idKey = data.idKey ?? 'id' as keyof T
+
+  const res = await saveItem(data.collectionName, data.obj)
+  if (res.success) {
+    const idx = data.objArr?.findIndex(item => item[idKey] === data.obj[idKey])
+    if (data.objArr && idx > -1) {
+      data.objArr.splice(idx, 1, res.data)
+    } else {
+      data.objArr?.push(res.data)
+    }
+    toast.success('Success')
+    return { success: true, message: res.message }
+  } else {
+    toast.error(`Error while saving: ${res.error}`)
+    return { success: false, error: true, errorDetails: res?.error, message: 'There was an error saving' }
+  }
+}
+
+export async function deleteItem(collectionName: string, id: number | string | symbol) {
   try {
     await deleteDoc(doc(db, collectionName, id.toString()))
     return { success: true, error: false, message: null, errorDetails: null }
   } catch (err) {
-    throw new Error('An error occurred when trying to delete')
+    return { success: false, error: true, errorDetails: err }
   }
 }
 
-export async function findDocById(collectionName: string, id: number | string) {
+export async function deleteItemUpdateArray<T, K extends keyof T>(data: { collectionName: string, id: T[K], objArr: Array<T>, idKey?: keyof T }) {
+  const idKey = data.idKey ?? 'id' as keyof T
+  const res = await deleteItem(data.collectionName, String(data.id))
+  if (res.success) {
+    const idx = data.objArr.findIndex(item => data.id === item[idKey])
+    data.objArr.splice(idx, 1)
+    toast.success('Success')
+    return { success: true }
+  } else {
+    toast.error(`Error while deleting: ${res.error}`)
+    return { success: false }
+  }
+}
+
+export async function findDocById<T>(collectionName: string, id: number | string, idKey: keyof T = 'id' as keyof T): Promise<T | null> {
   const docRef = doc(db, collectionName, id.toString())
   const docSnap = await getDoc(docRef).catch((e) => console.error(e))
   if (docSnap && docSnap.exists()) {
-    return docSnap.data()
+    return docSnap.data() as T
   } else {
     return null
   }

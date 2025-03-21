@@ -17,8 +17,8 @@ export function plantToProduct(plant: Plant, plantCategory: PlantCategory) {
 
   const productCategory = {
     id: plantCategory.id,
-    type: 'plant',
-    category: 'Carnivorous Plants',
+    category: 'plant',
+    subCategory: 'Carnivorous Plants',
     name: plantCategory.name,
     status: getCategoryStatus(plantCategory.status),
     photos: plantCategory.photos,
