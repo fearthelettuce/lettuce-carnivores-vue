@@ -1,6 +1,14 @@
 import type { PlantCategory, Plant } from "@/types/Plant"
 import type { PhotoItem } from "@/types/Product"
 
+export const productCategories = ['Plants', 'Supplies']
+
+export const subCategories = new Map([
+    ['Plants', ['Heliamphora', 'Nepenthes', 'Cephalotus', 'Other']],
+    ['Supplies', ['Fertilizer', 'Tools', 'Other']]
+])
+
+
 export const photoResolutions = [256,512,960,1600]
 export const sizeList = [
     {label: '', value: '',},

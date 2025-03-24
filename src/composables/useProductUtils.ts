@@ -1,5 +1,5 @@
-import type { PlantCategory, Plant } from "@/types/Plant"
-import type { Product, ProductCategory } from "@/types/Product"
+import type { Product, ProductCategory, Plant } from "@/types/Product"
+import type { PlantCategory as OldPlantCategory } from '@/types/Plant'
 import { deleteAllPhotosUtil } from '@/composables/usePhotoUtils'
 import { findAll, deleteItem, findDocById } from '@/apis/dataServices'
 
@@ -8,7 +8,7 @@ export async function findProductById(id: number | string, collectionName: strin
     return res as Product
 }
 export async function getCategoryBySku(sku: string) {
-    const categories = await findAll<PlantCategory>('plantCategories')
+    const categories = await findAll<OldPlantCategory>('plantCategories')
     if (Array.isArray(categories) === false) return;
     let categoryId: string | undefined = undefined
     for(let category of categories) {
@@ -58,4 +58,14 @@ export const newProduct: Partial<Product> = {
     photos: [],
     createdDate: new Date(),
     updatedDate: new Date(),
+}
+
+export const newPlant: Partial<Plant> = {
+    plantInfo: {
+        size: null,
+        propagationDate: new Date(),
+        ageGroup: '',
+        isSpecimen: false,
+        shelfLocation: '',
+    }
 }

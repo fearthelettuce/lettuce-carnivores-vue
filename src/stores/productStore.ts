@@ -4,7 +4,6 @@ import type { Product, Plant, ProductCategory, PlantCategory, ExtendedProduct } 
 import { deleteItemUpdateArray, findAll, findDocById, saveObjectUpdateArray } from '@/apis/dataServices'
 import { toast } from "vue3-toastify/index"
 
-
 export const useProductStore = defineStore('product', () => {
     const isSaving = ref(false)
     const isLoading = ref(false)
@@ -37,7 +36,7 @@ export const useProductStore = defineStore('product', () => {
         const product = products.value.find(product => product.sku === sku)
         const productCategory = productCategories.value.find(productCategory => productCategory.id === product?.productCategoryId)
         if (!product || !productCategory) return null
-        return { ...product, categoryData: { ...productCategory } }
+        return { ...product, categoryInfo: { ...productCategory } }
     }
 
     async function saveProductCategory(productCategory: ProductCategory | Omit<ProductCategory, 'id'>) {

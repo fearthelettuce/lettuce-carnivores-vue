@@ -16,7 +16,10 @@ export function getShippingSize(size: PotSize): PackageWeightAndSize {
         ['Bundle - 2 sm', {box: '10x8x6', weight: 1.5}],
         ['Bundle - 3 sm', {box: '10x8x6', weight: 2}],
         ['Bundle - 2 lg', {box: '10x10x5', weight: 2}],
-        ['Bundle - 3 lg', {box: '14x6x6', weight: 3}],
+        ['Bundle - 3 lg', { box: '14x6x6', weight: 3 }],
+        ['Snack Bag', { box: '7x5x5', weight: 1 }],
+        ['Sandwich Bag', { box: '7x5x5', weight: 1 }],
+        ['Quart Bag', { box: '7x5x5', weight: 1 }]
     ])
 
 

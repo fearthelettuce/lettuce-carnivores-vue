@@ -32,14 +32,13 @@ export interface Product {
 }
 
 export interface ExtendedProduct extends Product {
-    categoryData: ProductCategory
+    categoryInfo: ProductCategory
 }
 
 export interface Plant extends Product {
-    size: string | null,
-    additionalInformation: {
+    plantInfo: {
+        size: string | null,
         propagationDate: Date | string | null,
-        shipping: string,
         ageGroup: string,
         isSpecimen: boolean,
         shelfLocation: string,
@@ -66,7 +65,8 @@ export type PotSize =
     'Bundle - 2 lg' |
     'Bundle - 3 lg' |
     'Snack Bag' |
-    'Sandwich Bag'
+    'Sandwich Bag' |
+    'Quart Bag'
 // Product Category:
 //   - type: plant, supply
 //     - category: Heli, Nep, pots, fertilizer, growingMedia

@@ -2,7 +2,7 @@ import { collection, doc, getDoc, getDocs, query, where, deleteDoc, setDoc, type
 import type { PlantCategory, Plant, PlantWithCategoryDetails } from '@/types/Plant'
 import type { CartItem } from '@/types/Orders'
 import { db } from '@/apis/firebase'
-import { toast } from 'vue3-toastify/index'
+import { toast } from 'vue3-toastify'
 
 export function parseJSON(jsonData: JSON) {
   try {

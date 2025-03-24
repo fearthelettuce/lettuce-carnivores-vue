@@ -90,12 +90,12 @@ import { discountedShippingThreshold } from '@/constants/OrderConstants'
 import { useUserStore } from '@/stores/users'
 import { router } from '@/router'
 import { USDollar } from '@/utils/utils';
-import ShoppingCartItem from './ShoppingCartItem.vue'
+import ShoppingCartItem from '@/components/ShoppingCartItem.vue'
 import { isColdWeatherShippingActive } from '@/constants/OrderConstants'
-import Alert from './ui/alert/Alert.vue'
-import AlertDescription from './ui/alert/AlertDescription.vue'
+import Alert from '@/components/ui/alert/Alert.vue'
+import AlertDescription from '@/components/ui/alert/AlertDescription.vue'
 
-const { cart, discountedItems } = storeToRefs(useOrderStore())
+const { cart, discountedItems, activeDiscount } = storeToRefs(useOrderStore())
 const { getCategoryBySku, startCheckoutSession, validateCart, applyDiscounts } = useOrderStore()
 const { cartTotal, isLoading } = storeToRefs(useOrderStore())
 const { loginAnonymously  } = useUserStore()
@@ -108,12 +108,15 @@ const amountToQualifyForDiscountedShipping = computed(() => {
     return USDollar.format(discountedShippingThreshold - cartTotal.value + totalDiscountAmount.value)
   }
 })
+
 const freeShipping = computed(() => {
   return cartTotal.value - totalDiscountAmount.value >= discountedShippingThreshold
 })
+
 const cartSubtotal = computed(() => {
   return cartTotal.value - totalDiscountAmount.value
 })
+
 const totalDiscountAmount = ref(0)
 
 onMounted(async () => {
@@ -259,5 +262,3 @@ async function getCartErrors() {
   }
 }
 </style>
-
-<!-- TODO: Bootstrap text color and btn -->

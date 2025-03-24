@@ -48,4 +48,5 @@ export type PotSize =
     'Bundle - 2 lg' |
     'Bundle - 3 lg' |
     'Snack Bag' |
-    'Sandwich Bag'
+    'Sandwich Bag' |
+    'Quart Bag'
