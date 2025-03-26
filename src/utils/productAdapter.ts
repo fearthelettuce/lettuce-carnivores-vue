@@ -17,7 +17,7 @@ export function plantToProduct(plant: OldPlant, plantCategory: OldPlantCategory)
 
   const productCategory = {
     id: plantCategory.id,
-    category: 'plant',
+    category: 'Plants',
     subCategory: 'Carnivorous Plants',
     name: plantCategory.name,
     status: getCategoryStatus(plantCategory.status),
@@ -31,20 +31,22 @@ export function plantToProduct(plant: OldPlant, plantCategory: OldPlantCategory)
 
   const newPlantCategory = {
     ...productCategory,
-    type: 'plant',
+    category: 'Plants',
     speciesHybrid: plantCategory.speciesHybrid,
-    source: null,
+    source: '',
     genus: plantCategory.genus,
     clone: plantCategory.clone,
   } as PlantCategory
 
   const newPlant = {
     ...product,
-    additionalInformation: {
+    plantInfo: {
+      size: plant.size,
       propagationDate: plant.propagationDate,
       shipping: 'Standard',
       ageGroup: 'Adult',
       isSpecimen: false,
+      shelfLocation: plant.shelfLocation,
     }
   } as Plant
 
