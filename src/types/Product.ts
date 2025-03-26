@@ -1,45 +1,53 @@
 export interface ProductCategory {
     id: string,
-    type: 'plant' | 'supplies',
-    category: string,
+    category: 'Plants' | 'Supplies' | '',
+    subCategory: string,
     name: string,
     description: string,
-    status: 'active' | 'inactive' | 'hidden' | 'archived',
+    status: ProductStatus,
     photos: Array<PhotoItem>,
-    isDiscountable?: boolean | null,
     tags: string[],
     createdDate: Date,
     dateUpdated: Date,
 }
 export interface PlantCategory extends ProductCategory {
-    type: 'plant',
+    category: 'Plants',
     speciesHybrid: '' | 'Species' | 'Hybrid',
-    source: string | null,
+    source: string,
     genus: string,
     clone: string,
 }
+
 export interface Product {
     sku: string,
     quantity: number | null,
     productCategoryId: string | null,
     price: number | null,
-    status: 'active' | 'inactive' | 'hidden' | 'archived',
+    status: ProductStatus,
     photos: Array<PhotoItem>,
     createdDate: Date,
     updatedDate: Date,
-    isDiscountable?: boolean | null,
+}
+
+export interface ExtendedProduct extends Product {
+    categoryInfo: ProductCategory
 }
 
 export interface Plant extends Product {
-    size: string | null,
-    additionalInformation: {
+    plantInfo: {
+        size: string,
         propagationDate: Date | string | null,
-        shipping: string,
         ageGroup: string,
         isSpecimen: boolean,
         shelfLocation: string,
     }
 }
+
+export interface ExtendedPlant extends Plant {
+    categoryData: PlantCategory
+}
+
+type ProductStatus = 'Active' | 'Inactive' | 'Hidden' | 'Archived'
 
 export type PotSize =
     '' |
@@ -57,7 +65,8 @@ export type PotSize =
     'Bundle - 2 lg' |
     'Bundle - 3 lg' |
     'Snack Bag' |
-    'Sandwich Bag'
+    'Sandwich Bag' |
+    'Quart Bag'
 // Product Category:
 //   - type: plant, supply
 //     - category: Heli, Nep, pots, fertilizer, growingMedia

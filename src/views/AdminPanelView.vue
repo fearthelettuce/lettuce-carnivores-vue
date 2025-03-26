@@ -1,7 +1,7 @@
 <template>
     <div class="admin-panel-layout">
         <div class="button-container">
-            <BaseButton v-for="component in adminComponents" :key="component.label"
+            <BaseButton v-for="component in adminComponents" :key="component.label" size="small"
                 @click="setSelectedComponent(component)">{{ component.label }}</BaseButton>
         </div>
         <div class="component-container">
@@ -60,16 +60,17 @@ function setSelectedComponent(adminComponent: { label: string, component: Compon
     align-items: center;
 }
 .button-container {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: .25rem;
+    margin-bottom: .5rem;
 }
 
 .component-container {
     margin: 0 3dvw;
 }
 
-@media (min-width: 40rem) {
+@media (min-width: 50rem) {
     .button-container {
         display: flex;
         flex-direction: row;

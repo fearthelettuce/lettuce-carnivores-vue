@@ -15,7 +15,21 @@ export type CartItem = Pick<Plant, 'id' | 'sku' | 'size' | 'isRepresentative' | 
     maxQuantity: number
     photo: PhotoItem,
     priceAfterDiscount?: number,
-  }
+}
+
+//New, more generic, cart item to work with Product.ts
+export type NewCartItem = {
+  sku: string,
+  productCategoryId: string,
+  name: string,
+  price: number,
+  quantity: number,
+  maxQuantity: number,
+  photo: PhotoItem,
+  size?: string,
+  priceAfterDiscount?: number,
+
+}
 //export type StripeCartItem = StripeProduct & {quantity: number}
 
 export type StripeProduct = {

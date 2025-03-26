@@ -180,7 +180,7 @@ provide('managePhotos', managePhotos)
 
 <style scoped>
 .layout {
-    width: 100%;
+ 
     margin-right: auto;
     margin-left: auto;
     padding-left: .5rem;
@@ -197,13 +197,13 @@ provide('managePhotos', managePhotos)
     margin: 2rem .2rem;
 }
 
-.item-select {
+/* .item-select {
     width: 90%;
-}
+} */
 
-.product-card {
+/* .product-card {
     max-height: 40rem;
-}
+} */
 
 .up-down-arrows {
     display: grid;

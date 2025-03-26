@@ -1,9 +1,8 @@
 <template>
-    <div class="form-floating">
+    <div class="">
         <select 
             :name="props.id" 
             :id="props.id"
-            class="form-select"
             :aria-label="props.label"  
             v-model="model"
         >
@@ -32,5 +31,7 @@ import {type PropType } from 'vue';
 </script>
 
 <style scoped>
-
+    select {
+        width: clamp(20rem, 50dvw, 60rem);
+    }
 </style>

@@ -229,7 +229,7 @@ function createShippingOptions(data: { isQualifiedForDiscountedShipping: boolean
   if (isColdWeatherShippingActive) {
     return [{ shipping_rate: data.isQualifiedForDiscountedShipping ? discountedColdWeatherShippingId : coldWeatherShippingId }]
   }
-  if (data.cartItems.length === 1 && data.cartItems[0].quantity === 1 && data.cartItems[0].categoryId.toString() == mossShippingCategoryId.toString()) {
+  if (data.cartItems.length === 1 && data.cartItems[0].categoryId.toString() == mossShippingCategoryId.toString()) {
     return [{ shipping_rate: mossShippingId }]
   } 
  

@@ -1,7 +1,7 @@
-import type { Plant, PlantCategory} from '@/types/Plant'
-import type { Product, ProductCategory, PlantCategory as NewPlantCategory, Plant as NewPlant } from '@/types/Product'
+import type { Plant as OldPlant, PlantCategory as OldPlantCategory } from '@/types/Plant'
+import type { Product, ProductCategory, PlantCategory, Plant } from '@/types/Product'
 
-export function plantToProduct(plant: Plant, plantCategory: PlantCategory) {
+export function plantToProduct(plant: OldPlant, plantCategory: OldPlantCategory) {
   const product = {
     sku: plant.sku,
     quantity: plant.quantity,
@@ -17,8 +17,8 @@ export function plantToProduct(plant: Plant, plantCategory: PlantCategory) {
 
   const productCategory = {
     id: plantCategory.id,
-    type: 'plant',
-    category: 'Carnivorous Plants',
+    category: 'Plants',
+    subCategory: 'Carnivorous Plants',
     name: plantCategory.name,
     status: getCategoryStatus(plantCategory.status),
     photos: plantCategory.photos,
@@ -31,22 +31,24 @@ export function plantToProduct(plant: Plant, plantCategory: PlantCategory) {
 
   const newPlantCategory = {
     ...productCategory,
-    type: 'plant',
+    category: 'Plants',
     speciesHybrid: plantCategory.speciesHybrid,
-    source: null,
+    source: '',
     genus: plantCategory.genus,
     clone: plantCategory.clone,
-  } as NewPlantCategory
+  } as PlantCategory
 
   const newPlant = {
     ...product,
-    additionalInformation: {
+    plantInfo: {
+      size: plant.size,
       propagationDate: plant.propagationDate,
       shipping: 'Standard',
       ageGroup: 'Adult',
       isSpecimen: false,
+      shelfLocation: plant.shelfLocation,
     }
-  } as NewPlant
+  } as Plant
 
   return {
     product,
@@ -57,7 +59,7 @@ export function plantToProduct(plant: Plant, plantCategory: PlantCategory) {
   
 }
 
-function getOldestDate(plantCategory: PlantCategory) {
+function getOldestDate(plantCategory: OldPlantCategory) {
   return plantCategory.plants.reduce((oldestDate, plant) => {
     if(!plant.dateListedForSale) return oldestDate;
     const date = new Date(plant.dateListedForSale)
@@ -65,7 +67,7 @@ function getOldestDate(plantCategory: PlantCategory) {
   }, new Date())
 }
 
-function getCategoryStatus(status: PlantCategory['status']) {
+function getCategoryStatus(status: OldPlantCategory['status']) {
   const statusMap = new Map([
     ['In Stock', 'active'],
     ['Coming Soon', 'inactive'],
@@ -77,7 +79,7 @@ function getCategoryStatus(status: PlantCategory['status']) {
   return statusMap.get(status)
 }
 
-function getProductStatus(status: Plant['status']) {
+function getProductStatus(status: OldPlant['status']) {
   const statusMap = new Map([
     ['In Stock', 'active'],
     ['Coming Soon', 'inactive'],
