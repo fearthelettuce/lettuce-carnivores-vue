@@ -2,14 +2,11 @@
   <AgGridVue 
     :id="id"
     :rowData
-    :defaultColumnDefs
     :columnDefs
+    :defaultColumnDefs
     :loading="isLoading"
     :style
     :theme="themeBalham"
-    :autoSizeStrategy
-    :masterDetail
-    :detailCellRendererParams
     :groupDisplayType
     :gridOptions
     @grid-ready="onGridReady"
@@ -22,14 +19,14 @@
 <script setup lang="ts" generic="T">
 import { ref, shallowRef, watch, type PropType, type Ref, type ShallowRef } from 'vue';
 import { AgGridVue } from 'ag-grid-vue3'
-import { ClientSideRowModelModule, ModuleRegistry, themeBalham } from 'ag-grid-community'
-import type { ColDef, GridApi, GridOptions, ICellRendererParams } from 'ag-grid-community'
-ModuleRegistry.registerModules([ClientSideRowModelModule]);
+import { ClientSideRowModelModule, ModuleRegistry, TextEditorModule, SelectEditorModule, ValidationModule, ColumnAutoSizeModule, DateEditorModule, themeBalham } from 'ag-grid-community'
+import type { ColDef, GridApi, GridOptions, GridReadyEvent } from 'ag-grid-community'
+ModuleRegistry.registerModules([ClientSideRowModelModule, TextEditorModule, SelectEditorModule, ValidationModule, ColumnAutoSizeModule, DateEditorModule]);
 
   const props = defineProps({
     id: {
       type: String,
-      required: true
+      required: true,
     },
     rowData: {
       type: Object as PropType<Array<T> | null>,
@@ -37,23 +34,15 @@ ModuleRegistry.registerModules([ClientSideRowModelModule]);
     },
     defaultColumnDefs: {
       type: Object as PropType<ColDef>,
-      required: true
+      required: false
     },
     columnDefs: {
       type: Object as PropType<ColDef[]>,
       required: true
     },
-    masterDetail: {
-      type: Boolean,
-      default: false,
-    },
-    detailCellRendererParams: {
-      type: Object as PropType<any | undefined>,
-      required: false,
-    },
     style: {
       type: String,
-      default: 'height: 80dvh; min-width: 80dvw;'
+      default: 'height: 50dvh; min-width: 90dvw;'
     },
     theme: {
       type: String,
@@ -72,17 +61,13 @@ ModuleRegistry.registerModules([ClientSideRowModelModule]);
       type: Object as PropType<GridOptions>,
       required: false,
     },
-    autoSizeStrategy: {
-      type: Object as PropType<GridOptions['autoSizeStrategy']>,
-      required: false
-    },
     groupDisplayType: {
       type: Object as PropType<GridOptions['groupDisplayType']>,
       required: false
     }
   })
 
-  let gridApi: ShallowRef<GridApi | undefined> = shallowRef(undefined)
+  let gridApi: ShallowRef<GridApi | null> = shallowRef(null)
   let filters: Ref<{ [colId: string]: any} | undefined> = ref(undefined)
 
 
@@ -90,13 +75,13 @@ ModuleRegistry.registerModules([ClientSideRowModelModule]);
   //   filters.value = params.api.getFilterModel()
   // }
 
-  function onGridReady(params: ICellRendererParams) {
+  function onGridReady(params: GridReadyEvent) {
     gridApi.value = params.api
     // updateFilters(params)
   }
 
   function onGridDestroyed() {
-    gridApi.value = undefined
+    gridApi.value = null
     filters.value = undefined
   }
 
@@ -120,6 +105,5 @@ ModuleRegistry.registerModules([ClientSideRowModelModule]);
   .ag-group-value {
     display: inline-flex;
   }
-
 
 </style>

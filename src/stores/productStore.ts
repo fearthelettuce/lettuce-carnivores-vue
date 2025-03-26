@@ -2,7 +2,8 @@ import { ref, type Ref } from "vue"
 import { defineStore } from "pinia"
 import type { Product, Plant, ProductCategory, PlantCategory, ExtendedProduct } from "@/types/Product"
 import { deleteItemUpdateArray, findAll, findDocById, saveObjectUpdateArray } from '@/apis/dataServices'
-import { toast } from "vue3-toastify/index"
+import { newProduct, newProductCategory, newPlantCategory } from '@/composables/useProductUtils';
+import { toast } from "vue3-toastify"
 
 export const useProductStore = defineStore('product', () => {
     const isSaving = ref(false)
@@ -28,6 +29,8 @@ export const useProductStore = defineStore('product', () => {
         if (Array.isArray(res)) {
             products.value = res
             return
+        } else {
+            products.value = []
         }
         toast.error('Sorry, something went wrong. Please try again.')
     }
@@ -78,6 +81,18 @@ export const useProductStore = defineStore('product', () => {
         return
     }
 
+    function addNewProductCategory(quantity: number = 1) {
+        for (let i = 0; i < quantity; i++) {
+            productCategories.value.push({ ...newProductCategory })
+        }
+    }
+
+    function addNewPlantCategory(quantity: number = 1) {
+        for (let i = 0; i < quantity; i++) {
+            productCategories.value.push({ ...newPlantCategory })
+        }
+    }
+
     return {
         productCategories,
         products,
@@ -89,6 +104,8 @@ export const useProductStore = defineStore('product', () => {
         getProducts,
         getExtendedProduct,
         deleteProduct,
-        deleteProductCategory
+        deleteProductCategory,
+        addNewProductCategory,
+        addNewPlantCategory,
     }
 })

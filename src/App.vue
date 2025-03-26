@@ -31,11 +31,16 @@ import TheFooter from '@/components/TheFooter.vue';
     margin-bottom: 1rem;
     padding-inline: 2dvw;
     width: 100%;
+    flex: 1;
+    align-items: flex-start;
   }
 
   .page-container {
     margin: auto;
     width: 96dvw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
 
   @media(min-width: 425px) {

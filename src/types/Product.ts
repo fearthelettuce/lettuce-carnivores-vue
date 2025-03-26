@@ -1,20 +1,19 @@
 export interface ProductCategory {
     id: string,
-    category: 'plant' | 'supplies' | '',
+    category: 'Plants' | 'Supplies' | '',
     subCategory: string,
     name: string,
     description: string,
-    status: 'active' | 'inactive' | 'hidden' | 'archived',
+    status: ProductStatus,
     photos: Array<PhotoItem>,
-    isDiscountable?: boolean | null,
     tags: string[],
     createdDate: Date,
     dateUpdated: Date,
 }
 export interface PlantCategory extends ProductCategory {
-    type: 'plant',
+    category: 'Plants',
     speciesHybrid: '' | 'Species' | 'Hybrid',
-    source: string | null,
+    source: string,
     genus: string,
     clone: string,
 }
@@ -24,11 +23,10 @@ export interface Product {
     quantity: number | null,
     productCategoryId: string | null,
     price: number | null,
-    status: 'active' | 'inactive' | 'hidden' | 'archived',
+    status: ProductStatus,
     photos: Array<PhotoItem>,
     createdDate: Date,
     updatedDate: Date,
-    isDiscountable?: boolean | null,
 }
 
 export interface ExtendedProduct extends Product {
@@ -37,7 +35,7 @@ export interface ExtendedProduct extends Product {
 
 export interface Plant extends Product {
     plantInfo: {
-        size: string | null,
+        size: string,
         propagationDate: Date | string | null,
         ageGroup: string,
         isSpecimen: boolean,
@@ -48,6 +46,8 @@ export interface Plant extends Product {
 export interface ExtendedPlant extends Plant {
     categoryData: PlantCategory
 }
+
+type ProductStatus = 'Active' | 'Inactive' | 'Hidden' | 'Archived'
 
 export type PotSize =
     '' |

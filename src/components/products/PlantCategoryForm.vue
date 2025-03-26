@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent class="plant-admin-form">
+    <Formkit type="form" @submit.prevent class="plant-admin-form">
         <FormKit
             type="text"
             label="ID"
@@ -57,7 +57,7 @@
             style="height: auto; width: 90%; border-radius: .75rem;"
             v-model="plantCategoryToEdit.description"
         />
-    </form>
+    </Formkit>
     <section class="form-actions">
         <BaseButton type="danger" @click.prevent="deleteProduct" :disabled="!plantCategoryToEdit.id || plantCategoryToEdit.status !== 'Archived'">
             Delete Plant<span class="spinner-border" role="status" v-if="isSaving"></span>
@@ -118,9 +118,11 @@ function addPhotos() {
 <style scoped>
 
     .plant-admin-form {
+        max-width: 95%;
         margin: 2rem 0;
-        display: grid;
-        max-width: 95dvw;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
         gap: .5rem;
     }
     .form-action {
@@ -141,9 +143,6 @@ function addPhotos() {
     }
     .description {
         grid-column: span 3;
-    }
-    .full-width {
-        width: 100%;
     }
 
     @media(min-width: 45rem) {

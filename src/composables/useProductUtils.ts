@@ -1,4 +1,4 @@
-import type { Product, ProductCategory, Plant } from "@/types/Product"
+import type { Product, ProductCategory, Plant, PlantCategory } from "@/types/Product"
 import type { PlantCategory as OldPlantCategory } from '@/types/Plant'
 import { deleteAllPhotosUtil } from '@/composables/usePhotoUtils'
 import { findAll, deleteItem, findDocById } from '@/apis/dataServices'
@@ -38,31 +38,43 @@ export async function deleteById(id: number | string, collectionName: string, co
     return { success: true, error: false, response: res, message: 'Deleted' }
 }
 
-export const newProductCategory: Partial<ProductCategory> = {
+export const newProductCategory: ProductCategory = {
+    id: '',
     category: '',
     subCategory: '',
     name: '',
     description: '',
-    status: 'active',
+    status: 'Active',
     photos: [],
     tags: [],
     createdDate: new Date(),
     dateUpdated: new Date(),
 }
 
-export const newProduct: Partial<Product> = {
+export const newPlantCategory: PlantCategory = {
+    ...newProductCategory,
+    category: 'Plants',
+    speciesHybrid: '',
+    source: '',
+    genus: '',
+    clone: ''
+}
+
+export const newProduct: Product = {
+    sku: '',
     quantity: 1,
     productCategoryId: null,
     price: null,
-    status: 'active',
+    status: 'Active',
     photos: [],
     createdDate: new Date(),
     updatedDate: new Date(),
 }
 
-export const newPlant: Partial<Plant> = {
+export const newPlant: Plant = {
+    ...newProduct,
     plantInfo: {
-        size: null,
+        size: '',
         propagationDate: new Date(),
         ageGroup: '',
         isSpecimen: false,

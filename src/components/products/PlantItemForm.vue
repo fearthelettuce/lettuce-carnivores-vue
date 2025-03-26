@@ -138,7 +138,7 @@ watch(() => plant.value.id, () => {
 <style scoped>
 
     .plant-item-form {
-        width: 100%;
+        width: 90%;
         margin: .25rem 0;
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(16ch, 1fr));
