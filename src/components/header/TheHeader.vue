@@ -28,7 +28,7 @@
         </div>
         <nav class="justify-start items-center gap-4">
           <Sheet v-model:open="isOpen">
-            <SheetContent side="left" class="mobile-menu-sheet p-0 bg-primary border-none">
+            <SheetContent side="left" class="mobile-menu-sheet p-0 bg-primary border-none" @openAutoFocus.prevent>
               <div class="mobile-menu">
                 <div class="mobile-menu-search">
                   <TheSearch @navigate="closeMobileMenu" />
