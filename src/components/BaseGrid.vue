@@ -21,8 +21,15 @@ import { ref, shallowRef, watch, type PropType, type Ref, type ShallowRef } from
 import { AgGridVue } from 'ag-grid-vue3'
 import { ClientSideRowModelModule, ModuleRegistry, TextEditorModule, SelectEditorModule, ValidationModule, ColumnAutoSizeModule, DateEditorModule, themeBalham } from 'ag-grid-community'
 import type { ColDef, GridApi, GridOptions, GridReadyEvent } from 'ag-grid-community'
-ModuleRegistry.registerModules([ClientSideRowModelModule, TextEditorModule, SelectEditorModule, ValidationModule, ColumnAutoSizeModule, DateEditorModule]);
+  ModuleRegistry.registerModules([ClientSideRowModelModule, TextEditorModule, SelectEditorModule, ValidationModule, ColumnAutoSizeModule, DateEditorModule]);
 
+  const gridApi: ShallowRef<GridApi | null> = shallowRef(null)
+  let filters: Ref<{ [colId: string]: any } | undefined> = ref(undefined)
+  
+  defineExpose({
+    gridApi
+  })
+  
   const props = defineProps({
     id: {
       type: String,
@@ -66,9 +73,6 @@ ModuleRegistry.registerModules([ClientSideRowModelModule, TextEditorModule, Sele
       required: false
     }
   })
-
-  let gridApi: ShallowRef<GridApi | null> = shallowRef(null)
-  let filters: Ref<{ [colId: string]: any} | undefined> = ref(undefined)
 
 
   // function updateFilters(params: ICellRendererParams) {

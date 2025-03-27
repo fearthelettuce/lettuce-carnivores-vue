@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { ref} from 'vue';
-import ProductAdminGrid from '@/components/ProductAdminGrid.vue';
+import ProductAdminGrid from '@/components/ProductCategoryAdminGrid.vue';
 import Collapsible from '@/components/ui/collapsible/Collapsible.vue';
 import CollapsibleContent from '@/components/ui/collapsible/CollapsibleContent.vue';
 import CollapsibleTrigger from '@/components/ui/collapsible/CollapsibleTrigger.vue';
