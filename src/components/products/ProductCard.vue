@@ -1,11 +1,12 @@
 <template>
     <article class="card" :class="applyBg">
-       <figure> 
-        <router-link :to="link">
-            <img :src="cardImageUrl" :class="cardImageUrl == placeholderUrl ? 'placeholderImage': 'cardImage'" :alt="`An image of ${name}`" />
-        </router-link>
+        <figure>
+            <router-link :to="link">
+                <img :src="cardImageUrl" :class="cardImageUrl == placeholderUrl ? 'placeholderImage' : 'cardImage'"
+                    :alt="`An image of ${name}`" />
+            </router-link>
         </figure>
-        <div class="card-details background-color" ref="card" >
+        <div class="card-details background-color" ref="card">
             <header class="card-title">
                 <h5 class="card-name" @click="$router.push(link)">{{ name }}</h5>
             </header>
@@ -16,66 +17,66 @@
                 <BaseButton type="primary" size="normal" @click="$router.push(link)">View Details</BaseButton>
             </footer>
         </div>
-        
+
     </article>
 </template>
 
 <script setup lang="ts">
 
-import { computed, ref } from 'vue'
-import {getPhotoUrl, placeholderUrl} from '@/composables/usePhotoUtils'
-import { useIntersectionObserver, useWindowSize } from '@vueuse/core';
+    import { computed, ref } from 'vue'
+    import { getPhotoUrl, placeholderUrl } from '@/composables/usePhotoUtils'
+    import { useIntersectionObserver, useWindowSize } from '@vueuse/core';
 
 
-const props = defineProps<{
-    name: string,
-    price: number | string,
-    link: string,
-    photoUrl: string | undefined | null,
-    index: number,
-}>()
-const cardImageUrl = computed(() => {
-    return getPhotoUrl(props.photoUrl ?? null)
-})
-const formattedPrice = computed(() => {
-    if(typeof props.price === 'number') {
-        return props.price > 0 ? USDollar.format(props.price) : '-'
-    } else {
-        return props.price || '-'
-    }
-})
-const { width } = useWindowSize()
-const applyBg = computed(() => {
-    if(width.value > 450) return ''
-    if(cardIsVisible.value) return 'position-0'
-})
-const card = ref()
-const cardIsVisible = ref(false)
-const { stop } = useIntersectionObserver(
-  card,
-  ([entry], observerElement) => {
-    cardIsVisible.value = entry?.isIntersecting || false
-  },
-)
+    const props = defineProps<{
+        name: string,
+        price: number | string,
+        link: string,
+        photoUrl: string | undefined | null,
+        index: number,
+    }>()
+    const cardImageUrl = computed(() => {
+        return getPhotoUrl(props.photoUrl ?? null)
+    })
+    const formattedPrice = computed(() => {
+        if (typeof props.price === 'number') {
+            return props.price > 0 ? USDollar.format(props.price) : '-'
+        } else {
+            return props.price || '-'
+        }
+    })
+    const { width } = useWindowSize()
+    const applyBg = computed(() => {
+        if (width.value > 450) return ''
+        if (cardIsVisible.value) return 'position-0'
+    })
+    const card = ref()
+    const cardIsVisible = ref(false)
+    const { stop } = useIntersectionObserver(
+        card,
+        ([entry], observerElement) => {
+            cardIsVisible.value = entry?.isIntersecting || false
+        },
+    )
 
-//TODO: Move USDollar to composables
-const USDollar = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0, 
-});
+    //TODO: Move USDollar to composables
+    const USDollar = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+    });
 
-const gradientColor = computed(() => {
-    const remainder = props.index % 6
-    const plusOne = remainder + 1
-    // if(props.index === 0) return '#80d80e'
-    if(plusOne % 6 === 0) return '#20eacc'
-    if(plusOne % 5 === 0) return '#aa93fc'
-    if(plusOne % 4 === 0) return '#ff6949'
-    if(plusOne % 3 === 0) return '#006b90'
-    if(plusOne % 2 === 0) return '#FFBF46'
-    return '#80d80e'
-})
+    const gradientColor = computed(() => {
+        const remainder = props.index % 6
+        const plusOne = remainder + 1
+        // if(props.index === 0) return '#80d80e'
+        if (plusOne % 6 === 0) return '#20eacc'
+        if (plusOne % 5 === 0) return '#aa93fc'
+        if (plusOne % 4 === 0) return '#ff6949'
+        if (plusOne % 3 === 0) return '#006b90'
+        if (plusOne % 2 === 0) return '#FFBF46'
+        return '#80d80e'
+    })
 
 </script>
 
@@ -84,13 +85,15 @@ const gradientColor = computed(() => {
         display: flex;
         flex-direction: column;
         border-radius: 2em;
-        overflow:hidden;
+        overflow: hidden;
         justify-content: space-between;
-        filter: brightness(105%);   
+        // filter: brightness(105%);   
         box-shadow: 0px -1px 8px 2px $bg-contrast;
     }
- 
-    figure:hover, .card:hover, .card-details:hover {
+
+    figure:hover,
+    .card:hover,
+    .card-details:hover {
         .background-color {
             background-position: 0 0;
         }
@@ -132,7 +135,8 @@ const gradientColor = computed(() => {
         object-fit: cover;
         object-position: center;
         align-items: center;
-        img{
+
+        img {
             text-align: center;
             margin: auto auto;
         }
@@ -155,11 +159,13 @@ const gradientColor = computed(() => {
         word-wrap: break-word;
 
     }
+
     .price {
         display: flex;
         align-items: center;
         font-size: 1.2rem;
     }
+
     .card-footer {
         display: flex;
         flex-direction: row;
@@ -177,6 +183,7 @@ const gradientColor = computed(() => {
             transition: background-position 1.3s;
         }
     }
+
     @media(prefers-reduced-motion) {
         .background-color {
             transition: none;
