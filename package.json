@@ -20,6 +20,7 @@
     "@formkit/themes": "^1.6.9",
     "@formkit/vue": "^1.6.9",
     "@google-cloud/functions-framework": "^3.4.2",
+    "@leeoniya/ufuzzy": "^1.0.18",
     "@radix-icons/vue": "^1.0.0",
     "@vueuse/core": "^11.3.0",
     "ag-grid-community": "^33.2.1",
