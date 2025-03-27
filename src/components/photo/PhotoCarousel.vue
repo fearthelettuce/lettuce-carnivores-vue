@@ -9,32 +9,36 @@
     </div>
 
     <div class="embla-thumbs">
-      <button class="arrow-button" @click="back"><ArrowLeft /></button>
+      <button class="arrow-button" @click="back">
+        <ArrowLeft />
+      </button>
       <div class="embla-thumbs__viewport" ref="emblaThumbsRef">
         <div class="embla-thumbs__container">
-          <div v-for="(photo, index) in photos" :key="`${photo.path}-thumb`" 
-          class="embla-thumbs__slide" :class="index === selectedIndex ?  'embla-thumbs__slide--selected' : ''">
+          <div v-for="(photo, index) in photos" :key="`${photo.path}-thumb`" class="embla-thumbs__slide"
+            :class="index === selectedIndex ? 'embla-thumbs__slide--selected' : ''">
             <button type="button" class="embla-thumbs__slide__button" @click="scrollTo(index)">
-                <img class="thumb-image" :src="getPhotoUrl(photo.path, 256)" />
+              <img class="thumb-image" :src="getPhotoUrl(photo.path, 256)" />
             </button>
           </div>
         </div>
       </div>
-      <button class="arrow-button" @click="next"><ArrowRight /></button>
+      <button class="arrow-button" @click="next">
+        <ArrowRight />
+      </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, defineProps, watch } from 'vue';
-import type { PhotoItem } from '@/types/Product'
-import emblaCarouselVue from 'embla-carousel-vue'
-import { getPhotoUrl } from '@/composables/usePhotoUtils';
-import ArrowLeft from '@/assets/icons/ArrowLeft.vue';
-import ArrowRight from '@/assets/icons/ArrowRight.vue';
-  const props = defineProps<{photos: Array<PhotoItem>}>()
+  import { ref, onMounted, watch } from 'vue';
+  import type { PhotoItem } from '@/types/Product'
+  import emblaCarouselVue from 'embla-carousel-vue'
+  import { getPhotoUrl } from '@/composables/usePhotoUtils';
+  import ArrowLeft from '@/assets/icons/ArrowLeft.vue';
+  import ArrowRight from '@/assets/icons/ArrowRight.vue';
+  const props = defineProps<{ photos: Array<PhotoItem> }>()
   const [emblaRef, emblaApi] = emblaCarouselVue({ loop: true })
-  const [emblaThumbsRef, emblaThumbsApi] = emblaCarouselVue({containScroll: 'keepSnaps', dragFree: true})
+  const [emblaThumbsRef, emblaThumbsApi] = emblaCarouselVue({ containScroll: 'keepSnaps', dragFree: true })
   const selectedIndex = ref(0)
 
   onMounted(() => {
@@ -59,7 +63,7 @@ import ArrowRight from '@/assets/icons/ArrowRight.vue';
     emblaThumbsApi.value?.scrollTo(emblaApi.value!.selectedScrollSnap())
     selectedIndex.value = emblaApi.value!.selectedScrollSnap()
   }
-  function next() { 
+  function next() {
     emblaApi.value!.scrollNext()
     emblaThumbsApi.value?.scrollTo(emblaApi.value!.selectedScrollSnap())
     selectedIndex.value = emblaApi.value!.selectedScrollSnap()
@@ -72,17 +76,20 @@ import ArrowRight from '@/assets/icons/ArrowRight.vue';
     display: flex;
     align-items: center;
   }
+
   .embla {
     margin: auto;
     --slide-spacing: 1rem;
     --slide-size: 100%;
   }
+
   .embla__viewport {
     overflow: hidden;
     width: 100%;
     box-shadow: 0px -1px 10px 3px $bg-contrast;
     border-radius: 1.8rem;
   }
+
   .embla__container {
     display: flex;
     align-items: flex-start;
@@ -90,6 +97,7 @@ import ArrowRight from '@/assets/icons/ArrowRight.vue';
     margin-left: calc(var(--slide-spacing) * -1);
 
   }
+
   .embla__slide {
     transform: translate3d(0, 0, 0);
     padding-left: var(--slide-spacing);
@@ -99,6 +107,7 @@ import ArrowRight from '@/assets/icons/ArrowRight.vue';
     max-height: 90dvw;
 
   }
+
   .display-image {
     display: block;
     width: 100%;
@@ -108,6 +117,7 @@ import ArrowRight from '@/assets/icons/ArrowRight.vue';
     box-shadow: 0px 5px 4px 2px $light-gray;
     aspect-ratio: 1/1;
   }
+
   .embla-thumbs {
     --thumbs-slide-spacing: 0.5rem;
     --thumbs-slide-height: 6rem;
@@ -117,14 +127,17 @@ import ArrowRight from '@/assets/icons/ArrowRight.vue';
     align-items: center;
     justify-content: space-evenly;
   }
+
   .embla-thumbs__viewport {
     overflow: hidden;
   }
+
   .embla-thumbs__container {
     display: flex;
     flex-direction: row;
     margin-left: calc(var(--thumbs-slide-spacing) * -1);
   }
+
   .embla-thumbs__slide {
     flex: 0 0 22%;
     min-width: 0;
@@ -133,6 +146,7 @@ import ArrowRight from '@/assets/icons/ArrowRight.vue';
     transition: opacity 1s;
     max-height: 10dvh;
   }
+
   .thumb-image {
     border-radius: .5rem;
     display: block;
@@ -141,12 +155,15 @@ import ArrowRight from '@/assets/icons/ArrowRight.vue';
     object-fit: cover;
     aspect-ratio: 1/1;
   }
+
   .embla-thumbs__slide:hover {
     opacity: 80%;
   }
+
   .embla-thumbs__slide--selected {
     opacity: 100% !important;
   }
+
   @media(min-width: 50rem) {
     .embla-thumbs {
       --thumbs-slide-spacing: 0.8rem;
@@ -157,28 +174,34 @@ import ArrowRight from '@/assets/icons/ArrowRight.vue';
       align-items: center;
       justify-content: space-around;
     }
+
     .arrow-button {
       padding: 2rem;
     }
+
     .embla__slide {
       max-height: 40rem;
 
     }
   }
+
   @media(min-width: 60rem) {
     .embla__slide {
       max-height: 40rem;
     }
   }
+
   @media(min-width: 80rem) {
     .embla__slide {
       max-height: 75dvh;
     }
   }
+
   @media(min-width: 100rem) {
     .embla__slide {
       max-height: 75dvh;
     }
+
     .display-image {
       object-fit: cover;
     }
